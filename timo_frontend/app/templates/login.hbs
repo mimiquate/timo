@@ -1,0 +1,15 @@
+<h1>Timo App</h1>
+<form onsubmit={{action "getIn"}}>
+  <div>
+    <Input
+      @type="text"
+      @value={{this.username}}
+      id="username"
+      placeholder="username"
+    />
+  </div>
+  <div>
+    <button type="submit">Get in</button>
+  </div>
+</form>
+{{outlet}}
