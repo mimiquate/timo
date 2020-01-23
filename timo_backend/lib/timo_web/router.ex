@@ -7,6 +7,6 @@ defmodule TimoWeb.Router do
 
   scope "/api", TimoWeb do
     pipe_through :api
-    resources "/users", UserController, only: [:create]
+    resources "/users", UserController, only: [:create, :show]
   end
 end
