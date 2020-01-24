@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 
 export default Controller.extend({
   router: service(),
+  session: service(),
 
   getIn: action(async function (event) {
     event.preventDefault();
@@ -13,5 +14,6 @@ export default Controller.extend({
 
     await user.save()
     await this.router.transitionTo('landing');
+    await this.session.login(user);
   }),
 });
