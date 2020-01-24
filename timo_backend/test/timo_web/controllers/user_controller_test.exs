@@ -99,4 +99,33 @@ defmodule TimoWeb.UserControllerTest do
     }
     assert json_response(conn, 422)["errors"] != %{}
   end
+
+  test "shows user with id: me in the session's cookie", %{conn: conn} do
+    conn = post conn, Routes.user_path(conn, :create), %{
+      "meta" => %{},
+      "data" => %{
+        "type" => "users",
+        "attributes" => @create_attrs,
+        "relationships" => relationships()
+      }
+    }
+    assert %{"id" => id} = json_response(conn, 201)["data"]
+
+    conn = get conn, Routes.user_path(conn, :show, "me")
+    data = json_response(conn, 200)["data"]
+
+    assert data["id"] == id
+    assert data["type"] == "user"
+    assert data["attributes"]["username"] == @create_attrs.username
+  end
+
+  test "does not show user with id: me when cookies where not updated", %{conn: conn} do
+    conn = get conn, Routes.user_path(conn, :show, "me")
+    assert json_response(conn, 404)["errors"] != %{}
+  end
+
+  test "does not show user that doesn't exist", %{conn: conn} do
+    conn = get conn, Routes.user_path(conn, :show, 100)
+    assert json_response(conn, 404)["errors"] != %{}
+  end
 end

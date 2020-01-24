@@ -14,6 +14,5 @@ export default Controller.extend({
 
     await user.save()
     await this.router.transitionTo('landing');
-    await this.session.login(user);
   }),
 });

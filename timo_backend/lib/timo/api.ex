@@ -14,9 +14,9 @@ defmodule Timo.API do
 
   @doc """
   Gets a single user.
-  Raises `Ecto.NoResultsError` if the User does not exist.
+  returns nil if the User does not exist.
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user(id), do: Repo.get(User, id)
 
   def get_user_by(params), do: Repo.get_by(User, params)
 
