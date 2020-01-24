@@ -2,10 +2,8 @@ defmodule TimoWeb.UserControllerTest do
   use TimoWeb.ConnCase
 
   alias Timo.API
-  alias Timo.API.User
 
   @create_attrs %{username: "some username"}
-  @update_attrs %{username: "some updated username"}
   @invalid_attrs %{username: nil}
 
   def fixture(:user) do
@@ -13,7 +11,15 @@ defmodule TimoWeb.UserControllerTest do
     user
   end
 
-  
+  def user_fixture(attrs \\ %{}) do
+      {:ok, user} =
+        attrs
+        |> Enum.into(@create_attrs)
+        |> API.create_user()
+
+      user
+  end
+
   defp relationships() do
     %{}
   end
@@ -54,5 +60,30 @@ defmodule TimoWeb.UserControllerTest do
       }
     }
     assert json_response(conn, 422)["errors"] != %{}
+  end
+
+  test "attempts to create already existing user and renders valid data", %{conn: conn} do
+    user = user_fixture()
+    user_id = Integer.to_string(user.id)
+    user_username = user.username
+
+    conn = post(conn, Routes.user_path(conn, :create), %{
+      "meta" => %{},
+      "data" => %{
+        "type" => "user",
+        "attributes" => @create_attrs,
+        "relationships" => relationships()
+      }
+    })
+    assert %{"id" => id} = json_response(conn, 200)["data"]
+
+    conn = get conn, Routes.user_path(conn, :show, id)
+    data = json_response(conn, 200)["data"]
+
+    assert data["id"] == id
+    assert user_id == id
+    assert data["type"] == "user"
+    assert data["attributes"]["username"] == @create_attrs.username
+    assert user_username == @create_attrs.username
   end
 end

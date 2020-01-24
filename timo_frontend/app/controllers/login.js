@@ -9,13 +9,9 @@ export default Controller.extend({
     event.preventDefault();
 
     let { username } = this;
-    if (username) {
-      this.router.transitionTo('landing');
-    } 
-    // else {
-    //   let user = this.store.createRecord('user', { username });
-    //   await user.save()
-    //   await this.router.transitionTo('landing');
-    // }
+    let user = this.store.createRecord('user', { username });
+
+    await user.save()
+    await this.router.transitionTo('landing');
   }),
 });

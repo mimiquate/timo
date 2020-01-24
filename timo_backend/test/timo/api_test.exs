@@ -60,5 +60,27 @@ defmodule Timo.APITest do
       user = user_fixture()
       assert %Ecto.Changeset{} = API.change_user(user)
     end
+
+    test "get_user_by/1 return user with given params" do
+      user = user_fixture()
+      %{username: username} = user
+      assert API.get_user_by(username: username) == user
+    end
+
+    test "get_user_by/1 returns nil when no user" do
+      username = @valid_attrs.username
+      assert API.get_user_by(username: username) == nil
+    end
+
+    test "get_user_by_username/1 returns user with given username" do
+      user = user_fixture()
+      %{username: username} = user
+      {:ok, get_user} = API.get_user_by_username(username)
+      assert get_user == user
+    end
+
+    test "get_user_by_username/1 returns nil when user is nil" do
+      assert API.get_user_by_username(nil) == nil
+    end
   end
 end
