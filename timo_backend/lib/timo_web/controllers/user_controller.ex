@@ -7,9 +7,8 @@ defmodule TimoWeb.UserController do
 
   action_fallback TimoWeb.FallbackController
 
-  def create(conn, %{"data" => %{"type" => "user", "attributes" => user_params}}) do
+  def create(conn, %{"data" => %{"type" => "users", "attributes" => user_params}}) do
     username = user_params["username"]
-
     with {:ok, %User{} = user} <- API.get_user_by_username(username) do
       render(conn, "show.json-api", data: user)
     else
