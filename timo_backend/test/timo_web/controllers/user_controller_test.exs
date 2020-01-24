@@ -5,6 +5,7 @@ defmodule TimoWeb.UserControllerTest do
 
   @create_attrs %{username: "some username"}
   @invalid_attrs %{username: nil}
+  @invalid_space_attrs %{username: " "}
 
   def fixture(:user) do
     {:ok, user} = API.create_user(@create_attrs)
@@ -36,7 +37,7 @@ defmodule TimoWeb.UserControllerTest do
     conn = post conn, Routes.user_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
-        "type" => "user",
+        "type" => "users",
         "attributes" => @create_attrs,
         "relationships" => relationships()
       }
@@ -54,7 +55,7 @@ defmodule TimoWeb.UserControllerTest do
     conn = post conn, Routes.user_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
-        "type" => "user",
+        "type" => "users",
         "attributes" => @invalid_attrs,
         "relationships" => relationships()
       }
@@ -70,7 +71,7 @@ defmodule TimoWeb.UserControllerTest do
     conn = post(conn, Routes.user_path(conn, :create), %{
       "meta" => %{},
       "data" => %{
-        "type" => "user",
+        "type" => "users",
         "attributes" => @create_attrs,
         "relationships" => relationships()
       }
@@ -85,5 +86,17 @@ defmodule TimoWeb.UserControllerTest do
     assert data["type"] == "user"
     assert data["attributes"]["username"] == @create_attrs.username
     assert user_username == @create_attrs.username
+  end
+
+  test "does not create user and renders errors when data is just whitespace", %{conn: conn} do
+    conn = post conn, Routes.user_path(conn, :create), %{
+      "meta" => %{},
+      "data" => %{
+        "type" => "users",
+        "attributes" => @invalid_space_attrs,
+        "relationships" => relationships()
+      }
+    }
+    assert json_response(conn, 422)["errors"] != %{}
   end
 end
