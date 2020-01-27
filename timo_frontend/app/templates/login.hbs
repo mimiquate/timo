@@ -1,11 +1,19 @@
 <h1>Timo App</h1>
 <form onsubmit={{action "getIn"}}>
   <div>
+    {{#if this.showErrors}}
+      <div>
+        <span class="simple-errors">
+          Error: empty username
+        </span>
+      </div>
+    {{/if}}
     <Input
       @type="text"
       @value={{this.username}}
-      id="username"
+      id="username_input"
       placeholder="username"
+      oninput={{action "resetError" "username"}}
     />
   </div>
   <div>
