@@ -1,23 +1,24 @@
-<h1>Timo App</h1>
-<form onsubmit={{action "getIn"}}>
-  <div>
-    {{#if this.showErrors}}
-      <div>
-        <span class="simple-errors">
-          Error: empty username
-        </span>
+<div class="login-main layout-column layout-align-center-center">
+  <div class="layout layout-align-center-center">
+    <h1>Timo App</h1>
+  </div>
+  <div class="layout layout-align-center-center">
+    <PaperForm @onSubmit={{action "getIn"}} as |form|>
+      <div class="layout layout-align-center-center">
+        <form.input
+          @value={{username}}
+          @placeholder="username"
+          @onChange={{action "setValue"}}
+          @required={{true}}
+        />
       </div>
-    {{/if}}
-    <Input
-      @type="text"
-      @value={{this.username}}
-      id="username_input"
-      placeholder="username"
-      oninput={{action "resetError" "username"}}
-    />
+      <div class="layout layout-align-center-center">
+        <form.submit-button @raised={{true}} @primary={{true}}>
+          Get in
+        </form.submit-button>
+      </div>
+    </PaperForm>
   </div>
-  <div>
-    <button type="submit">Get in</button>
-  </div>
-</form>
+</div>
+
 {{outlet}}
