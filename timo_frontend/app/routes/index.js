@@ -1,10 +1,10 @@
 import Route from '@ember/routing/route';
-import {inject as service } from '@ember/service';
+import { inject as service } from '@ember/service';
 
 export default Route.extend({
-    router: service(),
+	router: service(),
 
-    beforeModel: function(){
-        this.router.transitionTo('login');
-    }
+	beforeModel: function () {
+		this.router.transitionTo('login');
+	}
 });

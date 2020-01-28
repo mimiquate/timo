@@ -25,8 +25,7 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :phoenix, :format_encoders,
-  "json-api": Poison
+config :phoenix, :format_encoders, "json-api": Poison
 
 config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"]

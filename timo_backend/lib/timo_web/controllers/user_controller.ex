@@ -3,12 +3,13 @@ defmodule TimoWeb.UserController do
 
   alias Timo.API
   alias Timo.API.User
-  #alias JaSerializer.Params
+  # alias JaSerializer.Params
 
   action_fallback TimoWeb.FallbackController
 
   def create(conn, %{"data" => %{"type" => "users", "attributes" => user_params}}) do
     username = user_params["username"]
+
     with {:ok, %User{} = user} <- API.get_user_by_username(username) do
       conn
       |> fetch_session()

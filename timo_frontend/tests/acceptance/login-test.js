@@ -3,17 +3,17 @@ import { visit, fillIn, click, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 
-module('Acceptance | Login', function(hooks) {
+module('Acceptance | Login', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('Visiting /login', async function(assert) {
+  test('Visiting /login', async function (assert) {
     await visit('/login');
 
     assert.equal(currentURL(), '/login', 'Correctly visits login page');
   });
 
-  test('Log in with new username', async function(assert) {
+  test('Log in with new username', async function (assert) {
     this.server.get('/users/me', (schema) => {
       return schema.users.first();
     });
@@ -25,7 +25,7 @@ module('Acceptance | Login', function(hooks) {
     assert.equal(currentURL(), '/landing', 'Visits landing after creating a new user')
   });
 
-  test('Log in with already existing username', async function(assert) {
+  test('Log in with already existing username', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     this.server.get('/users/me', () => {
       return newUser;
@@ -38,7 +38,7 @@ module('Acceptance | Login', function(hooks) {
     assert.equal(currentURL(), '/landing', 'Visits landing with already created user')
   });
 
-  test('Login with no username error', async function(assert) {
+  test('Login with no username error', async function (assert) {
     await visit('/login');
     await click('[data-test-rr=login-button]');
 
@@ -48,7 +48,7 @@ module('Acceptance | Login', function(hooks) {
     assert.ok(errorMessage[0].textContent.includes('This is required'), 'No username error');
   });
 
-  test('Login with only whitespace username error', async function(assert) {
+  test('Login with only whitespace username error', async function (assert) {
     await visit('/login');
     await fillIn('#username-input input', '     ');
     await click('[data-test-rr=login-button]');
