@@ -3,11 +3,11 @@ import Service from '@ember/service';
 export default Service.extend({
     currentUser: null,
 
-    login(user){
+    login(user) {
         this.set("currentUser", user)
     },
-    
-    logout(){
+
+    logout() {
         this.set("currentUser", null)
     }
 });

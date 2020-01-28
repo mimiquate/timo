@@ -13,7 +13,7 @@ export default Controller.extend({
       this.set("username", newUsername);
 
       if (newUsername) {
-        let user = this.store.createRecord('user', { newUsername });
+        let user = this.store.createRecord('user', { username: newUsername });
         await user.save();
         await this.router.transitionTo('landing');
       }
