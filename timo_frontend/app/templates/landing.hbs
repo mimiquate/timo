@@ -1,1 +1,20 @@
-{{outlet}}
+<PaperToolbar>
+  <PaperToolbarTools>
+    <div class="paper-right">
+      <span>{{session.currentUser.username}}</span>
+    </div>
+  </PaperToolbarTools>
+</PaperToolbar>
+<PaperSidenavContainer @class="inner-sidenav">
+  <PaperSidenav @class="side-container" @lockedOpen={{true}}>
+    <PaperToolbar>
+      <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
+    </PaperToolbar>
+    <PaperContent @padding={{true}} @class="side-content">
+      You don't have any teams yet
+    </PaperContent>
+  </PaperSidenav>
+  <PaperCardContent @class="flex flex-center">
+    <img src="/images/earth-globe-pointer.svg" alt="BW Earth Globe background" class="landing-image">
+  </PaperCardContent>
+</PaperSidenavContainer>
