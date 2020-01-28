@@ -13,12 +13,12 @@ defmodule TimoWeb.UserControllerTest do
   end
 
   def user_fixture(attrs \\ %{}) do
-      {:ok, user} =
-        attrs
-        |> Enum.into(@create_attrs)
-        |> API.create_user()
+    {:ok, user} =
+      attrs
+      |> Enum.into(@create_attrs)
+      |> API.create_user()
 
-      user
+    user
   end
 
   def data_fixture(attribute) do
@@ -37,10 +37,11 @@ defmodule TimoWeb.UserControllerTest do
   end
 
   setup %{conn: conn} do
-    conn = conn
+    conn =
+      conn
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
-      
+
     {:ok, conn: conn}
   end
 
