@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
-import { visit, fillIn, click, currentURL } from '@ember/test-helpers';
+import { visit, click, currentURL } from '@ember/test-helpers';
+import { tryLogin } from 'timo-frontend/tests/helpers/custom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 
@@ -31,8 +32,7 @@ module('Acceptance | Login', function (hooks) {
     });
 
     await visit('/login');
-    await fillIn('#username-input input', 'juan');
-    await click('[data-test-rr=login-button]');
+    await tryLogin('juan');
 
     assert.equal(currentURL(), '/landing', 'Visits landing after creating a new user')
     assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
@@ -44,8 +44,7 @@ module('Acceptance | Login', function (hooks) {
     });
 
     await visit('/login');
-    await fillIn('#username-input input', '  juan  ');
-    await click('[data-test-rr=login-button]');
+    await tryLogin('  juan  ');
 
     assert.equal(currentURL(), '/landing', 'Visits landing with already created user');
     assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
@@ -53,15 +52,14 @@ module('Acceptance | Login', function (hooks) {
 
   test('Log in with already existing username', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
-    
+
     await visit('/login');
 
     this.server.get('/users/me', () => {
       return newUser;
     });
 
-    await fillIn('#username-input input', 'juan');
-    await click('[data-test-rr=login-button]');
+    await tryLogin('juan');
 
     assert.equal(currentURL(), '/landing', 'Visits landing with already created user')
     assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
@@ -69,15 +67,14 @@ module('Acceptance | Login', function (hooks) {
 
   test('Log in when already existing username has whitespace', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
-    
+
     await visit('/login');
 
     this.server.get('/users/me', () => {
       return newUser;
     });
 
-    await fillIn('#username-input input', '  juan  ');
-    await click('[data-test-rr=login-button]');
+    await tryLogin('  juan  ');
 
     assert.equal(currentURL(), '/landing', 'Visits landing with already created user')
     assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
@@ -95,8 +92,7 @@ module('Acceptance | Login', function (hooks) {
 
   test('Login with only whitespace username error', async function (assert) {
     await visit('/login');
-    await fillIn('#username-input input', '     ');
-    await click('[data-test-rr=login-button]');
+    await tryLogin('     ')
 
     assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
   });

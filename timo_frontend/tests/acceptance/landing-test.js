@@ -3,11 +3,11 @@ import { visit, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 
-module('Acceptance | Landing', function(hooks) {
+module('Acceptance | Landing', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('Visiting /landing without exisiting username', async function(assert) {
+  test('Visiting /landing without exisiting username', async function (assert) {
     await visit('/landing');
 
     assert.equal(currentURL(), '/login', 'Correctly redirects to login page');
