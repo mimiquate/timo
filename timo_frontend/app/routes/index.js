@@ -2,9 +2,13 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
 export default Route.extend({
-	router: service(),
+  session: service(),
 
-	beforeModel: function () {
-		this.router.transitionTo('login');
-	}
+  beforeModel() {
+    if (this.session.currentUser) {
+      this.transitionTo('landing');
+    } else {
+      this.transitionTo('login');
+    }
+  }
 });

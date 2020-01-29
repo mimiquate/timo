@@ -1,8 +1,8 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { set } from "@ember/object";
 
 export default Controller.extend({
-  router: service(),
   session: service(),
 
   actions: {
@@ -10,17 +10,20 @@ export default Controller.extend({
       let { username } = this;
       let newUsername = username.trim();
 
-      this.set("username", newUsername);
+      set(this, 'username', newUsername);
 
       if (newUsername) {
         let user = this.store.createRecord('user', { username: newUsername });
-        await user.save();
-        await this.router.transitionTo('landing');
+
+        user = await user.save();
+        this.session.setCurrentUser(user);
+
+        await this.transitionToRoute('landing');
       }
     },
 
     setValue(value) {
-      this.set('username', value);
+      set(this, 'username', value);
     }
   }
 });

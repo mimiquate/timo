@@ -13,6 +13,17 @@ module('Acceptance | Login', function (hooks) {
     assert.equal(currentURL(), '/login', 'Correctly visits login page');
   });
 
+  test('Visiting /login with existing username', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    this.server.get('/users/me', () => {
+      return newUser;
+    });
+
+    await visit('/login');
+
+    assert.equal(currentURL(), '/landing', 'Correctly redirects to landing page');
+  });
+
   test('Log in with new username', async function (assert) {
     this.server.get('/users/me', (schema) => {
       return schema.users.first();
@@ -27,11 +38,13 @@ module('Acceptance | Login', function (hooks) {
 
   test('Log in with already existing username', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
+    
+    await visit('/login');
+
     this.server.get('/users/me', () => {
       return newUser;
     });
 
-    await visit('/login');
     await fillIn('#username-input input', 'juan');
     await click('[data-test-rr=login-button]');
 
