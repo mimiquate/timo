@@ -62,13 +62,13 @@ defmodule Timo.APITest do
 
     test "find_or_create_user_by_username/1 returns user with given username" do
       user = user_fixture()
-      {:ok, get_user} = API.find_or_create_user_by_username("some username")
+      {:ok, :existing, get_user} = API.find_or_create_user_by_username("some username")
 
       assert get_user == user
     end
 
     test "find_or_create_user_by_username/1 creates and returns user with given username" do
-      {:ok, user} = API.find_or_create_user_by_username("some username")
+      {:ok, :new, user} = API.find_or_create_user_by_username("some username")
 
       assert user.username == "some username"
     end

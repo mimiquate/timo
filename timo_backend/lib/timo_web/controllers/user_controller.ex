@@ -9,12 +9,11 @@ defmodule TimoWeb.UserController do
   def create(conn, %{"data" => %{"type" => "users", "attributes" => user_params}}) do
     username = user_params["username"]
 
-    with {:ok, %User{} = user} <- API.find_or_create_user_by_username(username) do
+    with {:ok, status, %User{} = user} <- API.find_or_create_user_by_username(username) do
       conn
       |> fetch_session()
       |> put_session("user_id", user.id)
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.user_path(conn, :show, user))
+      |> add_status(status, user)
       |> render("show.json-api", data: user)
     end
   end
@@ -39,5 +38,13 @@ defmodule TimoWeb.UserController do
     else
       _ -> {:error, :not_found}
     end
+  end
+
+  defp add_status(conn, :existing, _user), do: conn
+
+  defp add_status(conn, :new, user) do
+    conn
+    |> put_status(:created)
+    |> put_resp_header("location", Routes.user_path(conn, :show, user))
   end
 end

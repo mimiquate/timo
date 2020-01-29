@@ -37,9 +37,14 @@ defmodule Timo.API do
 
   def find_or_create_user_by_username(username) do
     with {:ok, %User{} = user} <- get_user_by_username(username) do
-      {:ok, user}
+      {:ok, :existing, user}
     else
-      nil -> create_user(%{username: username})
+      nil ->
+        with {:ok, %User{} = user} <- create_user(%{username: username}) do
+          {:ok, :new, user}
+        else
+          error -> error
+        end
     end
   end
 end

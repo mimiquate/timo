@@ -69,7 +69,7 @@ defmodule TimoWeb.UserControllerTest do
     user_username = user.username
 
     conn = post(conn, Routes.user_path(conn, :create), data_fixture(@create_attrs))
-    assert %{"id" => id} = json_response(conn, 201)["data"]
+    assert %{"id" => id} = json_response(conn, 200)["data"]
 
     conn = get(conn, Routes.user_path(conn, :show, id))
     data = json_response(conn, 200)["data"]
