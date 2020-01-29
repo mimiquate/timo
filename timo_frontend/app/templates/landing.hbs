@@ -1,7 +1,9 @@
 <PaperToolbar>
   <PaperToolbarTools>
     <div class="paper-right">
-      <span>{{session.currentUser.username}}</span>
+      <span data-test-rr="currentUser-span">
+        {{session.currentUser.username}}
+      </span>
     </div>
   </PaperToolbarTools>
 </PaperToolbar>
@@ -15,6 +17,10 @@
     </PaperContent>
   </PaperSidenav>
   <PaperCardContent @class="flex flex-center">
-    <img src="/images/earth-globe-pointer.svg" alt="BW Earth Globe background" class="landing-image">
+    <img
+      src="/images/earth-globe-pointer.svg"
+      alt="BW Earth Globe background"
+      class="landing-image"
+    >
   </PaperCardContent>
 </PaperSidenavContainer>
