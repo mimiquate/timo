@@ -11,7 +11,13 @@ defmodule Timo.API do
   Gets a single user.
   returns nil if the User does not exist.
   """
-  def get_user(id), do: Repo.get(User, id)
+  def get_user(id) do
+    with %User{} = user <- Repo.get(User, id) do
+      {:ok, user}
+    else
+      nil -> nil
+    end
+  end
 
   def create_user(attrs \\ %{}) do
     %User{}
@@ -26,6 +32,14 @@ defmodule Timo.API do
       {:ok, user}
     else
       nil -> nil
+    end
+  end
+
+  def find_or_create_user_by_username(username) do
+    with {:ok, %User{} = user} <- get_user_by_username(username) do
+      {:ok, user}
+    else
+      nil -> create_user(%{username: username})
     end
   end
 end
