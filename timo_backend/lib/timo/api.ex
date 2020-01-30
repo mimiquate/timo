@@ -6,6 +6,7 @@ defmodule Timo.API do
   import Ecto.Query, warn: false
   alias Timo.Repo
   alias Timo.API.User
+  alias Timo.API.Team
 
   @doc """
   Gets a single user.
@@ -46,5 +47,38 @@ defmodule Timo.API do
           error -> error
         end
     end
+  end
+
+  def list_teams do
+    Repo.all(Team)
+  end
+
+  @doc """
+  Gets a single team.
+  Raises `Ecto.NoResultsError` if the Team does not exist.
+  """
+  def get_team!(id), do: Repo.get!(Team, id)
+
+  def create_team(attrs \\ %{}) do
+    %Team{}
+    |> Team.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_team(%Team{} = team, attrs) do
+    team
+    |> Team.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_team(%Team{} = team) do
+    Repo.delete(team)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking team changes.
+  """
+  def change_team(%Team{} = team) do
+    Team.changeset(team, %{})
   end
 end
