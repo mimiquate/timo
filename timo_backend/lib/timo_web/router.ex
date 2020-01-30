@@ -10,6 +10,6 @@ defmodule TimoWeb.Router do
   scope "/api", TimoWeb do
     pipe_through :api
     resources "/users", UserController, only: [:create, :show]
-    resources "/teams", TeamController, except: [:new, :edit]
+    resources "/teams", TeamController, only: [:create, :show, :index]
   end
 end

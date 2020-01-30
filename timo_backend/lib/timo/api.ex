@@ -49,36 +49,34 @@ defmodule Timo.API do
     end
   end
 
-  def list_teams do
-    Repo.all(Team)
+  def list_user_teams(%User{} = user) do
+    Team
+    |> user_team_query(user)
+    |> Repo.all()
   end
 
   @doc """
   Gets a single team.
-  Raises `Ecto.NoResultsError` if the Team does not exist.
+  returns nil if the Team does not exist.
   """
-  def get_team!(id), do: Repo.get!(Team, id)
+  def get_user_team(%User{} = user, id) do
+    query = user_team_query(Team, user)
 
-  def create_team(attrs \\ %{}) do
+    with %Team{} = team <- Repo.get(query, id) do
+      {:ok, team}
+    else
+      nil -> nil
+    end
+  end
+
+  def create_team(%User{} = user, attrs \\ %{}) do
     %Team{}
     |> Team.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.insert()
   end
 
-  def update_team(%Team{} = team, attrs) do
-    team
-    |> Team.changeset(attrs)
-    |> Repo.update()
-  end
-
-  def delete_team(%Team{} = team) do
-    Repo.delete(team)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking team changes.
-  """
-  def change_team(%Team{} = team) do
-    Team.changeset(team, %{})
+  defp user_team_query(query, %User{id: user_id}) do
+    from(t in query, where: t.user_id == ^user_id, preload: :user)
   end
 end

@@ -4,6 +4,8 @@ defmodule Timo.API.Team do
 
   schema "teams" do
     field :name, :string
+    
+    belongs_to :user, Timo.API.User
 
     timestamps()
   end

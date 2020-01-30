@@ -2,9 +2,9 @@ defmodule Timo.APITest do
   use Timo.DataCase
 
   alias Timo.API
+  alias Timo.API.User
 
   describe "users" do
-    alias Timo.API.User
 
     @valid_attrs %{username: "some username"}
     @invalid_attrs %{username: nil}
@@ -82,58 +82,62 @@ defmodule Timo.APITest do
     alias Timo.API.Team
 
     @valid_attrs %{name: "some name"}
-    @update_attrs %{name: "some updated name"}
     @invalid_attrs %{name: nil}
 
-    def team_fixture(attrs \\ %{}) do
-      {:ok, team} =
+    def owner_fixture(attrs \\ %{}) do
+      {:ok, user} =
         attrs
-        |> Enum.into(@valid_attrs)
-        |> API.create_team()
+        |> Enum.into(%{username: "some username"})
+        |> API.create_user()
+
+      user
+    end
+
+    def team_fixture(%User{} = user, attrs \\ %{}) do
+      attrs = Enum.into(attrs, @valid_attrs)
+      {:ok, team} = API.create_team(user, attrs)
 
       team
     end
 
-    test "list_teams/0 returns all teams" do
-      team = team_fixture()
-      assert API.list_teams() == [team]
+    test "list_user_teams/1 returns all teams" do
+      owner = owner_fixture()
+      team = team_fixture(owner)
+
+      assert API.list_user_teams(owner) == [team]
     end
 
-    test "get_team!/1 returns the team with given id" do
-      team = team_fixture()
-      assert API.get_team!(team.id) == team
+    test "list_user_teams/1 returns empty list" do
+      owner = owner_fixture()
+
+      assert API.list_user_teams(owner) == []
     end
 
-    test "create_team/1 with valid data creates a team" do
-      assert {:ok, %Team{} = team} = API.create_team(@valid_attrs)
+    test "get_user_team/2 returns the team with given id" do
+      owner = owner_fixture()
+      team = team_fixture(owner)
+      {:ok, get_team} = API.get_user_team(owner, team.id)
+
+      assert get_team == team
+    end
+
+    test "get_user_team/2 returns nil when no team with given id" do
+      owner = owner_fixture()
+
+      assert API.get_user_team(owner, 1) == nil
+    end
+
+    test "create_team/2 with valid data creates a team" do
+      owner = owner_fixture()
+
+      assert {:ok, %Team{} = team} = API.create_team(owner, @valid_attrs)
       assert team.name == "some name"
     end
 
-    test "create_team/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = API.create_team(@invalid_attrs)
-    end
+    test "create_team/2 with invalid data returns error changeset" do
+      owner = owner_fixture()
 
-    test "update_team/2 with valid data updates the team" do
-      team = team_fixture()
-      assert {:ok, %Team{} = team} = API.update_team(team, @update_attrs)
-      assert team.name == "some updated name"
-    end
-
-    test "update_team/2 with invalid data returns error changeset" do
-      team = team_fixture()
-      assert {:error, %Ecto.Changeset{}} = API.update_team(team, @invalid_attrs)
-      assert team == API.get_team!(team.id)
-    end
-
-    test "delete_team/1 deletes the team" do
-      team = team_fixture()
-      assert {:ok, %Team{}} = API.delete_team(team)
-      assert_raise Ecto.NoResultsError, fn -> API.get_team!(team.id) end
-    end
-
-    test "change_team/1 returns a team changeset" do
-      team = team_fixture()
-      assert %Ecto.Changeset{} = API.change_team(team)
+      assert {:error, %Ecto.Changeset{}} = API.create_team(owner, @invalid_attrs)
     end
   end
 end
