@@ -8,5 +8,9 @@ export default Route.extend({
     if (!this.session.currentUser) {
       this.transitionTo('login');
     }
+  },
+
+  model() {
+    return this.store.findAll('team')
   }
 });

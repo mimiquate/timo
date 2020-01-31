@@ -13,7 +13,18 @@
       <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
     </PaperToolbar>
     <PaperContent @padding={{true}} @class="side-content">
-      You don't have any teams yet
+      <div>
+        {{#if this.model.length}}
+          Teams
+        {{else}}
+          You don't have any teams yet
+        {{/if}}
+      </div>
+      <div>
+        <label onclick={{action "addTeam"}}>
+          <p>Add one</p>
+        </label>
+      </div>
     </PaperContent>
   </PaperSidenav>
   <PaperCardContent @class="flex flex-center">

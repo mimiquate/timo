@@ -30,7 +30,17 @@ defmodule TimoWeb.TeamController do
   end
 
   def action(conn, _) do
-    args = [conn, conn.params, conn.assigns.current_user]
-    apply(__MODULE__, action_name(conn), args)
+    {:ok, current_user} =
+      conn
+      |> fetch_session()
+      |> get_session("user_id")
+      |> API.get_user()
+
+    if !current_user do
+      {:error, :not_found}
+    else
+      args = [conn, conn.params, current_user]
+      apply(__MODULE__, action_name(conn), args)
+    end
   end
 end

@@ -1,4 +1,5 @@
 defmodule TimoWeb.TeamControllerTest do
+  import Plug.Test
   use TimoWeb.ConnCase
 
   alias Timo.API
@@ -47,7 +48,7 @@ defmodule TimoWeb.TeamControllerTest do
   setup %{conn: conn} do
     user = user_fixture()
     conn = conn
-      |> assign(:current_user, user)
+      |> init_test_session(user_id: user.id)
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
       
