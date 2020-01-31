@@ -15,23 +15,23 @@
     <PaperContent @padding={{true}} @class="side-content">
       <div>
         {{#if this.model.length}}
-          Teams
+          {{#each this.model as |team|}}
+            <li>{{team.name}}</li>
+          {{/each}}
         {{else}}
           You don't have any teams yet
         {{/if}}
       </div>
       <div>
-        <label onclick={{action "addTeam"}}>
-          <p>Add one</p>
-        </label>
+        <p>
+          <LinkTo @route="landing.teams.new" data-test-rr="newTeam-link">
+            Add one
+          </LinkTo>
+        </p>
       </div>
     </PaperContent>
   </PaperSidenav>
-  <PaperCardContent @class="flex flex-center">
-    <img
-      src="/images/earth-globe-pointer.svg"
-      alt="BW Earth Globe background"
-      class="landing-image"
-    >
+  <PaperCardContent @class="flex flex-content">
+    {{outlet}}
   </PaperCardContent>
 </PaperSidenavContainer>

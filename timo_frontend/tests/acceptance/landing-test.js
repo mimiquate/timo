@@ -1,27 +1,37 @@
 import { module, test } from 'qunit';
-import { visit, currentURL } from '@ember/test-helpers';
+import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
+import { setSession } from '../helpers/custom-helpers';
 
 module('Acceptance | Landing', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('Visiting /landing without exisiting username', async function (assert) {
-    await visit('/landing');
+  test('Visiting / (landing) without exisiting username', async function (assert) {
+    await visit('/');
 
     assert.equal(currentURL(), '/login', 'Correctly redirects to login page');
   });
 
-  test('Visiting /landing with existing username', async function (assert) {
+  test('Visiting / (landing) with existing username', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
-    this.server.get('/users/me', () => {
-      return newUser;
-    });
+    setSession.call(this, newUser);
 
-    await visit('/landing');
+    await visit('/');
 
-    assert.equal(currentURL(), '/landing', 'Correctly visits landing page');
+    assert.equal(currentURL(), '/', 'Correctly visits landing page');
     assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
+    assert.dom('[data-test-rr=landing-image]').exists('Landing page images loads');
+  });
+
+  test('Clicks link to Add one team', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+
+    await visit('/')
+    await click('[data-test-rr=newTeam-link]');
+
+    assert.equal(currentURL(), '/teams/new', 'Correctly visits new team page');
   });
 });
