@@ -4,4 +4,5 @@ export default function() {
 
   this.get('/users');
   this.post('/users');
+  this.get('/teams');
 }
