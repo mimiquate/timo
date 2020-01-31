@@ -24,6 +24,11 @@ body, body > .ember-view, .login-main {
   background-color: paper-color(deep-orange, '400');
 }
 
+.flex-content {
+  display: flex;
+  flex-direction: column;
+}
+
 .flex-center {
   display: flex;
   flex-wrap: wrap;
@@ -31,7 +36,13 @@ body, body > .ember-view, .login-main {
 }
 
 .landing-image {
-  height: 500px;
-  width: 500px;
+  height: 350px;
+  width: 350px;
   align-self: center;
+}
+
+.flex-title {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+  align-self: flex-start;
 }

@@ -2,14 +2,14 @@ import { module, test } from 'qunit';
 import { visit, currentURL } from "@ember/test-helpers";
 import { setupTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession } from '../../helpers/custom-helpers';
+import { setSession } from '../../../../helpers/custom-helpers';
 
 module('Unit | Route | index', function (hooks) {
   setupTest(hooks);
   setupMirage(hooks);
 
-  test('Redirects to login', async function (assert) {
-    await visit('/');
+  test('Redirects to landing then login', async function (assert) {
+    await visit('/teams');
 
     assert.equal(currentURL(), '/login');
   });
@@ -18,10 +18,8 @@ module('Unit | Route | index', function (hooks) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
 
-    await visit('/');
+    await visit('/teams');
 
     assert.equal(currentURL(), '/');
-    assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test-rr=landing-image]').exists('Landing page images loads');
   });
 });

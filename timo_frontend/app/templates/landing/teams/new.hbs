@@ -1,0 +1,17 @@
+<h1 class="flex-title" data-test-rr="newTeam-title">New Team</h1>
+<PaperForm @onSubmit={{action "saveTeam"}} as |form|>
+  <div class="layout layout-align-center-center">
+    <form.input
+      @value={{teamName}}
+      @placeholder="New team name"
+      id="teamName-input"
+      @onChange={{action "setValue"}}
+      @required={{true}}
+    />
+  </div>
+  <div class="layout layout-align-center-center">
+    <form.submit-button @raised={{true}} @primary={{true}} data-test-rr="saveTeam-button">
+      Save
+    </form.submit-button>
+  </div>
+</PaperForm>
