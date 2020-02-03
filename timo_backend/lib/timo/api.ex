@@ -81,36 +81,44 @@ defmodule Timo.API do
     from(t in query, where: t.user_id == ^user_id)
   end
 
-  def list_members do
-    Repo.all(Member)
+  def list_team_members(%Team{} = team) do
+    Member
+    |> team_member_query(team)
+    |> Repo.all()
   end
 
   @doc """
   Gets a single member.
-  Raises `Ecto.NoResultsError` if the Member does not exist.
+  returns nil if the Member does not exist.
   """
-  def get_member!(id), do: Repo.get!(Member, id)
+  def get_team_member(%Team{} = team, id) do
+    query = team_member_query(Member, team)
 
-  def create_member(attrs \\ %{}) do
+    with %Member{} = member <- Repo.get(query, id) do
+      {:ok, member}
+    else
+      nil -> nil
+    end
+  end
+
+  def create_member(%Team{} = team, attrs \\ %{}) do
     %Member{}
     |> Member.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:team, team)
     |> Repo.insert()
   end
 
-  def update_member(%Member{} = member, attrs) do
-    member
-    |> Member.changeset(attrs)
-    |> Repo.update()
+  def get_team_by_id(id) do
+    query = from(t in Team, where: t.id == ^id)
+
+    with %Team{} = team <- Repo.get(query, id) do
+      {:ok, team}
+    else
+      nil -> nil
+    end
   end
 
-  def delete_member(%Member{} = member) do
-    Repo.delete(member)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking member changes.
-  """
-  def change_member(%Member{} = member) do
-    Member.changeset(member, %{})
+  defp team_member_query(query, %Team{id: team_id}) do
+    from(m in query, where: m.team_id == ^team_id)
   end
 end

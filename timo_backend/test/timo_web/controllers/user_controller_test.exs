@@ -1,20 +1,9 @@
 defmodule TimoWeb.UserControllerTest do
   use TimoWeb.ConnCase
 
-  alias Timo.API
-
   @create_attrs %{username: "some username"}
   @invalid_attrs %{username: nil}
   @invalid_space_attrs %{username: " "}
-
-  def user_fixture(attrs \\ %{}) do
-    {:ok, user} =
-      attrs
-      |> Enum.into(@create_attrs)
-      |> API.create_user()
-
-    user
-  end
 
   def data_fixture(attribute) do
     %{

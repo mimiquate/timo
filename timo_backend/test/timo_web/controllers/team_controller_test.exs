@@ -3,27 +3,10 @@ defmodule TimoWeb.TeamControllerTest do
   use TimoWeb.ConnCase
 
   alias Timo.API
-  alias Timo.API.User
   alias Timo.API.Team
 
   @create_attrs %{name: "some name"}
   @invalid_attrs %{name: nil}
-
-  def user_fixture(attrs \\ %{}) do
-    {:ok, user} =
-      attrs
-      |> Enum.into(%{username: "some username"})
-      |> API.create_user()
-
-    user
-  end
-
-  def team_fixture(%User{} = user, attrs \\ %{}) do
-    attrs = Enum.into(attrs, %{name: "some name"})
-    {:ok, team} = API.create_team(user, attrs)
-
-    team
-  end
 
   def data_fixture(attribute) do
     %{
