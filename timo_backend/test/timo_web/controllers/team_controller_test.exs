@@ -99,7 +99,7 @@ defmodule TimoWeb.TeamControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
-  test "show video of user", %{conn: conn, user: user} do
+  test "show team of user", %{conn: conn, user: user} do
     team = team_fixture(user)
     team_id = Integer.to_string(team.id)
     conn = get(conn, Routes.team_path(conn, :show, team_id))
@@ -110,7 +110,7 @@ defmodule TimoWeb.TeamControllerTest do
     assert data["attributes"]["name"] == @create_attrs.name
   end
 
-  test "does not show video that doesn't exist", %{conn: conn} do
+  test "does not show team that doesn't exist", %{conn: conn} do
     conn = get(conn, Routes.team_path(conn, :show, 100))
 
     assert json_response(conn, 404)["errors"] != %{}

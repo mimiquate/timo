@@ -13,11 +13,11 @@
       <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
     </PaperToolbar>
     <PaperContent @padding={{true}} @class="side-content">
-      <div>
+      <div data-test-rr="team-container">
         {{#if this.model.length}}
           <ul class="team-list">
             {{#each this.model as |team|}}
-              <li>{{team.name}}</li>
+              <li data-test-rr="team-item">{{team.name}}</li>
             {{/each}}
           </ul>
         {{else}}

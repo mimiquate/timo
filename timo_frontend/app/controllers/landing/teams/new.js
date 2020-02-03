@@ -20,7 +20,7 @@ export default Controller.extend({
         });
 
         await team.save();
-        await this.transitionToRoute('landing.teams.team', team.id);
+        await this.transitionToRoute('landing.teams.team', team);
       }
     },
 
