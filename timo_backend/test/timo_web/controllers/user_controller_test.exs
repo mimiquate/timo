@@ -7,11 +7,6 @@ defmodule TimoWeb.UserControllerTest do
   @invalid_attrs %{username: nil}
   @invalid_space_attrs %{username: " "}
 
-  def fixture(:user) do
-    {:ok, user} = API.create_user(@create_attrs)
-    user
-  end
-
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
       attrs
