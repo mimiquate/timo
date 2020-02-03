@@ -25,7 +25,7 @@ module('Acceptance | Landing', function (hooks) {
     assert.dom('[data-test-rr=newTeam-title]').exists('New team page images loads');
   });
 
-  test('Creates new team', async function (assert) {
+  test('Creates new team and redirects', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
 
@@ -33,6 +33,30 @@ module('Acceptance | Landing', function (hooks) {
     await tryCreateTeam('Team 1')
 
     assert.equal(currentURL(), '/teams/1', 'Lands in team page');
+    assert.dom('[data-test-rr=team-title]').exists('Team title loads');
+    assert.dom('[data-test-rr=team-title]').hasText('Team 1', 'Team title loads');
+    assert.dom('[data-test-rr=team-item]').exists('Team is listed');
+  });
+
+  test('Creates teams and they are listed', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+
+    await visit('/teams/new');
+
+    assert.dom('[data-test-rr=team-container]').hasText('You don\'t have any teams yet',
+      'No teams are listed');
+
+    await tryCreateTeam('Team 1')
+    await visit('/teams/new');
+    await tryCreateTeam('Team 2')
+
+    assert.equal(currentURL(), '/teams/2', 'Lands in team page');
+    assert.dom('[data-test-rr=team-item]').exists({ count: 2 }, 'All teams are listed');
+    assert.dom('[data-test-rr=team-item]:first-child').hasText('Team 1',
+      'The first team in the list contains the team name');
+    assert.dom('[data-test-rr=team-item]:last-child').hasText('Team 2',
+      'The second team in the list contains the team name');
   });
 
   test('Create team with no name error', async function (assert) {
