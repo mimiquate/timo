@@ -77,6 +77,6 @@ defmodule Timo.API do
   end
 
   defp user_team_query(query, %User{id: user_id}) do
-    from(t in query, where: t.user_id == ^user_id, preload: :user)
+    from(t in query, where: t.user_id == ^user_id)
   end
 end

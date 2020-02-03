@@ -15,9 +15,11 @@
     <PaperContent @padding={{true}} @class="side-content">
       <div>
         {{#if this.model.length}}
-          {{#each this.model as |team|}}
-            <li>{{team.name}}</li>
-          {{/each}}
+          <ul class="team-list">
+            {{#each this.model as |team|}}
+              <li>{{team.name}}</li>
+            {{/each}}
+          </ul>
         {{else}}
           You don't have any teams yet
         {{/if}}
