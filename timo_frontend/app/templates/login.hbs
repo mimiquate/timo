@@ -1,0 +1,25 @@
+<div class="login-main layout-column layout-align-center-center">
+  <div class="layout layout-align-center-center">
+    <h1>Timo App</h1>
+  </div>
+  <div class="layout layout-align-center-center">
+    <PaperForm @onSubmit={{action "getIn"}} as |form|>
+      <div class="layout layout-align-center-center">
+        <form.input
+          @value={{username}}
+          @placeholder="username"
+          id="username-input"
+          @onChange={{action "setValue"}}
+          @required={{true}}
+        />
+      </div>
+      <div class="layout layout-align-center-center">
+        <form.submit-button @raised={{true}} @primary={{true}} data-test-rr="login-button">
+          Get in
+        </form.submit-button>
+      </div>
+    </PaperForm>
+  </div>
+</div>
+
+{{outlet}}
