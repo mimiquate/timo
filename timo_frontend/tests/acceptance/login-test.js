@@ -77,8 +77,9 @@ module('Acceptance | Login', function (hooks) {
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
-    assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login and error message appears');
-    assert.ok(errorMessage[0].textContent.includes('This is required'), 'No username error');
+    assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
+    assert.ok(errorMessage[0].textContent.includes('This is required'),
+      'No username error');
   });
 
   test('Login with only whitespace username error', async function (assert) {

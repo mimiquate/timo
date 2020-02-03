@@ -11,14 +11,13 @@ defmodule TimoWeb.TeamController do
     render(conn, "index.json-api", data: teams)
   end
 
-  def create(conn, %{"data" => %{"type" => "team", "attributes" => team_params}},
-    current_user) do
-      with {:ok, %Team{} = team} <- API.create_team(current_user, team_params) do
-        conn
-        |> put_status(:created)
-        |> put_resp_header("location", Routes.team_path(conn, :show, team))
-        |> render("show.json-api", data: team)
-      end
+  def create(conn, %{"data" => %{"type" => "teams", "attributes" => team_params}}, current_user) do
+    with {:ok, %Team{} = team} <- API.create_team(current_user, team_params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.team_path(conn, :show, team))
+      |> render("show.json-api", data: team)
+    end
   end
 
   def show(conn, %{"id" => id}, current_user) do

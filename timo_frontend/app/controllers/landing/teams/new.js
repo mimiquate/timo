@@ -6,8 +6,22 @@ export default Controller.extend({
   session: service(),
 
   actions: {
-    saveTeam() {
+    async saveTeam() {
+      let { teamName } = this;
+      let newTeamName = teamName.trim();
+      const currentUser = this.session.currentUser;
 
+      set(this, 'teamName', newTeamName);
+
+      if (newTeamName) {
+        let team = this.store.createRecord('team', {
+          name: newTeamName,
+          user: currentUser
+        });
+
+        await team.save();
+        await this.transitionToRoute('landing.teams.team', team.id);
+      }
     },
 
     setValue(value) {

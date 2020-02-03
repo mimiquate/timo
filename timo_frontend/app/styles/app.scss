@@ -17,6 +17,7 @@ body, body > .ember-view, .login-main {
 }
 
 .side-container {
+  min-width: 238px;
   width: fit-content;
 }
 
@@ -45,4 +46,9 @@ body, body > .ember-view, .login-main {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
   align-self: flex-start;
+}
+
+.team-list {
+  list-style-type: none;
+  padding: 0px;
 }

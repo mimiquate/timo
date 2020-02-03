@@ -34,24 +34,26 @@ defmodule TimoWeb.TeamControllerTest do
     %{
       "meta" => %{},
       "data" => %{
-        "type" => "team",
+        "type" => "teams",
         "attributes" => attribute,
         "relationships" => relationships()
       }
     }
   end
-  
+
   defp relationships() do
     %{}
   end
 
   setup %{conn: conn} do
     user = user_fixture()
-    conn = conn
+
+    conn =
+      conn
       |> init_test_session(user_id: user.id)
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
-      
+
     {:ok, conn: conn, user: user}
   end
 
@@ -67,7 +69,9 @@ defmodule TimoWeb.TeamControllerTest do
     assert Integer.to_string(team1.id) == data1["id"]
     assert Integer.to_string(team2.id) == data2["id"]
 
-    assert API.list_user_teams(user) == [team1, team2]
+    teams_in_db = API.list_user_teams(user)
+    teams_in_db = Enum.map(teams_in_db, fn t -> Timo.Repo.preload(t, :user) end)
+    assert teams_in_db == [team1, team2]
   end
 
   test "lists empty entries on index", %{conn: conn} do

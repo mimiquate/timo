@@ -5,7 +5,6 @@ defmodule Timo.APITest do
   alias Timo.API.User
 
   describe "users" do
-
     @valid_attrs %{username: "some username"}
     @invalid_attrs %{username: nil}
 
@@ -20,9 +19,9 @@ defmodule Timo.APITest do
 
     test "get_user/1 returns the user with given id" do
       user = user_fixture()
-      {:ok, %User{} = getUser} = API.get_user(user.id)
+      {:ok, %User{} = fetched_user} = API.get_user(user.id)
 
-      assert getUser == user
+      assert fetched_user == user
     end
 
     test "get_user/1 returns nil if the user does not exist" do
@@ -47,9 +46,9 @@ defmodule Timo.APITest do
     test "get_user_by_username/1 returns user with given username" do
       user = user_fixture()
       %{username: username} = user
-      {:ok, get_user} = API.get_user_by_username(username)
+      {:ok, fetched_user} = API.get_user_by_username(username)
 
-      assert get_user == user
+      assert fetched_user == user
     end
 
     test "get_user_by_username/1 returns nil if the user does not exist" do
@@ -62,9 +61,9 @@ defmodule Timo.APITest do
 
     test "find_or_create_user_by_username/1 returns user with given username" do
       user = user_fixture()
-      {:ok, :existing, get_user} = API.find_or_create_user_by_username("some username")
+      {:ok, :existing, fetched_user} = API.find_or_create_user_by_username("some username")
 
-      assert get_user == user
+      assert fetched_user == user
     end
 
     test "find_or_create_user_by_username/1 creates and returns user with given username" do
@@ -103,8 +102,10 @@ defmodule Timo.APITest do
     test "list_user_teams/1 returns all teams" do
       owner = owner_fixture()
       team = team_fixture(owner)
+      teams = API.list_user_teams(owner)
+      teams = Enum.map(teams, fn t -> Timo.Repo.preload(t, :user) end)
 
-      assert API.list_user_teams(owner) == [team]
+      assert teams == [team]
     end
 
     test "list_user_teams/1 returns empty list" do
@@ -116,9 +117,10 @@ defmodule Timo.APITest do
     test "get_user_team/2 returns the team with given id" do
       owner = owner_fixture()
       team = team_fixture(owner)
-      {:ok, get_team} = API.get_user_team(owner, team.id)
+      {:ok, fetched_team} = API.get_user_team(owner, team.id)
+      fetched_team = Timo.Repo.preload(fetched_team, :user)
 
-      assert get_team == team
+      assert fetched_team == team
     end
 
     test "get_user_team/2 returns nil when no team with given id" do
