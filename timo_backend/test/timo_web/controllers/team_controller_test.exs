@@ -9,11 +9,6 @@ defmodule TimoWeb.TeamControllerTest do
   @create_attrs %{name: "some name"}
   @invalid_attrs %{name: nil}
 
-  def fixture(:team) do
-    {:ok, team} = API.create_team(@create_attrs)
-    team
-  end
-
   def user_fixture(attrs \\ %{}) do
     {:ok, user} =
       attrs
