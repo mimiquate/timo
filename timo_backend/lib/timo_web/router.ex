@@ -11,5 +11,6 @@ defmodule TimoWeb.Router do
     pipe_through :api
     resources "/users", UserController, only: [:create, :show]
     resources "/teams", TeamController, only: [:create, :show, :index]
+    resources "/members", MemberController, except: [:new, :edit]
   end
 end

@@ -6,6 +6,7 @@ defmodule Timo.API.Team do
     field :name, :string
 
     belongs_to :user, Timo.API.User
+    has_many :members, Timo.API.Member
 
     timestamps()
   end

@@ -142,4 +142,65 @@ defmodule Timo.APITest do
       assert {:error, %Ecto.Changeset{}} = API.create_team(owner, @invalid_attrs)
     end
   end
+
+  describe "members" do
+    alias Timo.API.Member
+
+    @valid_attrs %{name: "some name", timezone: "some timezone"}
+    @update_attrs %{name: "some updated name", timezone: "some updated timezone"}
+    @invalid_attrs %{name: nil, timezone: nil}
+
+    def member_fixture(attrs \\ %{}) do
+      {:ok, member} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> API.create_member()
+
+      member
+    end
+
+    test "list_members/0 returns all members" do
+      member = member_fixture()
+      assert API.list_members() == [member]
+    end
+
+    test "get_member!/1 returns the member with given id" do
+      member = member_fixture()
+      assert API.get_member!(member.id) == member
+    end
+
+    test "create_member/1 with valid data creates a member" do
+      assert {:ok, %Member{} = member} = API.create_member(@valid_attrs)
+      assert member.name == "some name"
+      assert member.timezone == "some timezone"
+    end
+
+    test "create_member/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = API.create_member(@invalid_attrs)
+    end
+
+    test "update_member/2 with valid data updates the member" do
+      member = member_fixture()
+      assert {:ok, %Member{} = member} = API.update_member(member, @update_attrs)
+      assert member.name == "some updated name"
+      assert member.timezone == "some updated timezone"
+    end
+
+    test "update_member/2 with invalid data returns error changeset" do
+      member = member_fixture()
+      assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_attrs)
+      assert member == API.get_member!(member.id)
+    end
+
+    test "delete_member/1 deletes the member" do
+      member = member_fixture()
+      assert {:ok, %Member{}} = API.delete_member(member)
+      assert_raise Ecto.NoResultsError, fn -> API.get_member!(member.id) end
+    end
+
+    test "change_member/1 returns a member changeset" do
+      member = member_fixture()
+      assert %Ecto.Changeset{} = API.change_member(member)
+    end
+  end
 end

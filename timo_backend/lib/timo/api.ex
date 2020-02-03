@@ -7,6 +7,7 @@ defmodule Timo.API do
   alias Timo.Repo
   alias Timo.API.User
   alias Timo.API.Team
+  alias Timo.API.Member
 
   @doc """
   Gets a single user.
@@ -78,5 +79,38 @@ defmodule Timo.API do
 
   defp user_team_query(query, %User{id: user_id}) do
     from(t in query, where: t.user_id == ^user_id)
+  end
+
+  def list_members do
+    Repo.all(Member)
+  end
+
+  @doc """
+  Gets a single member.
+  Raises `Ecto.NoResultsError` if the Member does not exist.
+  """
+  def get_member!(id), do: Repo.get!(Member, id)
+
+  def create_member(attrs \\ %{}) do
+    %Member{}
+    |> Member.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_member(%Member{} = member, attrs) do
+    member
+    |> Member.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_member(%Member{} = member) do
+    Repo.delete(member)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking member changes.
+  """
+  def change_member(%Member{} = member) do
+    Member.changeset(member, %{})
   end
 end
