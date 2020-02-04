@@ -82,3 +82,7 @@ body, body > .ember-view, .login-main {
   margin-bottom: 1.5rem;
   font-size: 25px;
 }
+
+#memberName-input, #memberTimeZone-select {
+  margin: 0px;
+}

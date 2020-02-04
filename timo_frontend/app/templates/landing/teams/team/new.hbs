@@ -1,0 +1,31 @@
+<div class="flex-title">
+  <h1 data-test="new-member-title">
+    New Member
+  </h1>
+</div>
+<PaperForm class="layout layout-align-center" @onSubmit={{action "saveMember"}} as |form|>
+  <div class="layout-column layout-align-center">
+    <form.input
+      @value={{memberName}}
+      @placeholder="New member name"
+      id="memberName-input"
+      @onChange={{action "setValue"}}
+      @required={{true}}
+    />
+    <form.select
+      @label="Time Zone"
+      @options={{timezoneList}}
+      @selected={{timezone}}
+      id="memberTimeZone-select"
+      @onChange={{action "setValue"}}
+      @required={{true}}
+    />
+    <form.submit-button
+      @raised={{true}}
+      @primary={{true}}
+      data-test="saveMember-button"
+    >
+      Save
+    </form.submit-button>
+  </div>
+</PaperForm>
