@@ -4,7 +4,7 @@ import { setupTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession } from '../../../../helpers/custom-helpers';
 
-module('Unit | Route | index', function (hooks) {
+module('Unit | Route | landing index', function (hooks) {
   setupTest(hooks);
   setupMirage(hooks);
 

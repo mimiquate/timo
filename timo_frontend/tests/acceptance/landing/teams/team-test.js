@@ -3,7 +3,7 @@ import { visit, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 
-module('Acceptance | Landing', function (hooks) {
+module('Acceptance | Team', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 

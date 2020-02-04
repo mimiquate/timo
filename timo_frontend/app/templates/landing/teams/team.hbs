@@ -1,3 +1,29 @@
-<h1 class="flex-title" data-test="team-title">
-  {{this.model.name}}
-</h1>
+<div class="layout-column flex">
+  <div class="flex-title">
+    <h1 data-test="team-title">
+      {{this.model.name}}
+    </h1>
+  </div>
+  <div class="member-content">
+    {{#if this.model.members.length}}
+      <ul>
+        {{#each this.model.members as |member|}}
+          <li>{{member.name}} ({{member.timezone}})</li>
+        {{/each}}
+      </ul>
+    {{else}}
+      No members
+    {{/if}}
+  </div>
+  <div>
+    <PaperButton
+      @raised={{true}}
+      @fab={{true}}
+      @accent={{true}}
+      @class="add-button"
+      @onClick={{action "newMember"}}
+    >
+      +
+    </PaperButton>
+  </div>
+</div>

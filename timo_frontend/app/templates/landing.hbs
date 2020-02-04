@@ -16,8 +16,17 @@
       <div data-test="team-container">
         {{#if this.model.length}}
           <ul class="team-list">
-            {{#each this.model as |team|}}
-              <li data-test="team-item">{{team.name}}</li>
+            {{#each this.model as |team index|}}
+              <li class="team-item">
+                <LinkTo
+                  @route="landing.teams.team"
+                  @model={{team}}
+                  @class="team-link"
+                  data-test-team={{index}}
+                >
+                  {{team.name}}
+                </LinkTo>
+              </li>
             {{/each}}
           </ul>
         {{else}}
