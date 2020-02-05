@@ -24,7 +24,7 @@ defmodule TimoWeb.TeamControllerTest do
   end
 
   setup %{conn: conn} do
-    user = user_fixture()
+    user = user_factory()
 
     conn =
       conn
@@ -36,8 +36,8 @@ defmodule TimoWeb.TeamControllerTest do
   end
 
   test "lists all entries on index", %{conn: conn, user: user} do
-    team1 = team_fixture(user)
-    team2 = team_fixture(user)
+    team1 = team_factory(user)
+    team2 = team_factory(user)
     conn = get(conn, Routes.team_path(conn, :index))
 
     [data1, data2 | []] = json_response(conn, 200)["data"]
@@ -48,7 +48,6 @@ defmodule TimoWeb.TeamControllerTest do
     assert Integer.to_string(team2.id) == data2["id"]
 
     teams_in_db = API.list_user_teams(user)
-    teams_in_db = Enum.map(teams_in_db, fn t -> Timo.Repo.preload(t, :user) end)
     assert teams_in_db == [team1, team2]
   end
 
@@ -78,7 +77,7 @@ defmodule TimoWeb.TeamControllerTest do
   end
 
   test "show team of user", %{conn: conn, user: user} do
-    team = team_fixture(user)
+    team = team_factory(user)
     team_id = Integer.to_string(team.id)
     conn = get(conn, Routes.team_path(conn, :show, team_id))
     data = json_response(conn, 200)["data"]

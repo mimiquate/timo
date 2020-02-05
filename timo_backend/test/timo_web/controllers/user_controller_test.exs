@@ -48,7 +48,7 @@ defmodule TimoWeb.UserControllerTest do
   end
 
   test "attempts to create already existing user and renders valid data", %{conn: conn} do
-    user = user_fixture()
+    user = user_factory()
     user_id = Integer.to_string(user.id)
     user_username = user.username
 
@@ -72,7 +72,7 @@ defmodule TimoWeb.UserControllerTest do
   end
 
   test "show user that exist", %{conn: conn} do
-    user = user_fixture()
+    user = user_factory()
     user_id = Integer.to_string(user.id)
 
     conn = get(conn, Routes.user_path(conn, :show, user_id))

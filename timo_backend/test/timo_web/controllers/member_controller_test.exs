@@ -4,7 +4,7 @@ defmodule TimoWeb.MemberControllerTest do
   alias Timo.API
   alias Timo.API.Member
 
-  @create_attrs %{name: "some name", timezone: "some timezone"}
+  @create_attrs %{name: "some name", timezone: "America/Montevideo"}
   @invalid_attrs %{name: nil, timezone: nil}
 
   def data_fixture(attribute, team_id) do
@@ -30,7 +30,7 @@ defmodule TimoWeb.MemberControllerTest do
   end
 
   setup %{conn: conn} do
-    team = team_fixture(user_fixture())
+    team = team_factory(user_factory())
 
     conn =
       conn
