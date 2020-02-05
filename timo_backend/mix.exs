@@ -42,7 +42,8 @@ defmodule Timo.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:ja_serializer, "~> 0.15.0"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:tzdata, "~> 1.0.3"}
     ]
   end
 

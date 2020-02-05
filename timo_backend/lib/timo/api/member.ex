@@ -16,5 +16,15 @@ defmodule Timo.API.Member do
     member
     |> cast(attrs, [:name, :timezone])
     |> validate_required([:name, :timezone])
+    |> validate_timezone(:timezone)
+  end
+
+  defp validate_timezone(changeset, :timezone, options \\ []) do
+    validate_change(changeset, :timezone, fn :timezone, timezone ->
+      case Tzdata.zone_exists?(timezone) do
+        true -> []
+        false -> [{:timezone, options[:message] || "Invalid timezone"}]
+      end
+    end)
   end
 end
