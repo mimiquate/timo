@@ -3,3 +3,35 @@
 body, body > .ember-view, .login-main {
   height: 100%;
 }
+
+.inner-sidenav {
+  height: calc(100% - 64px);
+}
+
+.paper-right {
+  margin-left: auto;
+}
+
+.side-title {
+  background-color: paper-color(deep-orange);
+}
+
+.side-container {
+  width: fit-content;
+}
+
+.side-container, .side-content {
+  background-color: paper-color(deep-orange, '400');
+}
+
+.flex-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.landing-image {
+  height: 500px;
+  width: 500px;
+  align-self: center;
+}
