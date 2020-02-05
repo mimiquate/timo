@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click} from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession, tryCreateTeam } from '../../../helpers/custom-helpers';
+import { setSession, createTeam } from '../../../helpers/custom-helpers';
 
 module('Acceptance | Landing', function (hooks) {
   setupApplicationTest(hooks);
@@ -22,7 +22,7 @@ module('Acceptance | Landing', function (hooks) {
 
     assert.equal(currentURL(), '/teams/new', 'Correctly visits landing page');
     assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test-rr=newTeam-title]').exists('New team page images loads');
+    assert.dom('[data-test-rr=newTeam-title]').exists('New team page title loads');
   });
 
   test('Creates new team and redirects', async function (assert) {
@@ -30,7 +30,7 @@ module('Acceptance | Landing', function (hooks) {
     setSession.call(this, newUser);
 
     await visit('/teams/new');
-    await tryCreateTeam('Team 1')
+    await createTeam('Team 1')
 
     assert.equal(currentURL(), '/teams/1', 'Lands in team page');
     assert.dom('[data-test-rr=team-title]').exists('Team title loads');
@@ -47,9 +47,9 @@ module('Acceptance | Landing', function (hooks) {
     assert.dom('[data-test-rr=team-container]').hasText('You don\'t have any teams yet',
       'No teams are listed');
 
-    await tryCreateTeam('Team 1')
+    await createTeam('Team 1')
     await visit('/teams/new');
-    await tryCreateTeam('Team 2')
+    await createTeam('Team 2')
 
     assert.equal(currentURL(), '/teams/2', 'Lands in team page');
     assert.dom('[data-test-rr=team-item]').exists({ count: 2 }, 'All teams are listed');
@@ -78,7 +78,7 @@ module('Acceptance | Landing', function (hooks) {
     setSession.call(this, newUser);
 
     await visit('/teams/new');
-    await tryCreateTeam('    ')
+    await createTeam('    ')
 
     assert.equal(currentURL(), '/teams/new', 'Stays in new team page');
   });

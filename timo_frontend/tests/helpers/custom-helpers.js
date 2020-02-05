@@ -10,7 +10,7 @@ export function setSession(user) {
   session.setCurrentUser(user);
 }
 
-export async function tryCreateTeam(teamName) {
+export async function createTeam(teamName) {
   await fillIn('#teamName-input input', teamName);
   return click('[data-test-rr=saveTeam-button]');
 }

@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { set } from "@ember/object";
+import { isPresent } from '@ember/utils';
 
 export default Controller.extend({
   session: service(),
@@ -13,7 +14,7 @@ export default Controller.extend({
 
       set(this, 'teamName', newTeamName);
 
-      if (newTeamName) {
+      if (isPresent(newTeamName)) {
         let team = this.store.createRecord('team', {
           name: newTeamName,
           user: currentUser
