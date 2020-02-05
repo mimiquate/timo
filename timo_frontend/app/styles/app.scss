@@ -84,5 +84,10 @@ body, body > .ember-view, .login-main {
 }
 
 #memberName-input, #memberTimeZone-select {
-  margin: 0px;
+  margin: 5px;
+}
+
+.member-list {
+  list-style: none;
+  padding: 0px;
 }

@@ -1,22 +1,24 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { set } from "@ember/object";
+import moment from 'moment';
 
 export default Controller.extend({
   session: service(),
+  timezoneList: moment.tz.names(),
 
   actions: {
     async saveMember() {
       let { memberName } = this;
       let newMemberName = memberName.trim();
-      let { timezone } = this;
+      let { memberTimeZone } = this;
 
       set(this, 'memberName', newMemberName);
 
-      if (newMemberName) {
+      if (newMemberName && memberTimeZone) {
         let member = this.store.createRecord('member', {
           name: newMemberName,
-          timezone: timezone,
+          timezone: memberTimeZone,
           team: this.model
         });
 
@@ -27,6 +29,10 @@ export default Controller.extend({
 
     setValue(value) {
       set(this, 'memberName', value);
+    },
+
+    setSelectedValue(value) {
+      set(this, 'memberTimeZone', value);
     }
   }
 });

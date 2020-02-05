@@ -26,6 +26,35 @@ module('Acceptance | Team', function (hooks) {
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
   });
 
+  test('Visiting /teams/team with existing username and members', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'America/Argentina/Buenos_Aires',
+      team: newTeam
+    });
+
+    await visit(`/teams/${newTeam.id}`);
+
+    assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Correctly visits team page');
+    assert.dom('[data-test=team-title]').exists('Team title loads');
+    assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
+
+    assert.dom('[data-test-member="0"]').exists('Member is listed');
+    assert.dom('[data-test-member="0"]').hasText(`Member 1 (America/Montevideo)`,
+      'Member is listed');
+    assert.dom('[data-test-member="1"]').exists('Member is listed');
+    assert.dom('[data-test-member="1"]').hasText(`Member 2 (America/Argentina/Buenos_Aires)`,
+      'Member is listed');
+  });
+
   test('Clicks button to add member', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);

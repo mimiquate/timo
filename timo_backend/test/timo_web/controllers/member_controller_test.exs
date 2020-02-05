@@ -11,7 +11,7 @@ defmodule TimoWeb.MemberControllerTest do
     %{
       "meta" => %{},
       "data" => %{
-        "type" => "member",
+        "type" => "members",
         "attributes" => attribute,
         "relationships" => relationships(team_id)
       }
@@ -22,7 +22,7 @@ defmodule TimoWeb.MemberControllerTest do
     %{
       "team" => %{
         "data" => %{
-          "type" => "team",
+          "type" => "teams",
           "id" => team_id
         }
       }
@@ -38,34 +38,6 @@ defmodule TimoWeb.MemberControllerTest do
       |> put_req_header("content-type", "application/vnd.api+json")
 
     {:ok, conn: conn, team: team}
-  end
-
-  test "lists all entries on index", %{conn: conn, team: team} do
-    member1 = member_fixture(team)
-    member2 = member_fixture(team)
-    conn = get(conn, Routes.member_path(conn, :index), data_fixture(@create_attrs, team.id))
-
-    [data1, data2 | []] = json_response(conn, 200)["data"]
-
-    assert data1["type"] == "member"
-    assert data2["type"] == "member"
-    assert Integer.to_string(member1.id) == data1["id"]
-    assert Integer.to_string(member2.id) == data2["id"]
-
-    members_in_db = API.list_team_members(team)
-
-    members_in_db =
-      Enum.map(members_in_db, fn t ->
-        Timo.Repo.preload(t, [:team, team: :user])
-      end)
-
-    assert members_in_db == [member1, member2]
-  end
-
-  test "lists empty entries on index", %{conn: conn, team: team} do
-    conn = get(conn, Routes.member_path(conn, :index), data_fixture(@create_attrs, team.id))
-
-    assert json_response(conn, 200)["data"] == []
   end
 
   test "creates member and renders member when data is valid", %{conn: conn, team: team} do

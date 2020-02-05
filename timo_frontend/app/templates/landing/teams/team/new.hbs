@@ -15,11 +15,17 @@
     <form.select
       @label="Time Zone"
       @options={{timezoneList}}
-      @selected={{timezone}}
+      @selected={{memberTimeZone}}
+      @searchPlaceholder="Search for a timezone..."
+      @searchEnabled={{true}}
+      @closeOnSelect={{true}}
       id="memberTimeZone-select"
-      @onChange={{action "setValue"}}
+      @onChange={{action "setSelectedValue"}}
       @required={{true}}
-    />
+      as |timezone|
+    >
+      {{timezone}}
+    </form.select>
     <form.submit-button
       @raised={{true}}
       @primary={{true}}
