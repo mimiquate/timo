@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { visit, click, currentURL } from '@ember/test-helpers';
-import { tryLogin } from 'timo-frontend/tests/helpers/custom-helpers';
+import { loginAs } from 'timo-frontend/tests/helpers/custom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 
@@ -32,7 +32,7 @@ module('Acceptance | Login', function (hooks) {
     });
 
     await visit('/login');
-    await tryLogin('juan');
+    await loginAs('juan');
 
     assert.equal(currentURL(), '/landing', 'Visits landing after creating a new user')
     assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
@@ -44,7 +44,7 @@ module('Acceptance | Login', function (hooks) {
     });
 
     await visit('/login');
-    await tryLogin('  juan  ');
+    await loginAs('  juan  ');
 
     assert.equal(currentURL(), '/landing', 'Visits landing with already created user');
     assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
@@ -59,7 +59,7 @@ module('Acceptance | Login', function (hooks) {
       return newUser;
     });
 
-    await tryLogin('juan');
+    await loginAs('juan');
 
     assert.equal(currentURL(), '/landing', 'Visits landing with already created user')
     assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
@@ -74,7 +74,7 @@ module('Acceptance | Login', function (hooks) {
       return newUser;
     });
 
-    await tryLogin('  juan  ');
+    await loginAs('  juan  ');
 
     assert.equal(currentURL(), '/landing', 'Visits landing with already created user')
     assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
@@ -86,13 +86,13 @@ module('Acceptance | Login', function (hooks) {
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
-    assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login and error message appears');
+    assert.equal(currentURL(), '/login', 'Stays in login page');
     assert.ok(errorMessage[0].textContent.includes('This is required'), 'No username error');
   });
 
   test('Login with only whitespace username error', async function (assert) {
     await visit('/login');
-    await tryLogin('     ')
+    await loginAs('     ')
 
     assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
   });
