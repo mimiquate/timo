@@ -4,5 +4,5 @@ const { Model, attr, belongsTo, hasMany } = DS;
 export default Model.extend({
   name: attr('string'),
   user: belongsTo('user'),
-  members: hasMany('member')
+  members: hasMany('member', { async: false })
 });

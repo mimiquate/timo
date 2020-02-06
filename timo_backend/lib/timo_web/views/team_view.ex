@@ -8,8 +8,7 @@ defmodule TimoWeb.TeamView do
 
   has_many :members,
     serializer: TimoWeb.MemberView,
-    include: true,
-    identifiers: :when_included
+    identifiers: :always
 
   def members(team, _conn) do
     case team.members do
