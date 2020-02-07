@@ -1,4 +1,5 @@
 @import 'ember-paper';
+@import 'ember-table/default';
 
 body, body > .ember-view, .login-main {
   height: 100%;
@@ -42,7 +43,7 @@ body, body > .ember-view, .login-main {
   align-self: center;
 }
 
-.flex-title, .member-content {
+.flex-title, .no-member {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
   align-self: flex-start;
@@ -74,20 +75,26 @@ body, body > .ember-view, .login-main {
   border-bottom: 2px solid #ffda00;
 }
 
-.add-button {
-  position: fixed;
-  bottom: 0px;
-  right: 0px;
-  margin-right: 1.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 25px;
+.add-button-container {
+  align-self: flex-end;
+  margin-top: auto;
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.add-button-container > button {
+  font-size: 20px;
+  margin-top: 0.5rem;
 }
 
 #memberName-input, #memberTimeZone-select {
   margin: 5px;
 }
 
-.member-list {
-  list-style: none;
-  padding: 0px;
+.member-content {
+  align-self: center;
+}
+
+.member-content th, .member-content td{
+  font-size: smaller;
 }

@@ -3,23 +3,26 @@
     {{this.model.name}}
   </h1>
 </div>
-<div class="member-content">
-  {{#if this.model.members.length}}
-    <ul class="member-list">
-      {{#each this.model.members as |member index|}}
-        <li data-test-member={{index}}>{{member.name}} ({{member.timezone}})</li>
-      {{/each}}
-    </ul>
-  {{else}}
-    No members
-  {{/if}}
-</div>
-<div>
+{{#if this.model.members.length}}
+  <EmberTable @class="member-content" as |t|>
+    <t.head
+      @columns={{columns}}
+      @enableResize={{false}}
+      @enableReorder={{false}}
+      @widthConstraint="eq-container"
+      @fillMode="equal-column"
+    />
+
+    <t.body @rows={{rows}}/>
+  </EmberTable>
+{{else}}
+  <div class="no-member" data-test="no-member">No members in this team</div>
+{{/if}}
+<div class="add-button-container">
   <PaperButton
     @raised={{true}}
     @fab={{true}}
     @accent={{true}}
-    @class="add-button"
     @onClick={{action "newMember"}}
     data-test="add-member-button"
   >
