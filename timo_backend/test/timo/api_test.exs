@@ -57,6 +57,7 @@ defmodule Timo.APITest do
 
     test "find_or_create_user_by_username/1 returns user with given username" do
       user = user_factory()
+
       {:ok, :existing, fetched_user} =
         API.find_or_create_user_by_username(@valid_user_attrs.username)
 

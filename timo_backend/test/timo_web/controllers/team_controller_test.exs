@@ -94,8 +94,8 @@ defmodule TimoWeb.TeamControllerTest do
   end
 
   test "does not show existing team but doesn't belong to current user", %{conn: conn} do
-    {:ok, owner} = API.create_user(%{username: "some other user"})
-    team = team_fixture(owner)
+    owner = Timo.Repo.insert!(%Timo.API.User{username: "some other user"})
+    team = team_factory(owner)
 
     conn = get(conn, Routes.team_path(conn, :show, team.id))
 
