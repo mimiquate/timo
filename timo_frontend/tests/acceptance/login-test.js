@@ -21,8 +21,8 @@ module('Acceptance | Login', function (hooks) {
     await visit('/login');
 
     assert.equal(currentURL(), '/', 'Correctly redirects to landing page');
-    assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test-rr=landing-image]').exists('Landing page images loads');
+    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
+    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
 
   test('Log in with new username', async function (assert) {
@@ -30,8 +30,8 @@ module('Acceptance | Login', function (hooks) {
     await loginAs('juan');
 
     assert.equal(currentURL(), '/', 'Visits landing after creating a new user')
-    assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test-rr=landing-image]').exists('Landing page images loads');
+    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
+    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
 
   test('Log in when new username has whitespace', async function (assert) {
@@ -39,8 +39,8 @@ module('Acceptance | Login', function (hooks) {
     await loginAs('  juan  ');
 
     assert.equal(currentURL(), '/', 'Visits landing with already created user');
-    assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test-rr=landing-image]').exists('Landing page images loads');
+    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
+    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
 
   test('Log in with already existing username', async function (assert) {
@@ -53,8 +53,8 @@ module('Acceptance | Login', function (hooks) {
     await loginAs('juan');
 
     assert.equal(currentURL(), '/', 'Visits landing with already created user')
-    assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test-rr=landing-image]').exists('Landing page images loads');
+    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
+    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
 
   test('Log in when already existing username has whitespace', async function (assert) {
@@ -67,19 +67,21 @@ module('Acceptance | Login', function (hooks) {
     await loginAs('  juan  ');
 
     assert.equal(currentURL(), '/', 'Visits landing with already created user')
-    assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test-rr=landing-image]').exists('Landing page images loads');
+    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
+    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
 
   test('Login with no username error', async function (assert) {
     await visit('/login');
-    await click('[data-test-rr=login-button]');
+    await click('[data-test=login-button]');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
     assert.equal(currentURL(), '/login', 'Stays in login page');
-    assert.ok(errorMessage[0].textContent.includes('This is required'),
-      'No username error');
+    assert.ok(
+      errorMessage[0].textContent.includes('This is required'),
+      'No username error'
+    );
   });
 
   test('Login with only whitespace username error', async function (assert) {

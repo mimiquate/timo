@@ -110,4 +110,13 @@ defmodule TimoWeb.TeamControllerTest do
 
     assert json_response(conn, 404)["errors"] != %{}
   end
+
+  test "does not show existing team but doesn't belong to current user", %{conn: conn} do
+    {:ok, owner} = API.create_user(%{username: "some other user"})
+    team = team_fixture(owner)
+
+    conn = get(conn, Routes.team_path(conn, :show, team.id))
+
+    assert json_response(conn, 404)["errors"] != %{}
+  end
 end

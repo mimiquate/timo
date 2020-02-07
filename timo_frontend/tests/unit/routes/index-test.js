@@ -21,7 +21,7 @@ module('Unit | Route | index', function (hooks) {
     await visit('/');
 
     assert.equal(currentURL(), '/');
-    assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test-rr=landing-image]').exists('Landing page images loads');
+    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
+    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
 });

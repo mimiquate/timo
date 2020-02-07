@@ -1,7 +1,7 @@
 <PaperToolbar>
   <PaperToolbarTools>
     <div class="paper-right">
-      <span data-test-rr="currentUser-span">
+      <span data-test="current-user-span">
         {{session.currentUser.username}}
       </span>
     </div>
@@ -13,11 +13,11 @@
       <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
     </PaperToolbar>
     <PaperContent @padding={{true}} @class="side-content">
-      <div data-test-rr="team-container">
+      <div data-test="team-container">
         {{#if this.model.length}}
           <ul class="team-list">
             {{#each this.model as |team|}}
-              <li data-test-rr="team-item">{{team.name}}</li>
+              <li data-test="team-item">{{team.name}}</li>
             {{/each}}
           </ul>
         {{else}}
@@ -26,7 +26,7 @@
       </div>
       <div>
         <p>
-          <LinkTo @route="landing.teams.new" data-test-rr="newTeam-link">
+          <LinkTo @route="landing.teams.new" data-test="newTeam-link">
             Add one
           </LinkTo>
         </p>

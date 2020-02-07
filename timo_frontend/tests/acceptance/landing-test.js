@@ -21,8 +21,8 @@ module('Acceptance | Landing', function (hooks) {
     await visit('/');
 
     assert.equal(currentURL(), '/', 'Correctly visits landing page');
-    assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test-rr=landing-image]').exists('Landing page images loads');
+    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
+    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
 
   test('Clicks link to Add one team', async function (assert) {
@@ -30,7 +30,7 @@ module('Acceptance | Landing', function (hooks) {
     setSession.call(this, newUser);
 
     await visit('/')
-    await click('[data-test-rr=newTeam-link]');
+    await click('[data-test=newTeam-link]');
 
     assert.equal(currentURL(), '/teams/new', 'Correctly visits new team page');
   });

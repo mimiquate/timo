@@ -2,7 +2,7 @@ import { click, fillIn } from "@ember/test-helpers";
 
 export async function loginAs(username) {
   await fillIn('#username-input input', username);
-  return click('[data-test-rr=login-button]');
+  return click('[data-test=login-button]');
 }
 
 export function setSession(user) {
@@ -12,5 +12,5 @@ export function setSession(user) {
 
 export async function createTeam(teamName) {
   await fillIn('#teamName-input input', teamName);
-  return click('[data-test-rr=saveTeam-button]');
+  return click('[data-test=saveTeam-button]');
 }

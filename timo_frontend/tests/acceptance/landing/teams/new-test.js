@@ -21,8 +21,8 @@ module('Acceptance | Landing', function (hooks) {
     await visit('/teams/new');
 
     assert.equal(currentURL(), '/teams/new', 'Correctly visits landing page');
-    assert.dom('[data-test-rr=currentUser-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test-rr=newTeam-title]').exists('New team page title loads');
+    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
+    assert.dom('[data-test=newTeam-title]').exists('New team page title loads');
   });
 
   test('Creates new team and redirects', async function (assert) {
@@ -33,9 +33,9 @@ module('Acceptance | Landing', function (hooks) {
     await createTeam('Team 1')
 
     assert.equal(currentURL(), '/teams/1', 'Lands in team page');
-    assert.dom('[data-test-rr=team-title]').exists('Team title loads');
-    assert.dom('[data-test-rr=team-title]').hasText('Team 1', 'Team title loads');
-    assert.dom('[data-test-rr=team-item]').exists('Team is listed');
+    assert.dom('[data-test=team-title]').exists('Team title loads');
+    assert.dom('[data-test=team-title]').hasText('Team 1', 'Team title loads');
+    assert.dom('[data-test=team-item]').exists('Team is listed');
   });
 
   test('Creates teams and they are listed', async function (assert) {
@@ -44,7 +44,7 @@ module('Acceptance | Landing', function (hooks) {
 
     await visit('/teams/new');
 
-    assert.dom('[data-test-rr=team-container]').hasText('You don\'t have any teams yet',
+    assert.dom('[data-test=team-container]').hasText('You don\'t have any teams yet',
       'No teams are listed');
 
     await createTeam('Team 1')
@@ -52,10 +52,10 @@ module('Acceptance | Landing', function (hooks) {
     await createTeam('Team 2')
 
     assert.equal(currentURL(), '/teams/2', 'Lands in team page');
-    assert.dom('[data-test-rr=team-item]').exists({ count: 2 }, 'All teams are listed');
-    assert.dom('[data-test-rr=team-item]:first-child').hasText('Team 1',
+    assert.dom('[data-test=team-item]').exists({ count: 2 }, 'All teams are listed');
+    assert.dom('[data-test=team-item]:first-child').hasText('Team 1',
       'The first team in the list contains the team name');
-    assert.dom('[data-test-rr=team-item]:last-child').hasText('Team 2',
+    assert.dom('[data-test=team-item]:last-child').hasText('Team 2',
       'The second team in the list contains the team name');
   });
 
@@ -64,7 +64,7 @@ module('Acceptance | Landing', function (hooks) {
     setSession.call(this, newUser);
 
     await visit('/teams/new');
-    await click('[data-test-rr=saveTeam-button]');
+    await click('[data-test=saveTeam-button]');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
