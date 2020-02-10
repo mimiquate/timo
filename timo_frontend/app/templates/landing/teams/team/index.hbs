@@ -9,9 +9,18 @@
       @columns={{columns}}
       @enableResize={{false}}
       @enableReorder={{false}}
-    />
+      as |h|
+    >
+      <h.row @class="mat-header-row" as |hr|>
+        <hr.cell @class="mat-header-cell" />
+      </h.row>
+    </t.head>
 
-    <t.body @rows={{rows}}/>
+    <t.body @rows={{rows}} as |r|>
+      <r.row @class="mat-row" as |rr|>
+        <rr.cell @class="mat-cell" />
+      </r.row>
+    </t.body>
   </EmberTable>
 {{else}}
   <div class="no-member" data-test="no-member">

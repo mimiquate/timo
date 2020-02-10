@@ -1,7 +1,6 @@
 @import 'ember-paper';
-@import 'ember-table/default';
 
-body, body > .ember-view, .login-main {
+body, body > .ember-view, .login-main  {
   height: 100%;
 }
 
@@ -29,6 +28,7 @@ body, body > .ember-view, .login-main {
 .flex-content {
   display: flex;
   flex-direction: column;
+  background: whitesmoke;
 }
 
 .flex-center {
@@ -76,7 +76,7 @@ body, body > .ember-view, .login-main {
 }
 
 .add-button {
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   right: 0px;
   margin-right: 1.5rem;
@@ -89,13 +89,142 @@ body, body > .ember-view, .login-main {
 }
 
 .member-content {
-  margin-left: 3rem;
-  margin-right: 3rem;
-  margin-bottom: 3rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  margin-bottom: 1.5rem;
   align-self: center;
 }
 
-.member-content th, .member-content td{
-  font-size: smaller;
-  white-space: normal;
+// .member-content th, .member-content td{
+//   font-size: smaller;
+//   white-space: normal;
+// }
+
+// Material Table design
+// https://material.angular.io/components/table/overview
+
+// https://github.com/angular/components/blob/master/src/material/table/table.scss
+
+$mat-header-row-height: 56px;
+$mat-row-height: 48px;
+$mat-row-horizontal-padding: 24px;
+
+.member-content > table {
+  display: block;
+}
+
+.mat-header-row {
+  min-height: $mat-header-row-height;
+}
+
+.mat-row {
+  min-height: $mat-row-height;
+}
+
+.mat-row, .mat-header-row {
+  display: flex;
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+  align-items: center;
+  box-sizing: border-box;
+
+  &::after {
+    display: inline-block;
+    min-height: inherit;
+    content: '';
+  }
+}
+
+.mat-cell:first-of-type, .mat-header-cell:first-of-type {
+  padding-left: $mat-row-horizontal-padding;
+}
+
+.mat-cell:last-of-type, .mat-header-cell:last-of-type {
+  padding-left: $mat-row-horizontal-padding;
+}
+
+.mat-cell, .mat-header-cell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  word-wrap: break-word;
+  min-height: inherit;
+}
+
+/**
+ * Native HTML table structure
+ */
+
+table {
+  border-spacing: 0;
+}
+
+tr.mat-header-row {
+  height: $mat-header-row-height;
+}
+
+tr.mat-row {
+  height: $mat-row-height;
+}
+
+th.mat-header-cell {
+  text-align: left;
+}
+
+th.mat-header-cell, td.mat-cell {
+  padding: 0;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
+  padding-left: $mat-row-horizontal-padding;
+}
+
+th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type {
+  padding-right: $mat-row-horizontal-padding;
+}
+
+// https://github.com/angular/components/blob/master/src/material/table/_table-theme.scss
+
+.member-content > table {
+  background: #fff;
+  box-shadow:
+    0 5px 5px -3px rgba(0,0,0,.2),
+    0 8px 10px 1px rgba(0,0,0,.14),
+    0 3px 14px 2px rgba(0,0,0,.12)
+}
+
+.mat-table thead, .mat-table tbody,
+.mat-header-row, .mat-row,
+[mat-header-row], [mat-row] {
+  background: inherit;
+}
+
+.mat-row, .mat-header-row,
+th.mat-header-cell, td.mat-cell {
+  border-bottom-color: rgba(0,0,0,.12);
+}
+
+.mat-header-cell {
+  color: rgba(0,0,0,.54);
+}
+
+.mat-cell {
+  color: rgba(0,0,0,.87);
+}
+
+.mat-table {
+  font-family: Roboto, Helvetica Neue, sans-serif;
+}
+
+.mat-header-cell {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.mat-cell {
+  font-size: 14px;
 }
