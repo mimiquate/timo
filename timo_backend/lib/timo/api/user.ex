@@ -5,6 +5,8 @@ defmodule Timo.API.User do
   schema "users" do
     field :username, :string
 
+    has_many :teams, Timo.API.Team
+
     timestamps()
   end
 
