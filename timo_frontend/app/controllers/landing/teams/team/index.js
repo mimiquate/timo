@@ -7,7 +7,12 @@ export default Controller.extend({
     let memberCol = [];
 
     this.model.members.toArray().forEach(m => {
-      memberCol.push({name: `${m.name} (${m.timezone})`, valuePath: m.id})
+      memberCol.push({
+        name: `${m.name} (${m.timezone})`,
+        valuePath: m.id,
+        textAlign: 'center',
+        width: 230
+      })
     });
 
     return memberCol;

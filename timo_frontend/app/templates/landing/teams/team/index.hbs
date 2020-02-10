@@ -7,9 +7,8 @@
   <EmberTable @class="member-content" as |t|>
     <t.head
       @columns={{columns}}
+      @enableResize={{false}}
       @enableReorder={{false}}
-      @widthConstraint="eq-container"
-      @resizeMode="fluid"
     />
 
     <t.body @rows={{rows}}/>
@@ -19,14 +18,13 @@
     No members in this team
   </div>
 {{/if}}
-<div class="add-button-container">
-  <PaperButton
-    @raised={{true}}
-    @fab={{true}}
-    @accent={{true}}
-    @onClick={{action "newMember"}}
-    data-test="add-member-button"
-  >
-    +
-  </PaperButton>
-</div>
+<PaperButton
+  @raised={{true}}
+  @fab={{true}}
+  @accent={{true}}
+  @onClick={{action "newMember"}}
+  data-test="add-member-button"
+  @class="add-button"
+>
+  +
+</PaperButton>
