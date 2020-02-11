@@ -20,7 +20,7 @@
 
     <t.body @rows={{rows}} as |r|>
       <r.row @class="mat-row" as |rr|>
-        <rr.cell @class="mat-cell cell-text-align" as |value|>
+        <rr.cell @class="mat-cell cell-text-align cell-color-{{cell-color rr.cellValue}}" as |value|>
           {{value}}
         </rr.cell>
       </r.row>
