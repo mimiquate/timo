@@ -5,5 +5,7 @@ export default function() {
   this.get('/users');
   this.post('/users');
   this.get('/teams');
-  this.post('/teams')
+  this.post('/teams');
+  this.get('/teams/:id');
+  this.post('/members');
 }

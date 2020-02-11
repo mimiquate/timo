@@ -21,6 +21,7 @@ defmodule TimoWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
+      import Timo.TestHelpers
       alias TimoWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing

@@ -24,6 +24,7 @@ defmodule Timo.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Timo.DataCase
+      import Timo.TestHelpers
     end
   end
 

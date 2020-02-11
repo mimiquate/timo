@@ -1,0 +1,28 @@
+<div class="flex-title">
+  <h1 data-test="team-title">
+    {{this.model.name}}
+  </h1>
+</div>
+<div class="member-content">
+  {{#if this.model.members.length}}
+    <ul class="member-list">
+      {{#each this.model.members as |member index|}}
+        <li data-test-member={{index}}>{{member.name}} ({{member.timezone}})</li>
+      {{/each}}
+    </ul>
+  {{else}}
+    No members
+  {{/if}}
+</div>
+<div>
+  <PaperButton
+    @raised={{true}}
+    @fab={{true}}
+    @accent={{true}}
+    @class="add-button"
+    @onClick={{action "newMember"}}
+    data-test="add-member-button"
+  >
+    +
+  </PaperButton>
+</div>

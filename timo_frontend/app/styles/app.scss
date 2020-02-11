@@ -42,7 +42,7 @@ body, body > .ember-view, .login-main {
   align-self: center;
 }
 
-.flex-title {
+.flex-title, .member-content {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
   align-self: flex-start;
@@ -50,5 +50,44 @@ body, body > .ember-view, .login-main {
 
 .team-list {
   list-style-type: none;
+  padding: 0px;
+}
+
+.team-item {
+  padding-bottom: 0.5rem;
+}
+
+.team-link {
+  text-decoration: none;
+}
+
+.team-link:link, .team-link:visited {
+  color: black;
+}
+
+.team-link:hover {
+  border-bottom: 2px solid #ffda00;
+}
+
+.team-link.active {
+  color: inherit;
+  border-bottom: 2px solid #ffda00;
+}
+
+.add-button {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  margin-right: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 25px;
+}
+
+#memberName-input, #memberTimeZone-select {
+  margin: 5px;
+}
+
+.member-list {
+  list-style: none;
   padding: 0px;
 }

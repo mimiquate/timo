@@ -1,11 +1,8 @@
 import Controller from '@ember/controller';
-import { inject as service } from '@ember/service';
 import { set } from "@ember/object";
 import { isPresent } from '@ember/utils';
 
 export default Controller.extend({
-  session: service(),
-
   actions: {
     async getIn() {
       let { username } = this;

@@ -1,20 +1,9 @@
 defmodule TimoWeb.UserControllerTest do
   use TimoWeb.ConnCase
 
-  alias Timo.API
-
   @create_attrs %{username: "some username"}
   @invalid_attrs %{username: nil}
   @invalid_space_attrs %{username: " "}
-
-  def user_fixture(attrs \\ %{}) do
-    {:ok, user} =
-      attrs
-      |> Enum.into(@create_attrs)
-      |> API.create_user()
-
-    user
-  end
 
   def data_fixture(attribute) do
     %{
@@ -59,7 +48,7 @@ defmodule TimoWeb.UserControllerTest do
   end
 
   test "attempts to create already existing user and renders valid data", %{conn: conn} do
-    user = user_fixture()
+    user = user_factory()
     user_id = Integer.to_string(user.id)
     user_username = user.username
 
@@ -83,7 +72,7 @@ defmodule TimoWeb.UserControllerTest do
   end
 
   test "show user that exist", %{conn: conn} do
-    user = user_fixture()
+    user = user_factory()
     user_id = Integer.to_string(user.id)
 
     conn = get(conn, Routes.user_path(conn, :show, user_id))
