@@ -89,19 +89,15 @@ body, body > .ember-view, .login-main  {
 }
 
 .member-content {
-  padding-left: 3rem;
-  padding-right: 3rem;
+  max-width: 95%;
   margin-bottom: 1.5rem;
   align-self: center;
 }
 
-// .member-content th, .member-content td{
-//   font-size: smaller;
-//   white-space: normal;
-// }
-
+// /**
 // Material Table design
 // https://material.angular.io/components/table/overview
+//  */
 
 // https://github.com/angular/components/blob/master/src/material/table/table.scss
 
@@ -109,31 +105,12 @@ $mat-header-row-height: 56px;
 $mat-row-height: 48px;
 $mat-row-horizontal-padding: 24px;
 
-.member-content > table {
-  display: block;
-}
-
 .mat-header-row {
   min-height: $mat-header-row-height;
 }
 
 .mat-row {
   min-height: $mat-row-height;
-}
-
-.mat-row, .mat-header-row {
-  display: flex;
-  border-width: 0;
-  border-bottom-width: 1px;
-  border-style: solid;
-  align-items: center;
-  box-sizing: border-box;
-
-  &::after {
-    display: inline-block;
-    min-height: inherit;
-    content: '';
-  }
 }
 
 .mat-cell:first-of-type, .mat-header-cell:first-of-type {
@@ -144,18 +121,7 @@ $mat-row-horizontal-padding: 24px;
   padding-left: $mat-row-horizontal-padding;
 }
 
-.mat-cell, .mat-header-cell {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  word-wrap: break-word;
-  min-height: inherit;
-}
-
-/**
- * Native HTML table structure
- */
+//  Native HTML table structure for Material Desings
 
 table {
   border-spacing: 0;
@@ -167,10 +133,6 @@ tr.mat-header-row {
 
 tr.mat-row {
   height: $mat-row-height;
-}
-
-th.mat-header-cell {
-  text-align: left;
 }
 
 th.mat-header-cell, td.mat-cell {
@@ -191,16 +153,16 @@ th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:la
 
 .member-content > table {
   background: #fff;
-  box-shadow:
-    0 5px 5px -3px rgba(0,0,0,.2),
-    0 8px 10px 1px rgba(0,0,0,.14),
-    0 3px 14px 2px rgba(0,0,0,.12)
 }
 
 .mat-table thead, .mat-table tbody,
 .mat-header-row, .mat-row,
 [mat-header-row], [mat-row] {
   background: inherit;
+}
+
+.mat-header-cell {
+  background: #fff;
 }
 
 .mat-row, .mat-header-row,
@@ -227,4 +189,20 @@ th.mat-header-cell, td.mat-cell {
 
 .mat-cell {
   font-size: 14px;
+}
+
+// /**
+// Ends Material Designs scss
+//  */
+
+.cell-text-align {
+  justify-content: center;
+}
+
+.box-shadow-z8-on-white {
+  background: #fff;
+  box-shadow:
+    0 5px 5px -3px rgba(0,0,0,.2),
+    0 8px 10px 1px rgba(0,0,0,.14),
+    0 3px 14px 2px rgba(0,0,0,.12);
 }

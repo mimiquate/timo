@@ -11,7 +11,7 @@ export default Controller.extend({
         name: `${m.name} (${m.timezone})`,
         valuePath: m.id,
         textAlign: 'center',
-        width: 230
+        width: 220
       })
     });
 

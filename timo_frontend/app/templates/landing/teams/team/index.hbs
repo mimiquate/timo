@@ -4,7 +4,7 @@
   </h1>
 </div>
 {{#if this.model.members.length}}
-  <EmberTable @class="member-content" as |t|>
+  <EmberTable @class="member-content box-shadow-z8-on-white" as |t|>
     <t.head
       @columns={{columns}}
       @enableResize={{false}}
@@ -12,13 +12,17 @@
       as |h|
     >
       <h.row @class="mat-header-row" as |hr|>
-        <hr.cell @class="mat-header-cell" />
+        <hr.cell @class="mat-header-cell cell-text-align" as |column|>
+          {{column.name}}
+        </hr.cell>
       </h.row>
     </t.head>
 
     <t.body @rows={{rows}} as |r|>
       <r.row @class="mat-row" as |rr|>
-        <rr.cell @class="mat-cell" />
+        <rr.cell @class="mat-cell cell-text-align" as |value|>
+          {{value}}
+        </rr.cell>
       </r.row>
     </t.body>
   </EmberTable>
