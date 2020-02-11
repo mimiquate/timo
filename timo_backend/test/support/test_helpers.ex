@@ -7,26 +7,35 @@ defmodule Timo.TestHelpers do
     Member
   }
 
-  def user_factory(_attrs \\ %{}) do
-    user = Repo.insert!(%User{username: "some username"})
+  def user_factory(attrs \\ %{}) do
+    default_value = %{username: "some username"}
+    attrs = Enum.into(attrs, default_value)
 
-    user
+    User
+    |> struct!(attrs)
+    |> Repo.insert!()
   end
 
-  def team_factory(%User{} = user, _attrs \\ %{}) do
-    team = Repo.insert!(%Team{name: "some name", user_id: user.id})
+  def team_factory(%User{} = user, attrs \\ %{}) do
+    default_value = %{name: "some name", user_id: user.id}
+    attrs = Enum.into(attrs, default_value)
 
-    team
+    Team
+    |> struct!(attrs)
+    |> Repo.insert!()
   end
 
-  def member_factory(%Team{} = team, _attrs \\ %{}) do
-    member =
-      Repo.insert!(%Member{
-        name: "some name",
-        timezone: "America/Montevideo",
-        team_id: team.id
-      })
+  def member_factory(%Team{} = team, attrs \\ %{}) do
+    default_value = %{
+      name: "some name",
+      timezone: "America/Montevideo",
+      team_id: team.id
+    }
 
-    member
+    attrs = Enum.into(attrs, default_value)
+
+    Member
+    |> struct!(attrs)
+    |> Repo.insert!()
   end
 end

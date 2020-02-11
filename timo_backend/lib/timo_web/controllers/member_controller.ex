@@ -14,7 +14,6 @@ defmodule TimoWeb.MemberController do
     with {:ok, %Member{} = member} <- API.create_member(team, member_params) do
       conn
       |> put_status(:created)
-      # |> put_resp_header("location", Routes.member_path(conn, :show, member))
       |> render("show.json-api", data: member)
     end
   end

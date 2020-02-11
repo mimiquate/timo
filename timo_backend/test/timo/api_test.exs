@@ -137,6 +137,7 @@ defmodule Timo.APITest do
     @valid_member_attrs %{name: "some name", timezone: "America/Montevideo"}
     @invalid_member_attrs %{name: nil, timezone: nil}
     @invalid_member_tz %{name: "some name", timezone: "Montevideo"}
+    @invalid_member_nil_tz %{name: "some name", timezone: nil}
 
     test "list_team_members/1 returns all members" do
       team = team_factory(user_factory())
@@ -184,6 +185,12 @@ defmodule Timo.APITest do
       team = team_factory(user_factory())
 
       assert {:error, %Ecto.Changeset{}} = API.create_member(team, @invalid_member_tz)
+    end
+
+    test "create_member/1 with valid name but invalid timezone (nil) returns error changest" do
+      team = team_factory(user_factory())
+
+      assert {:error, %Ecto.Changeset{}} = API.create_member(team, @invalid_member_nil_tz)
     end
   end
 end

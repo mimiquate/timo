@@ -52,7 +52,7 @@ defmodule Timo.API do
 
   def list_user_teams(%User{} = user) do
     Team
-    |> user_team_query(user)
+    |> user_team_query(user, false)
     |> Repo.all()
   end
 
@@ -60,8 +60,8 @@ defmodule Timo.API do
   Gets a single team.
   returns nil if the Team does not exist.
   """
-  def get_user_team(%User{} = user, id) do
-    query = user_team_query(Team, user)
+  def get_user_team(%User{} = user, id, preload_members \\ false) do
+    query = user_team_query(Team, user, preload_members)
 
     with %Team{} = team <- Repo.get(query, id) do
       {:ok, team}
@@ -77,8 +77,12 @@ defmodule Timo.API do
     |> Repo.insert()
   end
 
-  defp user_team_query(query, %User{id: user_id}) do
+  defp user_team_query(query, %User{id: user_id}, false) do
     from(t in query, where: t.user_id == ^user_id)
+  end
+
+  defp user_team_query(query, %User{id: user_id}, true) do
+    from(t in query, where: t.user_id == ^user_id, preload: :members)
   end
 
   def list_team_members(%Team{} = team) do

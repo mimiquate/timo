@@ -21,7 +21,7 @@ defmodule TimoWeb.TeamController do
   end
 
   def show(conn, params = %{"id" => id}, current_user) do
-    with {:ok, %Team{} = team} <- API.get_user_team(current_user, id) do
+    with {:ok, %Team{} = team} <- API.get_user_team(current_user, id, true) do
       render(conn, "show.json-api", data: team, opts: [include: params["include"]])
     else
       _ -> {:error, :not_found}
