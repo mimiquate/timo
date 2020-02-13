@@ -2,22 +2,24 @@ import Controller from '@ember/controller';
 import { computed } from "@ember/object";
 import moment from 'moment';
 
+function compareTimeZones(memberA, memberB) {
+  const aTime = moment.tz(memberA.timezone).format();
+  const bTime = moment.tz(memberB.timezone).format();
+
+  if (aTime < bTime) {
+    return -1;
+  }
+
+  if (aTime > bTime) {
+    return 1;
+  }
+
+  return 0;
+}
+
 export default Controller.extend({
   membersArray: computed('model.members', function () {
-    return this.model.members.toArray().sort(function (a, b) {
-      const aTime = moment.tz(a.timezone).format();
-      const bTime = moment.tz(b.timezone).format();
-
-      if (aTime < bTime) {
-        return -1;
-      }
-
-      if (aTime > bTime) {
-        return 1;
-      }
-
-      return 0
-    });
+    return this.model.members.toArray().sort(compareTimeZones);
   }),
 
   columns: computed('membersArray', function () {
@@ -37,18 +39,18 @@ export default Controller.extend({
 
   rows: computed('membersArray', function () {
     const memberRows = [];
-    let cell = {};
+    let row = {};
     let time = moment().minute(0);
     const hoursLeft = 24 - time.hours();
 
     for (let i = 0; i < hoursLeft; i++) {
-      cell = {};
+      row = {};
 
       this.membersArray.forEach(m => {
-        cell[m.id] = moment.tz(time, m.timezone).format("D MMM YYYY - HH:mm");
+        row[m.id] = moment.tz(time, m.timezone);
       });
 
-      memberRows.pushObject(cell);
+      memberRows.pushObject(row);
       time = time.add(1, 'hour');
     }
 

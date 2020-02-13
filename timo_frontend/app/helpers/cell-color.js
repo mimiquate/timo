@@ -1,4 +1,5 @@
 import { helper } from '@ember/component/helper';
+import moment from 'moment';
 
 export default helper(function (params) {
   const time = params[0];
@@ -6,7 +7,7 @@ export default helper(function (params) {
   // Checks if time is not undefined,
   // rendering issues causes this problem
   if (time) {
-    const hour = time.match(/\d\d(?=:)/);
+    const hour = moment(time).hours();
 
     if (hour >= 8 && hour <= 17) {
       return 'green';
