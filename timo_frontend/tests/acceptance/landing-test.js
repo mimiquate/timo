@@ -23,8 +23,8 @@ module('Acceptance | Landing', function (hooks) {
     assert.equal(currentURL(), '/', 'Correctly visits landing page');
     assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
     assert.dom('[data-test=landing-image]').exists('Landing page images loads');
-    assert.dom('[data-test=team-container]').hasText('You don\'t have any teams yet',
-      'No teams are listed');
+    assert.dom('[data-test=team-container]')
+      .hasText('You don\'t have any teams yet', 'No teams are listed');
   });
 
   test('Clicks link to Add one team', async function (assert) {
