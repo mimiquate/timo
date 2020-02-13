@@ -55,4 +55,10 @@ module('Integration | Helper | cell-color', function(hooks) {
     await render(hbs`{{cell-color inputValue}}`);
     assert.equal(this.element.textContent.trim(), 'red', 'Last red value');
   });
+
+  test('Returns no value when undefined', async function(assert) {
+    this.set('inputValue', undefined);
+    await render(hbs`{{cell-color inputValue}}`);
+    assert.equal(this.element.textContent.trim(), '', 'No value');
+  });
 });

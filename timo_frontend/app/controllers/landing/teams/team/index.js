@@ -3,11 +3,28 @@ import { computed } from "@ember/object";
 import moment from 'moment';
 
 export default Controller.extend({
-  columns: computed('model.members', function() {
-    let memberCol = [];
+  membersArray: computed('model.members', function () {
+    return this.model.members.toArray().sort(function (a, b) {
+      const aTime = moment.tz(a.timezone).format();
+      const bTime = moment.tz(b.timezone).format();
 
-    this.model.members.toArray().forEach(m => {
-      memberCol.push({
+      if (aTime < bTime) {
+        return -1;
+      }
+
+      if (aTime > bTime) {
+        return 1;
+      }
+
+      return 0
+    });
+  }),
+
+  columns: computed('membersArray', function () {
+    const memberCol = [];
+
+    this.membersArray.forEach(m => {
+      memberCol.pushObject({
         name: `${m.name} (${m.timezone})`,
         valuePath: m.id,
         textAlign: 'center',
@@ -18,20 +35,20 @@ export default Controller.extend({
     return memberCol;
   }),
 
-  rows: computed('model.members', function() {
-    let memberRows = [];
+  rows: computed('membersArray', function () {
+    const memberRows = [];
     let cell = {};
     let time = moment().minute(0);
-    let hoursLeft = 24 - time.hours();
+    const hoursLeft = 24 - time.hours();
 
     for (let i = 0; i < hoursLeft; i++) {
       cell = {};
 
-      this.model.members.toArray().forEach(m => {
+      this.membersArray.forEach(m => {
         cell[m.id] = moment.tz(time, m.timezone).format("D MMM YYYY - HH:mm");
       });
 
-      memberRows.push(cell);
+      memberRows.pushObject(cell);
       time = time.add(1, 'hour');
     }
 
