@@ -107,6 +107,24 @@ $cell-hue: 'A100';
   background: paper-color('red', $cell-hue);
 }
 
+$row-filter: brightness(70%);
+
+.row-past-time {
+  filter: $row-filter;
+}
+
+.row-current-time > td {
+  -webkit-box-shadow:
+    inset 0px -3px 0px 0px black,
+    inset 0px 3px 0px 0px black;
+  -moz-box-shadow:
+    inset 0px -3px 0px 0px black,
+    inset 0px 3px 0px 0px black;
+  box-shadow:
+    inset 0px -3px 0px 0px black,
+    inset 0px 3px 0px 0px black;
+}
+
 .box-shadow-top-inset {
   -webkit-box-shadow: inset 0px 5px 5px -5px black;
   -moz-box-shadow: inset 0px 5px 5px -5px black;

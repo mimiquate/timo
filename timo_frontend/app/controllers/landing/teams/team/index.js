@@ -21,17 +21,31 @@ function hoursLeftOver(membersArray) {
   const length = membersArray.length;
 
   const now = moment.utc();
-  const timeNow = new Date().getTimezoneOffset();
+  const offSetNow = new Date().getTimezoneOffset();
 
   const earlyTZ = membersArray[length - 1].timezone;
   const earlyTime = moment.tz.zone(earlyTZ).utcOffset(now);
-  const hoursStart = (earlyTime - timeNow) / 60;
+  const hoursStart = (offSetNow - earlyTime) / 60;
 
   const lateTz = membersArray[0].timezone;
   const lateTime = moment.tz.zone(lateTz).utcOffset(now);
   const hoursLeft = (lateTime - earlyTime) / 60;
 
   return [hoursStart, hoursLeft];
+}
+
+function filterClass(hour, offset) {
+  const hourNow = moment().hours() + offset;
+
+  if (hour < hourNow) {
+    return 'row-past-time';
+  }
+
+  if (hour == hourNow) {
+    return 'row-current-time';
+  }
+
+  return '';
 }
 
 export default Controller.extend({
@@ -60,14 +74,14 @@ export default Controller.extend({
 
     const hours = hoursLeftOver(this.membersArray);
     const hoursStart = hours[0];
-    const hoursLeft = 24 + hours[1];
+    const hoursEnd = 24 + hours[1];
   
     let time = moment().minute(0);
     time.hour(0);
     time.subtract(hoursStart, 'hour');
 
-    for (let i = 0; i < hoursLeft; i++) {
-      row = {};
+    for (let i = 0; i < hoursEnd; i++) {
+      row = {filter: filterClass(i, hoursStart)};
 
       this.membersArray.forEach(m => {
         row[m.id] = moment.tz(time, m.timezone);

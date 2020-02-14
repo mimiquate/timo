@@ -19,7 +19,7 @@
     </t.head>
 
     <t.body @rows={{rows}} as |r|>
-      <r.row @class="mat-row" as |rr|>
+      <r.row @class="mat-row {{row-filter r.rowValue}}" as |rr|>
         <rr.cell @class="mat-cell cell-text-align cell-color-{{cell-color rr.cellValue}}" as |value|>
           {{!-- Check if value exists because of rendering issue --}}
           {{#if value}}
