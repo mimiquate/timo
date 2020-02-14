@@ -23,7 +23,7 @@
         <rr.cell @class="mat-cell cell-text-align cell-color-{{cell-color rr.cellValue}}" as |value|>
           {{!-- Check if value exists because of rendering issue --}}
           {{#if value}}
-            {{moment-format value "d MMM YYYY - HH:mm"}}
+            {{moment-format value "D MMM YYYY - HH:mm"}}
           {{/if}}
         </rr.cell>
       </r.row>
