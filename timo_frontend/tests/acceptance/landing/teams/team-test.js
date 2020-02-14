@@ -67,8 +67,8 @@ module('Acceptance | Team', function (hooks) {
 
     let time = moment().minute(0);
     let hoursLeft = 24 - time.hours();
-    let timeMember1 = moment.tz(time, 'America/Montevideo').format("d MMM YYYY - HH:mm");
-    let timeMember2 = moment.tz(time, 'America/Buenos_Aires').format("d MMM YYYY - HH:mm");
+    let timeMember1 = moment.tz(time, 'America/Montevideo').format("D MMM YYYY - HH:mm");
+    let timeMember2 = moment.tz(time, 'America/Buenos_Aires').format("D MMM YYYY - HH:mm");
 
     assert.equal(table.getCell(0, 0).text, timeMember1, 'Correct first time in Member 1');
     assert.equal(table.getCell(0, 1).text, timeMember2, 'Correct first time in Member 2');

@@ -28,7 +28,7 @@ export default Controller.extend({
       cell = {};
 
       this.model.members.toArray().forEach(m => {
-        cell[m.id] = moment.tz(time, m.timezone).format("d MMM YYYY - HH:mm");
+        cell[m.id] = moment.tz(time, m.timezone).format("D MMM YYYY - HH:mm");
       });
 
       memberRows.push(cell);
