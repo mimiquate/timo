@@ -8,41 +8,36 @@
   </PaperToolbarTools>
 </PaperToolbar>
 <PaperSidenavContainer @class="inner-sidenav">
-  <PaperSidenav @class="side-container" @lockedOpen={{true}}>
+  <PaperSidenav @class="side-container box-shadow-z8" @lockedOpen={{true}}>
     <PaperToolbar>
       <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
     </PaperToolbar>
-    <PaperContent @padding={{true}} @class="side-content">
-      <div data-test="team-container">
-        {{#if this.model.length}}
-          <ul class="team-list">
-            {{#each this.model as |team index|}}
-              <li class="team-item">
-                <LinkTo
-                  @route="landing.teams.team"
-                  @model={{team.id}}
-                  @class="team-link"
-                  data-test-team={{index}}
-                >
-                  {{team.name}}
-                </LinkTo>
-              </li>
-            {{/each}}
-          </ul>
-        {{else}}
+    <PaperContent @padding={{false}} @class="side-content">
+      {{#if this.model.length}}
+        <PaperList>
+          {{#each this.model as |team index|}}
+            {{#paper-link-item "landing.teams.team" team.id data-test-team=index}}
+              {{team.name}}
+            {{/paper-link-item}}
+          {{/each}}
+        </PaperList>
+      {{else}}
+        <div class="no-team" data-test="no-team">
           You don't have any teams yet
-        {{/if}}
-      </div>
+        </div>
+      {{/if}}
       <div>
-        <p>
-          <LinkTo @route="landing.teams.new" data-test="newTeam-link">
-            Add one
-          </LinkTo>
-        </p>
+        <PaperButton
+          @onClick={{action "addOne"}}
+          data-test="new-team"
+          @raised={{true}}
+        >
+          Add one
+        </PaperButton>
       </div>
     </PaperContent>
   </PaperSidenav>
-  <PaperCardContent @class="flex flex-content">
+  <PaperCardContent @class="flex flex-content box-shadow-top-inset">
     {{outlet}}
   </PaperCardContent>
 </PaperSidenavContainer>

@@ -44,7 +44,7 @@ module('Acceptance | New team', function (hooks) {
 
     await visit('/teams/new');
 
-    assert.dom('[data-test=team-container]')
+    assert.dom('[data-test=no-team]')
       .hasText('You don\'t have any teams yet', 'No teams are listed');
 
     await createTeam('Team 1')

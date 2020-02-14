@@ -23,7 +23,7 @@ module('Acceptance | Landing', function (hooks) {
     assert.equal(currentURL(), '/', 'Correctly visits landing page');
     assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
     assert.dom('[data-test=landing-image]').exists('Landing page images loads');
-    assert.dom('[data-test=team-container]')
+    assert.dom('[data-test=no-team]')
       .hasText('You don\'t have any teams yet', 'No teams are listed');
   });
 
@@ -32,7 +32,7 @@ module('Acceptance | Landing', function (hooks) {
     setSession.call(this, newUser);
 
     await visit('/');
-    await click('[data-test=newTeam-link]');
+    await click('[data-test=new-team]');
 
     assert.equal(currentURL(), '/teams/new', 'Correctly visits new team page');
   });
@@ -43,7 +43,7 @@ module('Acceptance | Landing', function (hooks) {
     let newTeam = this.server.create('team', { name: 'Team', user: newUser});
 
     await visit('/');
-    await click('[data-test-team="0"]');
+    await click('[data-test-team="0"] a');
 
     assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Redirects to team page');
     assert.dom('[data-test=team-title]').exists('Team title loads');
