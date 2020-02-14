@@ -66,7 +66,9 @@ module('Acceptance | Team', function (hooks) {
     );
 
     let time = moment().minute(0);
-    let hoursLeft = 24 - time.hours();
+    time.startOf('day');
+    let hoursLeft = 24;
+
     let timeMember1 = moment.tz(time, 'America/Montevideo').format("D MMM YYYY - HH:mm");
     let timeMember2 = moment.tz(time, 'America/Buenos_Aires').format("D MMM YYYY - HH:mm");
 

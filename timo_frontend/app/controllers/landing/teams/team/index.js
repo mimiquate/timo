@@ -17,6 +17,23 @@ function compareTimeZones(memberA, memberB) {
   return 0;
 }
 
+function hoursLeftOver(membersArray) {
+  const length = membersArray.length;
+
+  const now = moment.utc();
+  const timeNow = new Date().getTimezoneOffset();
+
+  const earlyTZ = membersArray[length - 1].timezone;
+  const earlyTime = moment.tz.zone(earlyTZ).utcOffset(now);
+  const hoursStart = (earlyTime - timeNow) / 60;
+
+  const lateTz = membersArray[0].timezone;
+  const lateTime = moment.tz.zone(lateTz).utcOffset(now);
+  const hoursLeft = (lateTime - earlyTime) / 60;
+
+  return [hoursStart, hoursLeft];
+}
+
 export default Controller.extend({
   membersArray: computed('model.members', function () {
     return this.model.members.toArray().sort(compareTimeZones);
@@ -40,8 +57,14 @@ export default Controller.extend({
   rows: computed('membersArray', function () {
     const memberRows = [];
     let row = {};
+
+    const hours = hoursLeftOver(this.membersArray);
+    const hoursStart = hours[0];
+    const hoursLeft = 24 + hours[1];
+  
     let time = moment().minute(0);
-    const hoursLeft = 24 - time.hours();
+    time.hour(0);
+    time.subtract(hoursStart, 'hour');
 
     for (let i = 0; i < hoursLeft; i++) {
       row = {};
@@ -51,7 +74,7 @@ export default Controller.extend({
       });
 
       memberRows.pushObject(row);
-      time = time.add(1, 'hour');
+      time.add(1, 'hour');
     }
 
     return memberRows;
