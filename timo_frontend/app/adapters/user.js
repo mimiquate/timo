@@ -8,5 +8,10 @@ export default ApplicationAdapter.extend({
     }
 
     return this._super(...arguments);
+  },
+
+  deleteSession() {
+    const url = this.buildURL('') + "/logout";
+    return this.ajax(url, 'DELETE');
   }
 });

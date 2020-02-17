@@ -13,7 +13,7 @@ export default Controller.extend({
       if (isPresent(newUsername)) {
         let user = this.store.createRecord('user', { username: newUsername });
 
-        user = await user.save();
+        await user.save();
         this.session.setCurrentUser(user);
 
         await this.transitionToRoute('landing');

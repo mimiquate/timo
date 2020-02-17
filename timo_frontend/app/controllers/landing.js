@@ -6,9 +6,8 @@ export default Controller.extend({
       await this.transitionToRoute('landing.teams.new');
     },
 
-    async logOut() {
-      this.session.setCurrentUser(null);
-      await this.transitionToRoute('login');
+    logOut() {
+      this.transitionToRoute('logout');
     }
   }
 });

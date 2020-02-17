@@ -5,6 +5,11 @@ export default Service.extend({
   currentUser: null,
 
   setCurrentUser(user) {
-    set(this, 'currentUser', user)
+    set(this, 'currentUser', user);
   },
+
+  async logOut(user) {
+    const adapter = await user.store.adapterFor('user');
+    return adapter.deleteSession();
+  }
 });
