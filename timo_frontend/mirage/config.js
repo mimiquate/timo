@@ -8,4 +8,7 @@ export default function() {
   this.post('/teams');
   this.get('/teams/:id');
   this.post('/members');
+  this.delete('/logout', () => {
+    return {};
+  }, 200);
 }

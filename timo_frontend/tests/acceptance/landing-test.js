@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession } from '../helpers/custom-helpers';
+import { setSession, sessionIsEmpty } from '../helpers/custom-helpers';
 
 module('Acceptance | Landing', function (hooks) {
   setupApplicationTest(hooks);
@@ -49,4 +49,21 @@ module('Acceptance | Landing', function (hooks) {
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
   });
+
+  test('Clicks username and then logouts', async function (assert) {
+    const store = this.owner.lookup('service:store');
+    let newUser = this.server.create('user', { username: 'juan', store: store });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('[data-test=logout-trigger]');
+    await click('[data-test=logout-button] button');
+
+    assert.equal(currentURL(), `/login`, 'Redirects to login page');
+    assert.ok(sessionIsEmpty.call(this), 'User session is empty');
+
+    await visit('/');
+
+    assert.equal(currentURL(), `/login`, 'Stays on login page');
+  })
 });

@@ -20,3 +20,8 @@ export async function chooseTimeZone(timezone) {
   await clickTrigger('#memberTimeZone-select');
   return selectChoose('#memberTimeZone-select', timezone);
 }
+
+export function sessionIsEmpty() {
+  const session = this.owner.lookup('service:session');
+  return session.currentUser == null;
+}
