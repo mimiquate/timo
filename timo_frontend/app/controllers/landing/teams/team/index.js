@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { computed } from "@ember/object";
 import moment from 'moment';
+import { set } from "@ember/object";
 import { compareTimeZones, hoursLeftOver, filterClass } from 'timo-frontend/utils/table-functions'
 
 export default Controller.extend({
@@ -54,6 +55,10 @@ export default Controller.extend({
   actions: {
     async newMember() {
       await this.transitionToRoute('landing.teams.team.new', this.model);
+    },
+
+    setValue(value) {
+      set(this, 'currentTimezone', value);
     }
   }
 });

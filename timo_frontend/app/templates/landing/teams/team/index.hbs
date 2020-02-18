@@ -2,6 +2,9 @@
   <h1 data-test="team-title">
     {{this.model.name}}
   </h1>
+  <PaperCheckbox @value={{currentTimezone}} @onChange={{action "setValue"}}>
+    List my current timezone
+  </PaperCheckbox>
 </div>
 {{#if this.model.members.length}}
   <EmberTable @class="member-content box-shadow-z8-on-white" as |t|>
