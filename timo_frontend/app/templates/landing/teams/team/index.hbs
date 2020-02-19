@@ -15,7 +15,7 @@
       as |h|
     >
       <h.row @class="mat-header-row" as |hr|>
-        <hr.cell @class="mat-header-cell cell-text-align" as |column|>
+        <hr.cell @class="mat-header-cell cell-text-align {{col-color colColorClass hr.columnValue.isCurrent}}" as |column|>
           {{column.name}} ({{column.timezone}})
         </hr.cell>
       </h.row>

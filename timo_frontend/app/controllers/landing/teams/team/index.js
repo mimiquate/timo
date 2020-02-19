@@ -33,13 +33,16 @@ export default Controller.extend({
   columns: computed('membersArray', function () {
     const memberCol = [];
 
+    const timezoneNow = moment.tz.guess(true);
+
     this.membersArray.forEach(m => {
       memberCol.pushObject({
         name: m.name,
         timezone: m.timezone,
         valuePath: m.id,
         textAlign: 'center',
-        width: 225
+        width: 225,
+        isCurrent: timezoneNow == m.timezone
       })
     });
 
@@ -72,6 +75,10 @@ export default Controller.extend({
     }
 
     return memberRows;
+  }),
+
+  colColorClass: computed('showCurrent', function() {
+    return this.showCurrent ? 'current-col-cell' : '';
   }),
 
   actions: {
