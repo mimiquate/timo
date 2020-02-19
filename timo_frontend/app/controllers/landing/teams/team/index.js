@@ -14,7 +14,8 @@ export default Controller.extend({
 
     this.membersArray.forEach(m => {
       memberCol.pushObject({
-        name: `${m.name} (${m.timezone})`,
+        name: m.name,
+        timezone: m.timezone,
         valuePath: m.id,
         textAlign: 'center',
         width: 225
