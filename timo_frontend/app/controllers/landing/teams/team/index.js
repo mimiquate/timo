@@ -4,9 +4,30 @@ import moment from 'moment';
 import { set } from "@ember/object";
 import { compareTimeZones, hoursLeftOver, filterClass } from 'timo-frontend/utils/table-functions'
 
+function createMemberArray(modelMembers, showCurrent) {
+  const returnArray = modelMembers.toArray();
+
+  const timezoneNow = moment.tz.guess(true);
+  if (showCurrent) {
+    const hasCurrent = returnArray.some(m => {
+      return m.timezone == timezoneNow;
+    });
+    if (!hasCurrent) {
+      returnArray.pushObject({
+        name: 'Your current timezone',
+        timezone: timezoneNow,
+        id: 'current'
+      });
+    }
+  }
+
+  return returnArray;
+}
+
 export default Controller.extend({
-  membersArray: computed('model.members', function () {
-    return this.model.members.toArray().sort(compareTimeZones);
+  membersArray: computed('model.members', 'showCurrent', function () {
+    const membersToArray = createMemberArray(this.model.members, this.showCurrent);
+    return membersToArray.sort(compareTimeZones);
   }),
 
   columns: computed('membersArray', function () {
@@ -59,7 +80,7 @@ export default Controller.extend({
     },
 
     setValue(value) {
-      set(this, 'currentTimezone', value);
+      set(this, 'showCurrent', value);
     }
   }
 });
