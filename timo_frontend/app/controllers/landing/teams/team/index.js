@@ -2,32 +2,12 @@ import Controller from '@ember/controller';
 import { computed } from "@ember/object";
 import moment from 'moment';
 import { set } from "@ember/object";
-import { compareTimeZones, hoursLeftOver, filterClass } from 'timo-frontend/utils/table-functions'
-
-function createMemberArray(modelMembers, showCurrent) {
-  const returnArray = modelMembers.toArray();
-
-  const timezoneNow = moment.tz.guess(true);
-  if (showCurrent) {
-    const hasCurrent = returnArray.some(m => {
-      return m.timezone == timezoneNow;
-    });
-    if (!hasCurrent) {
-      returnArray.pushObject({
-        name: 'Your current timezone',
-        timezone: timezoneNow,
-        id: 'current'
-      });
-    }
-  }
-
-  return returnArray;
-}
+import { compareMemberTimeZones, hoursLeftOver, filterClass, createMemberArray } from 'timo-frontend/utils/table-functions';
 
 export default Controller.extend({
   membersArray: computed('model.members', 'showCurrent', function () {
     const membersToArray = createMemberArray(this.model.members, this.showCurrent);
-    return membersToArray.sort(compareTimeZones);
+    return membersToArray.sort(compareMemberTimeZones);
   }),
 
   columns: computed('membersArray', function () {

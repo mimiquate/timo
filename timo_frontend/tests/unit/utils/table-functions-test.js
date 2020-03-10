@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { compareTimeZones, filterClass, hoursLeftOver } from 'timo-frontend/utils/table-functions'
+import { compareMemberTimeZones, filterClass, hoursLeftOver } from 'timo-frontend/utils/table-functions'
 
 module('Unit | Utils | table functions', function (hooks) {
   setupTest(hooks);
@@ -9,9 +9,9 @@ module('Unit | Utils | table functions', function (hooks) {
     const memberSmallerTZ = { timezone: "America/Los_Angeles" };
     const memberBiggerTZ = { timezone: "America/Montevideo" };
 
-    assert.equal(compareTimeZones(memberBiggerTZ, memberSmallerTZ), 1);
-    assert.equal(compareTimeZones(memberSmallerTZ, memberBiggerTZ), -1);
-    assert.equal(compareTimeZones(memberBiggerTZ, memberBiggerTZ), 0);
+    assert.equal(compareMemberTimeZones(memberBiggerTZ, memberSmallerTZ), 1);
+    assert.equal(compareMemberTimeZones(memberSmallerTZ, memberBiggerTZ), -1);
+    assert.equal(compareMemberTimeZones(memberBiggerTZ, memberBiggerTZ), 0);
   });
 
   test('Hours left over', function (assert) {
