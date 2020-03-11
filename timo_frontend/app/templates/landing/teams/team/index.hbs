@@ -51,6 +51,19 @@
   @onClick={{action "newMember"}}
   data-test="add-member-button"
   @class="add-button"
+  id="new-member-origin"
 >
   +
 </PaperButton>
+{{#if newMemberModal}}
+  <PaperDialog
+    @clickOutsideToClose={{true}}
+    @onClose={{action "closeNewMemberModal"}}
+    @origin="#new-member-origin"
+  >
+    <PaperDialogContent>
+    </PaperDialogContent>
+    <PaperDialogActions>
+    </PaperDialogActions>
+  </PaperDialog>
+{{/if}}

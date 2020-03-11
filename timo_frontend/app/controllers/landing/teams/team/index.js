@@ -59,8 +59,14 @@ export default Controller.extend({
   }),
 
   actions: {
-    async newMember() {
-      await this.transitionToRoute('landing.teams.team.new', this.model);
+    // async newMember() {
+    //   await this.transitionToRoute('landing.teams.team.new', this.model);
+    // },
+    newMember() {
+      set(this, 'newMemberModal', true);
+    },
+    closeNewMemberModal() {
+      set(this, 'newMemberModal', false);
     },
 
     setValue(value) {
