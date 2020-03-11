@@ -97,7 +97,7 @@ defmodule TimoWeb.UserControllerTest do
 
   test "does not show user with id: me when cookies where not updated", %{conn: conn} do
     conn = get(conn, Routes.user_path(conn, :show, "me"))
-    assert json_response(conn, 404)["errors"] != %{}
+    assert json_response(conn, 401)["errors"] != %{}
   end
 
   test "does not show user that doesn't exist", %{conn: conn} do
