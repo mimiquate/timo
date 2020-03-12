@@ -59,18 +59,28 @@ export default Controller.extend({
   }),
 
   actions: {
-    // async newMember() {
-    //   await this.transitionToRoute('landing.teams.team.new', this.model);
-    // },
     newMember() {
       set(this, 'newMemberModal', true);
     },
+
     closeNewMemberModal() {
       set(this, 'newMemberModal', false);
     },
 
     setValue(value) {
       set(this, 'showCurrent', value);
+    },
+
+    async saveMember(memberName, memberTimeZone) {
+      let member = this.store.createRecord('member', {
+        name: memberName,
+        timezone: memberTimeZone,
+        team: this.model
+      });
+
+      await member.save();
+
+      set(this, 'newMemberModal', false);
     }
   }
 });
