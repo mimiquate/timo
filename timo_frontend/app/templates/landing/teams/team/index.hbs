@@ -62,9 +62,7 @@
     @origin="#new-member-origin"
   >
     <PaperDialogContent>
-      <NewMember @team={{this.model}} />
+      <NewMember @addMember={{action "saveMember"}} />
     </PaperDialogContent>
-    <PaperDialogActions>
-    </PaperDialogActions>
   </PaperDialog>
 {{/if}}

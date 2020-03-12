@@ -6,22 +6,12 @@ export default Component.extend({
   timezoneList: moment.tz.names(),
 
   actions: {
-    async saveMember() {
-      let { memberName } = this;
-      let newMemberName = memberName.trim();
-      let { memberTimeZone } = this;
+    async add() {
+      const memberName  = this.memberName.trim();
+      const memberTimeZone = this.memberTimeZone;
 
-      set(this, 'memberName', newMemberName);
-
-      if (newMemberName && memberTimeZone) {
-        let member = this.store.createRecord('member', {
-          name: newMemberName,
-          timezone: memberTimeZone,
-          team: this.team
-        });
-
-        await member.save();
-        await this.transitionToRoute('landing.teams.team', this.team);
+      if (memberName && memberTimeZone) {
+        this.addMember(memberName, memberTimeZone);
       }
     }
   }
