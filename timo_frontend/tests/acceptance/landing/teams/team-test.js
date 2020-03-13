@@ -117,8 +117,8 @@ module('Acceptance | Team', function (hooks) {
     await visit(`/teams/${newTeam.id}`);
     await click('[data-test=add-member-button]');
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}/new`, 'Correctly visits new member page');
-    assert.dom('[data-test=new-member-title]').exists('New member title page loads');
+    assert.dom('[data-test=new-member-modal]').exists('Correctly opens new member modal');
+    assert.dom('[data-test=new-member-title]').exists('New member modal title loads');
     assert.dom('[data-test=new-member-title]').hasText('New Member', 'Correct title');
   });
 

@@ -77,11 +77,6 @@ export default Controller.extend({
         timezone: memberTimeZone,
         team: this.model
       }).save().then(() => set(this, 'newMemberModal', false));
-
-      // set(this, 'model', this.store.findRecord(
-      //   'team',
-      //   this.model.id,
-      //   { include: 'members'}));
     }
   }
 });
