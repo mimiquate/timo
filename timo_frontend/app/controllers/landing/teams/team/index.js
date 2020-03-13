@@ -1,13 +1,13 @@
 import Controller from '@ember/controller';
 import { computed } from "@ember/object";
 import moment from 'moment';
-import { set } from "@ember/object";
+import { set, get } from "@ember/object";
 import { compareMemberTimeZones, hoursLeftOver, filterClass, createMemberArray } from 'timo-frontend/utils/table-functions';
 
 export default Controller.extend({
-  membersArray: computed('model.members', 'showCurrent', function () {
+  membersArray: computed('model.members.{[],@each.id}', 'showCurrent', function () {
     const timezoneNow = moment.tz.guess(true);
-    const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);
+    const membersToArray = createMemberArray(get(this.model, 'members'), this.showCurrent, timezoneNow);
     return membersToArray.sort(compareMemberTimeZones);
   }),
 
@@ -72,15 +72,16 @@ export default Controller.extend({
     },
 
     async saveMember(memberName, memberTimeZone) {
-      let member = this.store.createRecord('member', {
+      await this.store.createRecord('member', {
         name: memberName,
         timezone: memberTimeZone,
         team: this.model
-      });
+      }).save().then(() => set(this, 'newMemberModal', false));
 
-      await member.save();
-
-      set(this, 'newMemberModal', false);
+      // set(this, 'model', this.store.findRecord(
+      //   'team',
+      //   this.model.id,
+      //   { include: 'members'}));
     }
   }
 });
