@@ -1,4 +1,4 @@
-import { click, fillIn } from "@ember/test-helpers";
+import { click, fillIn, visit } from "@ember/test-helpers";
 import { clickTrigger, selectChoose } from 'ember-power-select/test-support/helpers';
 
 export async function loginAs(username) {
@@ -19,4 +19,9 @@ export async function createTeam(teamName) {
 export async function chooseTimeZone(timezone) {
   await clickTrigger('#memberTimeZone-select');
   return selectChoose('#memberTimeZone-select', timezone);
+}
+
+export async function openNewMemberModal(teamId) {
+  await visit(`/teams/${teamId}`);
+  return click('[data-test=add-member-button]');
 }
