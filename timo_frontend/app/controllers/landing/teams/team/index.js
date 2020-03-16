@@ -96,13 +96,16 @@ export default Controller.extend({
     },
 
     async saveEditMember(memberName, memberTimeZone) {
-      const memberId = this.selectedMemberColumn.valuePath;
+      if (!(memberName == this.selectedMemberColumn.name
+        && memberTimeZone == this.selectedMemberColumn.timezone))
+      {
+        const memberId = this.selectedMemberColumn.valuePath;
+        const member = await this.store.findRecord('member', memberId);
+        set(member, 'name', memberName);
+        set(member, 'timezone', memberTimeZone);
 
-      const member = await this.store.findRecord('member', memberId);
-      set(member, 'name', memberName);
-      set(member, 'timezone', memberTimeZone);
-
-      member.save();
+        member.save();
+      }
 
       set(this, 'editMemberModal', false);
     }
