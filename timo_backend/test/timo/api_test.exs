@@ -138,6 +138,7 @@ defmodule Timo.APITest do
     @invalid_member_attrs %{name: nil, timezone: nil}
     @invalid_member_tz %{name: "some name", timezone: "Montevideo"}
     @invalid_member_nil_tz %{name: "some name", timezone: nil}
+    @update_member_attrs %{name: "new name", timezone: "America/Buenos_Aires"}
 
     test "list_team_members/1 returns all members" do
       team = team_factory(user_factory())
@@ -151,20 +152,6 @@ defmodule Timo.APITest do
       team = team_factory(user_factory())
 
       assert API.list_team_members(team) == []
-    end
-
-    test "get_team_member/2 returns the member with given id" do
-      team = team_factory(user_factory())
-      member = member_factory(team)
-      {:ok, fetched_member} = API.get_team_member(team, member.id)
-
-      assert fetched_member == member
-    end
-
-    test "get_team_member/2 returns nil when no member with given id" do
-      team = team_factory(user_factory())
-
-      assert API.get_team_member(team, 1) == nil
     end
 
     test "create_member/1 with valid data creates a member" do
@@ -191,6 +178,46 @@ defmodule Timo.APITest do
       team = team_factory(user_factory())
 
       assert {:error, %Ecto.Changeset{}} = API.create_member(team, @invalid_member_nil_tz)
+    end
+
+    test "get_member/1 with valid id" do
+      member = member_factory()
+      {:ok, %Member{} = fetched_member} = API.get_member(member.id)
+
+      assert fetched_member == member
+    end
+
+    test "get_member/1 returns nil if the member does not exist" do
+      assert API.get_member(1) == nil
+    end
+
+    test "update_member/2 with valid data updates the member" do
+      member = member_factory()
+
+      assert {:ok, %Member{} = member} = API.update_member(member, @update_member_attrs)
+      assert member.name == @update_member_attrs.name
+      assert member.timezone == @update_member_attrs.timezone
+    end
+
+    test "update_member/2 with invalid data returns error changeset" do
+      member = member_factory()
+
+      assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_attrs)
+      {:ok, %Member{} = fetched_member} = API.get_member(member.id)
+
+      assert fetched_member == member
+    end
+
+    test "update_member/2 with valid name but invalid timezone returns error changest" do
+      member = member_factory()
+
+      assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_tz)
+    end
+
+    test "update_member/2 with valid name but invalid timezone (nil) returns error changest" do
+      member = member_factory()
+
+      assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_nil_tz)
     end
   end
 end

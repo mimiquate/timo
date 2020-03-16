@@ -91,20 +91,6 @@ defmodule Timo.API do
     |> Repo.all()
   end
 
-  @doc """
-  Gets a single member.
-  returns nil if the Member does not exist.
-  """
-  def get_team_member(%Team{} = team, id) do
-    query = team_member_query(Member, team)
-
-    with %Member{} = member <- Repo.get(query, id) do
-      {:ok, member}
-    else
-      nil -> nil
-    end
-  end
-
   def create_member(%Team{} = team, attrs \\ %{}) do
     %Member{}
     |> Member.changeset(attrs)
