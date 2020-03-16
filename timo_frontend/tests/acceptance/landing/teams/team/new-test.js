@@ -3,6 +3,7 @@ import { visit, currentURL, click, fillIn } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession, chooseTimeZone } from '../../../../helpers/custom-helpers';
+import { TablePage } from 'ember-table/test-support';
 
 module('Acceptance | New member', function (hooks) {
   setupApplicationTest(hooks);
@@ -17,7 +18,7 @@ module('Acceptance | New member', function (hooks) {
   test('Visiting /teams/team/new with existing username', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
     await visit(`/teams/${newTeam.id}/new`);
 
@@ -29,7 +30,7 @@ module('Acceptance | New member', function (hooks) {
   test('Resets inputs when entering new member page', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
     await visit(`/teams/${newTeam.id}/new`);
     await fillIn('#memberName-input input', 'Member');
@@ -48,7 +49,7 @@ module('Acceptance | New member', function (hooks) {
   test('Creates member and redirects', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
     await visit(`/teams/${newTeam.id}/new`);
     await fillIn('#memberName-input input', 'Member');
@@ -58,12 +59,21 @@ module('Acceptance | New member', function (hooks) {
     assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Redirects to team page');
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 1, 'Table has one column');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member (America/Montevideo)',
+      'Member is listed'
+    );
   });
 
   test('Create member with no name and no time zone error', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
     await visit(`/teams/${newTeam.id}/new`);
     await click('[data-test=saveMember-button]');
@@ -71,16 +81,16 @@ module('Acceptance | New member', function (hooks) {
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
     assert.equal(currentURL(), `/teams/${newTeam.id}/new`, 'Stays in new member page');
-    assert.ok(errorMessage[0].textContent.includes('This is required'),
-      'No member name error');
-    assert.ok(errorMessage[1].textContent.includes('This is required'),
-      'No member time zone error');
+    assert.ok(errorMessage[0].textContent
+      .includes('This is required'), 'No member name error');
+    assert.ok(errorMessage[1].textContent
+      .includes('This is required'), 'No member time zone error');
   });
 
   test('Create member with name but no time zone error', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
     await visit(`/teams/${newTeam.id}/new`);
     await fillIn('#memberName-input input', 'Member');
@@ -89,14 +99,14 @@ module('Acceptance | New member', function (hooks) {
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
     assert.equal(currentURL(), `/teams/${newTeam.id}/new`, 'Stays in new member page');
-    assert.ok(errorMessage[0].textContent.includes('This is required'),
-      'No member time zone error');
+    assert.ok(errorMessage[0].textContent
+      .includes('This is required'), 'No member time zone error');
   });
 
   test('Create member with time zone but no name error', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
     await visit(`/teams/${newTeam.id}/new`);
     await chooseTimeZone('America/Montevideo');
@@ -105,14 +115,14 @@ module('Acceptance | New member', function (hooks) {
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
     assert.equal(currentURL(), `/teams/${newTeam.id}/new`, 'Stays in new member page');
-    assert.ok(errorMessage[0].textContent.includes('This is required'),
-      'No member name error');
+    assert.ok(errorMessage[0].textContent
+      .includes('This is required'), 'No member name error');
   });
 
   test('Create member with time zone but with only whitespace name error', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
     await visit(`/teams/${newTeam.id}/new`);
     await fillIn('#memberName-input input', '     ');

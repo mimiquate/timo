@@ -3,26 +3,41 @@
     {{this.model.name}}
   </h1>
 </div>
-<div class="member-content">
-  {{#if this.model.members.length}}
-    <ul class="member-list">
-      {{#each this.model.members as |member index|}}
-        <li data-test-member={{index}}>{{member.name}} ({{member.timezone}})</li>
-      {{/each}}
-    </ul>
-  {{else}}
-    No members
-  {{/if}}
-</div>
-<div>
-  <PaperButton
-    @raised={{true}}
-    @fab={{true}}
-    @accent={{true}}
-    @class="add-button"
-    @onClick={{action "newMember"}}
-    data-test="add-member-button"
-  >
-    +
-  </PaperButton>
-</div>
+{{#if this.model.members.length}}
+  <EmberTable @class="member-content box-shadow-z8-on-white" as |t|>
+    <t.head
+      @columns={{columns}}
+      @enableResize={{false}}
+      @enableReorder={{false}}
+      as |h|
+    >
+      <h.row @class="mat-header-row" as |hr|>
+        <hr.cell @class="mat-header-cell cell-text-align" as |column|>
+          {{column.name}}
+        </hr.cell>
+      </h.row>
+    </t.head>
+
+    <t.body @rows={{rows}} as |r|>
+      <r.row @class="mat-row" as |rr|>
+        <rr.cell @class="mat-cell cell-text-align" as |value|>
+          {{value}}
+        </rr.cell>
+      </r.row>
+    </t.body>
+  </EmberTable>
+{{else}}
+  <div class="no-member" data-test="no-member">
+    No members in this team
+  </div>
+{{/if}}
+<PaperButton
+  @raised={{true}}
+  @fab={{true}}
+  @accent={{true}}
+  @onClick={{action "newMember"}}
+  data-test="add-member-button"
+  @class="add-button"
+>
+  +
+</PaperButton>

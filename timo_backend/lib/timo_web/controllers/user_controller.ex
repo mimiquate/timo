@@ -25,7 +25,7 @@ defmodule TimoWeb.UserController do
       |> get_session("user_id")
 
     if !user_id do
-      {:error, :not_found}
+      {:error, :unauthorized}
     else
       {:ok, %User{} = user} = API.get_user(user_id)
       render(conn, "show.json-api", data: user)

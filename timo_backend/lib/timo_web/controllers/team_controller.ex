@@ -6,12 +6,18 @@ defmodule TimoWeb.TeamController do
 
   action_fallback TimoWeb.FallbackController
 
-  def index(conn, _params, current_user) do
+  plug TimoWeb.Plugs.SetCurrentUser when action in [:create, :show, :index]
+  plug :authenticate_current_user when action in [:create, :show, :index]
+
+  def index(conn, _params) do
+    current_user = conn.assigns.current_user
     teams = API.list_user_teams(current_user)
     render(conn, "index.json-api", data: teams)
   end
 
-  def create(conn, %{"data" => %{"type" => "teams", "attributes" => team_params}}, current_user) do
+  def create(conn, %{"data" => %{"type" => "teams", "attributes" => team_params}}) do
+    current_user = conn.assigns.current_user
+
     with {:ok, %Team{} = team} <- API.create_team(current_user, team_params) do
       conn
       |> put_status(:created)
@@ -20,7 +26,9 @@ defmodule TimoWeb.TeamController do
     end
   end
 
-  def show(conn, params = %{"id" => id}, current_user) do
+  def show(conn, params = %{"id" => id}) do
+    current_user = conn.assigns.current_user
+
     with {:ok, %Team{} = team} <- API.get_user_team(current_user, id, true) do
       render(conn, "show.json-api", data: team, opts: [include: params["include"]])
     else
@@ -28,18 +36,11 @@ defmodule TimoWeb.TeamController do
     end
   end
 
-  def action(conn, _) do
-    {:ok, current_user} =
-      conn
-      |> fetch_session()
-      |> get_session("user_id")
-      |> API.get_user()
-
-    if !current_user do
-      {:error, :not_found}
+  defp authenticate_current_user(conn, _params) do
+    if !conn.assigns.current_user do
+      {:error, :unauthorized}
     else
-      args = [conn, conn.params, current_user]
-      apply(__MODULE__, action_name(conn), args)
+      conn
     end
   end
 end

@@ -1,4 +1,5 @@
 @import 'ember-paper';
+@import './material-table.scss';
 
 body, body > .ember-view, .login-main {
   height: 100%;
@@ -28,6 +29,7 @@ body, body > .ember-view, .login-main {
 .flex-content {
   display: flex;
   flex-direction: column;
+  background: whitesmoke;
 }
 
 .flex-center {
@@ -42,7 +44,7 @@ body, body > .ember-view, .login-main {
   align-self: center;
 }
 
-.flex-title, .member-content {
+.flex-title, .no-member {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
   align-self: flex-start;
@@ -80,14 +82,27 @@ body, body > .ember-view, .login-main {
   right: 0px;
   margin-right: 1.5rem;
   margin-bottom: 1.5rem;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 #memberName-input, #memberTimeZone-select {
   margin: 5px;
 }
 
-.member-list {
-  list-style: none;
-  padding: 0px;
+.member-content {
+  max-width: 95%;
+  margin-bottom: 1.5rem;
+  align-self: center;
+}
+
+.cell-text-align {
+  justify-content: center;
+}
+
+.box-shadow-z8-on-white {
+  background: #fff;
+  box-shadow:
+    0 5px 5px -3px rgba(0,0,0,.2),
+    0 8px 10px 1px rgba(0,0,0,.14),
+    0 3px 14px 2px rgba(0,0,0,.12);
 }
