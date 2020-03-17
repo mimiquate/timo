@@ -145,7 +145,7 @@ module('Acceptance | Team', function (hooks) {
 
     await click('[data-test=checkbox]');
     assert.equal(table.headers.length, 2, 'Table has two columns');
-    
+
     await click('[data-test=checkbox]');
     assert.equal(table.headers.length, 1, 'Table has one column');
   });
@@ -175,7 +175,7 @@ module('Acceptance | Team', function (hooks) {
 
     await click('[data-test=checkbox]');
     assert.equal(table.headers.length, 1, 'Table has one column');
-    
+
     await click('[data-test=checkbox]');
     assert.equal(table.headers.length, 1, 'Table has one column');
   });
