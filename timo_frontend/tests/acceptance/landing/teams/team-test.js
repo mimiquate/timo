@@ -75,6 +75,38 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(table.body.rowCount, hoursLeft, 'Correct number of rows in table');
   });
 
+  test('Visiting /teams/team with members sorted', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'Europe/Rome',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+
+    await visit(`/teams/${newTeam.id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 2, 'Table has two columns');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 2 (America/Montevideo)',
+      'Member 2 is listed first'
+    );
+    assert.equal(
+      table.headers.objectAt(1).text.trim(),
+      'Member 1 (Europe/Rome)',
+      'Member 1 is listed second'
+    );
+  })
+
   test('Clicks button to add member', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
