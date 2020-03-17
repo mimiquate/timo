@@ -9,7 +9,7 @@ export default Controller.extend({
     return this.model.members.filterBy('id');
   }),
 
-  sortedMembers: computed('savedMembers.[]', 'showCurrent', function () {
+  sortedMembers: computed('savedMembers.{[],@each.name,@each.timezone}', 'showCurrent', function () {
     const timezoneNow = moment.tz.guess(true);
     const membersToArray = createMemberArray(this.savedMembers, this.showCurrent, timezoneNow);
 

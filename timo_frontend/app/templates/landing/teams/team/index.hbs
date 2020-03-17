@@ -22,6 +22,7 @@
         <hr.cell
           @class="mat-header-cell cell-text-align"
           onclick={{action "editMember" hr.columnValue}}
+          data-test-member={{hr.columnValue.valuePath}}
           as |column|
         >
           {{column.name}} ({{column.timezone}})
@@ -71,8 +72,7 @@
 {{#if editMemberModal}}
   <MemberModal
     @addMember={{action "saveEditMember"}}
-    @memberName={{selectedMemberColumn.name}}
-    @memberTimeZone={{selectedMemberColumn.timezone}}
+    @memberColumn={{selectedMemberColumn}}
     @closeModal={{action "closeEditMemberModal"}}
     @title="Edit Member"
     data-test="edit-member-modal"

@@ -179,4 +179,28 @@ module('Acceptance | Team', function (hooks) {
     await click('[data-test=checkbox]');
     assert.equal(table.headers.length, 1, 'Table has one column');
   });
+
+  test('Clicks member in table to edit it', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    let newMember = this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+
+    await visit(`/teams/${newTeam.id}`);
+
+    new TablePage();
+
+    await click(`[data-test-member="${newMember.id}"]`);
+
+    assert.dom('[data-test=edit-member-modal]').exists('Correctly opens edit member modal');
+    assert.dom('[data-test=member-modal-title]').exists('Edit member modal title loads');
+    assert.dom('[data-test=member-modal-title]').hasText('Edit Member', 'Correct title');
+    assert.dom('#memberName-input input').hasValue('Member 1', 'Member name is there');
+    assert.dom('#memberTimeZone-select .ember-power-select-selected-item')
+      .hasText('America/Montevideo', 'Member timezone is there');
+  });
 });
