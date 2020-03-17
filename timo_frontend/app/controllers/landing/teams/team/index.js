@@ -75,7 +75,7 @@ export default Controller.extend({
     const hours = hoursLeftOver(this.membersArray);
     const hoursStart = hours[0];
     const hoursEnd = 24 + hours[1];
-  
+
     let time = moment().minute(0);
     time.hour(0);
     time.subtract(hoursStart, 'hour');
