@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { computed } from "@ember/object";
 import moment from 'moment';
-import { compareTimeZones, hoursLeftOver, filterClass } from '../../../../utils/table-functions'
+import { compareTimeZones, hoursLeftOver, filterClass } from 'timo-frontend/utils/table-functions'
 
 export default Controller.extend({
   membersArray: computed('model.members', function () {
