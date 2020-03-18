@@ -1,5 +1,6 @@
 @import 'ember-paper';
 @import './material-table.scss';
+@import 'ember-paper-link';
 
 body, body > .ember-view, .login-main {
   height: 100%;
@@ -14,7 +15,7 @@ body, body > .ember-view, .login-main {
 }
 
 .side-title {
-  background-color: paper-color(deep-orange);
+  background-color: paper-color(deep-orange, '400');
 }
 
 .side-container {
@@ -23,7 +24,11 @@ body, body > .ember-view, .login-main {
 }
 
 .side-container, .side-content {
-  background-color: paper-color(deep-orange, '400');
+  background-color: paper-color(deep-orange, '300');
+}
+
+.no-team {
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
 }
 
 .flex-content {
@@ -48,32 +53,6 @@ body, body > .ember-view, .login-main {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
   align-self: flex-start;
-}
-
-.team-list {
-  list-style-type: none;
-  padding: 0px;
-}
-
-.team-item {
-  padding-bottom: 0.5rem;
-}
-
-.team-link {
-  text-decoration: none;
-}
-
-.team-link:link, .team-link:visited {
-  color: black;
-}
-
-.team-link:hover {
-  border-bottom: 2px solid #ffda00;
-}
-
-.team-link.active {
-  color: inherit;
-  border-bottom: 2px solid #ffda00;
 }
 
 .add-button {
@@ -107,6 +86,13 @@ body, body > .ember-view, .login-main {
     0 3px 14px 2px rgba(0,0,0,.12);
 }
 
+.box-shadow-z8 {
+  box-shadow:
+    0 5px 5px -3px rgba(0,0,0,.2),
+    0 8px 10px 1px rgba(0,0,0,.14),
+    0 3px 14px 2px rgba(0,0,0,.12);
+}
+
 $cell-hue: 'A100';
 
 .cell-color-green {
@@ -119,4 +105,10 @@ $cell-hue: 'A100';
 
 .cell-color-red {
   background: paper-color('red', $cell-hue);
+}
+
+.box-shadow-top-inset {
+  -webkit-box-shadow: inset 0px 5px 5px -5px black;
+  -moz-box-shadow: inset 0px 5px 5px -5px black;
+  box-shadow: inset 0px 5px 5px -5px black;
 }
