@@ -27,16 +27,18 @@ export default Controller.extend({
     const memberRows = [];
     let row = {};
 
-    const hours = hoursLeftOver(this.membersArray);
+    const hours = hoursLeftOver(this.membersArray, new Date());
     const hoursStart = hours[0];
     const hoursEnd = 24 + hours[1];
 
-    let time = moment().minute(0);
+    const momentNow = moment();
+    const hoursTime = momentNow.hours();
+    let time = momentNow.minute(0);
     time.hour(0);
     time.subtract(hoursStart, 'hour');
 
     for (let i = 0; i < hoursEnd; i++) {
-      row = {filter: filterClass(i, hoursStart)};
+      row = {filter: filterClass(i, hoursStart, hoursTime)};
 
       this.membersArray.forEach(m => {
         row[m.id] = moment.tz(time, m.timezone);

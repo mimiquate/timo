@@ -15,11 +15,11 @@ export function compareTimeZones(memberA, memberB) {
   return 0;
 }
 
-export function hoursLeftOver(membersArray) {
+export function hoursLeftOver(membersArray, date) {
   const length = membersArray.length;
 
-  const now = moment.utc();
-  const offSetNow = new Date().getTimezoneOffset();
+  const now = moment.utc(date);
+  const offSetNow = date.getTimezoneOffset();
 
   const earlyTZ = membersArray[length - 1].timezone;
   const earlyTime = moment.tz.zone(earlyTZ).utcOffset(now);
@@ -32,8 +32,8 @@ export function hoursLeftOver(membersArray) {
   return [hoursStart, hoursLeft];
 }
 
-export function filterClass(hour, offset) {
-  const hourNow = moment().hours() + offset;
+export function filterClass(hour, offset, hoursTime) {
+  const hourNow = hoursTime + offset;
 
   if (hour < hourNow) {
     return 'row-past-time';
