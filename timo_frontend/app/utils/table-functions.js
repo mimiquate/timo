@@ -4,15 +4,14 @@ export function compareTimeZones(memberA, memberB) {
   const aTime = moment.tz(memberA.timezone).format();
   const bTime = moment.tz(memberB.timezone).format();
 
+  let ret = 0
   if (aTime < bTime) {
-    return -1;
+    ret = -1;
+  } else if (aTime > bTime) {
+    ret = 1;
   }
 
-  if (aTime > bTime) {
-    return 1;
-  }
-
-  return 0;
+  return ret;
 }
 
 export function hoursLeftOver(membersArray, date) {
@@ -35,13 +34,12 @@ export function hoursLeftOver(membersArray, date) {
 export function filterClass(hour, offset, hoursTime) {
   const hourNow = hoursTime + offset;
 
+  let retClass = '';
   if (hour < hourNow) {
-    return 'row-past-time';
+    retClass = 'row-past-time';
+  } else if (hour === hourNow) {
+    retClass = 'row-current-time';
   }
 
-  if (hour == hourNow) {
-    return 'row-current-time';
-  }
-
-  return '';
+  return retClass;
 }
