@@ -6,8 +6,10 @@ export default Controller.extend({
       await this.transitionToRoute('landing.teams.new');
     },
 
-    logOut() {
-      this.transitionToRoute('logout');
+    async logOut() {
+      await this.session.logOut();
+      this.store.unloadAll();
+      this.transitionToRoute('/login');
     }
   }
 });
