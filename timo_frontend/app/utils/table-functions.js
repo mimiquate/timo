@@ -44,14 +44,14 @@ export function filterClass(hour, offset, hoursTime) {
   return retClass;
 }
 
-export function createMemberArray(modelMembers, showCurrent) {
+export function createMemberArray(modelMembers, showCurrent, timezoneNow) {
   const returnArray = modelMembers.toArray();
 
-  const timezoneNow = moment.tz.guess(true);
   if (showCurrent) {
     const hasCurrent = returnArray.some(m => {
-      return m.timezone == timezoneNow;
+      return m.timezone === timezoneNow;
     });
+
     if (!hasCurrent) {
       returnArray.pushObject({
         name: 'Your current timezone',

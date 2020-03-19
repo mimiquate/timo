@@ -6,7 +6,8 @@ import { compareMemberTimeZones, hoursLeftOver, filterClass, createMemberArray }
 
 export default Controller.extend({
   membersArray: computed('model.members', 'showCurrent', function () {
-    const membersToArray = createMemberArray(this.model.members, this.showCurrent);
+    const timezoneNow = moment.tz.guess(true);
+    const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);
     return membersToArray.sort(compareMemberTimeZones);
   }),
 
