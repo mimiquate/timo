@@ -21,7 +21,6 @@ defmodule TimoWeb.SessionControllerTest do
 
     user_id =
       conn
-      |> fetch_session()
       |> get_session("user_id")
 
     assert user_id == nil

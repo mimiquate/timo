@@ -5,6 +5,7 @@ defmodule TimoWeb.Router do
     plug :accepts, ["json-api"]
     plug JaSerializer.ContentTypeNegotiation
     plug JaSerializer.Deserializer
+    plug :fetch_session
   end
 
   scope "/api", TimoWeb do

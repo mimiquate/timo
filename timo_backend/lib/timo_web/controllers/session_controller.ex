@@ -5,7 +5,6 @@ defmodule TimoWeb.SessionController do
     response = Phoenix.json_library().encode_to_iodata!(%{})
 
     conn
-    |> fetch_session()
     |> delete_session("user_id")
     |> put_resp_header("content-type", "application/vnd.api+json")
     |> resp(:ok, response)
