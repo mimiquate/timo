@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession, sessionIsEmpty } from '../helpers/custom-helpers';
+import { setSession } from '../helpers/custom-helpers';
 
 module('Acceptance | Landing', function (hooks) {
   setupApplicationTest(hooks);
@@ -60,7 +60,6 @@ module('Acceptance | Landing', function (hooks) {
     await click('[data-test=logout-button] button');
 
     assert.equal(currentURL(), `/login`, 'Redirects to login page');
-    assert.ok(sessionIsEmpty.call(this), 'User session is empty');
 
     await visit('/');
 
