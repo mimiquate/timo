@@ -1,21 +1,7 @@
 import Controller from '@ember/controller';
 import { computed } from "@ember/object";
 import moment from 'moment';
-
-function compareTimeZones(memberA, memberB) {
-  const aTime = moment.tz(memberA.timezone).format();
-  const bTime = moment.tz(memberB.timezone).format();
-
-  if (aTime < bTime) {
-    return -1;
-  }
-
-  if (aTime > bTime) {
-    return 1;
-  }
-
-  return 0;
-}
+import { compareTimeZones, hoursLeftOver, filterClass } from 'timo-frontend/utils/table-functions'
 
 export default Controller.extend({
   membersArray: computed('model.members', function () {
@@ -40,18 +26,26 @@ export default Controller.extend({
   rows: computed('membersArray', function () {
     const memberRows = [];
     let row = {};
-    let time = moment().minute(0);
-    const hoursLeft = 24 - time.hours();
 
-    for (let i = 0; i < hoursLeft; i++) {
-      row = {};
+    const hours = hoursLeftOver(this.membersArray, new Date());
+    const hoursStart = hours[0];
+    const hoursEnd = 24 + hours[1];
+
+    const momentNow = moment();
+    const hoursTime = momentNow.hours();
+    let time = momentNow.minute(0);
+    time.hour(0);
+    time.subtract(hoursStart, 'hour');
+
+    for (let i = 0; i < hoursEnd; i++) {
+      row = {filter: filterClass(i, hoursStart, hoursTime)};
 
       this.membersArray.forEach(m => {
         row[m.id] = moment.tz(time, m.timezone);
       });
 
       memberRows.pushObject(row);
-      time = time.add(1, 'hour');
+      time.add(1, 'hour');
     }
 
     return memberRows;
