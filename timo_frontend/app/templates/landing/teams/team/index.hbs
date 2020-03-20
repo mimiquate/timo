@@ -21,6 +21,9 @@
       <h.row @class="mat-header-row" as |hr|>
         <hr.cell @class="mat-header-cell cell-text-align {{col-color colColorClass hr.columnValue.isCurrent}}" as |column|>
           {{column.name}} ({{column.timezone}})
+          {{#if showCurrent}}
+            {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
+          {{/if}}
         </hr.cell>
       </h.row>
     </t.head>

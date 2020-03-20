@@ -54,7 +54,7 @@ export function createMemberArray(modelMembers, showCurrent, timezoneNow) {
 
     if (!hasCurrent) {
       returnArray.pushObject({
-        name: 'Your current timezone',
+        name: 'You',
         timezone: timezoneNow,
         id: 'current'
       });

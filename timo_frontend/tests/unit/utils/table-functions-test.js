@@ -54,7 +54,7 @@ module('Unit | Utils | table functions', function (hooks) {
     let newMember = membersArray[2];
     assert.notEqual(array, membersArray, 'Current timezone doesnt exists');
     assert.equal(membersArray.length, 3, 'Added new member');
-    assert.equal(newMember.name, "Your current timezone", 'Correct name');
+    assert.equal(newMember.name, "You", 'Correct name');
     assert.equal(newMember.timezone, "America/Los_Angeles", 'Correct timezone');
     assert.equal(newMember.id, "current", 'Correct id');
   });
