@@ -19,7 +19,7 @@
       as |h|
     >
       <h.row @class="mat-header-row" as |hr|>
-        <hr.cell @class="mat-header-cell cell-text-align {{col-color colColorClass hr.columnValue.isCurrent}}" as |column|>
+        <hr.cell @class="mat-header-cell cell-text-align" as |column|>
           {{column.name}} ({{column.timezone}})
           {{#if showCurrent}}
             {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}

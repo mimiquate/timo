@@ -58,10 +58,6 @@ export default Controller.extend({
     return memberRows;
   }),
 
-  colColorClass: computed('showCurrent', function() {
-    return this.showCurrent ? 'current-col-cell' : '';
-  }),
-
   actions: {
     async newMember() {
       await this.transitionToRoute('landing.teams.team.new', this.model);
