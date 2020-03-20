@@ -49,4 +49,20 @@ module('Acceptance | Landing', function (hooks) {
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
   });
+
+  test('Clicks username and then logouts', async function (assert) {
+    const store = this.owner.lookup('service:store');
+    let newUser = this.server.create('user', { username: 'juan', store: store });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('[data-test=logout-trigger]');
+    await click('[data-test=logout-button] button');
+
+    assert.equal(currentURL(), `/login`, 'Redirects to login page');
+
+    await visit('/');
+
+    assert.equal(currentURL(), `/login`, 'Stays on login page');
+  })
 });

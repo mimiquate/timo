@@ -5,6 +5,7 @@ defmodule TimoWeb.Router do
     plug :accepts, ["json-api"]
     plug JaSerializer.ContentTypeNegotiation
     plug JaSerializer.Deserializer
+    plug :fetch_session
   end
 
   scope "/api", TimoWeb do
@@ -12,5 +13,6 @@ defmodule TimoWeb.Router do
     resources "/users", UserController, only: [:create, :show]
     resources "/teams", TeamController, only: [:create, :show, :index]
     resources "/members", MemberController, only: [:create]
+    delete "/logout", SessionController, :logout
   end
 end

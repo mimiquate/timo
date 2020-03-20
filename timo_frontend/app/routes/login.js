@@ -5,5 +5,11 @@ export default Route.extend({
     if (this.session.currentUser) {
       this.transitionTo('landing');
     }
+  },
+
+  resetController(controller) {
+    controller.setProperties({
+      username: ''
+    });
   }
 });

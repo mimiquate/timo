@@ -1,9 +1,20 @@
 <PaperToolbar>
   <PaperToolbarTools>
     <div class="paper-right">
-      <span data-test="current-user-span">
-        {{session.currentUser.username}}
-      </span>
+      <PaperMenu @offset="0 50" as |menu|>
+        <menu.trigger data-test="logout-trigger">
+          {{paper-icon "arrow_drop_down" class="md-menu-origin"}}
+          <span data-test="current-user-span">
+            {{session.currentUser.username}}
+          </span>
+        </menu.trigger>
+        <menu.content as |content|>
+          <content.menu-item data-test="logout-button" @onClick={{action "logOut"}}>
+            {{paper-icon "power_settings_new" class="md-menu-align-target"}}
+            <span>Logout</span>
+          </content.menu-item>
+        </menu.content>
+      </PaperMenu>
     </div>
   </PaperToolbarTools>
 </PaperToolbar>

@@ -11,7 +11,6 @@ defmodule TimoWeb.UserController do
 
     with {:ok, status, %User{} = user} <- API.find_or_create_user_by_username(username) do
       conn
-      |> fetch_session()
       |> put_session("user_id", user.id)
       |> add_status(status, user)
       |> render("show.json-api", data: user)
@@ -21,7 +20,6 @@ defmodule TimoWeb.UserController do
   def show(conn, %{"id" => "me"}) do
     user_id =
       conn
-      |> fetch_session()
       |> get_session("user_id")
 
     if !user_id do
