@@ -121,4 +121,62 @@ module('Acceptance | Team', function (hooks) {
     assert.dom('[data-test=new-member-title]').exists('New member title page loads');
     assert.dom('[data-test=new-member-title]').hasText('New Member', 'Correct title');
   });
+
+  test('Clicks checkbox lists my current timezone', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'Universal',
+      team: newTeam
+    });
+
+    await visit(`/teams/${newTeam.id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 1, 'Table has one column');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (Universal)',
+      'Member 1 is listed'
+    );
+
+    await click('[data-test=checkbox]');
+    assert.equal(table.headers.length, 2, 'Table has two columns');
+
+    await click('[data-test=checkbox]');
+    assert.equal(table.headers.length, 1, 'Table has one column');
+  });
+
+  test('Clicks checkbox with already existing current timezone', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+
+    const timezoneNow = moment.tz.guess(true);
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: timezoneNow,
+      team: newTeam
+    });
+
+    await visit(`/teams/${newTeam.id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 1, 'Table has one column');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      `Member 1 (${timezoneNow})`,
+      'Member 1 is listed'
+    );
+
+    await click('[data-test=checkbox]');
+    assert.equal(table.headers.length, 1, 'Table has one column');
+
+    await click('[data-test=checkbox]');
+    assert.equal(table.headers.length, 1, 'Table has one column');
+  });
 });

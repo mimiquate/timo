@@ -2,8 +2,15 @@
   <h1 data-test="team-title">
     {{this.model.name}}
   </h1>
+  <PaperCheckbox
+    @value={{showCurrent}}
+    @onChange={{action "setValue"}}
+    data-test="checkbox"
+  >
+    List my current timezone
+  </PaperCheckbox>
 </div>
-{{#if this.model.members.length}}
+{{#if this.membersArray.length}}
   <EmberTable @class="member-content box-shadow-z8-on-white" as |t|>
     <t.head
       @columns={{columns}}
@@ -13,7 +20,10 @@
     >
       <h.row @class="mat-header-row" as |hr|>
         <hr.cell @class="mat-header-cell cell-text-align" as |column|>
-          {{column.name}}
+          {{column.name}} ({{column.timezone}})
+          {{#if showCurrent}}
+            {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
+          {{/if}}
         </hr.cell>
       </h.row>
     </t.head>

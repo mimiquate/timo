@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export function compareTimeZones(memberA, memberB) {
+export function compareMemberTimeZones(memberA, memberB) {
   const aTime = moment.tz(memberA.timezone).format();
   const bTime = moment.tz(memberB.timezone).format();
 
@@ -42,4 +42,24 @@ export function filterClass(hour, offset, hoursTime) {
   }
 
   return retClass;
+}
+
+export function createMemberArray(modelMembers, showCurrent, timezoneNow) {
+  const returnArray = modelMembers.toArray();
+
+  if (showCurrent) {
+    const hasCurrent = returnArray.some(m => {
+      return m.timezone === timezoneNow;
+    });
+
+    if (!hasCurrent) {
+      returnArray.pushObject({
+        name: 'You',
+        timezone: timezoneNow,
+        id: 'current'
+      });
+    }
+  }
+
+  return returnArray;
 }

@@ -130,3 +130,7 @@ $row-filter: brightness(70%);
   -moz-box-shadow: inset 0px 5px 5px -5px black;
   box-shadow: inset 0px 5px 5px -5px black;
 }
+
+.current-col-cell {
+  background: paper-color('orange', '100');
+}
