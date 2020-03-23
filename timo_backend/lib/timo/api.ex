@@ -125,4 +125,18 @@ defmodule Timo.API do
   defp team_member_query(query, %Team{id: team_id}) do
     from(m in query, where: m.team_id == ^team_id)
   end
+
+  def get_member(id) do
+    with %Member{} = member <- Repo.get(Member, id) do
+      {:ok, member}
+    else
+      nil -> nil
+    end
+  end
+
+  def update_member(%Member{} = member, attrs) do
+    member
+    |> Member.changeset(attrs)
+    |> Repo.update()
+  end
 end

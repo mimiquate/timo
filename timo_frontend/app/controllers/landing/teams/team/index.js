@@ -82,6 +82,29 @@ export default Controller.extend({
         timezone: memberTimeZone,
         team: this.model
       }).save().then(() => set(this, 'newMemberModal', false));
+    },
+
+    editMember(columnObject) {
+      if (columnObject.valuePath != "current") {
+        set(this, 'selectedMemberColumn', columnObject);
+        set(this, 'editMemberModal', true);
+      }
+    },
+
+    closeEditMemberModal() {
+      set(this, 'editMemberModal', false);
+    },
+
+    async saveEditMember(memberName, memberTimeZone) {
+      const memberId = this.selectedMemberColumn.valuePath;
+
+      const member = await this.store.findRecord('member', memberId);
+      set(member, 'name', memberName);
+      set(member, 'timezone', memberTimeZone);
+
+      member.save();
+
+      set(this, 'editMemberModal', false);
     }
   }
 });

@@ -19,7 +19,11 @@
       as |h|
     >
       <h.row @class="mat-header-row" as |hr|>
-        <hr.cell @class="mat-header-cell cell-text-align" as |column|>
+        <hr.cell
+          @class="mat-header-cell cell-text-align"
+          onclick={{action "editMember" hr.columnValue}}
+          as |column|
+        >
           {{column.name}} ({{column.timezone}})
           {{#if showCurrent}}
             {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
@@ -62,5 +66,15 @@
     @title="New Member"
     @modalOrigin="#new-member-origin"
     data-test="new-member-modal"
+  />
+{{/if}}
+{{#if editMemberModal}}
+  <MemberModal
+    @addMember={{action "saveEditMember"}}
+    @memberName={{selectedMemberColumn.name}}
+    @memberTimeZone={{selectedMemberColumn.timezone}}
+    @closeModal={{action "closeEditMemberModal"}}
+    @title="Edit Member"
+    data-test="edit-member-modal"
   />
 {{/if}}
