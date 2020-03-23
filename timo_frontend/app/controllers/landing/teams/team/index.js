@@ -1,13 +1,13 @@
 import Controller from '@ember/controller';
 import { computed } from "@ember/object";
 import moment from 'moment';
-import { set, get } from "@ember/object";
+import { set } from "@ember/object";
 import { compareMemberTimeZones, hoursLeftOver, filterClass, createMemberArray } from 'timo-frontend/utils/table-functions';
 
 export default Controller.extend({
   membersArray: computed('model.members.{[],@each.id}', 'showCurrent', function () {
     const timezoneNow = moment.tz.guess(true);
-    const membersToArray = createMemberArray(get(this.model, 'members'), this.showCurrent, timezoneNow);
+    const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);
     return membersToArray.sort(compareMemberTimeZones);
   }),
 
