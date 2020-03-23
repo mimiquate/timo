@@ -1,32 +1,51 @@
-<PaperForm class="layout layout-align-center" @onSubmit={{action "add"}} as |form|>
-  <div class="layout-column layout-align-center">
-    <form.input
-      @value={{memberName}}
-      @placeholder="New member name"
-      id="memberName-input"
-      @onChange={{action (mut memberName)}}
-      @required={{true}}
-    />
-    <form.select
-      @label="Time Zone"
-      @options={{timezoneList}}
-      @selected={{memberTimeZone}}
-      @searchPlaceholder="Search for a timezone..."
-      @searchEnabled={{true}}
-      @closeOnSelect={{true}}
-      id="memberTimeZone-select"
-      @onChange={{action (mut memberTimeZone)}}
-      @required={{true}}
-      as |timezone|
-    >
-      {{timezone}}
-    </form.select>
-    <form.submit-button
-      @raised={{true}}
-      @primary={{true}}
-      data-test="saveMember-button"
-    >
-      Save
-    </form.submit-button>
-  </div>
-</PaperForm>
+<PaperDialog
+    @clickOutsideToClose={{true}}
+    @onClose={{this.closeModal}}
+    @origin={{this.modalOrigin}}
+  >
+  <PaperToolbar>
+    <PaperToolbarTools>
+      <h1 data-test="new-member-title">
+        {{this.title}}
+      </h1>
+      <span class="flex"></span>
+      <PaperButton @iconButton={{true}} @onClick={{this.closeModal}} data-test="close-new-member">
+        {{paper-icon icon="close"}}
+      </PaperButton>
+    </PaperToolbarTools>
+  </PaperToolbar>
+  <PaperDialogContent>
+    <PaperForm class="layout layout-align-center" @onSubmit={{action "add"}} as |form|>
+      <div class="layout-column layout-align-center">
+        <form.input
+          @value={{memberName}}
+          @placeholder="New member name"
+          id="memberName-input"
+          @onChange={{action (mut memberName)}}
+          @required={{true}}
+        />
+        <form.select
+          @label="Time Zone"
+          @options={{timezoneList}}
+          @selected={{memberTimeZone}}
+          @searchPlaceholder="Search for a timezone..."
+          @searchEnabled={{true}}
+          @closeOnSelect={{true}}
+          id="memberTimeZone-select"
+          @onChange={{action (mut memberTimeZone)}}
+          @required={{true}}
+          as |timezone|
+        >
+          {{timezone}}
+        </form.select>
+        <form.submit-button
+          @raised={{true}}
+          @primary={{true}}
+          data-test="saveMember-button"
+        >
+          Save
+        </form.submit-button>
+      </div>
+    </PaperForm>
+  </PaperDialogContent>
+</PaperDialog>

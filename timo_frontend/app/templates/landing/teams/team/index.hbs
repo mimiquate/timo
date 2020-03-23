@@ -56,24 +56,11 @@
   +
 </PaperButton>
 {{#if newMemberModal}}
-  <PaperDialog
-    @clickOutsideToClose={{true}}
-    @onClose={{action "closeNewMemberModal"}}
-    @origin="#new-member-origin"
-  >
-    <PaperToolbar>
-      <PaperToolbarTools>
-        <h1 data-test="new-member-title">
-          New Member
-        </h1>
-        <span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{action "closeNewMemberModal"}} data-test="close-new-member">
-          {{paper-icon icon="close"}}
-        </PaperButton>
-      </PaperToolbarTools>
-    </PaperToolbar>
-    <PaperDialogContent>
-      <NewMember @addMember={{action "saveMember"}} data-test="new-member-modal"/>
-    </PaperDialogContent>
-  </PaperDialog>
+  <NewMember
+    @addMember={{action "saveMember"}}
+    @closeModal={{action "closeNewMemberModal"}}
+    @title="New Member"
+    @modalOrigin="#new-member-origin"
+    data-test="new-member-modal"
+  />
 {{/if}}
