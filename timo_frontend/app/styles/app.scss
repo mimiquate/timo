@@ -134,3 +134,13 @@ $row-filter: brightness(70%);
 .current-col-cell {
   background: paper-color('orange', '100');
 }
+
+$input-error-font-size: 12px !default;
+$input-error-height: 24px !default;
+$input-error-line-height: $input-error-font-size + 2px !default;
+$error-padding-top: ($input-error-height - $input-error-line-height) / 2 !default;
+
+.paper-input-error {
+  font-size: $input-error-font-size;
+  padding-top: $error-padding-top;
+}

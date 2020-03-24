@@ -5,18 +5,23 @@ import { set } from "@ember/object";
 import { compareMemberTimeZones, hoursLeftOver, filterClass, createMemberArray } from 'timo-frontend/utils/table-functions';
 
 export default Controller.extend({
-  membersArray: computed('model.members', 'showCurrent', function () {
+  savedMembers: computed('model.members.{[],@each.id}', function () {
+    return this.model.members.filterBy('id');
+  }),
+
+  sortedMembers: computed('savedMembers.[]', 'showCurrent', function () {
     const timezoneNow = moment.tz.guess(true);
-    const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);
+    const membersToArray = createMemberArray(this.savedMembers, this.showCurrent, timezoneNow);
+
     return membersToArray.sort(compareMemberTimeZones);
   }),
 
-  columns: computed('membersArray', function () {
+  columns: computed('sortedMembers.[]', function () {
     const memberCol = [];
 
     const timezoneNow = moment.tz.guess(true);
 
-    this.membersArray.forEach(m => {
+    this.sortedMembers.forEach(m => {
       memberCol.pushObject({
         name: m.name,
         timezone: m.timezone,
@@ -30,11 +35,11 @@ export default Controller.extend({
     return memberCol;
   }),
 
-  rows: computed('membersArray', function () {
+  rows: computed('sortedMembers.[]', function () {
     const memberRows = [];
     let row = {};
 
-    const hours = hoursLeftOver(this.membersArray, new Date());
+    const hours = hoursLeftOver(this.sortedMembers, new Date());
     const hoursStart = hours[0];
     const hoursEnd = 24 + hours[1];
 
@@ -47,7 +52,7 @@ export default Controller.extend({
     for (let i = 0; i < hoursEnd; i++) {
       row = {filter: filterClass(i, hoursStart, hoursTime)};
 
-      this.membersArray.forEach(m => {
+      this.sortedMembers.forEach(m => {
         row[m.id] = moment.tz(time, m.timezone);
       });
 
@@ -59,12 +64,24 @@ export default Controller.extend({
   }),
 
   actions: {
-    async newMember() {
-      await this.transitionToRoute('landing.teams.team.new', this.model);
+    newMember() {
+      set(this, 'newMemberModal', true);
+    },
+
+    closeNewMemberModal() {
+      set(this, 'newMemberModal', false);
     },
 
     setValue(value) {
       set(this, 'showCurrent', value);
+    },
+
+    async saveMember(memberName, memberTimeZone) {
+      await this.store.createRecord('member', {
+        name: memberName,
+        timezone: memberTimeZone,
+        team: this.model
+      }).save().then(() => set(this, 'newMemberModal', false));
     }
   }
 });

@@ -10,7 +10,7 @@
     List my current timezone
   </PaperCheckbox>
 </div>
-{{#if this.membersArray.length}}
+{{#if this.sortedMembers.length}}
   <EmberTable @class="member-content box-shadow-z8-on-white" as |t|>
     <t.head
       @columns={{columns}}
@@ -51,6 +51,16 @@
   @onClick={{action "newMember"}}
   data-test="add-member-button"
   @class="add-button"
+  id="new-member-origin"
 >
   +
 </PaperButton>
+{{#if newMemberModal}}
+  <MemberModal
+    @addMember={{action "saveMember"}}
+    @closeModal={{action "closeNewMemberModal"}}
+    @title="New Member"
+    @modalOrigin="#new-member-origin"
+    data-test="new-member-modal"
+  />
+{{/if}}

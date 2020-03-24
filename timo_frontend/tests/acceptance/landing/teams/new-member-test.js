@@ -1,64 +1,41 @@
 import { module, test } from 'qunit';
-import { visit, currentURL, click, fillIn } from '@ember/test-helpers';
+import { click, fillIn } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession, chooseTimeZone } from '../../../../helpers/custom-helpers';
+import { setSession, chooseTimeZone, openNewMemberModal } from '../../../helpers/custom-helpers';
 import { TablePage } from 'ember-table/test-support';
 
 module('Acceptance | New member', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('Visiting /teams/team/new without exisiting username', async function (assert) {
-    await visit('/teams/team/new');
-
-    assert.equal(currentURL(), '/login', 'Correctly redirects to login page');
-  });
-
-  test('Visiting /teams/team/new with existing username', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-
-    await visit(`/teams/${newTeam.id}/new`);
-
-    assert.equal(currentURL(), `/teams/${newTeam.id}/new`, 'Correctly visits new member page');
-    assert.dom('[data-test=new-member-title]').exists('New member title page loads');
-    assert.dom('[data-test=new-member-title]').hasText('New Member', 'Correct title');
-  });
-
   test('Resets inputs when entering new member page', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
-    await visit(`/teams/${newTeam.id}/new`);
+    await openNewMemberModal(newTeam.id);
     await fillIn('#memberName-input input', 'Member');
     await chooseTimeZone('America/Montevideo');
-    await visit(`/teams/${newTeam.id}`);
+    await click('[data-test=close-member-modal]');
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Moves to team page');
+    await openNewMemberModal(newTeam.id);
 
-    await visit(`/teams/${newTeam.id}/new`);
-
-    assert.equal(currentURL(), `/teams/${newTeam.id}/new`, 'Moves to new member page');
     assert.dom('#memberName-input input').hasText('', 'Member name input is empty');
     assert.dom('#memberTimeZone-select').hasText('Time Zone', 'Member time zone is empty');
   });
 
-  test('Creates member and redirects', async function (assert) {
+  test('Creates member and closes modal', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
-    await visit(`/teams/${newTeam.id}/new`);
+    await openNewMemberModal(newTeam.id);
     await fillIn('#memberName-input input', 'Member');
     await chooseTimeZone('America/Montevideo');
     await click('[data-test=saveMember-button]');
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Redirects to team page');
-    assert.dom('[data-test=team-title]').exists('Team title loads');
-    assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
+    assert.dom('[data-test=new-member-modal]').doesNotExist('Correctly closes new member modal');
 
     const table = new TablePage();
 
@@ -75,12 +52,12 @@ module('Acceptance | New member', function (hooks) {
     setSession.call(this, newUser);
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
-    await visit(`/teams/${newTeam.id}/new`);
+    await openNewMemberModal(newTeam.id);
     await click('[data-test=saveMember-button]');
 
-    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+    let errorMessage = this.element.parentElement.querySelectorAll('.paper-input-error');
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}/new`, 'Stays in new member page');
+    assert.dom('[data-test=new-member-modal]').exists('Stays in new member modal');
     assert.ok(errorMessage[0].textContent
       .includes('This is required'), 'No member name error');
     assert.ok(errorMessage[1].textContent
@@ -92,13 +69,13 @@ module('Acceptance | New member', function (hooks) {
     setSession.call(this, newUser);
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
-    await visit(`/teams/${newTeam.id}/new`);
+    await openNewMemberModal(newTeam.id);
     await fillIn('#memberName-input input', 'Member');
     await click('[data-test=saveMember-button]');
 
-    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+    let errorMessage = this.element.parentElement.querySelectorAll('.paper-input-error');
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}/new`, 'Stays in new member page');
+    assert.dom('[data-test=new-member-modal]').exists('Stays in new member modal');
     assert.ok(errorMessage[0].textContent
       .includes('This is required'), 'No member time zone error');
   });
@@ -108,13 +85,13 @@ module('Acceptance | New member', function (hooks) {
     setSession.call(this, newUser);
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
-    await visit(`/teams/${newTeam.id}/new`);
+    await openNewMemberModal(newTeam.id);
     await chooseTimeZone('America/Montevideo');
     await click('[data-test=saveMember-button]');
 
-    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+    let errorMessage = this.element.parentElement.querySelectorAll('.paper-input-error');
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}/new`, 'Stays in new member page');
+    assert.dom('[data-test=new-member-modal]').exists('Stays in new member modal');
     assert.ok(errorMessage[0].textContent
       .includes('This is required'), 'No member name error');
   });
@@ -124,11 +101,11 @@ module('Acceptance | New member', function (hooks) {
     setSession.call(this, newUser);
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
-    await visit(`/teams/${newTeam.id}/new`);
+    await openNewMemberModal(newTeam.id);
     await fillIn('#memberName-input input', '     ');
     await chooseTimeZone('America/Montevideo');
     await click('[data-test=saveMember-button]');
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}/new`, 'Stays in new member page');
+    assert.dom('[data-test=new-member-modal]').exists('Stays in new member modal');
   });
 });
