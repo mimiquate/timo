@@ -118,8 +118,8 @@ module('Acceptance | Team', function (hooks) {
     await click('[data-test=add-member-button]');
 
     assert.dom('[data-test=new-member-modal]').exists('Correctly opens new member modal');
-    assert.dom('[data-test=new-member-title]').exists('New member modal title loads');
-    assert.dom('[data-test=new-member-title]').hasText('New Member', 'Correct title');
+    assert.dom('[data-test=member-modal-title]').exists('New member modal title loads');
+    assert.dom('[data-test=member-modal-title]').hasText('New Member', 'Correct title');
   });
 
   test('Clicks checkbox lists my current timezone', async function (assert) {

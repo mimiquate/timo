@@ -17,7 +17,7 @@ module('Acceptance | New member', function (hooks) {
     await openNewMemberModal(newTeam.id);
     await fillIn('#memberName-input input', 'Member');
     await chooseTimeZone('America/Montevideo');
-    await click('[data-test=close-new-member]');
+    await click('[data-test=close-member-modal]');
 
     await openNewMemberModal(newTeam.id);
 
