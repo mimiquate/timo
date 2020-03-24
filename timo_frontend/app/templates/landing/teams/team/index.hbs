@@ -10,7 +10,7 @@
     List my current timezone
   </PaperCheckbox>
 </div>
-{{#if this.membersArray.length}}
+{{#if this.sortedMembers.length}}
   <EmberTable @class="member-content box-shadow-z8-on-white" as |t|>
     <t.head
       @columns={{columns}}
