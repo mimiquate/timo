@@ -100,7 +100,7 @@ export default Controller.extend({
         && memberTimeZone == this.selectedMemberColumn.timezone))
       {
         const memberId = this.selectedMemberColumn.valuePath;
-        const member = await this.store.findRecord('member', memberId);
+        const member = this.sortedMembers.find(m => m.id == memberId);
         set(member, 'name', memberName);
         set(member, 'timezone', memberTimeZone);
 

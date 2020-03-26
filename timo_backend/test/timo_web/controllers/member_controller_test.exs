@@ -62,25 +62,6 @@ defmodule TimoWeb.MemberControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
-  test "show member that exists", %{conn: conn, team: team} do
-    member = member_factory(team)
-    member_id = Integer.to_string(member.id)
-
-    conn = get(conn, Routes.member_path(conn, :show, member_id))
-    data = json_response(conn, 200)["data"]
-
-    assert data["id"] == member_id
-    assert data["type"] == "member"
-    assert data["attributes"]["name"] == member.name
-    assert data["attributes"]["timezone"] == member.timezone
-  end
-
-  test "does not show member that doesn't exists", %{conn: conn} do
-    conn = get(conn, Routes.member_path(conn, :show, 100))
-
-    assert json_response(conn, 404)["errors"] != %{}
-  end
-
   test "updates member and renders member when data is valid", %{conn: conn, team: team} do
     member = member_factory(team)
     member_id = Integer.to_string(member.id)
