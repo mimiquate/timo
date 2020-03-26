@@ -20,7 +20,7 @@
     >
       <h.row @class="mat-header-row" as |hr|>
         <hr.cell
-          @class="mat-header-cell cell-text-align"
+          @class="mat-header-cell cell-text-align pointer-cursor"
           onclick={{action "editMember" hr.columnValue}}
           data-test-member={{hr.columnValue.valuePath}}
           as |column|
