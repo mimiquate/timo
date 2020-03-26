@@ -64,16 +64,12 @@ export default Controller.extend({
   }),
 
   actions: {
+    closeMemberModal(modal) {
+      set(this, modal, false);
+    },
+
     newMember() {
       set(this, 'newMemberModal', true);
-    },
-
-    closeNewMemberModal() {
-      set(this, 'newMemberModal', false);
-    },
-
-    setValue(value) {
-      set(this, 'showCurrent', value);
     },
 
     async saveMember(memberName, memberTimeZone) {
@@ -89,10 +85,6 @@ export default Controller.extend({
         set(this, 'selectedMemberColumn', columnObject);
         set(this, 'editMemberModal', true);
       }
-    },
-
-    closeEditMemberModal() {
-      set(this, 'editMemberModal', false);
     },
 
     async saveEditMember(memberName, memberTimeZone) {

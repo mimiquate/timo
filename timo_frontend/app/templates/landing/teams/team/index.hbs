@@ -4,7 +4,7 @@
   </h1>
   <PaperCheckbox
     @value={{showCurrent}}
-    @onChange={{action "setValue"}}
+    @onChange={{action (mut showCurrent)}}
     data-test="checkbox"
   >
     List my current timezone
@@ -63,7 +63,7 @@
 {{#if newMemberModal}}
   <MemberModal
     @addMember={{action "saveMember"}}
-    @closeModal={{action "closeNewMemberModal"}}
+    @closeModal={{action "closeMemberModal" "newMemberModal"}}
     @title="New Member"
     @modalOrigin="#new-member-origin"
     data-test="new-member-modal"
@@ -73,7 +73,7 @@
   <MemberModal
     @addMember={{action "saveEditMember"}}
     @memberColumn={{selectedMemberColumn}}
-    @closeModal={{action "closeEditMemberModal"}}
+    @closeModal={{action "closeMemberModal" "editMemberModal"}}
     @title="Edit Member"
     data-test="edit-member-modal"
   />
