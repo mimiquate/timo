@@ -23,8 +23,7 @@ export default Controller.extend({
 
     this.sortedMembers.forEach(m => {
       memberCol.pushObject({
-        name: m.name,
-        timezone: m.timezone,
+        member: m,
         valuePath: m.id,
         textAlign: 'center',
         width: 225,
@@ -80,21 +79,19 @@ export default Controller.extend({
       }).save().then(() => set(this, 'newMemberModal', false));
     },
 
-    editMember(columnObject) {
-      set(this, 'selectedMemberColumn', columnObject);
+    editMember(member) {
+      set(this, 'memberToEdit', member);
       set(this, 'editMemberModal', true);
     },
 
     async saveEditMember(memberName, memberTimeZone) {
-      if (!(memberName == this.selectedMemberColumn.name
-        && memberTimeZone == this.selectedMemberColumn.timezone))
+      if (!(memberName == this.memberToEdit.name
+        && memberTimeZone == this.memberToEdit.timezone))
       {
-        const memberId = this.selectedMemberColumn.valuePath;
-        const member = this.sortedMembers.find(m => m.id == memberId);
-        set(member, 'name', memberName);
-        set(member, 'timezone', memberTimeZone);
+        set(this.memberToEdit, 'name', memberName);
+        set(this.memberToEdit, 'timezone', memberTimeZone);
 
-        member.save();
+        this.memberToEdit.save();
       }
 
       set(this, 'editMemberModal', false);

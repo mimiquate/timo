@@ -5,9 +5,9 @@ import { set } from "@ember/object";
 export default Component.extend({
   init() {
     this._super(...arguments);
-    if (this.memberColumn) {
-      set(this, 'memberName', this.memberColumn.name);
-      set(this, 'memberTimeZone', this.memberColumn.timezone);
+    if (this.member) {
+      set(this, 'memberName', this.member.name);
+      set(this, 'memberTimeZone', this.member.timezone);
     }
   },
 

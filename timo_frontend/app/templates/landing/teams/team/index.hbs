@@ -21,11 +21,11 @@
       <h.row @class="mat-header-row" as |hr|>
         <hr.cell
           @class="mat-header-cell cell-text-align pointer-cursor"
-          onclick={{if (not-eq hr.columnValue.valuePath "current") (action "editMember" hr.columnValue)}}
+          onclick={{if (not-eq hr.columnValue.valuePath "current") (action "editMember" hr.columnValue.member)}}
           data-test-member={{hr.columnValue.valuePath}}
           as |column|
         >
-          {{column.name}} ({{column.timezone}})
+          {{column.member.name}} ({{column.member.timezone}})
           {{#if showCurrent}}
             {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
           {{/if}}
@@ -72,7 +72,7 @@
 {{#if editMemberModal}}
   <MemberModal
     @addMember={{action "saveEditMember"}}
-    @memberColumn={{selectedMemberColumn}}
+    @member={{memberToEdit}}
     @closeModal={{action "closeMemberModal" "editMemberModal"}}
     @title="Edit Member"
     data-test="edit-member-modal"
