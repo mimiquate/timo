@@ -27,7 +27,7 @@ export default Controller.extend({
         valuePath: m.id,
         textAlign: 'center',
         width: 225,
-        isCurrent: timezoneNow == m.timezone
+        isCurrent: timezoneNow === m.timezone
       })
     });
 
@@ -85,8 +85,8 @@ export default Controller.extend({
     },
 
     async saveEditMember(memberName, memberTimeZone) {
-      if (!(memberName == this.memberToEdit.name
-        && memberTimeZone == this.memberToEdit.timezone))
+      if (!(memberName === this.memberToEdit.name
+        && memberTimeZone === this.memberToEdit.timezone))
       {
         set(this.memberToEdit, 'name', memberName);
         set(this.memberToEdit, 'timezone', memberTimeZone);
