@@ -81,10 +81,8 @@ export default Controller.extend({
     },
 
     editMember(columnObject) {
-      if (columnObject.valuePath != "current") {
-        set(this, 'selectedMemberColumn', columnObject);
-        set(this, 'editMemberModal', true);
-      }
+      set(this, 'selectedMemberColumn', columnObject);
+      set(this, 'editMemberModal', true);
     },
 
     async saveEditMember(memberName, memberTimeZone) {
