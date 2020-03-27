@@ -7,7 +7,7 @@
       @value={{teamName}}
       @placeholder="New team name"
       id="teamName-input"
-      @onChange={{action "setValue"}}
+      @onChange={{action (mut teamName)}}
       @required={{true}}
     />
   </div>

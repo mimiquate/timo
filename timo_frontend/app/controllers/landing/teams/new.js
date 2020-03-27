@@ -20,10 +20,6 @@ export default Controller.extend({
         await team.save();
         await this.transitionToRoute('landing.teams.team', team);
       }
-    },
-
-    setValue(value) {
-      set(this, 'teamName', value);
     }
   }
 });

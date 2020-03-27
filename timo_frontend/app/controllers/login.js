@@ -18,10 +18,6 @@ export default Controller.extend({
 
         await this.transitionToRoute('landing');
       }
-    },
-
-    setValue(value) {
-      set(this, 'username', value);
     }
   }
 });
