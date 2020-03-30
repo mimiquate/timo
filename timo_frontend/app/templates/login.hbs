@@ -9,7 +9,7 @@
           @value={{username}}
           @placeholder="username"
           id="username-input"
-          @onChange={{action "setValue"}}
+          @onChange={{action (mut username)}}
           @required={{true}}
         />
       </div>
