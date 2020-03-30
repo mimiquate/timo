@@ -9,7 +9,7 @@ export default Controller.extend({
     return this.model.members.filterBy('id');
   }),
 
-  sortedMembers: computed('savedMembers.[]', 'showCurrent', function () {
+  sortedMembers: computed('savedMembers.{[],@each.name,@each.timezone}', 'showCurrent', function () {
     const timezoneNow = moment.tz.guess(true);
     const membersToArray = createMemberArray(this.savedMembers, this.showCurrent, timezoneNow);
 
@@ -23,12 +23,11 @@ export default Controller.extend({
 
     this.sortedMembers.forEach(m => {
       memberCol.pushObject({
-        name: m.name,
-        timezone: m.timezone,
+        member: m,
         valuePath: m.id,
         textAlign: 'center',
         width: 225,
-        isCurrent: timezoneNow == m.timezone
+        isCurrent: timezoneNow === m.timezone
       })
     });
 
@@ -64,16 +63,12 @@ export default Controller.extend({
   }),
 
   actions: {
+    closeMemberModal(modal) {
+      set(this, modal, false);
+    },
+
     newMember() {
       set(this, 'newMemberModal', true);
-    },
-
-    closeNewMemberModal() {
-      set(this, 'newMemberModal', false);
-    },
-
-    setValue(value) {
-      set(this, 'showCurrent', value);
     },
 
     async saveMember(memberName, memberTimeZone) {
@@ -82,6 +77,24 @@ export default Controller.extend({
         timezone: memberTimeZone,
         team: this.model
       }).save().then(() => set(this, 'newMemberModal', false));
+    },
+
+    editMember(member) {
+      set(this, 'memberToEdit', member);
+      set(this, 'editMemberModal', true);
+    },
+
+    async saveEditMember(memberName, memberTimeZone) {
+      if (!(memberName === this.memberToEdit.name
+        && memberTimeZone === this.memberToEdit.timezone))
+      {
+        set(this.memberToEdit, 'name', memberName);
+        set(this.memberToEdit, 'timezone', memberTimeZone);
+
+        this.memberToEdit.save();
+      }
+
+      set(this, 'editMemberModal', false);
     }
   }
 });

@@ -17,4 +17,11 @@ defmodule TimoWeb.MemberController do
       |> render("show.json-api", data: member)
     end
   end
+
+  def update(conn, %{"id" => id, "data" => %{"type" => "members", "attributes" => member_params}}) do
+    with {:ok, member} <- API.get_member(id),
+         {:ok, %Member{} = member} <- API.update_member(member, member_params) do
+      render(conn, "show.json-api", data: member)
+    end
+  end
 end

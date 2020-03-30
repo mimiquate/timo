@@ -11,4 +11,6 @@ export default function() {
   this.delete('/logout', () => {
     return {};
   }, 200);
+  this.get('/members/:id');
+  this.patch('/members/:id');
 }

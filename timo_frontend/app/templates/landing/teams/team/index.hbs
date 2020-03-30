@@ -4,7 +4,7 @@
   </h1>
   <PaperCheckbox
     @value={{showCurrent}}
-    @onChange={{action "setValue"}}
+    @onChange={{action (mut showCurrent)}}
     data-test="checkbox"
   >
     List my current timezone
@@ -19,8 +19,13 @@
       as |h|
     >
       <h.row @class="mat-header-row" as |hr|>
-        <hr.cell @class="mat-header-cell cell-text-align" as |column|>
-          {{column.name}} ({{column.timezone}})
+        <hr.cell
+          @class="mat-header-cell cell-text-align pointer-cursor"
+          onclick={{if (not-eq hr.columnValue.valuePath "current") (action "editMember" hr.columnValue.member)}}
+          data-test-member={{hr.columnValue.valuePath}}
+          as |column|
+        >
+          {{column.member.name}} ({{column.member.timezone}})
           {{#if showCurrent}}
             {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
           {{/if}}
@@ -58,9 +63,18 @@
 {{#if newMemberModal}}
   <MemberModal
     @addMember={{action "saveMember"}}
-    @closeModal={{action "closeNewMemberModal"}}
+    @closeModal={{action "closeMemberModal" "newMemberModal"}}
     @title="New Member"
     @modalOrigin="#new-member-origin"
     data-test="new-member-modal"
+  />
+{{/if}}
+{{#if editMemberModal}}
+  <MemberModal
+    @addMember={{action "saveEditMember"}}
+    @member={{memberToEdit}}
+    @closeModal={{action "closeMemberModal" "editMemberModal"}}
+    @title="Edit Member"
+    data-test="edit-member-modal"
   />
 {{/if}}

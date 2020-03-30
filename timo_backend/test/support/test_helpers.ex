@@ -25,6 +25,11 @@ defmodule Timo.TestHelpers do
     |> Repo.insert!()
   end
 
+  def member_factory() do
+    team = team_factory(user_factory())
+    member_factory(team)
+  end
+
   def member_factory(%Team{} = team, attrs \\ %{}) do
     default_value = %{
       name: "some name",
