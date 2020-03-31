@@ -1,5 +1,10 @@
 <PaperToolbar>
   <PaperToolbarTools>
+    <PaperSidenavToggle as |toggleAction|>
+      <PaperButton @onClick={{action toggleAction}} @iconButton={{true}}>
+        {{paper-icon "reorder"}}
+      </PaperButton>
+    </PaperSidenavToggle>
     <div class="paper-right">
       <PaperMenu @offset="0 50" as |menu|>
         <menu.trigger @class="pointer-cursor" data-test="logout-trigger">
@@ -19,7 +24,7 @@
   </PaperToolbarTools>
 </PaperToolbar>
 <PaperSidenavContainer @class="inner-sidenav">
-  <PaperSidenav @class="side-container box-shadow-z8" @lockedOpen={{true}}>
+  <PaperSidenav @class="side-container box-shadow-z8" @open={{sidenavOpen}} @onToggle={{action (mut sidenavOpen)}}>
     <PaperToolbar>
       <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
     </PaperToolbar>
