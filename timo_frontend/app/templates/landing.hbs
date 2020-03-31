@@ -1,7 +1,11 @@
 <PaperToolbar>
   <PaperToolbarTools>
     <PaperSidenavToggle as |toggleAction|>
-      <PaperButton @onClick={{action toggleAction}} @iconButton={{true}}>
+      <PaperButton
+        @onClick={{action toggleAction}}
+        @iconButton={{true}}
+        @classNames="hide-gt-sm"
+      >
         {{paper-icon "reorder"}}
       </PaperButton>
     </PaperSidenavToggle>
