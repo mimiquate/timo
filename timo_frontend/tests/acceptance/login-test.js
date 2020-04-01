@@ -86,8 +86,15 @@ module('Acceptance | Login', function (hooks) {
 
   test('Login with only whitespace username error', async function (assert) {
     await visit('/login');
-    await loginAs('     ')
+    await loginAs('     ');
 
     assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
   });
+
+  test('Click sign-up link', async function (assert) {
+    await visit('/login');
+    await click('[data-test=sign-up-link]');
+
+    assert.equal(currentURL(), '/sign-up', 'Visits sign up page');
+  })
 });
