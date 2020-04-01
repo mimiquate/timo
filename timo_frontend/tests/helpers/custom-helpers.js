@@ -3,6 +3,7 @@ import { clickTrigger, selectChoose } from 'ember-power-select/test-support/help
 
 export async function loginAs(username) {
   await fillIn('#username-input input', username);
+  await fillIn('#password-input input', 'password');
   return click('[data-test=login-button]');
 }
 

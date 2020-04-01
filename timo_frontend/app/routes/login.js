@@ -9,7 +9,8 @@ export default Route.extend({
 
   resetController(controller) {
     controller.setProperties({
-      username: ''
+      username: '',
+      password: ''
     });
   }
 });

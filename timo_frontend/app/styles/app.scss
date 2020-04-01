@@ -154,3 +154,7 @@ $error-padding-top: ($input-error-height - $input-error-line-height) / 2 !defaul
 .pointer-cursor {
   cursor: pointer;
 }
+
+.no-margin {
+  margin: 0;
+}
