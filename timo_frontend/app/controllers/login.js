@@ -14,7 +14,7 @@ export default Controller.extend({
         let user = this.store.createRecord('user', { username: newUsername });
 
         await user.save();
-        this.session.setCurrentUser(user);
+        this.currentUser.setCurrentUser(user);
 
         await this.transitionToRoute('landing');
       }

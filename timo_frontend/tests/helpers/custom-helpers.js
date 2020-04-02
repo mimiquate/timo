@@ -8,8 +8,8 @@ export async function loginAs(username) {
 }
 
 export function setSession(user) {
-  const session = this.owner.lookup('service:session');
-  session.setCurrentUser(user);
+  const currentUser = this.owner.lookup('service:current-user');
+  currentUser.setCurrentUser(user);
 }
 
 export async function createTeam(teamName) {
