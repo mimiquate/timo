@@ -12,6 +12,7 @@
           @onChange={{action (mut username)}}
           @required={{true}}
           @class="no-margin"
+          @minlength={{4}}
         />
         <form.input
           @value={{password}}
@@ -21,6 +22,7 @@
           @required={{true}}
           @class="no-margin"
           @type="password"
+          @minlength={{8}}
         />
         <form.input
           @value={{confirmPassword}}
@@ -30,6 +32,7 @@
           @required={{true}}
           @class="no-margin"
           @type="password"
+          @customValidations={{confirmPasswordValidation}}
         />
       </div>
       <div class="layout-column layout-align-center-center">

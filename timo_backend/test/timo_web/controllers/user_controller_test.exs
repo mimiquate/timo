@@ -1,9 +1,9 @@
 defmodule TimoWeb.UserControllerTest do
   use TimoWeb.ConnCase
 
-  @create_attrs %{username: "some username"}
-  @invalid_attrs %{username: nil}
-  @invalid_space_attrs %{username: " "}
+  @create_attrs %{username: "some username", password: "some_password"}
+  @invalid_attrs %{username: nil, password: nil}
+  @invalid_space_attrs %{username: " ", password: " "}
 
   def data_fixture(attribute) do
     %{
@@ -47,22 +47,12 @@ defmodule TimoWeb.UserControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
-  test "attempts to create already existing user and renders valid data", %{conn: conn} do
-    user = user_factory()
-    user_id = Integer.to_string(user.id)
-    user_username = user.username
+  test "attempts to create already existing user", %{conn: conn} do
+    user_factory()
 
     conn = post(conn, Routes.user_path(conn, :create), data_fixture(@create_attrs))
-    assert %{"id" => id} = json_response(conn, 200)["data"]
 
-    conn = get(conn, Routes.user_path(conn, :show, id))
-    data = json_response(conn, 200)["data"]
-
-    assert data["id"] == id
-    assert user_id == id
-    assert data["type"] == "user"
-    assert data["attributes"]["username"] == @create_attrs.username
-    assert user_username == @create_attrs.username
+    assert json_response(conn, 422)["errors"] == %{"username" => ["has already been taken"]}
   end
 
   test "does not create user and renders errors when data is just whitespace", %{conn: conn} do
