@@ -26,3 +26,10 @@ export async function openNewMemberModal(teamId) {
   await visit(`/teams/${teamId}`);
   return click('[data-test=add-member-button]');
 }
+
+export async function signUp(username, password, confirm) {
+  await fillIn('#username-input input', username);
+  await fillIn('#password-input input', password);
+  await fillIn('#confirmPassword-input input', confirm);
+  return click('[data-test=sign-up-button]');
+}

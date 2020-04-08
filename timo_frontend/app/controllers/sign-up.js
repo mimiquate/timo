@@ -19,7 +19,7 @@ export default Controller.extend({
 
       set(this, 'username', newUsername);
       set(this, 'password', newPassword);
-      set(this, 'confirm', newPassword);
+      set(this, 'confirmPassword', newPassword);
 
       if (isPresent(newUsername) && isPresent(newPassword)) {
         let user = this.store.createRecord('user', { username: newUsername, password: newPassword });

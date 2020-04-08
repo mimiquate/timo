@@ -4,6 +4,8 @@ defmodule TimoWeb.UserControllerTest do
   @create_attrs %{username: "some username", password: "some_password"}
   @invalid_attrs %{username: nil, password: nil}
   @invalid_space_attrs %{username: " ", password: " "}
+  @invalid_length_username %{username: "123", password: "some_password"}
+  @invalid_length_password %{username: "some username", password: "1234567"}
 
   def data_fixture(attribute) do
     %{
@@ -45,6 +47,26 @@ defmodule TimoWeb.UserControllerTest do
     conn = post(conn, Routes.user_path(conn, :create), data_fixture(@invalid_attrs))
 
     assert json_response(conn, 422)["errors"] != %{}
+  end
+
+  test "does not create user and renders errors when username length is less than 4", %{
+    conn: conn
+  } do
+    conn = post(conn, Routes.user_path(conn, :create), data_fixture(@invalid_length_username))
+
+    assert json_response(conn, 422)["errors"] == %{
+             "username" => ["should be at least 4 character(s)"]
+           }
+  end
+
+  test "does not create user and renders errors when password length is less than 8", %{
+    conn: conn
+  } do
+    conn = post(conn, Routes.user_path(conn, :create), data_fixture(@invalid_length_password))
+
+    assert json_response(conn, 422)["errors"] == %{
+             "password" => ["should be at least 8 character(s)"]
+           }
   end
 
   test "attempts to create already existing user", %{conn: conn} do
