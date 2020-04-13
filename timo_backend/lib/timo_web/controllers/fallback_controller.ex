@@ -26,4 +26,11 @@ defmodule TimoWeb.FallbackController do
     |> put_view(TimoWeb.ErrorView)
     |> render(:"401")
   end
+
+  def call(conn, {:error, "invalid password"}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(TimoWeb.ErrorView)
+    |> render(:"401")
+  end
 end

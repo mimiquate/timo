@@ -1,5 +1,6 @@
 import { click, fillIn, visit } from "@ember/test-helpers";
 import { clickTrigger, selectChoose } from 'ember-power-select/test-support/helpers';
+import { authenticateSession } from 'ember-simple-auth/test-support';
 
 export async function loginAs(username) {
   await fillIn('#username-input input', username);
@@ -10,6 +11,7 @@ export async function loginAs(username) {
 export function setSession(user) {
   const currentUser = this.owner.lookup('service:current-user');
   currentUser.setCurrentUser(user);
+  authenticateSession();
 }
 
 export async function createTeam(teamName) {

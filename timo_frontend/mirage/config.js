@@ -13,4 +13,5 @@ export default function() {
   }, 200);
   this.get('/members/:id');
   this.patch('/members/:id');
+  this.post('/session');
 }

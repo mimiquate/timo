@@ -8,7 +8,7 @@ defmodule Timo.TestHelpers do
   }
 
   def user_factory(attrs \\ %{}) do
-    default_value = %{username: "some username"}
+    default_value = %{username: "some username", password: "password"}
     attrs = Enum.into(attrs, default_value)
 
     User

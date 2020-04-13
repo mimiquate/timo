@@ -25,52 +25,6 @@ module('Acceptance | Login', function (hooks) {
     assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
 
-  test('Log in with new username', async function (assert) {
-    await visit('/login');
-    await loginAs('juan');
-
-    assert.equal(currentURL(), '/', 'Visits landing after creating a new user')
-    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
-  });
-
-  test('Log in when new username has whitespace', async function (assert) {
-    await visit('/login');
-    await loginAs('  juan  ');
-
-    assert.equal(currentURL(), '/', 'Visits landing with already created user');
-    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
-  });
-
-  test('Log in with already existing username', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-
-    await visit('/login');
-
-    setSession.call(this, newUser);
-
-    await loginAs('juan');
-
-    assert.equal(currentURL(), '/', 'Visits landing with already created user')
-    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
-  });
-
-  test('Log in when already existing username has whitespace', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-
-    await visit('/login');
-
-    setSession.call(this, newUser);
-
-    await loginAs('  juan  ');
-
-    assert.equal(currentURL(), '/', 'Visits landing with already created user')
-    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
-  });
-
   test('Login with no username error', async function (assert) {
     await visit('/login');
     await click('[data-test=login-button]');

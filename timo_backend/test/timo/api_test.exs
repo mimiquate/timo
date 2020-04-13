@@ -17,7 +17,9 @@ defmodule Timo.APITest do
       user = user_factory()
       {:ok, %User{} = fetched_user} = API.get_user(user.id)
 
-      assert fetched_user == user
+      assert fetched_user.username == user.username
+      assert fetched_user.id == user.id
+      assert fetched_user.password == nil
     end
 
     test "get_user/1 returns nil if the user does not exist" do

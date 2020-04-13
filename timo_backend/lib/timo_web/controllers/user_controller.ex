@@ -9,7 +9,6 @@ defmodule TimoWeb.UserController do
   def create(conn, %{"data" => %{"type" => "users", "attributes" => user_params}}) do
     with {:ok, %User{} = user} <- API.create_user(user_params) do
       conn
-      |> put_session("user_id", user.id)
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_path(conn, :show, user))
       |> render("show.json-api", data: user)
