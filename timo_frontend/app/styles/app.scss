@@ -19,8 +19,14 @@ body, body > .ember-view, .login-main {
 }
 
 .side-container {
-  min-width: 238px;
-  width: fit-content;
+  width: 238px;
+}
+
+@media (max-width: 456px) {
+  .side-container {
+    min-width: calc(60%);
+    max-width: calc(100% - 56px);
+  }
 }
 
 .side-container, .side-content {
