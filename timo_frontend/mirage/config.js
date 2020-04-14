@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
   // this.urlPrefix == 'http://localhost:4000';
   this.namespace = 'api';
 
@@ -13,5 +13,17 @@ export default function() {
   }, 200);
   this.get('/members/:id');
   this.patch('/members/:id');
-  this.post('/session');
+  this.post('/session', function (schema, request) {
+    let { username: username, password } =
+      JSON.parse(request.requestBody);
+    let users = schema.users.where({ username, password });
+    if (users.length === 1) {
+      return {
+        type: "default",
+        status: 200,
+        ok: true,
+        statusText: "OK"
+      }
+    }
+  }, 200);
 }

@@ -6,17 +6,21 @@ import { inject as service } from '@ember/service';
 export default Controller.extend({
   session: service(),
 
+  errorResponse: false,
+
   actions: {
     async getIn() {
       let { username, password } = this;
       let newUsername = username.trim();
 
       set(this, 'username', newUsername);
+      set(this, 'errorResponse', false);
 
       if (isPresent(newUsername) && isPresent(password)) {
-        await this.session.authenticate('authenticator:credentials', newUsername, password);
-        await this.transitionToRoute('landing');
-        this.currentUser.load();
+        await this.session.authenticate('authenticator:credentials', newUsername, password)
+          .then(() => this.currentUser.load() )
+          .then(() => this.transitionToRoute('landing') )
+          .catch(() => set(this, 'errorResponse', true) );
       }
     }
   }

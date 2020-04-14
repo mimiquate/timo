@@ -40,6 +40,24 @@ defmodule Timo.APITest do
 
       assert {:error, %Ecto.Changeset{}} = API.create_user(@valid_user_attrs)
     end
+
+    test "get_user_by_username/1 returns user with given username" do
+      user = user_factory()
+      %{username: username} = user
+      {:ok, fetched_user} = API.get_user_by_username(username)
+
+      assert fetched_user.username == user.username
+      assert fetched_user.id == user.id
+      assert fetched_user.password == nil
+    end
+
+    test "get_user_by_username/1 returns nil if the user does not exist" do
+      assert API.get_user_by_username(@valid_user_attrs.username) == nil
+    end
+
+    test "get_user_by_username/1 returns nil when user is nil" do
+      assert API.get_user_by_username(nil) == nil
+    end
   end
 
   describe "teams" do

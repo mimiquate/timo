@@ -2,9 +2,9 @@ import { click, fillIn, visit } from "@ember/test-helpers";
 import { clickTrigger, selectChoose } from 'ember-power-select/test-support/helpers';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
-export async function loginAs(username) {
+export async function loginAs(username, password) {
   await fillIn('#username-input input', username);
-  await fillIn('#password-input input', 'password');
+  await fillIn('#password-input input', password);
   return click('[data-test=login-button]');
 }
 

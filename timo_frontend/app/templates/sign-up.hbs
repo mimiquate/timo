@@ -36,6 +36,11 @@
         />
       </div>
       <div class="layout-column layout-align-center-center">
+        {{#if errorResponse}}
+          <div class="paper-input-error response-error" data-test="sign-up-error">
+            That username is already taken
+          </div>
+        {{/if}}
         <form.submit-button @raised={{true}} @primary={{true}} data-test="sign-up-button">
           Create account
         </form.submit-button>

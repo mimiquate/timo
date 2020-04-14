@@ -144,11 +144,11 @@ $row-filter: brightness(70%);
 $input-error-font-size: 12px !default;
 $input-error-height: 24px !default;
 $input-error-line-height: $input-error-font-size + 2px !default;
-$error-padding-top: ($input-error-height - $input-error-line-height) / 2 !default;
+$error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 
 .paper-input-error {
   font-size: $input-error-font-size;
-  padding-top: $error-padding-top;
+  padding-top: $error-padding;
 }
 
 .pointer-cursor {
@@ -161,4 +161,9 @@ $error-padding-top: ($input-error-height - $input-error-line-height) / 2 !defaul
 
 .sign-link {
   margin-top: 10px;
+}
+
+.response-error {
+  color: RGB(var(--warn-A700));
+  padding-bottom: $error-padding;
 }

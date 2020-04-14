@@ -50,6 +50,8 @@ module('Acceptance | Sign-up', function (hooks) {
     await signUp('juan', 'password', 'password');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
+    assert.dom('[data-test=sign-up-error]')
+      .hasText('That username is already taken', 'Username already taken');
   });
 
   test('Unsuccessful sign up with existing user with whitespace', async function (assert) {
@@ -60,6 +62,8 @@ module('Acceptance | Sign-up', function (hooks) {
     await signUp('juan   ', 'password', 'password');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
+    assert.dom('[data-test=sign-up-error]')
+      .hasText('That username is already taken', 'Username already taken');
   });
 
   test('Sign up with no username error', async function (assert) {

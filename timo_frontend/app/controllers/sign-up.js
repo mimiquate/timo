@@ -20,18 +20,14 @@ export default Controller.extend({
       set(this, 'username', newUsername);
       set(this, 'password', newPassword);
       set(this, 'confirmPassword', newPassword);
+      set(this, 'errorResponse', false);
 
       if (isPresent(newUsername) && isPresent(newPassword)) {
         let user = this.store.createRecord('user', { username: newUsername, password: newPassword });
 
-        user = await user.save()
-          .catch(() => {
-            return null;
-          });
-
-        if (user) {
-          await this.transitionToRoute('login');
-        }
+        await user.save()
+          .then(() => this.transitionToRoute('login') )
+          .catch(() => set(this, 'errorResponse', true) );
       }
     }
   }

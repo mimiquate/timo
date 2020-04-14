@@ -8,7 +8,8 @@ export default Route.extend(UnauthenticatedRouteMixin, {
     controller.setProperties({
       username: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      errorResponse: false
     });
   }
 });
