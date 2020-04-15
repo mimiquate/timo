@@ -19,14 +19,11 @@ defmodule TimoWeb.SessionController do
       |> put_session("user_id", user.id)
       |> json(%{})
     else
-      nil ->
-        {:error, :not_found}
-
-      {:error, "invalid password"} ->
+      _error ->
         conn
         |> put_status(:bad_request)
         |> put_view(TimoWeb.ErrorView)
-        |> render("invalid_password.json")
+        |> render("invalid_password_user.json")
     end
   end
 end

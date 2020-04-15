@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { visit, click, currentURL } from '@ember/test-helpers';
-import { loginAs, setSession } from '../helpers/custom-helpers';
+import { loginAs, setSession, invalidUserServerPost } from '../helpers/custom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 
@@ -74,7 +74,7 @@ module('Acceptance | Login', function (hooks) {
 
   test('Login with wrong username error', async function (assert) {
     this.server.create('user', { username: 'juan', password: 'password'});
-    this.server.post('/session', { errors: {detail: 'Not Found'} }, 404);
+    invalidUserServerPost.call(this);
 
     await visit('/login');
     await loginAs('marcelo', 'password');
@@ -86,7 +86,7 @@ module('Acceptance | Login', function (hooks) {
 
   test('Login with wrong password error', async function (assert) {
     this.server.create('user', { username: 'juan', password: 'password'});
-    this.server.post('/session', { errors: {detail: 'Invalid password'} }, 400);
+    invalidUserServerPost.call(this);
 
     await visit('/login');
     await loginAs('juan', 'wrong_password');

@@ -7,6 +7,14 @@ defmodule TimoWeb.SessionControllerTest do
   @create_attrs %{password: "password", username: "username"}
   @invalid_attrs %{password: "password2", username: "username"}
 
+  @invalid_user_error [
+    %{
+      "status" => "400",
+      "title" => "Invalid username or password",
+      "detail" => "User doesn\'t exists or incorrect password"
+    }
+  ]
+
   setup %{conn: conn} do
     conn =
       conn
@@ -32,8 +40,8 @@ defmodule TimoWeb.SessionControllerTest do
   test "create session without existing username", %{conn: conn} do
     conn = post(conn, Routes.session_path(conn, :create), @create_attrs)
 
-    assert response = json_response(conn, 404)
-    assert response["errors"] == %{"detail" => "Not Found"}
+    assert response = json_response(conn, 400)
+    assert response["errors"] == @invalid_user_error
 
     user_id =
       conn
@@ -47,7 +55,7 @@ defmodule TimoWeb.SessionControllerTest do
     conn = post(conn, Routes.session_path(conn, :create), @invalid_attrs)
 
     assert response = json_response(conn, 400)
-    assert response["errors"] == %{"detail" => "Invalid password"}
+    assert response["errors"] == @invalid_user_error
 
     user_id =
       conn

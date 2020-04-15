@@ -6,8 +6,16 @@ defmodule TimoWeb.ErrorView do
   # def render("500.json", _assigns) do
   #   %{errors: %{detail: "Internal Server Error"}}
   # end
-  def render("invalid_password.json", _assigns) do
-    %{errors: %{detail: "Invalid password"}}
+  def render("invalid_password_user.json", _assigns) do
+    %{
+      errors: [
+        %{
+          status: "400",
+          title: "Invalid username or password",
+          detail: "User doesn\'t exists or incorrect password"
+        }
+      ]
+    }
   end
 
   # By default, Phoenix returns the status message from

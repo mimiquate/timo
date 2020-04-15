@@ -35,3 +35,16 @@ export async function signUp(username, password, confirm) {
   await fillIn('#confirmPassword-input input', confirm);
   return click('[data-test=sign-up-button]');
 }
+
+export function invalidUserServerPost() {
+  this.server.post('/session',
+    {
+      errors: [{
+        detail: 'User doesn\'t exists or incorrect password',
+        status: '400',
+        title: 'Invalid username or password'
+      }]
+    },
+    400
+  );
+}
