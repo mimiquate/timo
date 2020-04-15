@@ -2,6 +2,24 @@
   <h1 data-test="team-title">
     {{this.model.name}}
   </h1>
+  <div class="share-icon">
+    <PaperMenu @position="target-right target" as |menu|>
+      <menu.trigger>
+        <PaperButton @iconButton={{true}} @raised={{true}}>
+          {{paper-icon "share"}}
+        </PaperButton>
+      </menu.trigger>
+      <menu.content>
+        <content.menu-item class="public-share-item">
+          Public Access
+          <PaperCheckbox @value={{publicShare}} @onChange={{action (mut publicShare)}} />
+        </content.menu-item>
+        <PaperButton @raised={{true}}>Copy Link</PaperButton>
+      </menu.content>
+    </PaperMenu>
+  </div>
+</div>
+<div class="current-checkbox">
   <PaperCheckbox
     @value={{showCurrent}}
     @onChange={{action (mut showCurrent)}}
