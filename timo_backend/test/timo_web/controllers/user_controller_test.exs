@@ -1,9 +1,12 @@
 defmodule TimoWeb.UserControllerTest do
+  import Plug.Test
   use TimoWeb.ConnCase
 
-  @create_attrs %{username: "some username"}
-  @invalid_attrs %{username: nil}
-  @invalid_space_attrs %{username: " "}
+  @create_attrs %{username: "some username", password: "some_password"}
+  @invalid_attrs %{username: nil, password: nil}
+  @invalid_space_attrs %{username: " ", password: " "}
+  @invalid_length_username %{username: "123", password: "some_password"}
+  @invalid_length_password %{username: "some username", password: "1234567"}
 
   def data_fixture(attribute) do
     %{
@@ -47,22 +50,32 @@ defmodule TimoWeb.UserControllerTest do
     assert json_response(conn, 422)["errors"] != %{}
   end
 
-  test "attempts to create already existing user and renders valid data", %{conn: conn} do
-    user = user_factory()
-    user_id = Integer.to_string(user.id)
-    user_username = user.username
+  test "does not create user and renders errors when username length is less than 4", %{
+    conn: conn
+  } do
+    conn = post(conn, Routes.user_path(conn, :create), data_fixture(@invalid_length_username))
+
+    assert json_response(conn, 422)["errors"] == %{
+             "username" => ["should be at least 4 character(s)"]
+           }
+  end
+
+  test "does not create user and renders errors when password length is less than 8", %{
+    conn: conn
+  } do
+    conn = post(conn, Routes.user_path(conn, :create), data_fixture(@invalid_length_password))
+
+    assert json_response(conn, 422)["errors"] == %{
+             "password" => ["should be at least 8 character(s)"]
+           }
+  end
+
+  test "attempts to create already existing user", %{conn: conn} do
+    user_factory()
 
     conn = post(conn, Routes.user_path(conn, :create), data_fixture(@create_attrs))
-    assert %{"id" => id} = json_response(conn, 200)["data"]
 
-    conn = get(conn, Routes.user_path(conn, :show, id))
-    data = json_response(conn, 200)["data"]
-
-    assert data["id"] == id
-    assert user_id == id
-    assert data["type"] == "user"
-    assert data["attributes"]["username"] == @create_attrs.username
-    assert user_username == @create_attrs.username
+    assert json_response(conn, 422)["errors"] == %{"username" => ["has already been taken"]}
   end
 
   test "does not create user and renders errors when data is just whitespace", %{conn: conn} do
@@ -83,18 +96,6 @@ defmodule TimoWeb.UserControllerTest do
     assert data["attributes"]["username"] == user.username
   end
 
-  test "shows user with id: me in the session's cookie", %{conn: conn} do
-    conn = post(conn, Routes.user_path(conn, :create), data_fixture(@create_attrs))
-    assert %{"id" => id} = json_response(conn, 201)["data"]
-
-    conn = get(conn, Routes.user_path(conn, :show, "me"))
-    data = json_response(conn, 200)["data"]
-
-    assert data["id"] == id
-    assert data["type"] == "user"
-    assert data["attributes"]["username"] == @create_attrs.username
-  end
-
   test "does not show user with id: me when cookies where not updated", %{conn: conn} do
     conn = get(conn, Routes.user_path(conn, :show, "me"))
     assert json_response(conn, 401)["errors"] != %{}
@@ -103,5 +104,30 @@ defmodule TimoWeb.UserControllerTest do
   test "does not show user that doesn't exist", %{conn: conn} do
     conn = get(conn, Routes.user_path(conn, :show, 100))
     assert json_response(conn, 404)["errors"] != %{}
+  end
+
+  describe "testing session show" do
+    setup %{conn: conn} do
+      user = user_factory()
+
+      conn =
+        conn
+        |> init_test_session(user_id: user.id)
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> put_req_header("content-type", "application/vnd.api+json")
+
+      {:ok, conn: conn, user: user}
+    end
+
+    test "shows user with id: me in the session's cookie", %{conn: conn, user: user} do
+      user_id = Integer.to_string(user.id)
+
+      conn = get(conn, Routes.user_path(conn, :show, "me"))
+      data = json_response(conn, 200)["data"]
+
+      assert data["id"] == user_id
+      assert data["type"] == "user"
+      assert data["attributes"]["username"] == user.username
+    end
   end
 end

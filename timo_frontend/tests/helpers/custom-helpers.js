@@ -1,14 +1,17 @@
 import { click, fillIn, visit } from "@ember/test-helpers";
 import { clickTrigger, selectChoose } from 'ember-power-select/test-support/helpers';
+import { authenticateSession } from 'ember-simple-auth/test-support';
 
-export async function loginAs(username) {
+export async function loginAs(username, password) {
   await fillIn('#username-input input', username);
+  await fillIn('#password-input input', password);
   return click('[data-test=login-button]');
 }
 
 export function setSession(user) {
-  const session = this.owner.lookup('service:session');
-  session.setCurrentUser(user);
+  const currentUser = this.owner.lookup('service:current-user');
+  currentUser.setCurrentUser(user);
+  authenticateSession();
 }
 
 export async function createTeam(teamName) {
@@ -24,4 +27,24 @@ export async function chooseTimeZone(timezone) {
 export async function openNewMemberModal(teamId) {
   await visit(`/teams/${teamId}`);
   return click('[data-test=add-member-button]');
+}
+
+export async function signUp(username, password, confirm) {
+  await fillIn('#username-input input', username);
+  await fillIn('#password-input input', password);
+  await fillIn('#confirmPassword-input input', confirm);
+  return click('[data-test=sign-up-button]');
+}
+
+export function invalidUserServerPost() {
+  this.server.post('/session',
+    {
+      errors: [{
+        detail: 'User doesn\'t exists or incorrect password',
+        status: '400',
+        title: 'Invalid username or password'
+      }]
+    },
+    400
+  );
 }

@@ -43,7 +43,8 @@ defmodule Timo.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:ja_serializer, "~> 0.15.0"},
       {:poison, "~> 3.1"},
-      {:tzdata, "~> 1.0.3"}
+      {:tzdata, "~> 1.0.3"},
+      {:pbkdf2_elixir, "~> 1.0"}
     ]
   end
 

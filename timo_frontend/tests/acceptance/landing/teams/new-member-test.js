@@ -106,6 +106,10 @@ module('Acceptance | New member', function (hooks) {
     await chooseTimeZone('America/Montevideo');
     await click('[data-test=saveMember-button]');
 
+    let errorMessage = this.element.parentElement.querySelectorAll('.paper-input-error');
+
     assert.dom('[data-test=new-member-modal]').exists('Stays in new member modal');
+    assert.ok(errorMessage[0].textContent
+      .includes('This is required'), 'No member name error');
   });
 });

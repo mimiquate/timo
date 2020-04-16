@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { visit, click, currentURL } from '@ember/test-helpers';
-import { loginAs, setSession } from '../helpers/custom-helpers';
+import { loginAs, setSession, invalidUserServerPost } from '../helpers/custom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 
@@ -25,54 +25,21 @@ module('Acceptance | Login', function (hooks) {
     assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
 
-  test('Log in with new username', async function (assert) {
-    await visit('/login');
-    await loginAs('juan');
-
-    assert.equal(currentURL(), '/', 'Visits landing after creating a new user')
-    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
-  });
-
-  test('Log in when new username has whitespace', async function (assert) {
-    await visit('/login');
-    await loginAs('  juan  ');
-
-    assert.equal(currentURL(), '/', 'Visits landing with already created user');
-    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
-  });
-
-  test('Log in with already existing username', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
+  test('Successful login', async function (assert) {
+    const user = this.server.create('user', { username: 'juan', password: 'password'});
+    this.server.get('/users/me', user, 200);
 
     await visit('/login');
+    await loginAs('juan', 'password');
 
-    setSession.call(this, newUser);
-
-    await loginAs('juan');
-
-    assert.equal(currentURL(), '/', 'Visits landing with already created user')
-    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
-  });
-
-  test('Log in when already existing username has whitespace', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-
-    await visit('/login');
-
-    setSession.call(this, newUser);
-
-    await loginAs('  juan  ');
-
-    assert.equal(currentURL(), '/', 'Visits landing with already created user')
+    assert.equal(currentURL(), '/', 'Correctly goes to landing page');
     assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
     assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
 
   test('Login with no username error', async function (assert) {
     await visit('/login');
+    await loginAs('', 'password');
     await click('[data-test=login-button]');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
@@ -86,8 +53,59 @@ module('Acceptance | Login', function (hooks) {
 
   test('Login with only whitespace username error', async function (assert) {
     await visit('/login');
-    await loginAs('     ')
+    await loginAs('     ', 'password');
+
+    let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
     assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
+    assert.ok(
+      errorMessage[0].textContent.includes('This is required'),
+      'No username error'
+    );
   });
+
+  test('Login with no password error', async function (assert) {
+    await visit('/login');
+    await loginAs('juan', '');
+    await click('[data-test=login-button]');
+
+    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+
+    assert.equal(currentURL(), '/login', 'Stays in login page');
+    assert.ok(
+      errorMessage[0].textContent.includes('This is required'),
+      'No password error'
+    );
+  });
+
+  test('Login with wrong username error', async function (assert) {
+    this.server.create('user', { username: 'juan', password: 'password'});
+    invalidUserServerPost.call(this);
+
+    await visit('/login');
+    await loginAs('marcelo', 'password');
+
+    assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
+    assert.dom('[data-test=login-error]')
+      .hasText('Invalid username or password', 'Wrong username');
+  });
+
+  test('Login with wrong password error', async function (assert) {
+    this.server.create('user', { username: 'juan', password: 'password'});
+    invalidUserServerPost.call(this);
+
+    await visit('/login');
+    await loginAs('juan', 'wrong_password');
+
+    assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
+    assert.dom('[data-test=login-error]')
+      .hasText('Invalid username or password', 'Wrong password');
+  });
+
+  test('Click sign-up link', async function (assert) {
+    await visit('/login');
+    await click('[data-test=sign-up-link]');
+
+    assert.equal(currentURL(), '/sign-up', 'Visits sign up page');
+  })
 });

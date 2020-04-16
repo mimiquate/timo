@@ -10,14 +10,16 @@ defmodule Timo.APITest do
   }
 
   describe "users" do
-    @valid_user_attrs %{username: "some username"}
-    @invalid_user_attrs %{username: nil}
+    @valid_user_attrs %{username: "some username", password: "valid_password"}
+    @invalid_user_attrs %{username: nil, password: nil}
 
     test "get_user/1 returns the user with given id" do
       user = user_factory()
       {:ok, %User{} = fetched_user} = API.get_user(user.id)
 
-      assert fetched_user == user
+      assert fetched_user.username == user.username
+      assert fetched_user.id == user.id
+      assert fetched_user.password == nil
     end
 
     test "get_user/1 returns nil if the user does not exist" do
@@ -44,7 +46,9 @@ defmodule Timo.APITest do
       %{username: username} = user
       {:ok, fetched_user} = API.get_user_by_username(username)
 
-      assert fetched_user == user
+      assert fetched_user.username == user.username
+      assert fetched_user.id == user.id
+      assert fetched_user.password == nil
     end
 
     test "get_user_by_username/1 returns nil if the user does not exist" do
@@ -53,25 +57,6 @@ defmodule Timo.APITest do
 
     test "get_user_by_username/1 returns nil when user is nil" do
       assert API.get_user_by_username(nil) == nil
-    end
-
-    test "find_or_create_user_by_username/1 returns user with given username" do
-      user = user_factory()
-
-      {:ok, :existing, fetched_user} =
-        API.find_or_create_user_by_username(@valid_user_attrs.username)
-
-      assert fetched_user == user
-    end
-
-    test "find_or_create_user_by_username/1 creates and returns user with given username" do
-      {:ok, :new, user} = API.find_or_create_user_by_username(@valid_user_attrs.username)
-
-      assert user.username == @valid_user_attrs.username
-    end
-
-    test "find_or_create_user_by_username/1 creates with invalid data returns error changeset" do
-      {:error, %Ecto.Changeset{}} = API.find_or_create_user_by_username(nil)
     end
   end
 

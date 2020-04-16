@@ -21,12 +21,6 @@ defmodule Timo.API do
     end
   end
 
-  def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> Repo.insert()
-  end
-
   def get_user_by_username(nil), do: nil
 
   def get_user_by_username(name) do
@@ -37,17 +31,10 @@ defmodule Timo.API do
     end
   end
 
-  def find_or_create_user_by_username(username) do
-    with {:ok, %User{} = user} <- get_user_by_username(username) do
-      {:ok, :existing, user}
-    else
-      nil ->
-        with {:ok, %User{} = user} <- create_user(%{username: username}) do
-          {:ok, :new, user}
-        else
-          error -> error
-        end
-    end
+  def create_user(attrs \\ %{}) do
+    %User{}
+    |> User.registration_changeset(attrs)
+    |> Repo.insert()
   end
 
   def list_user_teams(%User{} = user) do

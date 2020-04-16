@@ -3,7 +3,7 @@
     <h1>Timo App</h1>
   </div>
   <div class="layout layout-align-center-center">
-    <PaperForm @onSubmit={{action "getIn"}} as |form|>
+    <PaperForm @onSubmit={{action "signUp"}} as |form|>
       <div class="layout-column layout-align-center-center">
         <form.input
           @value={{username}}
@@ -11,6 +11,7 @@
           id="username-input"
           @onChange={{action (mut username)}}
           @class="no-margin"
+          @minlength={{4}}
           @customValidations={{emptyInputValidation}}
         />
         <form.input
@@ -18,29 +19,39 @@
           @placeholder="password"
           id="password-input"
           @onChange={{action (mut password)}}
+          @class="no-margin"
+          @type="password"
+          @minlength={{8}}
+          @customValidations={{emptyInputValidation}}
+        />
+        <form.input
+          @value={{confirmPassword}}
+          @placeholder="confirmation password"
+          id="confirmPassword-input"
+          @onChange={{action (mut confirmPassword)}}
           @required={{true}}
           @class="no-margin"
           @type="password"
+          @customValidations={{confirmPasswordValidation}}
         />
       </div>
       <div class="layout-column layout-align-center-center">
         {{#if errorResponse}}
-          <div class="paper-input-error response-error" data-test="login-error">
-            Invalid username or password
+          <div class="paper-input-error response-error" data-test="sign-up-error">
+            That username is already taken
           </div>
         {{/if}}
-        <form.submit-button @raised={{true}} @primary={{true}} data-test="login-button">
-          Get in
+        <form.submit-button @raised={{true}} @primary={{true}} data-test="sign-up-button">
+          Create account
         </form.submit-button>
         <LinkTo
-          @route="sign-up"
-          data-test="sign-up-link"
+          @route="login"
+          data-test="login-link"
           @class="sign-link"
         >
-          Don't have an account? Sign up
+          Already have an account? Sign in
         </LinkTo>
       </div>
     </PaperForm>
   </div>
 </div>
-{{outlet}}
