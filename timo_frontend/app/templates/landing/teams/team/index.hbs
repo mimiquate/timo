@@ -12,9 +12,11 @@
       <menu.content>
         <content.menu-item class="public-share-item">
           Public Access
-          <PaperCheckbox @value={{publicShare}} @onChange={{action (mut publicShare)}} />
+          <PaperCheckbox @value={{this.model.public}} @onChange={{action (mut this.model.public)}} />
         </content.menu-item>
-        <PaperButton @raised={{true}}>Copy Link</PaperButton>
+        <PaperButton @raised={{true}} @onClick={{action "copyLink"}}>
+          Copy Link
+        </PaperButton>
       </menu.content>
     </PaperMenu>
   </div>

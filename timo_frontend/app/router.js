@@ -13,6 +13,11 @@ Router.map(function () {
       this.route('new');
     });
   });
+  this.route('public', { path: 'p' }, function () {
+    this.route('team', function () {
+      this.route('team-url', { path: ':url' });
+    })
+  })
   this.route('login');
   this.route('sign-up');
 });
