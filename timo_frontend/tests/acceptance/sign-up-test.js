@@ -74,7 +74,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
-      errorMessage[0].textContent.includes('This is required'),
+      errorMessage[1].textContent.includes('This is required'),
       'No username error'
     );
   });
@@ -87,7 +87,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
-      errorMessage[0].textContent.includes('This is required'),
+      errorMessage[1].textContent.includes('This is required'),
       'No password error'
     );
   });
@@ -146,10 +146,29 @@ module('Acceptance | Sign-up', function (hooks) {
     );
   });
 
-  test('Sign up with all whitespace', async function (assert) {
+  test('Sign up with username all whitespace', async function (assert) {
     await visit('/sign-up');
-    await signUp('    ', '        ', '        ');
+    await signUp('    ', 'password', 'password');
+
+    let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
+    assert.ok(
+      errorMessage[0].textContent.includes('This is required'),
+      'No username error'
+    );
+  });
+
+  test('Sign up with password all whitespace', async function (assert) {
+    await visit('/sign-up');
+    await signUp('username', '        ', '        ');
+
+    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+
+    assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
+    assert.ok(
+      errorMessage[0].textContent.includes('This is required'),
+      'No password error'
+    );
   });
 });

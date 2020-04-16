@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { set } from "@ember/object";
-import { isPresent } from '@ember/utils';
+import emptyInput from 'timo-frontend/custom-paper-validators/empty-input';
 
 export default Controller.extend({
   init() {
@@ -9,6 +9,7 @@ export default Controller.extend({
       message: 'Passwords don\'t match',
       validate: (inputValue) => inputValue === this.password
     }]);
+    set(this, 'emptyInputValidation', emptyInput);
   },
 
   actions: {
@@ -22,13 +23,15 @@ export default Controller.extend({
       set(this, 'confirmPassword', newPassword);
       set(this, 'errorResponse', false);
 
-      if (isPresent(newUsername) && isPresent(newPassword)) {
-        let user = this.store.createRecord('user', { username: newUsername, password: newPassword });
+      let user = this.store.createRecord('user',
+        {
+          username: newUsername,
+          password: newPassword
+        });
 
-        await user.save()
-          .then(() => this.transitionToRoute('login') )
-          .catch(() => set(this, 'errorResponse', true) );
-      }
+      await user.save()
+        .then(() => this.transitionToRoute('login'))
+        .catch(() => set(this, 'errorResponse', true));
     }
   }
 });

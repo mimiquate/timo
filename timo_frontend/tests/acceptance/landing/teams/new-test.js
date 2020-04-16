@@ -84,6 +84,10 @@ module('Acceptance | New team', function (hooks) {
     await visit('/teams/new');
     await createTeam('    ')
 
+    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+
     assert.equal(currentURL(), '/teams/new', 'Stays in new team page');
+    assert.ok(errorMessage[0].textContent
+      .includes('This is required'), 'No team name error');
   });
 });

@@ -105,6 +105,10 @@ module('Acceptance | Update member', function (hooks) {
     await fillIn('#memberName-input input', '     ');
     await click('[data-test=saveMember-button]');
 
+    let errorMessage = this.element.parentElement.querySelectorAll('.paper-input-error');
+
     assert.dom('[data-test=edit-member-modal]').exists('Stays in edit member modal');
+    assert.ok(errorMessage[0].textContent
+      .includes('This is required'), 'No member name error');
   });
 });

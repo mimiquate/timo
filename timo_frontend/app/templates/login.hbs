@@ -10,8 +10,8 @@
           @placeholder="username"
           id="username-input"
           @onChange={{action (mut username)}}
-          @required={{true}}
           @class="no-margin"
+          @customValidations={{emptyInputValidation}}
         />
         <form.input
           @value={{password}}

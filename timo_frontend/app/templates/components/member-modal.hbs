@@ -22,7 +22,7 @@
           @label="Name"
           id="memberName-input"
           @onChange={{action (mut memberName)}}
-          @required={{true}}
+          @customValidations={{emptyInputValidation}}
         />
         <form.select
           @label="Time Zone"

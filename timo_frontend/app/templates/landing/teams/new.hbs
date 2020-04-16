@@ -8,7 +8,7 @@
       @placeholder="New team name"
       id="teamName-input"
       @onChange={{action (mut teamName)}}
-      @required={{true}}
+      @customValidations={{emptyInputValidation}}
     />
   </div>
   <div class="layout layout-align-center-center">
