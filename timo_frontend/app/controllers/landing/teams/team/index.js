@@ -3,7 +3,6 @@ import { computed } from "@ember/object";
 import moment from 'moment';
 import { set } from "@ember/object";
 import { compareMemberTimeZones, hoursLeftOver, filterClass, createMemberArray } from 'timo-frontend/utils/table-functions';
-import copyTextToClipboard from 'timo-frontend/utils/copy-text-to-clipboard';
 
 export default Controller.extend({
   savedMembers: computed('model.members.{[],@each.id}', function () {
@@ -96,14 +95,6 @@ export default Controller.extend({
       }
 
       set(this, 'editMemberModal', false);
-    },
-
-    copyLink() {
-      const { protocol, host } = window.location;
-      const path = "/p/team/" + this.model.share_id;
-      const url = `${protocol}//${host}${path}`;
-
-      copyTextToClipboard(url);
     }
   }
 });

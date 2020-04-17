@@ -3,27 +3,7 @@
     {{this.model.name}}
   </h1>
   <div class="share-icon">
-    <PaperMenu @offset="-20 50" as |menu|>
-      <menu.trigger>
-        <PaperButton @iconButton={{true}} @raised={{true}}>
-          {{paper-icon "share"}}
-        </PaperButton>
-      </menu.trigger>
-      <menu.content>
-        <content.menu-item class="public-share-item">
-          Public Access
-          <PaperCheckbox @value={{this.model.public}} @onChange={{action (mut this.model.public)}} />
-        </content.menu-item>
-        <PaperButton
-          @raised={{true}}
-          @accent={{true}}
-          @onClick={{action "copyLink"}}
-          @disabled={{not this.model.public}}
-        >
-          Copy Link
-        </PaperButton>
-      </menu.content>
-    </PaperMenu>
+    <ShareModal @team={{this.model}} />
   </div>
 </div>
 <div class="current-checkbox">
