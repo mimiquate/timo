@@ -4,8 +4,8 @@ export default Route.extend({
   model(params) {
     return this.store.findRecord(
       'team',
-      params.url,
-      { include: 'members', reload: true }
+      params.share_id,
+      { include: 'members' }
     );
   }
 });

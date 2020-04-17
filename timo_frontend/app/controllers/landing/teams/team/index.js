@@ -100,11 +100,10 @@ export default Controller.extend({
 
     copyLink() {
       const { protocol, host } = window.location;
-      const path = "/p/team/" + this.model.url;
+      const path = "/p/team/" + this.model.share_id;
       const url = `${protocol}//${host}${path}`;
 
-      navigator.clipboard.writeText(url)
-        .catch(() => copyTextToClipboard(url));
+      copyTextToClipboard(url);
     }
   }
 });

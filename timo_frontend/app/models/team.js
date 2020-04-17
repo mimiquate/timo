@@ -5,6 +5,6 @@ export default Model.extend({
   name: attr('string'),
   user: belongsTo('user'),
   members: hasMany('member', { async: false }),
-  url: attr('string'),
+  share_id: attr('string'),
   public: attr('boolean')
 });
