@@ -6,8 +6,8 @@ defmodule TimoWeb.TeamController do
 
   action_fallback TimoWeb.FallbackController
 
-  plug TimoWeb.Plugs.SetCurrentUser when action in [:create, :show, :index]
-  plug :authenticate_current_user when action in [:create, :show, :index]
+  plug TimoWeb.Plugs.SetCurrentUser when action in [:create, :show, :index, :update]
+  plug :authenticate_current_user when action in [:create, :show, :index, :update]
 
   def index(conn, _params) do
     current_user = conn.assigns.current_user
@@ -33,6 +33,15 @@ defmodule TimoWeb.TeamController do
       render(conn, "show.json-api", data: team, opts: [include: params["include"]])
     else
       _ -> {:error, :not_found}
+    end
+  end
+
+  def update(conn, %{"id" => id, "data" => %{"type" => "teams", "attributes" => team_params}}) do
+    current_user = conn.assigns.current_user
+
+    with {:ok, team} <- API.get_user_team(current_user, id),
+         {:ok, %Team{} = team} <- API.update_team(team, team_params) do
+      render(conn, "show.json-api", data: team)
     end
   end
 

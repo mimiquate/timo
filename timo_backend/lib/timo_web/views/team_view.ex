@@ -2,7 +2,7 @@ defmodule TimoWeb.TeamView do
   use TimoWeb, :view
   use JaSerializer.PhoenixView
 
-  attributes([:name])
+  attributes([:name, :public])
 
   has_many :members,
     serializer: TimoWeb.MemberView,

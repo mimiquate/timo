@@ -17,7 +17,7 @@ defmodule Timo.TestHelpers do
   end
 
   def team_factory(%User{} = user, attrs \\ %{}) do
-    default_value = %{name: "some name", user_id: user.id}
+    default_value = %{name: "some name", user_id: user.id, public: false}
     attrs = Enum.into(attrs, default_value)
 
     Team

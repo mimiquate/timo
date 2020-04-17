@@ -4,6 +4,7 @@ defmodule Timo.API.Team do
 
   schema "teams" do
     field :name, :string
+    field :public, :boolean
 
     belongs_to :user, Timo.API.User
     has_many :members, Timo.API.Member
@@ -14,7 +15,7 @@ defmodule Timo.API.Team do
   @doc false
   def changeset(team, attrs) do
     team
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :public])
+    |> validate_required([:name, :public])
   end
 end

@@ -7,7 +7,7 @@
   <menu.content>
     <content.menu-item class="public-share-item">
       Public Access
-      <PaperCheckbox @value={{this.team.public}} @onChange={{action (mut this.team.public)}} />
+      <PaperCheckbox @value={{this.team.public}} @onChange={{action "setPublic"}} />
     </content.menu-item>
     <PaperButton
       @raised={{true}}

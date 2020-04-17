@@ -17,7 +17,8 @@ export default Controller.extend({
 
       let team = this.store.createRecord('team', {
         name: newTeamName,
-        user: this.currentUser.user
+        user: this.currentUser.user,
+        public: false
       });
 
       await team.save();

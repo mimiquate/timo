@@ -112,4 +112,10 @@ defmodule Timo.API do
     |> Member.changeset(attrs)
     |> Repo.update()
   end
+
+  def update_team(%Team{} = team, attrs) do
+    team
+    |> Team.changeset(attrs)
+    |> Repo.update()
+  end
 end

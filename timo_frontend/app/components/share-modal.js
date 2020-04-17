@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import copyTextToClipboard from 'timo-frontend/utils/copy-text-to-clipboard';
+import { set } from "@ember/object";
 
 export default Component.extend({
   actions: {
@@ -9,6 +10,11 @@ export default Component.extend({
       const url = `${protocol}//${host}${path}`;
 
       copyTextToClipboard(url);
+    },
+
+    async setPublic(value) {
+      set(this.team, 'public', value);
+      await this.team.save();
     }
   }
 });
