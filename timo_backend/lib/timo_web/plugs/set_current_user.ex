@@ -7,12 +7,12 @@ defmodule TimoWeb.Plugs.SetCurrentUser do
   end
 
   def call(conn, _params) do
-    {:ok, current_user} =
-      conn
-      |> get_session("user_id")
-      |> API.get_user()
+    user_id = get_session(conn, "user_id")
 
-    conn
-    |> assign(:current_user, current_user)
+    with {:ok, current_user} <- API.get_user(user_id) do
+      assign(conn, :current_user, current_user)
+    else
+      nil -> assign(conn, :current_user, nil)
+    end
   end
 end

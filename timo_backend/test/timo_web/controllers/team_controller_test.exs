@@ -5,8 +5,8 @@ defmodule TimoWeb.TeamControllerTest do
   alias Timo.API
   alias Timo.API.Team
 
-  @create_attrs %{name: "some name", public: false}
-  @invalid_attrs %{name: nil, public: nil}
+  @create_attrs %{name: "some name", public: false, share_id: nil}
+  @invalid_attrs %{name: nil, public: nil, share_id: nil}
 
   def data_fixture(attribute) do
     %{

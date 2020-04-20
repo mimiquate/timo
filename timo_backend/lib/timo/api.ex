@@ -13,6 +13,8 @@ defmodule Timo.API do
   Gets a single user.
   returns nil if the User does not exist.
   """
+  def get_user(nil), do: nil
+
   def get_user(id) do
     with %User{} = user <- Repo.get(User, id) do
       {:ok, user}
@@ -60,6 +62,7 @@ defmodule Timo.API do
   def create_team(%User{} = user, attrs \\ %{}) do
     %Team{}
     |> Team.changeset(attrs)
+    |> Team.share_changeset()
     |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.insert()
   end
@@ -117,5 +120,22 @@ defmodule Timo.API do
     team
     |> Team.changeset(attrs)
     |> Repo.update()
+  end
+
+  def get_team_by_share_id(nil), do: nil
+
+  def get_team_by_share_id(share_id) do
+    query =
+      from(
+        t in Team,
+        where: t.share_id == ^share_id and t.public == true,
+        preload: :members
+      )
+
+    with %Team{} = team <- Repo.one(query) do
+      {:ok, team}
+    else
+      nil -> nil
+    end
   end
 end

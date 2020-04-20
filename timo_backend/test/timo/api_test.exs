@@ -61,8 +61,8 @@ defmodule Timo.APITest do
   end
 
   describe "teams" do
-    @valid_team_attrs %{name: "some name", public: false}
-    @invalid_team_attrs %{name: nil, public: false}
+    @valid_team_attrs %{name: "some name", public: false, share_id: "unique_id"}
+    @invalid_team_attrs %{name: nil, public: false, share_id: nil}
 
     test "list_user_teams/1 returns all teams" do
       owner = user_factory()
