@@ -5,8 +5,9 @@ defmodule TimoWeb.TeamControllerTest do
   alias Timo.API
   alias Timo.API.Team
 
-  @create_attrs %{name: "some name", public: false, share_id: nil}
-  @invalid_attrs %{name: nil, public: nil, share_id: nil}
+  @create_attrs %{name: "some name", public: false}
+  @invalid_attrs %{name: nil, public: nil}
+  @update_attrs %{name: "some name updated", public: true}
 
   def data_fixture(attribute) do
     %{
@@ -100,5 +101,89 @@ defmodule TimoWeb.TeamControllerTest do
     conn = get(conn, Routes.team_path(conn, :show, team.id))
 
     assert json_response(conn, 404)["errors"] != %{}
+  end
+
+  test "updates team and renders team when data is valid", %{conn: conn, user: user} do
+    team = team_factory(user)
+    team_id = Integer.to_string(team.id)
+
+    conn = put(conn, Routes.team_path(conn, :update, team_id), data_fixture(@update_attrs))
+
+    data = json_response(conn, 200)["data"]
+
+    assert data["id"] == team_id
+    assert data["type"] == "team"
+    assert data["attributes"]["name"] == @update_attrs.name
+    assert data["attributes"]["public"] == @update_attrs.public
+  end
+
+  test "does not update team and renders errors when data is invalid", %{conn: conn, user: user} do
+    team = team_factory(user)
+    team_id = Integer.to_string(team.id)
+
+    conn = put(conn, Routes.team_path(conn, :update, team_id), data_fixture(@invalid_attrs))
+
+    assert json_response(conn, 422)["errors"] != %{}
+  end
+
+  test "show public team from user and renders team", %{conn: conn, user: user} do
+    team = team_factory(user, %{public: true})
+
+    conn =
+      get(
+        conn,
+        Routes.team_path(conn, :index),
+        %{"filter" => %{"share_id" => team.share_id}}
+      )
+
+    data = json_response(conn, 200)["data"]
+
+    assert data["id"] == Integer.to_string(team.id)
+    assert data["type"] == "team"
+    assert data["attributes"]["name"] == team.name
+    assert data["attributes"]["share-id"] == team.share_id
+  end
+
+  test "show public team from another user and renders team", %{conn: conn} do
+    owner = Timo.Repo.insert!(%Timo.API.User{username: "some other user"})
+    team = team_factory(owner, %{public: true})
+
+    conn =
+      get(
+        conn,
+        Routes.team_path(conn, :index),
+        %{"filter" => %{"share_id" => team.share_id}}
+      )
+
+    data = json_response(conn, 200)["data"]
+
+    assert data["id"] == Integer.to_string(team.id)
+    assert data["type"] == "team"
+    assert data["attributes"]["name"] == team.name
+    assert data["attributes"]["share-id"] == team.share_id
+  end
+
+  test "show private team and renders error", %{conn: conn, user: user} do
+    team = team_factory(user)
+
+    conn =
+      get(
+        conn,
+        Routes.team_path(conn, :index),
+        %{"filter" => %{"share_id" => team.share_id}}
+      )
+
+    assert json_response(conn, 404)["errors"] == %{"detail" => "Not Found"}
+  end
+
+  test "show public team without team and renders error", %{conn: conn} do
+    conn =
+      get(
+        conn,
+        Routes.team_path(conn, :index),
+        %{"filter" => %{"share_id" => "unique_id"}}
+      )
+
+    assert json_response(conn, 404)["errors"] == %{"detail" => "Not Found"}
   end
 end

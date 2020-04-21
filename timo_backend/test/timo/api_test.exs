@@ -26,6 +26,10 @@ defmodule Timo.APITest do
       assert API.get_user(1) == nil
     end
 
+    test "get_user/1 returns nil if the id is nil" do
+      assert API.get_user(nil) == nil
+    end
+
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = API.create_user(@valid_user_attrs)
       assert user.username == @valid_user_attrs.username
@@ -61,8 +65,9 @@ defmodule Timo.APITest do
   end
 
   describe "teams" do
-    @valid_team_attrs %{name: "some name", public: false, share_id: "unique_id"}
-    @invalid_team_attrs %{name: nil, public: false, share_id: nil}
+    @valid_team_attrs %{name: "some name", public: false}
+    @invalid_team_attrs %{name: nil, public: false}
+    @update_team_attrs %{name: "some name updated", public: true}
 
     test "list_user_teams/1 returns all teams" do
       owner = user_factory()
@@ -97,6 +102,8 @@ defmodule Timo.APITest do
 
       assert {:ok, %Team{} = team} = API.create_team(owner, @valid_team_attrs)
       assert team.name == @valid_team_attrs.name
+      assert team.public == @valid_team_attrs.public
+      assert team.share_id != nil
     end
 
     test "create_team/2 with invalid data returns error changeset" do
@@ -115,6 +122,48 @@ defmodule Timo.APITest do
 
     test "get_team_by_id/1 without existing id returns nil" do
       assert nil == API.get_team_by_id(1)
+    end
+
+    test "update_team/2 with valid data updates team" do
+      owner = user_factory()
+      team = team_factory(owner)
+
+      assert {:ok, %Team{} = team} = API.update_team(team, @update_team_attrs)
+      assert team.name == @update_team_attrs.name
+      assert team.public == @update_team_attrs.public
+    end
+
+    test "update_team/2 with invalid data returns error changeset" do
+      owner = user_factory()
+      team = team_factory(owner)
+
+      assert {:error, %Ecto.Changeset{}} = API.update_team(team, @invalid_team_attrs)
+      {:ok, %Team{} = fetched_team} = API.get_team_by_id(team.id)
+
+      assert fetched_team == team
+    end
+
+    test "get_team_by_share_id/1 with public team return team" do
+      owner = user_factory()
+      team = team_factory(owner, %{public: true})
+
+      assert {:ok, %Team{} = fetched_team} = API.get_team_by_share_id(team.share_id)
+      assert fetched_team = team
+    end
+
+    test "get_team_by_share_id/1 with private team return nil" do
+      owner = user_factory()
+      team = team_factory(owner)
+
+      assert nil == API.get_team_by_share_id(team.share_id)
+    end
+
+    test "get_team_by_share_id/1 without team return nil" do
+      assert nil == API.get_team_by_share_id("unique_id")
+    end
+
+    test "get_team_by_share_id/1 with share_id nil return nil" do
+      assert nil == API.get_team_by_share_id(nil)
     end
   end
 
