@@ -1,6 +1,6 @@
 <div class="flex-content public-main">
   <div class="flex-title">
-    <h1>
+    <h1 data-test="team-title">
       {{this.model.name}}
     </h1>
   </div>
@@ -8,6 +8,7 @@
     <PaperCheckbox
       @value={{showCurrent}}
       @onChange={{action (mut showCurrent)}}
+      data-test="checkbox"
     >
       List my current timezone
     </PaperCheckbox>
@@ -42,7 +43,7 @@
       </t.body>
     </EmberTable>
   {{else}}
-    <div class="no-member">
+    <div class="no-member" data-test="no-member">
       No members in this team
     </div>
   {{/if}}

@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession, createTeam } from '../../../helpers/custom-helpers';
+import { setSession, createTeam } from 'timo-frontend/tests/helpers/custom-helpers';
 
 module('Acceptance | New team', function (hooks) {
   setupApplicationTest(hooks);

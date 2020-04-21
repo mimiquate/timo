@@ -6,34 +6,88 @@ import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
 import { TablePage } from 'ember-table/test-support';
 import moment from 'moment';
 
-module('Acceptance | Team', function (hooks) {
+module('Acceptance | Public Team', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('Visiting /teams/team without exisiting username', async function (assert) {
-    await visit('/teams/team');
+  function setGETTeamsHandler(server) {
+    server.get('/teams', function (schema, request) {
+      let share_id = request.queryParams['filter[share_id]'];
+      let team = schema.teams.findBy({ share_id: share_id, public: true });
 
-    assert.equal(currentURL(), '/login', 'Correctly redirects to login page');
+      return team;
+    }, 200);
+  }
+
+  test('Visiting /p/team/:share_id without exisiting team', async function (assert) {
+    this.server.post('/teams', { errors: { detail: ['Not Found'] } }, 404);
+    await visit('/p/team/yjHktCOyBDTb');
+
+    assert.dom('[data-test=team-error]').exists('Visits team page error');
+    assert.dom('[data-test=team-error]').hasText('error Team not found', 'Team page error shows error');
   });
 
-  test('Visiting /teams/team with existing username and no members', async function (assert) {
+  test('Visiting /p/team/:share_id without exisiting team but with username', async function (assert) {
+    this.server.post('/teams', { errors: { detail: ['Not Found'] } }, 404);
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit('/p/team/yjHktCOyBDTb');
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Correctly visits team page');
+    assert.dom('[data-test=team-error]').exists('Visits team page error');
+    assert.dom('[data-test=team-error]').hasText('error Team not found', 'Team page error shows error');
+  });
+
+  test('Visiting /p/team/:share_id with private team', async function (assert) {
+    this.server.post('/teams', { errors: { detail: ['Not Found'] } }, 404);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: false,
+        share_id: 'yjHktCOyBDTb'
+      });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    assert.dom('[data-test=team-error]').exists('Visits team page error');
+    assert.dom('[data-test=team-error]').hasText('error Team not found', 'Team page error shows error');
+  });
+
+  test('Visiting /p/team/:share_id with public team and no members', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    assert.equal(currentURL(), '/p/team/yjHktCOyBDTb', 'Correctly visits Team public page');
     assert.dom('[data-test=team-title]').exists('New team title page loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
     assert.dom('[data-test=no-member]')
       .hasText('No members in this team', 'Doesn\'t load members');
   });
 
-  test('Visiting /teams/team with existing username and members', async function (assert) {
+  test('Visiting /p/team/:share_id with existing team and members', async function (assert) {
+    setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
@@ -45,9 +99,9 @@ module('Acceptance | Team', function (hooks) {
       team: newTeam
     });
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/p/team/${newTeam.share_id}`);
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Correctly visits team page');
+    assert.equal(currentURL(), '/p/team/yjHktCOyBDTb', 'Correctly visits Team public page');
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
 
@@ -77,10 +131,17 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(table.body.rowCount, hoursLeft, 'Correct number of rows in table');
   });
 
-  test('Visiting /teams/team with members sorted', async function (assert) {
+  test('Visiting /p/team/:share_id with members sorted', async function (assert) {
+    setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'Europe/Rome',
@@ -92,7 +153,7 @@ module('Acceptance | Team', function (hooks) {
       team: newTeam
     });
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/p/team/${newTeam.share_id}`);
 
     const table = new TablePage();
 
@@ -109,30 +170,24 @@ module('Acceptance | Team', function (hooks) {
     );
   })
 
-  test('Clicks button to add member', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-
-    await visit(`/teams/${newTeam.id}`);
-    await click('[data-test=add-member-button]');
-
-    assert.dom('[data-test=new-member-modal]').exists('Correctly opens new member modal');
-    assert.dom('[data-test=member-modal-title]').exists('New member modal title loads');
-    assert.dom('[data-test=member-modal-title]').hasText('New Member', 'Correct title');
-  });
-
   test('Clicks checkbox lists my current timezone', async function (assert) {
+    setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'Universal',
       team: newTeam
     });
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/p/team/${newTeam.share_id}`);
 
     const table = new TablePage();
 
@@ -151,9 +206,16 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Clicks checkbox with already existing current timezone', async function (assert) {
+    setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
 
     const timezoneNow = moment.tz.guess(true);
     this.server.create('member', {
@@ -162,7 +224,7 @@ module('Acceptance | Team', function (hooks) {
       team: newTeam
     });
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/p/team/${newTeam.share_id}`);
 
     const table = new TablePage();
 
@@ -178,59 +240,5 @@ module('Acceptance | Team', function (hooks) {
 
     await click('[data-test=checkbox]');
     assert.equal(table.headers.length, 1, 'Table has one column');
-  });
-
-  test('Clicks member in table to edit it', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    let newMember = this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/teams/${newTeam.id}`);
-
-    new TablePage();
-
-    await click(`[data-test-member="${newMember.id}"]`);
-
-    assert.dom('[data-test=edit-member-modal]').exists('Correctly opens edit member modal');
-    assert.dom('[data-test=member-modal-title]').exists('Edit member modal title loads');
-    assert.dom('[data-test=member-modal-title]').hasText('Edit Member', 'Correct title');
-    assert.dom('#memberName-input input').hasValue('Member 1', 'Member name is there');
-    assert.dom('#memberTimeZone-select .ember-power-select-selected-item')
-      .hasText('America/Montevideo', 'Member timezone is there');
-  });
-
-  test('Clicks share icon', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser, public: false });
-    setSession.call(this, newUser);
-
-    await visit(`/teams/${newTeam.id}`);
-    await click('[data-test=share-icon]');
-
-    assert.dom('[data-test=public-share-item]').hasText('Public Access', 'Modal has content');
-    assert.dom('[data-test=public-checkbox]').exists('Checkbox exists');
-    assert.dom('[data-test=copy-link-button]').exists('Copy link button exists');
-    assert.dom('[data-test=copy-link-button]').hasText('Copy Link', 'Button has correct text');
-  });
-
-  test('Clicks share icon', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser, public: false });
-    setSession.call(this, newUser);
-
-    await visit(`/teams/${newTeam.id}`);
-    await click('[data-test=share-icon]');
-    await click('[data-test=public-checkbox]');
-
-    assert.equal(newTeam.public, true, 'Changes view to public');
-
-    await click('[data-test=public-checkbox]');
-
-    assert.equal(newTeam.public, false, 'Changes view to not public');
   });
 });

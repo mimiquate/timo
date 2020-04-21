@@ -4,12 +4,12 @@ import { setupTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
 
-module('Unit | Route | landing index', function (hooks) {
+module('Unit | Route | public index', function (hooks) {
   setupTest(hooks);
   setupMirage(hooks);
 
-  test('Redirects to landing then login', async function (assert) {
-    await visit('/teams');
+  test('Redirects to login', async function (assert) {
+    await visit('/p');
 
     assert.equal(currentURL(), '/login');
   });
@@ -18,7 +18,7 @@ module('Unit | Route | landing index', function (hooks) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
 
-    await visit('/teams');
+    await visit('/p');
 
     assert.equal(currentURL(), '/');
   });

@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { visit, click, currentURL } from '@ember/test-helpers';
-import { setSession, signUp } from '../helpers/custom-helpers';
+import { setSession, signUp } from 'timo-frontend/tests/helpers/custom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 
