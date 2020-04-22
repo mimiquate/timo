@@ -1,7 +1,7 @@
 import { hoursLeftOver, filterClass } from 'timo-frontend/utils/table-functions';
 import moment from 'moment';
 
-export function columnsMember(sortedMembers) {
+export function createMembersTableColumns(sortedMembers) {
   const memberCol = [];
 
   const timezoneNow = moment.tz.guess(true);
@@ -19,7 +19,7 @@ export function columnsMember(sortedMembers) {
   return memberCol;
 }
 
-export function rowsMember(sortedMembers) {
+export function createMembersTableRows(sortedMembers) {
   const memberRows = [];
   let row = {};
 

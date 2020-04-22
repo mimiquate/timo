@@ -3,7 +3,7 @@ import { computed } from "@ember/object";
 import moment from 'moment';
 import { set } from "@ember/object";
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
-import { columnsMember, rowsMember } from 'timo-frontend/utils/member-column-rows';
+import { createMembersTableColumns, createMembersTableRows } from 'timo-frontend/utils/member-column-rows';
 
 export default Controller.extend({
   savedMembers: computed('model.members.{[],@each.id}', function () {
@@ -18,11 +18,11 @@ export default Controller.extend({
   }),
 
   columns: computed('sortedMembers.[]', function () {
-    return columnsMember(this.sortedMembers);
+    return createMembersTableColumns(this.sortedMembers);
   }),
 
   rows: computed('sortedMembers.[]', function () {
-    return rowsMember(this.sortedMembers);
+    return createMembersTableRows(this.sortedMembers);
   }),
 
   actions: {
