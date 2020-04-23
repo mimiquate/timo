@@ -4,8 +4,8 @@ defmodule TimoWeb.SessionControllerTest do
 
   alias Timo.API
 
-  @create_attrs %{password: "password", username: "username"}
-  @invalid_attrs %{password: "password2", username: "username"}
+  @create_attrs %{password: "password", username: "username", email: "email@timo"}
+  @invalid_attrs %{password: "password2", username: "username", email: "email@timo"}
 
   @invalid_user_error [
     %{

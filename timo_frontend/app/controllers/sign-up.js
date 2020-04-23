@@ -14,19 +14,22 @@ export default Controller.extend({
 
   actions: {
     async signUp() {
-      let { username, password } = this;
+      let { username, password, email } = this;
       let newUsername = username.trim();
       let newPassword = password.trim();
+      let newEmail = email.trim();
 
       set(this, 'username', newUsername);
       set(this, 'password', newPassword);
       set(this, 'confirmPassword', newPassword);
       set(this, 'errorResponse', false);
+      set(this, 'email', newEmail);
 
       let user = this.store.createRecord('user',
         {
           username: newUsername,
-          password: newPassword
+          password: newPassword,
+          email: newEmail
         });
 
       await user.save()

@@ -9,7 +9,8 @@ export default Route.extend(UnauthenticatedRouteMixin, {
       username: '',
       password: '',
       confirmPassword: '',
-      errorResponse: false
+      errorResponse: false,
+      email: ''
     });
   }
 });
