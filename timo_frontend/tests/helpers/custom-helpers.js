@@ -33,6 +33,7 @@ export async function signUp(username, password, confirm) {
   await fillIn('#username-input input', username);
   await fillIn('#password-input input', password);
   await fillIn('#confirmPassword-input input', confirm);
+  await fillIn('#email-input input', "email@timo");
   return click('[data-test=sign-up-button]');
 }
 

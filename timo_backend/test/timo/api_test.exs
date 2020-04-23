@@ -10,8 +10,8 @@ defmodule Timo.APITest do
   }
 
   describe "users" do
-    @valid_user_attrs %{username: "some username", password: "valid_password"}
-    @invalid_user_attrs %{username: nil, password: nil}
+    @valid_user_attrs %{username: "some username", password: "valid_password", email: "email@timo"}
+    @invalid_user_attrs %{username: nil, password: nil, email: nil}
 
     test "get_user/1 returns the user with given id" do
       user = user_factory()

@@ -15,6 +15,15 @@
           @customValidations={{emptyInputValidation}}
         />
         <form.input
+          @value={{email}}
+          @placeholder="email"
+          id="email-input"
+          @onChange={{action (mut email)}}
+          @class="no-margin"
+          @type="email"
+          @customValidations={{emptyInputValidation}}
+        />
+        <form.input
           @value={{password}}
           @placeholder="password"
           id="password-input"

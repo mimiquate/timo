@@ -6,6 +6,7 @@ defmodule Timo.API.User do
     field :username, :string
     field :password, :string, virtual: true
     field :password_hash, :string
+    field :email, :string
 
     has_many :teams, Timo.API.Team
 
@@ -15,11 +16,12 @@ defmodule Timo.API.User do
   @doc false
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :password])
-    |> validate_required([:username, :password])
+    |> cast(attrs, [:username, :password, :email])
+    |> validate_required([:username, :password, :email])
     |> validate_length(:username, min: 4)
     |> validate_length(:password, min: 8)
     |> unique_constraint(:username)
+    |> unique_constraint(:email)
     |> put_pass_hash()
   end
 

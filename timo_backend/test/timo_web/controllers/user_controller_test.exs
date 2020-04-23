@@ -2,11 +2,11 @@ defmodule TimoWeb.UserControllerTest do
   import Plug.Test
   use TimoWeb.ConnCase
 
-  @create_attrs %{username: "some username", password: "some_password"}
-  @invalid_attrs %{username: nil, password: nil}
-  @invalid_space_attrs %{username: " ", password: " "}
-  @invalid_length_username %{username: "123", password: "some_password"}
-  @invalid_length_password %{username: "some username", password: "1234567"}
+  @create_attrs %{username: "some username", password: "some_password", email: "email@timo"}
+  @invalid_attrs %{username: nil, password: nil, email: nil}
+  @invalid_space_attrs %{username: " ", password: " ", email: " "}
+  @invalid_length_username %{username: "123", password: "some_password", email: "email@timo"}
+  @invalid_length_password %{username: "some username", password: "1234567", email: "email@timo"}
 
   def data_fixture(attribute) do
     %{
