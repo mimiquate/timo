@@ -106,6 +106,14 @@ defmodule TimoWeb.UserControllerTest do
     assert json_response(conn, 404)["errors"] != %{}
   end
 
+  test "attempts to create user with already existing email", %{conn: conn} do
+    user_factory(%{username: "username", password: "password", email: "email@timo"})
+
+    conn = post(conn, Routes.user_path(conn, :create), data_fixture(@create_attrs))
+
+    assert json_response(conn, 422)["errors"] == %{"email" => ["has already been taken"]}
+  end
+
   describe "testing session show" do
     setup %{conn: conn} do
       user = user_factory()
