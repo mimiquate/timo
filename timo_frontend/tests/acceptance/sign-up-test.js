@@ -34,7 +34,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
   test('Successful sign up', async function (assert) {
     await visit('/sign-up');
-    await signUp('juan', 'password', 'password');
+    await signUp('juan', 'password', 'password', 'email@timo');
 
     const user = this.server.db.users.findBy({ username: 'juan'});
 
@@ -47,7 +47,7 @@ module('Acceptance | Sign-up', function (hooks) {
     this.server.post('/users', { errors: {username:['has already been taken']} }, 422);
 
     await visit('/sign-up');
-    await signUp('juan', 'password', 'password');
+    await signUp('juan', 'password', 'password', 'email@timo');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.dom('[data-test=sign-up-error]')
@@ -59,7 +59,7 @@ module('Acceptance | Sign-up', function (hooks) {
     this.server.post('/users', { errors: {username:['has already been taken']} }, 422);
 
     await visit('/sign-up');
-    await signUp('juan   ', 'password', 'password');
+    await signUp('juan   ', 'password', 'password', 'email@timo');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.dom('[data-test=sign-up-error]')
@@ -68,7 +68,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
   test('Sign up with no username error', async function (assert) {
     await visit('/sign-up');
-    await signUp('', 'password', 'password');
+    await signUp('', 'password', 'password', 'email@timo');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
@@ -81,7 +81,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
   test('Sign up with no password error', async function (assert) {
     await visit('/sign-up');
-    await signUp('username', '', 'password');
+    await signUp('username', '', 'password', 'email@timo');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
@@ -94,7 +94,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
   test('Sign up with no confirmation error', async function (assert) {
     await visit('/sign-up');
-    await signUp('username', 'password', '');
+    await signUp('username', 'password', '', 'email@timo');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
@@ -107,9 +107,9 @@ module('Acceptance | Sign-up', function (hooks) {
 
   test('Sign up with username less than 4 length error', async function (assert) {
     await visit('/sign-up');
-    await signUp('1', 'password', 'password');
-    await signUp('12', 'password', 'password');
-    await signUp('123', 'password', 'password');
+    await signUp('1', 'password', 'password', 'email@timo');
+    await signUp('12', 'password', 'password', 'email@timo');
+    await signUp('123', 'password', 'password', 'email@timo');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
@@ -122,7 +122,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
   test('Sign up with password less than 8 length error', async function (assert) {
     await visit('/sign-up');
-    await signUp('username', '1234567', '1234567');
+    await signUp('username', '1234567', '1234567', 'email@timo');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
@@ -135,7 +135,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
   test('Sign up without matching password confirmation', async function (assert) {
     await visit('/sign-up');
-    await signUp('username', 'password', 'password2');
+    await signUp('username', 'password', 'password2', 'email@timo');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
@@ -148,7 +148,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
   test('Sign up with username all whitespace', async function (assert) {
     await visit('/sign-up');
-    await signUp('    ', 'password', 'password');
+    await signUp('    ', 'password', 'password', 'email@timo');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
@@ -161,7 +161,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
   test('Sign up with password all whitespace', async function (assert) {
     await visit('/sign-up');
-    await signUp('username', '        ', '        ');
+    await signUp('username', '        ', '        ', 'email@timo');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
@@ -170,5 +170,42 @@ module('Acceptance | Sign-up', function (hooks) {
       errorMessage[0].textContent.includes('This is required'),
       'No password error'
     );
+  });
+
+  test('Sign up with no email error', async function (assert) {
+    await visit('/sign-up');
+    await signUp('username', 'password', 'password', '');
+
+    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+
+    assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
+    assert.ok(
+      errorMessage[0].textContent.includes('This is required'),
+      'No email error'
+    );
+  });
+
+  test('Sign up with email all whitespace error', async function (assert) {
+    await visit('/sign-up');
+    await signUp('username', 'password', 'password', '     ');
+
+    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+
+    assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
+    assert.ok(
+      errorMessage[0].textContent.includes('This is required'),
+      'No email error'
+    );
+  });
+
+  test('Sign up with wrong email format error', async function (assert) {
+    await visit('/sign-up');
+    await signUp('username', 'password', 'password', 'email');
+
+    assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
+
+    await signUp('username', 'password', 'password', 'email@');
+
+    assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
   });
 });

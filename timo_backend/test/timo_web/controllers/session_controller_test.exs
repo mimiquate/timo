@@ -5,7 +5,7 @@ defmodule TimoWeb.SessionControllerTest do
   alias Timo.API
 
   @create_attrs %{password: "password", username: "username", email: "email@timo"}
-  @invalid_attrs %{password: "password2", username: "username", email: "email@timo"}
+  @different_attrs %{password: "password2", username: "username", email: "email@timo"}
 
   @invalid_user_error [
     %{
@@ -52,7 +52,7 @@ defmodule TimoWeb.SessionControllerTest do
 
   test "create session with invalid password", %{conn: conn} do
     API.create_user(@create_attrs)
-    conn = post(conn, Routes.session_path(conn, :create), @invalid_attrs)
+    conn = post(conn, Routes.session_path(conn, :create), @different_attrs)
 
     assert response = json_response(conn, 400)
     assert response["errors"] == @invalid_user_error
