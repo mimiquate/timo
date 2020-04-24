@@ -1,5 +1,6 @@
 import { hoursLeftOver, filterClass } from 'timo-frontend/utils/table-functions';
 import moment from 'moment';
+import { isEmpty } from '@ember/utils';
 
 export function createMembersTableColumns(sortedMembers) {
   const memberCol = [];
@@ -20,6 +21,10 @@ export function createMembersTableColumns(sortedMembers) {
 }
 
 export function createMembersTableRows(sortedMembers) {
+  if (isEmpty(sortedMembers)) {
+    return {};
+  }
+
   const memberRows = [];
   let row = {};
 

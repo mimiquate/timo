@@ -180,6 +180,31 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(table.headers.length, 1, 'Table has one column');
   });
 
+  test('Clicks checkbox with no members', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+
+    const timezoneNow = moment.tz.guess(true);
+
+    await visit(`/teams/${newTeam.id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 0, 'Table has no column');
+
+    await click('[data-test=checkbox]');
+    assert.equal(table.headers.length, 1, 'Table has one column');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      `You (${timezoneNow}) Current timezone`,
+      'Current timezone is listed'
+    );
+
+    await click('[data-test=checkbox]');
+    assert.equal(table.headers.length, 0, 'Table has no column');
+  });
+
   test('Clicks member in table to edit it', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);

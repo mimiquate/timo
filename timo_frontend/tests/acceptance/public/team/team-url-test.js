@@ -2,7 +2,6 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
 import { TablePage } from 'ember-table/test-support';
 import moment from 'moment';
 
@@ -21,17 +20,6 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Visiting /p/team/:share_id without exisiting team', async function (assert) {
     this.server.post('/teams', { errors: { detail: ['Not Found'] } }, 404);
-    await visit('/p/team/yjHktCOyBDTb');
-
-    assert.dom('[data-test=team-error]').exists('Visits team page error');
-    assert.dom('[data-test=team-error]').hasText('error Team not found', 'Team page error shows error');
-  });
-
-  test('Visiting /p/team/:share_id without exisiting team but with username', async function (assert) {
-    this.server.post('/teams', { errors: { detail: ['Not Found'] } }, 404);
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-
     await visit('/p/team/yjHktCOyBDTb');
 
     assert.dom('[data-test=team-error]').exists('Visits team page error');
@@ -240,5 +228,37 @@ module('Acceptance | Public Team', function (hooks) {
 
     await click('[data-test=checkbox]');
     assert.equal(table.headers.length, 1, 'Table has one column');
+  });
+
+  test('Clicks checkbox with no members', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
+
+    const timezoneNow = moment.tz.guess(true);
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 0, 'Table has no column');
+
+    await click('[data-test=checkbox]');
+    assert.equal(table.headers.length, 1, 'Table has one column');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      `You (${timezoneNow}) Current timezone`,
+      'Current timezone is listed'
+    );
+
+    await click('[data-test=checkbox]');
+    assert.equal(table.headers.length, 0, 'Table has no column');
   });
 });
