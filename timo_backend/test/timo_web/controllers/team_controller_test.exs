@@ -5,7 +5,7 @@ defmodule TimoWeb.TeamControllerTest do
   alias Timo.API
   alias Timo.API.Team
 
-  @create_attrs %{name: "some name", public: false}
+  @create_attrs %{name: "some name"}
   @invalid_attrs %{name: nil, public: nil}
   @update_attrs %{name: "some name updated", public: true}
 

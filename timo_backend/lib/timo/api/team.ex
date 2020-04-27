@@ -4,7 +4,7 @@ defmodule Timo.API.Team do
 
   schema "teams" do
     field :name, :string
-    field :public, :boolean
+    field :public, :boolean, default: false
     field :share_id, :string
 
     belongs_to :user, Timo.API.User
@@ -23,6 +23,7 @@ defmodule Timo.API.Team do
   def share_changeset(team) do
     team
     |> cast(gen_unique_share_id(), [:share_id])
+    |> unique_constraint(:share_id)
   end
 
   defp gen_unique_share_id() do

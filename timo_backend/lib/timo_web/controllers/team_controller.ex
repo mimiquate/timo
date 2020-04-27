@@ -18,7 +18,7 @@ defmodule TimoWeb.TeamController do
   end
 
   def index(conn, params) do
-    conn = authenticate_current_user(conn, params)
+    authenticate_current_user(conn, params)
     current_user = conn.assigns.current_user
     teams = API.list_user_teams(current_user)
     render(conn, "index.json-api", data: teams)

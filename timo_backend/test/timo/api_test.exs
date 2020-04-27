@@ -65,8 +65,8 @@ defmodule Timo.APITest do
   end
 
   describe "teams" do
-    @valid_team_attrs %{name: "some name", public: false}
-    @invalid_team_attrs %{name: nil, public: false}
+    @valid_team_attrs %{name: "some name"}
+    @invalid_team_attrs %{name: nil, public: nil}
     @update_team_attrs %{name: "some name updated", public: true}
 
     test "list_user_teams/1 returns all teams" do
@@ -102,7 +102,7 @@ defmodule Timo.APITest do
 
       assert {:ok, %Team{} = team} = API.create_team(owner, @valid_team_attrs)
       assert team.name == @valid_team_attrs.name
-      assert team.public == @valid_team_attrs.public
+      assert team.public == false
       assert team.share_id != nil
     end
 
