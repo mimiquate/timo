@@ -38,7 +38,7 @@ module('Acceptance | Sign-up', function (hooks) {
 
     const user = this.server.db.users.findBy({ username: 'juan'});
 
-    assert.equal(currentURL(), '/login', 'Redirects to login page');
+    assert.equal(currentURL(), '/verification', 'Redirects to verification page');
     assert.notEqual(user, null, 'New user is created');
   });
 
