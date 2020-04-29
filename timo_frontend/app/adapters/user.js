@@ -13,5 +13,18 @@ export default ApplicationAdapter.extend({
   deleteSession() {
     const url = `${this.buildURL('')}/logout`;
     return this.ajax(url, 'DELETE');
+  },
+
+  verifyEmail(token) {
+    const url = this.buildURL('') + "/verify";
+    return this.ajax(
+      url,
+      'GET',
+      {
+        data: {
+          token: token
+        }
+      }
+    );
   }
 });

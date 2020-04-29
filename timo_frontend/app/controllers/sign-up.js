@@ -33,7 +33,7 @@ export default Controller.extend({
         });
 
       await user.save()
-        .then(() => this.transitionToRoute('login'))
+        .then(() => this.transitionToRoute('verification'))
         .catch(() => set(this, 'errorResponse', true));
     }
   }
