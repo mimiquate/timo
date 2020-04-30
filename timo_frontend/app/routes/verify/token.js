@@ -5,6 +5,6 @@ export default Route.extend({
     const adapter = await this.store.adapterFor('user');
 
     return adapter.verifyEmail(params.token)
-      .then(() => this.currentUser.load());
+      .then(() => this.transitionTo('login'));
   }
 });

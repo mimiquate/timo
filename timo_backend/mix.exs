@@ -44,7 +44,8 @@ defmodule Timo.MixProject do
       {:ja_serializer, "~> 0.15.0"},
       {:poison, "~> 3.1"},
       {:tzdata, "~> 1.0.3"},
-      {:pbkdf2_elixir, "~> 1.0"}
+      {:pbkdf2_elixir, "~> 1.0"},
+      {:bamboo, "~> 1.4"}
     ]
   end
 

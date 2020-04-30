@@ -138,4 +138,10 @@ defmodule Timo.API do
       nil -> nil
     end
   end
+
+  def mark_as_verified(%User{} = user) do
+    user
+    |> User.update_changeset(%{verified: true})
+    |> Repo.update()
+  end
 end
