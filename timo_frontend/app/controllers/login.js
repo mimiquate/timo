@@ -24,7 +24,13 @@ export default Controller.extend({
       await this.session.authenticate('authenticator:credentials', newUsername, password)
         .then(() => this.currentUser.load())
         .then(() => this.transitionToRoute('landing'))
-        .catch(() => set(this, 'errorResponse', true));
+        .catch((error) => {
+          if (error.errors[0].title === "Email not verified") {
+            this.transitionToRoute('verification');
+          } else {
+            set(this, 'errorResponse', true);
+          }
+        });
     }
   }
 });

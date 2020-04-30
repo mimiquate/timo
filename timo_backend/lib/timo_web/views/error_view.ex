@@ -18,6 +18,30 @@ defmodule TimoWeb.ErrorView do
     }
   end
 
+  def render("invalid_token.json", _assigns) do
+    %{
+      errors: [
+        %{
+          status: "400",
+          title: "Invalid token",
+          detail: "Verification token doesn\'t exists"
+        }
+      ]
+    }
+  end
+
+  def render("email_not_verified.json", _assigns) do
+    %{
+      errors: [
+        %{
+          status: "400",
+          title: "Email not verified",
+          detail: "Email must be verified to access account"
+        }
+      ]
+    }
+  end
+
   # By default, Phoenix returns the status message from
   # the template name. For example, "404.json" becomes
   # "Not Found".
