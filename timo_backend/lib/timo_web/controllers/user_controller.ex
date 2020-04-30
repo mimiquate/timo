@@ -8,6 +8,10 @@ defmodule TimoWeb.UserController do
 
   def create(conn, %{"data" => %{"type" => "users", "attributes" => user_params}}) do
     with {:ok, %User{} = user} <- API.create_user(user_params) do
+      token = Timo.Token.generate_new_account_token(user)
+      verification_url = TimoWeb.SendEmail.user_verification_url(token)
+      TimoWeb.SendEmail.send_account_verification_email(user, verification_url)
+
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.user_path(conn, :show, user))
@@ -34,5 +38,30 @@ defmodule TimoWeb.UserController do
     else
       _ -> {:error, :not_found}
     end
+  end
+
+  def verify_email(conn, %{"token" => token}) do
+    with {:ok, user_id} <- Timo.Token.verify_new_account_token(token),
+         {:ok, %User{verified: false} = user} <- API.get_user(user_id) do
+      Timo.API.mark_as_verified(user)
+
+      conn
+      |> json(%{})
+    else
+      _ ->
+        conn
+        |> put_status(:bad_request)
+        |> put_view(TimoWeb.ErrorView)
+        |> render("invalid_token.json")
+    end
+  end
+
+  def verify_email(conn, _) do
+    # If there is no token in our params, tell the user they've provided
+    # an invalid token or expired token
+    conn
+    |> put_status(:bad_request)
+    |> put_view(TimoWeb.ErrorView)
+    |> render("invalid_token.json")
   end
 end

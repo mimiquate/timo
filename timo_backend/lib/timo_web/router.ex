@@ -15,5 +15,6 @@ defmodule TimoWeb.Router do
     resources "/members", MemberController, only: [:create, :update]
     delete "/logout", SessionController, :logout
     post "/session", SessionController, :create
+    get "/verify", UserController, :verify_email
   end
 end
