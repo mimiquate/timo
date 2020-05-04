@@ -7,6 +7,13 @@ defmodule TimoWeb.UserControllerTest do
   @invalid_space_attrs %{username: " ", password: " ", email: " "}
   @invalid_length_username %{username: "123", password: "some_password", email: "email@timo"}
   @invalid_length_password %{username: "some username", password: "1234567", email: "email@timo"}
+  @invalid_token_error [
+    %{
+      "status" => "400",
+      "title" => "Invalid token",
+      "detail" => "Verification token doesn\'t exists"
+    }
+  ]
 
   def data_fixture(attribute) do
     %{
@@ -112,6 +119,46 @@ defmodule TimoWeb.UserControllerTest do
     conn = post(conn, Routes.user_path(conn, :create), data_fixture(@create_attrs))
 
     assert json_response(conn, 422)["errors"] == %{"email" => ["has already been taken"]}
+  end
+
+  test "verifies user email", %{conn: conn} do
+    user = user_factory()
+    user_id = Integer.to_string(user.id)
+    token = Timo.Token.generate_new_account_token(user)
+
+    assert user.verified == false
+
+    conn = get(conn, Routes.user_path(conn, :verify_email), %{token: token})
+    {:ok, fetched_user} = Timo.API.get_user(user_id)
+
+    assert json_response(conn, 200) == %{}
+    assert fetched_user.verified == true
+  end
+
+  test "attempts to verify user email multiple times", %{conn: conn} do
+    user = user_factory()
+    token = Timo.Token.generate_new_account_token(user)
+
+    conn = get(conn, Routes.user_path(conn, :verify_email), %{token: token})
+    assert json_response(conn, 200) == %{}
+
+    conn = get(conn, Routes.user_path(conn, :verify_email), %{token: token})
+    assert json_response(conn, 400)["errors"] == @invalid_token_error
+  end
+
+  test "attempts to verify already verified user", %{conn: conn} do
+    user = user_factory(%{verified: true})
+    token = Timo.Token.generate_new_account_token(user)
+
+    conn = get(conn, Routes.user_path(conn, :verify_email), %{token: token})
+
+    assert json_response(conn, 400)["errors"] == @invalid_token_error
+  end
+
+  test "attempts to verify user email with nil token", %{conn: conn} do
+    conn = get(conn, Routes.user_path(conn, :verify_email), %{token: nil})
+
+    assert json_response(conn, 400)["errors"] == @invalid_token_error
   end
 
   describe "testing session show" do
