@@ -55,13 +55,4 @@ defmodule TimoWeb.UserController do
         |> render("invalid_token.json")
     end
   end
-
-  def verify_email(conn, _) do
-    # If there is no token in our params, tell the user they've provided
-    # an invalid token or expired token
-    conn
-    |> put_status(:bad_request)
-    |> put_view(TimoWeb.ErrorView)
-    |> render("invalid_token.json")
-  end
 end

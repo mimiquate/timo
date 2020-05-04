@@ -37,6 +37,7 @@ defmodule Timo.APITest do
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = API.create_user(@valid_user_attrs)
       assert user.username == @valid_user_attrs.username
+      assert user.verified == false
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -75,6 +76,15 @@ defmodule Timo.APITest do
       })
 
       assert {:error, %Ecto.Changeset{}} = API.create_user(@valid_user_attrs)
+    end
+
+    test "mark_as_verified/1 changes user verified status to true" do
+      user = user_factory()
+
+      assert user.verified == false
+
+      assert {:ok, %User{} = user} = API.mark_as_verified(user)
+      assert user.verified == true
     end
   end
 
