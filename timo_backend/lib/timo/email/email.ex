@@ -9,7 +9,7 @@ defmodule Timo.Email do
       html_body:
         "<h1>Timo App</h1>" <>
           "<h2>Please verify your email address</h2>" <>
-          "<p>Click link to verify email: <a href=\"#{url}\">#{url}</a></p>",
+          "<p>Click link to verify email: <a href=#{url}>#{url}</a></p>",
       text_body: "Timo App Please verify your email address Click link to verify email: " <> url
     )
   end
