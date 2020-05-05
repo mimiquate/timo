@@ -26,7 +26,7 @@ module('Acceptance | Login', function (hooks) {
   });
 
   test('Successful login', async function (assert) {
-    const user = this.server.create('user', { username: 'juan', password: 'password'});
+    const user = this.server.create('user', { username: 'juan', password: 'password' });
     this.server.get('/users/me', user, 200);
 
     await visit('/login');
@@ -79,7 +79,7 @@ module('Acceptance | Login', function (hooks) {
   });
 
   test('Login with wrong username error', async function (assert) {
-    this.server.create('user', { username: 'juan', password: 'password'});
+    this.server.create('user', { username: 'juan', password: 'password' });
     invalidUserServerPost.call(this);
 
     await visit('/login');
@@ -91,7 +91,7 @@ module('Acceptance | Login', function (hooks) {
   });
 
   test('Login with wrong password error', async function (assert) {
-    this.server.create('user', { username: 'juan', password: 'password'});
+    this.server.create('user', { username: 'juan', password: 'password' });
     invalidUserServerPost.call(this);
 
     await visit('/login');
@@ -108,4 +108,24 @@ module('Acceptance | Login', function (hooks) {
 
     assert.equal(currentURL(), '/sign-up', 'Visits sign up page');
   })
+
+  test('Unverified login', async function (assert) {
+    this.server.create('user', { username: 'juan', password: 'password' });
+    this.server.post(
+      '/session',
+      {
+        errors: [{
+          detail: 'Email must be verified to access account',
+          status: '400',
+          title: 'Email not verified'
+        }]
+      },
+      400
+    );
+
+    await visit('/login');
+    await loginAs('juan', 'password');
+
+    assert.equal(currentURL(), '/verification', 'Correctly redirects to verification page');
+  });
 });
