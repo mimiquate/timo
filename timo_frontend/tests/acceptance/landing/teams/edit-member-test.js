@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { click, fillIn, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession, chooseTimeZone } from '../../../helpers/custom-helpers';
+import { setSession, chooseTimeZone } from 'timo-frontend/tests/helpers/custom-helpers';
 import { TablePage } from 'ember-table/test-support';
 
 module('Acceptance | Update member', function (hooks) {

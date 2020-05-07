@@ -26,4 +26,5 @@ export default function () {
       }
     }
   }, 200);
+  this.patch('/teams/:id');
 }

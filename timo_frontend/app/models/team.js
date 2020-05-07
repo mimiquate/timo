@@ -4,5 +4,8 @@ const { Model, attr, belongsTo, hasMany } = DS;
 export default Model.extend({
   name: attr('string'),
   user: belongsTo('user'),
-  members: hasMany('member', { async: false })
+  members: hasMany('member', { async: false }),
+  share_id: attr('string'),
+  public: attr('boolean'),
+  inserted_at: attr('string')
 });

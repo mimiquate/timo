@@ -1,0 +1,26 @@
+<PaperMenu @offset="-20 50" as |menu|>
+  <menu.trigger>
+    <PaperButton @iconButton={{true}} @raised={{true}} data-test="share-icon">
+      {{paper-icon "share"}}
+    </PaperButton>
+  </menu.trigger>
+  <menu.content>
+    <div class="public-share-item" data-test="public-share-item">
+      Public Access
+      <PaperCheckbox
+        @value={{this.team.public}}
+        @onChange={{action "setPublic"}}
+        data-test="public-checkbox"
+      />
+    </div>
+    <PaperButton
+      @raised={{true}}
+      @accent={{true}}
+      @onClick={{action "copyLink"}}
+      @disabled={{not this.team.public}}
+      data-test="copy-link-button"
+    >
+      Copy Link
+    </PaperButton>
+  </menu.content>
+</PaperMenu>

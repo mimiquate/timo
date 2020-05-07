@@ -2,7 +2,7 @@
 @import './material-table.scss';
 @import 'ember-paper-link';
 
-body, body > .ember-view, .login-main {
+body, body > .ember-view, .login-main, .public-main {
   height: 100%;
 }
 
@@ -55,10 +55,14 @@ body, body > .ember-view, .login-main {
   align-self: center;
 }
 
-.flex-title, .no-member {
+.flex-title, .no-member, .current-checkbox {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
-  align-self: flex-start;
+}
+
+.flex-title {
+  display: flex;
+  height: fit-content;
 }
 
 .add-button {
@@ -166,4 +170,13 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 .response-error {
   color: RGB(var(--warn-A700));
   padding-bottom: $error-padding;
+}
+
+.share-icon {
+  margin-left: auto;
+  margin-top: 21px;
+}
+
+.public-share-item {
+  margin: 6px 8px;
 }
