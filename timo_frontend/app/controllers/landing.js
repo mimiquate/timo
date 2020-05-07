@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { computed } from "@ember/object";
+import { set } from "@ember/object";
 
 function compareTeamsByCreationTime(teamA, teamB) {
   const aCreationTime = teamA.inserted_at;
@@ -18,6 +19,7 @@ function compareTeamsByCreationTime(teamA, teamB) {
 
 export default Controller.extend({
   session: service(),
+  router: service(),
 
   sortedTeams: computed('model.[]', function () {
     const teamsToArray = this.model.toArray();
@@ -35,6 +37,22 @@ export default Controller.extend({
       await this.currentUser.logOut();
       this.store.unloadAll();
       this.transitionToRoute('/login');
+    },
+
+    deleteTeamModal(team) {
+      set(this, 'showDeleteTeamModal', true);
+      set(this, 'teamToDelete', team);
+    },
+
+    closeDeleteTeamModal() {
+      set(this, 'showDeleteTeamModal', false);
+    },
+
+    async deleteTeam() {
+      if (this.teamToDelete) {
+        await this.teamToDelete.destroyRecord();
+        set(this, 'showDeleteTeamModal', false);
+      }
     }
   }
 });

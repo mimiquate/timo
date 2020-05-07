@@ -36,9 +36,14 @@
       {{#if this.model.length}}
         <PaperList>
           {{#each this.sortedTeams as |team index|}}
-            {{#paper-link-item "landing.teams.team" team.id data-test-team=index}}
-              {{team.name}}
-            {{/paper-link-item}}
+            <div>
+              {{#paper-link-item "landing.teams.team" team.id data-test-team=index}}
+                {{team.name}}
+              {{/paper-link-item}}
+              <PaperButton @iconButton={{true}} @onClick={{action "deleteTeamModal" team}}>
+                {{paper-icon "delete"}}
+              </PaperButton>
+            </div>
           {{/each}}
         </PaperList>
       {{else}}
@@ -61,3 +66,15 @@
     {{outlet}}
   </PaperCardContent>
 </PaperSidenavContainer>
+{{#if showDeleteTeamModal}}
+  <PaperDialog @clickOutsideToClose={{true}} @onClose={{action "closeDeleteTeamModal"}}>
+    <PaperDialogContent>
+      <h2 class="md-title">Confirm team deletion</h2>
+      Are you sure you want to delete team {{teamToDelete.name}} ?
+    </PaperDialogContent>
+    <PaperDialogActions>
+      <PaperButton @warn={{true}} @onClick={{action "closeDeleteTeamModal"}}>Cancel</PaperButton>
+      <PaperButton @primary={{true}} @onClick={{action "deleteTeam"}}>Yes</PaperButton>
+    </PaperDialogActions>
+  </PaperDialog>
+{{/if}}
