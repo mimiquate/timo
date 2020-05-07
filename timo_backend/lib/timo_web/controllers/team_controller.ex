@@ -17,11 +17,15 @@ defmodule TimoWeb.TeamController do
     end
   end
 
-  def index(conn, params) do
-    authenticate_current_user(conn, params)
+  def index(conn, _params) do
     current_user = conn.assigns.current_user
-    teams = API.list_user_teams(current_user)
-    render(conn, "index.json-api", data: teams)
+
+    if !current_user do
+      {:error, :unauthorized}
+    else
+      teams = API.list_user_teams(current_user)
+      render(conn, "index.json-api", data: teams)
+    end
   end
 
   def create(conn, %{"data" => %{"type" => "teams", "attributes" => team_params}}) do
