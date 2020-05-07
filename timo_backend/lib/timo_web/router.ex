@@ -11,7 +11,7 @@ defmodule TimoWeb.Router do
   scope "/api", TimoWeb do
     pipe_through :api
     resources "/users", UserController, only: [:create, :show]
-    resources "/teams", TeamController, only: [:create, :show, :index, :update]
+    resources "/teams", TeamController, only: [:create, :show, :index, :update, :delete]
     resources "/members", MemberController, only: [:create, :update]
     delete "/logout", SessionController, :logout
     post "/session", SessionController, :create

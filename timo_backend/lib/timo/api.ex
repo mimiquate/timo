@@ -143,4 +143,8 @@ defmodule Timo.API do
     |> User.update_changeset(%{verified: true})
     |> Repo.update()
   end
+
+  def delete_team(%Team{} = team) do
+    Repo.delete(team)
+  end
 end
