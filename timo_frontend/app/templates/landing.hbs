@@ -35,7 +35,7 @@
     <PaperContent @padding={{false}} @class="side-content">
       {{#if this.model.length}}
         <PaperList>
-          {{#each this.model as |team index|}}
+          {{#each this.sortedTeams as |team index|}}
             {{#paper-link-item "landing.teams.team" team.id data-test-team=index}}
               {{team.name}}
             {{/paper-link-item}}
