@@ -18,17 +18,21 @@ defmodule Timo.API.Team do
     team
     |> cast(attrs, [:name, :public])
     |> validate_required([:name, :public])
+    |> put_share_id()
   end
 
-  def share_changeset(team) do
-    team
-    |> cast(gen_unique_share_id(), [:share_id])
-    |> unique_constraint(:share_id)
-  end
+  defp put_share_id(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{public: true}} ->
+        put_change(changeset, :share_id, random_string(12))
+        |> unique_constraint(:share_id)
 
-  defp gen_unique_share_id() do
-    share_id = random_string(12)
-    %{"share_id" => share_id}
+      %Ecto.Changeset{valid?: true, changes: %{public: false}} ->
+        put_change(changeset, :share_id, nil)
+
+      _ ->
+        changeset
+    end
   end
 
   defp random_string(length) do

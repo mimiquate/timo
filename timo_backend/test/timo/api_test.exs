@@ -67,7 +67,6 @@ defmodule Timo.APITest do
   describe "teams" do
     @valid_team_attrs %{name: "some name"}
     @invalid_team_attrs %{name: nil, public: nil}
-    @update_team_attrs %{name: "some name updated", public: true}
 
     test "list_user_teams/1 returns all teams" do
       owner = user_factory()
@@ -103,7 +102,7 @@ defmodule Timo.APITest do
       assert {:ok, %Team{} = team} = API.create_team(owner, @valid_team_attrs)
       assert team.name == @valid_team_attrs.name
       assert team.public == false
-      assert team.share_id != nil
+      assert team.share_id == nil
     end
 
     test "create_team/2 with invalid data returns error changeset" do
@@ -124,13 +123,22 @@ defmodule Timo.APITest do
       assert nil == API.get_team_by_id(1)
     end
 
-    test "update_team/2 with valid data updates team" do
+    test "update_team/2 with valid data with public true updates team" do
       owner = user_factory()
       team = team_factory(owner)
 
-      assert {:ok, %Team{} = team} = API.update_team(team, @update_team_attrs)
-      assert team.name == @update_team_attrs.name
-      assert team.public == @update_team_attrs.public
+      assert {:ok, %Team{} = team} = API.update_team(team, %{public: true})
+      assert team.public == true
+      assert team.share_id != nil
+    end
+
+    test "update_team/2 with valid data with public false updates team" do
+      owner = user_factory()
+      team = team_factory(owner, %{public: true})
+
+      assert {:ok, %Team{} = team} = API.update_team(team, %{public: false})
+      assert team.public == false
+      assert team.share_id == nil
     end
 
     test "update_team/2 with invalid data returns error changeset" do

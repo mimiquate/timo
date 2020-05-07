@@ -62,7 +62,6 @@ defmodule Timo.API do
   def create_team(%User{} = user, attrs \\ %{}) do
     %Team{}
     |> Team.changeset(attrs)
-    |> Team.share_changeset()
     |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.insert()
   end
