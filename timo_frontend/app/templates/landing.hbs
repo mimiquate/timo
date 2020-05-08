@@ -40,7 +40,7 @@
               {{#paper-link-item "landing.teams.team" team.id data-test-team=index}}
                 {{team.name}}
               {{/paper-link-item}}
-              <PaperButton @iconButton={{true}} @onClick={{action "deleteTeamModal" team}}>
+              <PaperButton @iconButton={{true}} @onClick={{action "deleteTeamModal" team}} data-test-delete-team={{index}}>
                 {{paper-icon "delete"}}
               </PaperButton>
             </div>
@@ -67,14 +67,22 @@
   </PaperCardContent>
 </PaperSidenavContainer>
 {{#if showDeleteTeamModal}}
-  <PaperDialog @clickOutsideToClose={{true}} @onClose={{action "closeDeleteTeamModal"}}>
-    <PaperDialogContent>
-      <h2 class="md-title">Confirm team deletion</h2>
-      Are you sure you want to delete team {{teamToDelete.name}} ?
-    </PaperDialogContent>
-    <PaperDialogActions>
-      <PaperButton @warn={{true}} @onClick={{action "closeDeleteTeamModal"}}>Cancel</PaperButton>
-      <PaperButton @primary={{true}} @onClick={{action "deleteTeam"}}>Yes</PaperButton>
-    </PaperDialogActions>
-  </PaperDialog>
+  <div data-test-delete-team="modal">
+    <PaperDialog @clickOutsideToClose={{true}} @onClose={{action "closeDeleteTeamModal"}}>
+      <PaperDialogContent>
+        <h2 class="md-title" data-test-delete-team="title">Confirm team deletion</h2>
+        <span data-test-delete-team="message">
+          Are you sure you want to delete team {{teamToDelete.name}} ?
+        </span>
+      </PaperDialogContent>
+      <PaperDialogActions>
+        <PaperButton @warn={{true}} @onClick={{action "closeDeleteTeamModal"}} data-test-delete-team="cancel">
+          Cancel
+        </PaperButton>
+        <PaperButton @primary={{true}} @onClick={{action "deleteTeam"}} data-test-delete-team="yes">
+          Yes
+        </PaperButton>
+      </PaperDialogActions>
+    </PaperDialog>
+  </div>
 {{/if}}
