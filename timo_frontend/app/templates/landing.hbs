@@ -36,11 +36,16 @@
       {{#if this.model.length}}
         <PaperList>
           {{#each this.sortedTeams as |team index|}}
-            <div>
-              {{#paper-link-item "landing.teams.team" team.id data-test-team=index}}
-                {{team.name}}
+            <div class="team-list-item">
+              {{#paper-link-item "landing.teams.team" team.id class="list-team-name" data-test-team=index}}
+                <span class="team-name-span">{{team.name}}</span>
               {{/paper-link-item}}
-              <PaperButton @iconButton={{true}} @onClick={{action "deleteTeamModal" team}} data-test-delete-team={{index}}>
+              <PaperButton
+                @class="delete-team-button"
+                @iconButton={{true}}
+                @onClick={{action "deleteTeamModal" team}}
+                data-test-delete-team={{index}}
+              >
                 {{paper-icon "delete"}}
               </PaperButton>
             </div>
@@ -72,7 +77,7 @@
       <PaperDialogContent>
         <h2 class="md-title" data-test-delete-team="title">Confirm team deletion</h2>
         <span data-test-delete-team="message">
-          Are you sure you want to delete team {{teamToDelete.name}} ?
+          Are you sure you want to delete team <strong>{{teamToDelete.name}}</strong> ?
         </span>
       </PaperDialogContent>
       <PaperDialogActions>
