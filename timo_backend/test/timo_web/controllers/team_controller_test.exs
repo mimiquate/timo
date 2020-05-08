@@ -186,4 +186,13 @@ defmodule TimoWeb.TeamControllerTest do
 
     assert json_response(conn, 404)["errors"] == [%{"detail" => "Not Found"}]
   end
+
+  test "deletes team from user and renders empty content", %{conn: conn, user: user} do
+    team = team_factory(user)
+
+    conn = delete(conn, Routes.team_path(conn, :delete, team))
+
+    assert conn.status == 204
+    assert conn.resp_body == ""
+  end
 end
