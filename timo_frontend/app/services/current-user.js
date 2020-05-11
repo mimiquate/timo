@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 export default Service.extend({
   store: service(),
   session: service(),
+  router: service(),
   user: null,
 
   setCurrentUser(user) {
@@ -20,7 +21,11 @@ export default Service.extend({
   async load() {
     if (this.session.isAuthenticated) {
       const user = await this.store.queryRecord('user', { me: true })
-        .catch(() => null);
+        .catch(() => {
+          this.session.invalidate();
+          this.store.unloadAll();
+          this.router.transitionTo('login');
+        });
 
       set(this, 'user', user);
     }
