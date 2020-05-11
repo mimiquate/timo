@@ -52,6 +52,12 @@ export default Controller.extend({
       if (this.teamToDelete) {
         await this.teamToDelete.destroyRecord();
         set(this, 'showDeleteTeamModal', false);
+
+        const pathname = this.router.currentURL;
+        const deletePath = `/teams/${this.teamToDelete.id}`;
+        if (pathname === deletePath) {
+          await this.transitionToRoute('landing');
+        }
       }
     }
   }
