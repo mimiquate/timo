@@ -173,7 +173,7 @@ defmodule TimoWeb.TeamControllerTest do
         %{"filter" => %{"share_id" => team.share_id}}
       )
 
-    assert json_response(conn, 404)["errors"] == %{"detail" => "Not Found"}
+    assert json_response(conn, 404)["errors"] == [%{"detail" => "Not Found"}]
   end
 
   test "show public team without team and renders error", %{conn: conn} do
@@ -184,6 +184,6 @@ defmodule TimoWeb.TeamControllerTest do
         %{"filter" => %{"share_id" => "unique_id"}}
       )
 
-    assert json_response(conn, 404)["errors"] == %{"detail" => "Not Found"}
+    assert json_response(conn, 404)["errors"] == [%{"detail" => "Not Found"}]
   end
 end
