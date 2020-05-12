@@ -7,39 +7,27 @@ defmodule TimoWeb.ErrorView do
   #   %{errors: %{detail: "Internal Server Error"}}
   # end
   def render("invalid_password_user.json", _assigns) do
-    %{
-      errors: [
-        %{
-          status: "400",
-          title: "Invalid username or password",
-          detail: "User doesn\'t exists or incorrect password"
-        }
-      ]
-    }
+    JaSerializer.ErrorSerializer.format(%{
+      status: "400",
+      title: "Invalid username or password",
+      detail: "User doesn\'t exists or incorrect password"
+    })
   end
 
   def render("invalid_token.json", _assigns) do
-    %{
-      errors: [
-        %{
-          status: "400",
-          title: "Invalid token",
-          detail: "Verification token doesn\'t exists"
-        }
-      ]
-    }
+    JaSerializer.ErrorSerializer.format(%{
+      status: "400",
+      title: "Invalid token",
+      detail: "Verification token doesn\'t exists"
+    })
   end
 
   def render("email_not_verified.json", _assigns) do
-    %{
-      errors: [
-        %{
-          status: "400",
-          title: "Email not verified",
-          detail: "Email must be verified to access account"
-        }
-      ]
-    }
+    JaSerializer.ErrorSerializer.format(%{
+      status: "400",
+      title: "Email not verified",
+      detail: "Email must be verified to access account"
+    })
   end
 
   # By default, Phoenix returns the status message from
