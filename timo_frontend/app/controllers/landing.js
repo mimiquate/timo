@@ -62,7 +62,7 @@ export default Controller.extend({
     },
 
     async goToTeam(team) {
-      await this.transitionToRoute('landing.teams.team', team);
+      await this.transitionToRoute('landing.teams.team', team.id);
     }
   }
 });
