@@ -37,7 +37,7 @@ body, body > .ember-view, .login-main, .public-main {
   }
 }
 
-.side-container, .side-content {
+.side-container, .side-container > md-content {
   background-color: paper-color(deep-orange, '300');
 }
 
