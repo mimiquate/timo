@@ -37,7 +37,11 @@
         <PaperList>
           {{#each this.sortedTeams as |team index|}}
             <div class="team-list-item">
-              <PaperItem @class="list-team-name" @onClick={{action "goToTeam" team}} data-test-team={{index}}>
+              <PaperItem
+                @class="list-team-name {{if (eq currentTeamId team.id) "active-list-button"}}"
+                @onClick={{action "goToTeam" team}}
+                data-test-team={{index}}
+              >
                 <span class="team-name-span">{{team.name}}</span>
               </PaperItem>
               <PaperButton
