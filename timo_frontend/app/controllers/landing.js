@@ -21,6 +21,10 @@ export default Controller.extend({
   session: service(),
   router: service(),
 
+  currentTeamId: computed('router.currentURL', function () {
+    return this.router.currentRoute.attributes.id;
+  }),
+
   sortedTeams: computed('model.[]', function () {
     const teamsToArray = this.model.toArray();
 
@@ -53,9 +57,7 @@ export default Controller.extend({
         await this.teamToDelete.destroyRecord();
         set(this, 'showDeleteTeamModal', false);
 
-        const pathname = this.router.currentURL;
-        const deletePath = `/teams/${this.teamToDelete.id}`;
-        if (pathname === deletePath) {
+        if (this.currentTeamId === this.teamToDelete.id) {
           await this.transitionToRoute('landing');
         }
       }
