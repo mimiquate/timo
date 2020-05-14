@@ -43,7 +43,7 @@ module('Acceptance | Landing', function (hooks) {
     let newTeam = this.server.create('team', { name: 'Team', user: newUser});
 
     await visit('/');
-    await click('[data-test-team="0"] a');
+    await click('[data-test-team="0"] button');
 
     assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Redirects to team page');
     assert.dom('[data-test=team-title]').exists('Team title loads');
@@ -116,7 +116,7 @@ module('Acceptance | Landing', function (hooks) {
     setSession.call(this, newUser);
 
     await visit('/');
-    await click('[data-test-team="0"] a');
+    await click('[data-test-team="0"] button');
 
     assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Moves to team page');
 
