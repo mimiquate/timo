@@ -5464,14 +5464,6 @@ ember-native-dom-helpers@^0.6.3:
     broccoli-funnel "^1.1.0"
     ember-cli-babel "^6.6.0"
 
-ember-paper-link@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/ember-paper-link/-/ember-paper-link-0.0.6.tgz#7e23deccbfe5165d9d6eb3b731e000e5e496b3dd"
-  integrity sha512-TJjmJgYaUhKSNv48Xe09DgmvyNTjm3qAVmzwbD0sBwkZrGe/9HwlLOayM0fvP55TGEikJk/dcPTdXYA9WzQglg==
-  dependencies:
-    ember-cli-babel "^6.16.0"
-    ember-cli-htmlbars "^3.0.0"
-
 ember-paper@^1.0.0-beta.26:
   version "1.0.0-beta.26"
   resolved "https://registry.yarnpkg.com/ember-paper/-/ember-paper-1.0.0-beta.26.tgz#ec029b516d60d5b9f29ad956555a472b5ea2e5f6"
