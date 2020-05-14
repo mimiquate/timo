@@ -37,9 +37,9 @@
         <PaperList>
           {{#each this.sortedTeams as |team index|}}
             <div class="team-list-item">
-              {{#paper-link-item "landing.teams.team" team.id class="list-team-name" data-test-team=index}}
+              <PaperItem @class="list-team-name" @onClick={{action "goToTeam" team}} data-test-team={{index}}>
                 <span class="team-name-span">{{team.name}}</span>
-              {{/paper-link-item}}
+              </PaperItem>
               <PaperButton
                 @class="delete-team-button"
                 @iconButton={{true}}
