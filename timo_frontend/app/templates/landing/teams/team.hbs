@@ -1,1 +1,85 @@
-{{outlet}}
+<div class="flex-title">
+  <h1 data-test="team-title">
+    {{this.model.name}}
+  </h1>
+  <div class="share-icon">
+    <ShareMenu @team={{this.model}} />
+  </div>
+</div>
+<div class="current-checkbox">
+  <PaperCheckbox
+    @value={{showCurrent}}
+    @onChange={{action (mut showCurrent)}}
+    data-test="checkbox"
+  >
+    List my current timezone
+  </PaperCheckbox>
+</div>
+{{#if this.sortedMembers.length}}
+  <MembersTable @currentRowNumber={{currentRowNumber}} @didScroll={{didScroll}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
+    <t.head
+      @columns={{columns}}
+      @enableResize={{false}}
+      @enableReorder={{false}}
+      as |h|
+    >
+      <h.row @class="mat-header-row" as |hr|>
+        <hr.cell
+          @class="mat-header-cell cell-text-align pointer-cursor"
+          onclick={{if (not-eq hr.columnValue.valuePath "current") (action "editMember" hr.columnValue.member)}}
+          data-test-member={{hr.columnValue.valuePath}}
+          as |column|
+        >
+          {{column.member.name}} ({{column.member.timezone}})
+          {{#if showCurrent}}
+            {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
+          {{/if}}
+        </hr.cell>
+      </h.row>
+    </t.head>
+
+    <t.body @rows={{rows}} as |r|>
+      <r.row @class="mat-row {{row-filter r.rowValue}}" as |rr|>
+        <rr.cell @class="mat-cell cell-text-align cell-color-{{cell-color rr.cellValue}}" as |value|>
+          {{!-- Check if value exists because of rendering issue --}}
+          {{#if value}}
+            {{moment-format value "D MMM YYYY - HH:mm"}}
+          {{/if}}
+        </rr.cell>
+      </r.row>
+    </t.body>
+  </MembersTable>
+{{else}}
+  <div class="no-member" data-test="no-member">
+    No members in this team
+  </div>
+{{/if}}
+<PaperButton
+  @raised={{true}}
+  @fab={{true}}
+  @accent={{true}}
+  @onClick={{action "newMember"}}
+  data-test="add-member-button"
+  @class="add-button"
+  id="new-member-origin"
+>
+  +
+</PaperButton>
+{{#if newMemberModal}}
+  <MemberModal
+    @addMember={{action "saveMember"}}
+    @closeModal={{action "closeMemberModal" "newMemberModal"}}
+    @title="New Member"
+    @modalOrigin="#new-member-origin"
+    data-test="new-member-modal"
+  />
+{{/if}}
+{{#if editMemberModal}}
+  <MemberModal
+    @addMember={{action "saveEditMember"}}
+    @member={{memberToEdit}}
+    @closeModal={{action "closeMemberModal" "editMemberModal"}}
+    @title="Edit Member"
+    data-test="edit-member-modal"
+  />
+{{/if}}
