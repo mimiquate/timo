@@ -198,8 +198,10 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 .team-list-item {
   display: flex;
   align-items: center;
-  .delete-team-button {
-    display: none;
+  @media (hover: hover) {
+    .delete-team-button {
+      display: none;
+    }
   }
   &:hover {
     .delete-team-button {
