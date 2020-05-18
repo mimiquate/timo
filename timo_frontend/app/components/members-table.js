@@ -1,20 +1,28 @@
 import EmberTable from 'ember-table/components/ember-table/component';
 import { later } from '@ember/runloop';
-import { set } from "@ember/object";
+
+function scrollMembersTable(currentRowIndex) {
+  const table = document.getElementById('scroll-target');
+  const tableMiddle = (table.offsetHeight / 2) - 56;
+  const scrollTargetAmount = (48 * currentRowIndex) - tableMiddle;
+
+  table.scrollTop = scrollTargetAmount;
+}
 
 export default EmberTable.extend({
-  didRender() {
+  didInsertElement() {
     this._super(...arguments);
 
-    if (!this.didScroll) {
-      later(() => {
-        const table = document.getElementById('scroll-target');
-        const tableMiddle = (table.offsetHeight / 2) - 56;
-        const scrollTargetAmount = (48 * this.currentRowNumber) - tableMiddle;
-
-        table.scrollTop = scrollTargetAmount;
-        set(this, 'didScroll', true);
-      }, 500);
-    }
+    later(() => {
+      scrollMembersTable(this.currentRowIndex);
+    }, 500);
   },
+
+  didUpdateAttrs() {
+    this._super(...arguments);
+
+    later(() => {
+      scrollMembersTable(this.currentRowIndex);
+    }, 500);
+  }
 });
