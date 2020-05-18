@@ -195,4 +195,18 @@ defmodule TimoWeb.TeamControllerTest do
     assert conn.status == 204
     assert conn.resp_body == ""
   end
+
+  test "deletes team with members", %{conn: conn, user: user} do
+    team = team_factory(user)
+    member1 = member_factory(team)
+    member2 = member_factory(team)
+
+    conn = delete(conn, Routes.team_path(conn, :delete, team))
+
+    assert conn.status == 204
+    assert conn.resp_body == ""
+
+    assert Timo.Repo.get(Timo.API.Member, member1.id) == nil
+    assert Timo.Repo.get(Timo.API.Member, member2.id) == nil
+  end
 end
