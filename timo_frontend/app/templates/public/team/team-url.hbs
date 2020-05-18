@@ -14,7 +14,7 @@
     </PaperCheckbox>
   </div>
   {{#if this.sortedMembers.length}}
-    <EmberTable @class="member-content box-shadow-z8-on-white" as |t|>
+    <MembersTable @currentRowIndex={{currentRowIndex}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
       <t.head
         @columns={{columns}}
         @enableResize={{false}}
@@ -41,7 +41,7 @@
           </rr.cell>
         </r.row>
       </t.body>
-    </EmberTable>
+    </MembersTable>
   {{else}}
     <div class="no-member" data-test="no-member">
       No members in this team

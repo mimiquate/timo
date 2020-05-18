@@ -18,5 +18,13 @@ export default Controller.extend({
 
   rows: computed('sortedMembers.[]', function () {
     return createMembersTableRows(this.sortedMembers);
+  }),
+
+  currentRowIndex: computed('rows.[]', function () {
+    if (this.rows) {
+      return this.rows.findIndex((row) => row.filter === 'row-current-time');
+    }
+
+    return 0;
   })
 });
