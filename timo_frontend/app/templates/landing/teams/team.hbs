@@ -16,7 +16,7 @@
   </PaperCheckbox>
 </div>
 {{#if this.sortedMembers.length}}
-  <MembersTable @currentRowNumber={{currentRowNumber}} @didScroll={{didScroll}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
+  <MembersTable @currentRowIndex={{currentRowIndex}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
     <t.head
       @columns={{columns}}
       @enableResize={{false}}

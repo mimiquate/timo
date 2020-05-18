@@ -25,7 +25,7 @@ export default Controller.extend({
     return createMembersTableRows(this.sortedMembers);
   }),
 
-  currentRowNumber: computed('rows.[]', function () {
+  currentRowIndex: computed('rows.[]', function () {
     if (this.rows) {
       return this.rows.findIndex((row) => row.filter === 'row-current-time');
     }
