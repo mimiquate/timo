@@ -7,5 +7,11 @@ export default Route.extend({
       params.id,
       { include: 'members', reload: true }
     );
+  },
+
+  resetController(controller) {
+    controller.setProperties({
+      didScroll: false
+    });
   }
 });
