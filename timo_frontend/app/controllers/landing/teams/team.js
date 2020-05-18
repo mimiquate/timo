@@ -25,6 +25,14 @@ export default Controller.extend({
     return createMembersTableRows(this.sortedMembers);
   }),
 
+  currentRowNumber: computed('rows.[]', function () {
+    if (this.rows) {
+      return this.rows.findIndex((row) => row.filter === 'row-current-time');
+    }
+
+    return 0;
+  }),
+
   actions: {
     closeMemberModal(modal) {
       set(this, modal, false);
@@ -49,8 +57,7 @@ export default Controller.extend({
 
     async saveEditMember(memberName, memberTimeZone) {
       if (!(memberName === this.memberToEdit.name
-        && memberTimeZone === this.memberToEdit.timezone))
-      {
+        && memberTimeZone === this.memberToEdit.timezone)) {
         set(this.memberToEdit, 'name', memberName);
         set(this.memberToEdit, 'timezone', memberTimeZone);
 
