@@ -1,9 +1,16 @@
 export build_path=$original_build_path
 
-# Add the real platform tools location now that $build_path is fixed.
-# The problem is post_compile is run after write_export is called.
-local export_line="
-  export PATH=\$PATH:$build_path/.platform_tools:$build_path/.platform_tools/erlang/bin:$build_path/.platform_tools/elixir/bin"
+local export_line="export PATH=\$HOME/.platform_tools:\$HOME/.platform_tools/erlang/bin:\$HOME/.platform_tools/elixir/bin:\$PATH
+                   export LC_CTYPE=en_US.utf8"
 
-# append to the export
-echo $export_line >> $build_pack_path/export
+# Only write MIX_ENV to profile if the application did not set MIX_ENV
+if [ ! -f $env_path/MIX_ENV ]; then
+  export_line="${export_line}
+               export MIX_ENV=${MIX_ENV}"
+fi
+
+mkdir -p $build_path/.profile.d
+cp -r $build_path/timo_backend/.hex $build_path/.hex
+cp -r $build_path/timo_backend/.mix $build_path/.mix
+
+echo $export_line >> $build_path/.profile.d/elixir_buildpack_paths.sh
