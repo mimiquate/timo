@@ -19,7 +19,8 @@ export default Base.extend({
         body: JSON.stringify({
           username,
           password
-        })
+        }),
+        credentials: 'include'
       }
     );
 
