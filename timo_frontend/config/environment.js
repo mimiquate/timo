@@ -55,6 +55,7 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     // here you can enable a production-specific feature
+    ENV.serverHost = 'https://blooming-dawn-41319.herokuapp.com';
   }
 
   return ENV;
