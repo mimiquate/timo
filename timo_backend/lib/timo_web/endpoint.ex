@@ -40,5 +40,7 @@ defmodule TimoWeb.Endpoint do
     key: "_timo_key",
     signing_salt: "iKpGBV7H"
 
+  plug CORSPlug, origin: ["http://localhost:4200", "http://timo-app.surge.sh"]
+
   plug TimoWeb.Router
 end

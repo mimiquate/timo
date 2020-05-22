@@ -1,5 +1,6 @@
 import Base from "ember-simple-auth/authenticators/base";
 import fetch from 'fetch';
+import config from 'timo-frontend/config/environment';
 
 export default Base.extend({
   async restore(data) {
@@ -8,7 +9,7 @@ export default Base.extend({
 
   async authenticate(username, password) {
     let response = await fetch(
-      '/api/session',
+      `${config.serverHost}/api/session`,
       {
         method: 'POST',
         headers: {
@@ -18,7 +19,8 @@ export default Base.extend({
         body: JSON.stringify({
           username,
           password
-        })
+        }),
+        credentials: 'include'
       }
     );
 

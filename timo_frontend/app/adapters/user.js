@@ -11,7 +11,7 @@ export default ApplicationAdapter.extend({
   },
 
   deleteSession() {
-    const url = this.buildURL('') + "/logout";
+    const url = `${this.buildURL('')}/logout`;
     return this.ajax(url, 'DELETE');
   }
 });
