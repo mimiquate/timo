@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { computed } from "@ember/object";
 import { set } from "@ember/object";
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
-import { createMembersTableColumns, createMembersTableRows } from 'timo-frontend/utils/member-column-rows';
+import { createMembersTableColumns, createMembersTableRows, createColapsedColumns } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 
 export default Controller.extend({
@@ -33,6 +33,14 @@ export default Controller.extend({
     }
 
     return 0;
+  }),
+
+  colapsedColumns: computed('sortedMembers.[]', 'isColapsed', function () {
+    if (!this.isColapsed) {
+      return [];
+    }
+
+    return createColapsedColumns(this.sortedMembers);
   }),
 
   actions: {

@@ -52,3 +52,44 @@ export function createMembersTableRows(sortedMembers, timezoneNow) {
 
   return memberRows;
 }
+
+export function createColapsedColumns(sortedMembers) {
+  const memberCol = [];
+
+  const timezoneNow = moment.tz.guess(true);
+  const time = moment().minute(0);
+  time.hour(0);
+
+  sortedMembers.forEach(m => {
+    const sameHourIndex = sameHourInColumns(m, memberCol, time);
+
+    if (sameHourIndex >= 0) {
+      memberCol[sameHourIndex].colapsedMembers++;
+      memberCol[sameHourIndex].isCurrent |= (timezoneNow === m.timezone);
+    } else {
+      memberCol.pushObject({
+        member: m,
+        valuePath: m.id,
+        textAlign: 'center',
+        width: 225,
+        isCurrent: timezoneNow === m.timezone,
+        colapsedMembers: 0
+      });
+    }
+  });
+
+  return memberCol;
+}
+
+function sameHourInColumns(member, columns, time) {
+  const memberTimezoneTime = moment.tz(time, member.timezone).format("D MMM YYYY - HH:mm");
+
+  const index = columns.findIndex((col) => {
+    const colTimezone = col.member.timezone;
+    const colTimeZoneTime = moment.tz(time, colTimezone).format("D MMM YYYY - HH:mm");
+
+    return colTimeZoneTime === memberTimezoneTime;
+  });
+
+  return index;
+}
