@@ -22,6 +22,8 @@ config :timo, TimoWeb.Endpoint,
   check_origin: false,
   watchers: []
 
+config :timo, Timo.Mailer, adapter: Bamboo.LocalAdapter
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

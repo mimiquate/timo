@@ -45,7 +45,8 @@ defmodule Timo.MixProject do
       {:poison, "~> 3.1"},
       {:tzdata, "~> 1.0.3"},
       {:pbkdf2_elixir, "~> 1.0"},
-      {:cors_plug, "~> 2.0"}
+      {:cors_plug, "~> 2.0"},
+      {:bamboo, "~> 1.4"}
     ]
   end
 

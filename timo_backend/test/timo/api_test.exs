@@ -10,8 +10,12 @@ defmodule Timo.APITest do
   }
 
   describe "users" do
-    @valid_user_attrs %{username: "some username", password: "valid_password"}
-    @invalid_user_attrs %{username: nil, password: nil}
+    @valid_user_attrs %{
+      username: "some username",
+      password: "valid_password",
+      email: "email@timo"
+    }
+    @invalid_user_attrs %{username: nil, password: nil, email: nil}
 
     test "get_user/1 returns the user with given id" do
       user = user_factory()
@@ -33,14 +37,15 @@ defmodule Timo.APITest do
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = API.create_user(@valid_user_attrs)
       assert user.username == @valid_user_attrs.username
+      assert user.verified == false
     end
 
     test "create_user/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = API.create_user(@invalid_user_attrs)
     end
 
-    test "create_user/1 with data that already exist returns error changeset" do
-      user_factory()
+    test "create_user/1 with username that already exist returns error changeset" do
+      user_factory(%{email: "other_email@timo"})
 
       assert {:error, %Ecto.Changeset{}} = API.create_user(@valid_user_attrs)
     end
@@ -61,6 +66,25 @@ defmodule Timo.APITest do
 
     test "get_user_by_username/1 returns nil when user is nil" do
       assert API.get_user_by_username(nil) == nil
+    end
+
+    test "create_user/1 with email that already exist returns error changeset" do
+      user_factory(%{
+        username: "username",
+        password: "password",
+        email: "email@timo"
+      })
+
+      assert {:error, %Ecto.Changeset{}} = API.create_user(@valid_user_attrs)
+    end
+
+    test "mark_as_verified/1 changes user verified status to true" do
+      user = user_factory()
+
+      assert user.verified == false
+
+      assert {:ok, %User{} = user} = API.mark_as_verified(user)
+      assert user.verified == true
     end
   end
 

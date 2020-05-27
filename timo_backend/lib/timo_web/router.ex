@@ -10,10 +10,12 @@ defmodule TimoWeb.Router do
 
   scope "/api", TimoWeb do
     pipe_through :api
-    resources "/users", UserController, only: [:create, :show]
+    resources "/users", UserController, only: [:create, :show, :update]
     resources "/teams", TeamController, only: [:create, :show, :index, :update]
     resources "/members", MemberController, only: [:create, :update]
     delete "/logout", SessionController, :logout
     post "/session", SessionController, :create
   end
+
+  forward "/sent_emails", Bamboo.SentEmailViewerPlug
 end

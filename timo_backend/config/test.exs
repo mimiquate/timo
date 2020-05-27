@@ -18,3 +18,5 @@ config :timo, TimoWeb.Endpoint,
 config :logger, level: :warn
 
 config :pbkdf2_elixir, :rounds, 1
+
+config :timo, Timo.Mailer, adapter: Bamboo.TestAdapter

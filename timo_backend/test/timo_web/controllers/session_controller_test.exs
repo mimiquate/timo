@@ -4,14 +4,23 @@ defmodule TimoWeb.SessionControllerTest do
 
   alias Timo.API
 
-  @create_attrs %{password: "password", username: "username"}
-  @invalid_attrs %{password: "password2", username: "username"}
+  @create_attrs %{password: "password", username: "username", email: "email@timo", verified: true}
+  @different_attrs %{password: "password2", username: "username", email: "email@timo"}
+  @unverified_attrs %{password: "password", username: "username", email: "email@timo"}
 
   @invalid_user_error [
     %{
       "status" => "400",
       "title" => "Invalid username or password",
       "detail" => "User doesn\'t exists or incorrect password"
+    }
+  ]
+
+  @unverified_user_error [
+    %{
+      "status" => "400",
+      "title" => "Email not verified",
+      "detail" => "Email must be verified to access account"
     }
   ]
 
@@ -52,10 +61,24 @@ defmodule TimoWeb.SessionControllerTest do
 
   test "create session with invalid password", %{conn: conn} do
     API.create_user(@create_attrs)
-    conn = post(conn, Routes.session_path(conn, :create), @invalid_attrs)
+    conn = post(conn, Routes.session_path(conn, :create), @different_attrs)
 
     assert response = json_response(conn, 400)
     assert response["errors"] == @invalid_user_error
+
+    user_id =
+      conn
+      |> get_session("user_id")
+
+    assert user_id == nil
+  end
+
+  test "create session with unverified user", %{conn: conn} do
+    API.create_user(@unverified_attrs)
+    conn = post(conn, Routes.session_path(conn, :create), @unverified_attrs)
+
+    assert response = json_response(conn, 400)
+    assert response["errors"] == @unverified_user_error
 
     user_id =
       conn
