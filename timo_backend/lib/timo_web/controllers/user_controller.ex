@@ -40,13 +40,12 @@ defmodule TimoWeb.UserController do
     end
   end
 
-  def verify_email(conn, %{"token" => token}) do
+  def update(conn, %{"id" => "me", "token" => token}) do
     with {:ok, user_id} <- Timo.Token.verify_new_account_token(token),
          {:ok, %User{verified: false} = user} <- API.get_user(user_id) do
-      Timo.API.mark_as_verified(user)
+      {:ok, user} = Timo.API.mark_as_verified(user)
 
-      conn
-      |> json(%{})
+      render(conn, "show.json-api", data: user)
     else
       _ ->
         conn

@@ -128,10 +128,15 @@ defmodule TimoWeb.UserControllerTest do
 
     assert user.verified == false
 
-    conn = get(conn, Routes.user_path(conn, :verify_email), %{token: token})
-    {:ok, fetched_user} = Timo.API.get_user(user_id)
+    conn = put(conn, Routes.user_path(conn, :update, "me", %{token: token}))
 
-    assert json_response(conn, 200) == %{}
+    data = json_response(conn, 200)["data"]
+
+    assert data["id"] == user_id
+    assert data["type"] == "user"
+    assert data["attributes"]["username"] == user.username
+
+    {:ok, fetched_user} = Timo.API.get_user(user_id)
     assert fetched_user.verified == true
   end
 
@@ -139,10 +144,10 @@ defmodule TimoWeb.UserControllerTest do
     user = user_factory()
     token = Timo.Token.generate_new_account_token(user)
 
-    conn = get(conn, Routes.user_path(conn, :verify_email), %{token: token})
-    assert json_response(conn, 200) == %{}
+    validConn = put(conn, Routes.user_path(conn, :update, "me", %{token: token}))
+    assert json_response(validConn, 200)
 
-    conn = get(conn, Routes.user_path(conn, :verify_email), %{token: token})
+    conn = put(conn, Routes.user_path(conn, :update, "me", %{token: token}))
     assert json_response(conn, 400)["errors"] == @invalid_token_error
   end
 
@@ -150,13 +155,13 @@ defmodule TimoWeb.UserControllerTest do
     user = user_factory(%{verified: true})
     token = Timo.Token.generate_new_account_token(user)
 
-    conn = get(conn, Routes.user_path(conn, :verify_email), %{token: token})
+    conn = put(conn, Routes.user_path(conn, :update, "me", %{token: token}))
 
     assert json_response(conn, 400)["errors"] == @invalid_token_error
   end
 
   test "attempts to verify user email with nil token", %{conn: conn} do
-    conn = get(conn, Routes.user_path(conn, :verify_email), %{token: nil})
+    conn = put(conn, Routes.user_path(conn, :update, "me", %{token: nil}))
 
     assert json_response(conn, 400)["errors"] == @invalid_token_error
   end

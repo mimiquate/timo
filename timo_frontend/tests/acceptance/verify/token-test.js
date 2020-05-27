@@ -9,7 +9,9 @@ module('Acceptance | Email Token', function (hooks) {
 
   test('Verify user email token', async function (assert) {
     let token = 'Sjj31.nad93aHD3dhd3ndHUB93';
-    this.server.get('/verify', {}, 200);
+    this.server.patch('/users/:id', function (_schema, request) {
+      assert.equal(request.queryParams.token, 'Sjj31.nad93aHD3dhd3ndHUB93')
+    }, 200);
 
     await visit(`/verify/${token}`);
 
@@ -18,8 +20,8 @@ module('Acceptance | Email Token', function (hooks) {
 
   test('Incorrect user email token', async function (assert) {
     let token = 'Sjj31.nad93aHD3dhd3ndHUB93';
-    this.server.get(
-      '/verify',
+    this.server.patch(
+      '/users/:id',
       {
         errors: [{
           detail: 'Verification token doesn\'t exists',
