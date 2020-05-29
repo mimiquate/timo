@@ -207,6 +207,8 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
     .delete-team-button {
       display: block;
     }
+    background-color: rgba(paper-color($background, "500"), 0.2);
+    background-color: RGBA(var(--background-500), 0.2);
   }
 }
 
@@ -221,9 +223,7 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
   text-overflow: ellipsis;
 }
 
-.active-list-button {
-  & button {
-    background-color: rgba(paper-color($background, "500"), 0.2);
-    background-color: RGBA(var(--background-500), 0.2);
-  }
+.active-list-item {
+  background-color: rgba(paper-color($background, "500"), 0.2);
+  background-color: RGBA(var(--background-500), 0.2);
 }
