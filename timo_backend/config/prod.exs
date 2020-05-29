@@ -16,6 +16,7 @@ config :timo, TimoWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 config :timo, Timo.Mailer, adapter: Bamboo.LocalAdapter
+config :timo, frontend_url: System.get_env("FRONTEND_URL")
 
 # Do not print debug messages in production
 config :logger, level: :info

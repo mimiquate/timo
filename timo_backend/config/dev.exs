@@ -22,6 +22,8 @@ config :timo, TimoWeb.Endpoint,
   check_origin: false,
   watchers: []
 
+config :timo, frontend_url: "http://localhost:4200"
+
 config :timo, Timo.Mailer, adapter: Bamboo.LocalAdapter
 
 # ## SSL Support
