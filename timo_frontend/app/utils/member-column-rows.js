@@ -63,6 +63,7 @@ export function createColapsedColumns(sortedMembers) {
 
     const findMember = members.find(m => m.id === 'current');
     const member = findMember ? findMember : members[0];
+
     const isCurrentTimezone = members.some(m => m.timezone === timezoneNow);
 
     return {
