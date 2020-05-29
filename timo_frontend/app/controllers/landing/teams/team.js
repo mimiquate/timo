@@ -3,7 +3,7 @@ import { computed } from "@ember/object";
 import moment from 'moment';
 import { set } from "@ember/object";
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
-import { createMembersTableColumns, createMembersTableRows, createColapsedColumns } from 'timo-frontend/utils/member-column-rows';
+import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
 
 export default Controller.extend({
   savedMembers: computed('model.members.{[],@each.id}', function () {
@@ -33,12 +33,12 @@ export default Controller.extend({
     return 0;
   }),
 
-  colapsedColumns: computed('sortedMembers.[]', 'isColapsed', function () {
-    if (!this.isColapsed) {
+  collapsedColumns: computed('sortedMembers.[]', 'isCollapsed', function () {
+    if (!this.isCollapsed) {
       return [];
     }
 
-    return createColapsedColumns(this.sortedMembers);
+    return createCollapsedColumns(this.sortedMembers);
   }),
 
   actions: {

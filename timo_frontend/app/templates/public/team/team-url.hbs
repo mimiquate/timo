@@ -15,16 +15,16 @@
   </div>
   <div class="side-checkbox">
     <PaperCheckbox
-      @value={{isColapsed}}
-      @onChange={{action (mut isColapsed)}}
+      @value={{isCollapsed}}
+      @onChange={{action (mut isCollapsed)}}
       @disabled={{not this.sortedMembers.length}}
-      data-test-checkbox="colapsed"
+      data-test-checkbox="collapsed"
     >
-      Colapse table
+      Collapse table
     </PaperCheckbox>
   </div>
   {{#if this.sortedMembers.length}}
-    {{#if (not isColapsed)}}
+    {{#if (not isCollapsed)}}
       <MembersTable @currentRowIndex={{currentRowIndex}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
         <t.head
           @columns={{columns}}
@@ -56,14 +56,14 @@
     {{else}}
       <MembersTable @currentRowIndex={{currentRowIndex}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
         <t.head
-          @columns={{colapsedColumns}}
+          @columns={{collapsedColumns}}
           @enableResize={{false}}
           @enableReorder={{false}}
           as |h|
         >
           <h.row @class="mat-header-row" as |hr|>
             <hr.cell @class="mat-header-cell cell-text-align" as |column|>
-              {{column.member.name}} ({{column.member.timezone}}) {{colapsed-amount column.colapsedMembersCount}}
+              {{column.member.name}} ({{column.member.timezone}}) {{collapsed-amount column.collapsedMembersCount}}
               {{#if showCurrent}}
                 {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
               {{/if}}

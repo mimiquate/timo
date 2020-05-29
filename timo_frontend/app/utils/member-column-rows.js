@@ -52,7 +52,7 @@ export function createMembersTableRows(sortedMembers) {
   return memberRows;
 }
 
-export function createColapsedColumns(sortedMembers) {
+export function createCollapsedColumns(sortedMembers) {
   const timezoneNow = moment.tz.guess(true);
   const timeNow = moment.utc();
 
@@ -72,7 +72,7 @@ export function createColapsedColumns(sortedMembers) {
       textAlign: 'center',
       width: 225,
       isCurrent: isCurrentTimezone,
-      colapsedMembersCount: members.length
+      collapsedMembersCount: members.length
     };
   })
 }

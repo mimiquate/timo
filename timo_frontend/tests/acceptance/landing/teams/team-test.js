@@ -259,21 +259,21 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(newTeam.public, false, 'Changes view to not public');
   });
 
-  test('Colapse table checkbox disable if no members', async function (assert) {
+  test('Collapse table checkbox disable if no members', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
     setSession.call(this, newUser);
 
     await visit(`/teams/${newTeam.id}`);
 
-    assert.dom('[data-test-checkbox=colapsed]').exists('Colapse table checkbox exists');
-    assert.dom('[data-test-checkbox=colapsed]').hasText('Colapse table', 'Correct text');
+    assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
+    assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
 
-    const colapsedCheckbox = assert.dom('[data-test-checkbox=colapsed]').findTargetElement();
-    assert.equal('disabled', colapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
+    const collapsedCheckbox = assert.dom('[data-test-checkbox=collapsed]').findTargetElement();
+    assert.equal('disabled', collapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
   });
 
-  test('Colapse table checkbox enable if there are members', async function (assert) {
+  test('Collapse table checkbox enable if there are members', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
     this.server.create('member', {
@@ -285,14 +285,14 @@ module('Acceptance | Team', function (hooks) {
 
     await visit(`/teams/${newTeam.id}`);
 
-    assert.dom('[data-test-checkbox=colapsed]').exists('Colapse table checkbox exists');
-    assert.dom('[data-test-checkbox=colapsed]').hasText('Colapse table', 'Correct text');
+    assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
+    assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
 
-    const colapsedCheckbox = assert.dom('[data-test-checkbox=colapsed]').findTargetElement();
-    assert.notOk(colapsedCheckbox.attributes.disabled, 'Checkbox is enabled');
+    const collapsedCheckbox = assert.dom('[data-test-checkbox=collapsed]').findTargetElement();
+    assert.notOk(collapsedCheckbox.attributes.disabled, 'Checkbox is enabled');
   });
 
-  test('Colapse member into another', async function (assert) {
+  test('Collapse member into another', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
     this.server.create('member', {
@@ -323,17 +323,17 @@ module('Acceptance | Team', function (hooks) {
       'Member 2 is listed'
     );
 
-    await click('[data-test-checkbox=colapsed]');
+    await click('[data-test-checkbox=collapsed]');
 
     assert.equal(table.headers.length, 1, 'Table has one column');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
       'Member 1 (America/Montevideo) + 1 member',
-      'Member 1 is listed showing colapsed state'
+      'Member 1 is listed showing collapsed state'
     );
   });
 
-  test('Colapse 2 members into another', async function (assert) {
+  test('Collapse 2 members into another', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
     this.server.create('member', {
@@ -374,17 +374,17 @@ module('Acceptance | Team', function (hooks) {
       'Member 3 is listed'
     );
 
-    await click('[data-test-checkbox=colapsed]');
+    await click('[data-test-checkbox=collapsed]');
 
     assert.equal(table.headers.length, 1, 'Table has one column');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
       'Member 1 (America/Montevideo) + 2 members',
-      'Member 1 is listed showing colapsed state'
+      'Member 1 is listed showing collapsed state'
     );
   });
 
-  test('No member colapses into another', async function (assert) {
+  test('No member collapses into another', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
     this.server.create('member', {
@@ -415,7 +415,7 @@ module('Acceptance | Team', function (hooks) {
       'Member 2 is listed'
     );
 
-    await click('[data-test-checkbox=colapsed]');
+    await click('[data-test-checkbox=collapsed]');
 
     assert.equal(table.headers.length, 2, 'Table has two columns');
     assert.equal(
