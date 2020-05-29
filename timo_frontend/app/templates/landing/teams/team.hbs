@@ -10,7 +10,7 @@
   <PaperCheckbox
     @value={{showCurrent}}
     @onChange={{action (mut showCurrent)}}
-    data-test="checkbox"
+    data-test-checkbox="current"
   >
     List my current timezone
   </PaperCheckbox>
@@ -20,6 +20,7 @@
     @value={{isColapsed}}
     @onChange={{action (mut isColapsed)}}
     @disabled={{not this.sortedMembers.length}}
+    data-test-checkbox="colapsed"
   >
     Colapse table
   </PaperCheckbox>

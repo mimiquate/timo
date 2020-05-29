@@ -186,10 +186,10 @@ module('Acceptance | Public Team', function (hooks) {
       'Member 1 is listed'
     );
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 2, 'Table has two columns');
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 1, 'Table has one column');
   });
 
@@ -222,10 +222,10 @@ module('Acceptance | Public Team', function (hooks) {
       'Member 1 is listed'
     );
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 1, 'Table has one column');
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 1, 'Table has one column');
   });
 
@@ -247,7 +247,7 @@ module('Acceptance | Public Team', function (hooks) {
 
     assert.equal(table.headers.length, 0, 'Table has no column');
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 1, 'Table has one column');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
@@ -255,7 +255,218 @@ module('Acceptance | Public Team', function (hooks) {
       'Current timezone is listed'
     );
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 0, 'Table has no column');
+  });
+
+  test('Colapse table checkbox disable if no members', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      }
+    );
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    assert.dom('[data-test-checkbox=colapsed]').exists('Colapse table checkbox exists');
+    assert.dom('[data-test-checkbox=colapsed]').hasText('Colapse table', 'Correct text');
+
+    const colapsedCheckbox = assert.dom('[data-test-checkbox=colapsed]').findTargetElement();
+    assert.equal('disabled', colapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
+  });
+
+  test('Colapse table checkbox enable if there are members', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      }
+    );
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    assert.dom('[data-test-checkbox=colapsed]').exists('Colapse table checkbox exists');
+    assert.dom('[data-test-checkbox=colapsed]').hasText('Colapse table', 'Correct text');
+
+    const colapsedCheckbox = assert.dom('[data-test-checkbox=colapsed]').findTargetElement();
+    assert.notOk(colapsedCheckbox.attributes.disabled, 'Checkbox is enabled');
+  });
+
+  test('Colapse member into another', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      }
+    );
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 2, 'Table has two columns');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo)',
+      'Member 1 is listed'
+    );
+    assert.equal(
+      table.headers.objectAt(1).text.trim(),
+      'Member 2 (America/Montevideo)',
+      'Member 2 is listed'
+    );
+
+    await click('[data-test-checkbox=colapsed]');
+
+    assert.equal(table.headers.length, 1, 'Table has one column');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo) + 1 member',
+      'Member 1 is listed showing colapsed state'
+    );
+  });
+
+  test('Colapse 2 members into another', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      }
+    );
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 3',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 3, 'Table has two columns');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo)',
+      'Member 1 is listed'
+    );
+    assert.equal(
+      table.headers.objectAt(1).text.trim(),
+      'Member 2 (America/Montevideo)',
+      'Member 2 is listed'
+    );
+    assert.equal(
+      table.headers.objectAt(2).text.trim(),
+      'Member 3 (America/Montevideo)',
+      'Member 3 is listed'
+    );
+
+    await click('[data-test-checkbox=colapsed]');
+
+    assert.equal(table.headers.length, 1, 'Table has one column');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo) + 2 members',
+      'Member 1 is listed showing colapsed state'
+    );
+  });
+
+  test('No member colapses into another', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      }
+    );
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'Asia/Ho_Chi_Minh',
+      team: newTeam
+    });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 2, 'Table has two columns');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo)',
+      'Member 1 is listed'
+    );
+    assert.equal(
+      table.headers.objectAt(1).text.trim(),
+      'Member 2 (Asia/Ho_Chi_Minh)',
+      'Member 2 is listed'
+    );
+
+    await click('[data-test-checkbox=colapsed]');
+
+    assert.equal(table.headers.length, 2, 'Table has two columns');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo)',
+      'Member 1 is listed'
+    );
+    assert.equal(
+      table.headers.objectAt(1).text.trim(),
+      'Member 2 (Asia/Ho_Chi_Minh)',
+      'Member 2 is listed'
+    );
   });
 });
