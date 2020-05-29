@@ -4,7 +4,7 @@ defmodule Timo.Email do
   def verification_email(user_email, url) do
     new_email(
       to: user_email,
-      from: "account-verification@timoapp.com",
+      from: "no-reply@timo.mimiquate.xyz",
       subject: "Please verify your email address",
       html_body:
         "<h1>Timo App</h1>" <>
