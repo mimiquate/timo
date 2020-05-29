@@ -1,15 +1,15 @@
 import { helper } from '@ember/component/helper';
 
 export default helper(function (params) {
-  const colapsedAmount = params[0];
+  const colapsedMembersCount = params[0];
   let ret = "";
 
-  if (colapsedAmount === 1) {
+  if (colapsedMembersCount === 2) {
     ret = "+ 1 member";
   }
 
-  if (colapsedAmount > 1) {
-    ret = `+ ${colapsedAmount} members`;
+  if (colapsedMembersCount > 2) {
+    ret = `+ ${colapsedMembersCount - 1} members`;
   }
 
   return ret;
