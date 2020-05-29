@@ -62,7 +62,7 @@
         >
           <h.row @class="mat-header-row" as |hr|>
             <hr.cell @class="mat-header-cell cell-text-align" as |column|>
-              {{column.member.name}} ({{column.member.timezone}}) {{colapsed-amount column.colapsedMembers}}
+              {{column.member.name}} ({{column.member.timezone}}) {{colapsed-amount column.colapsedMembersCount}}
               {{#if showCurrent}}
                 {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
               {{/if}}

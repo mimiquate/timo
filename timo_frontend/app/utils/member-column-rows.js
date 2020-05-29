@@ -54,42 +54,39 @@ export function createMembersTableRows(sortedMembers, timezoneNow) {
 }
 
 export function createColapsedColumns(sortedMembers) {
-  const memberCol = [];
-
   const timezoneNow = moment.tz.guess(true);
-  const time = moment().minute(0);
-  time.hour(0);
+  const timeNow = moment.utc();
 
-  sortedMembers.forEach(m => {
-    const sameHourIndex = sameHourInColumns(m, memberCol, time);
+  const membersByOffset = groupMembersByOffset(sortedMembers, timeNow);
 
-    if (sameHourIndex >= 0) {
-      memberCol[sameHourIndex].colapsedMembers++;
-      memberCol[sameHourIndex].isCurrent |= (timezoneNow === m.timezone);
-    } else {
-      memberCol.pushObject({
-        member: m,
-        valuePath: m.id,
-        textAlign: 'center',
-        width: 225,
-        isCurrent: timezoneNow === m.timezone,
-        colapsedMembers: 0
-      });
-    }
-  });
+  return Array.from(membersByOffset).map(args => {
+    const members = args[1];
 
-  return memberCol;
+    const findMember = members.find(m => m.id === 'current');
+    const member = findMember ? findMember : members[0];
+    const isCurrentTimezone = members.some(m => m.timezone === timezoneNow);
+
+    return {
+      member: member,
+      valuePath: member.id,
+      textAlign: 'center',
+      width: 225,
+      isCurrent: isCurrentTimezone,
+      colapsedMembersCount: members.length
+    };
+  })
 }
 
-function sameHourInColumns(member, columns, time) {
-  const memberTimezoneTime = moment.tz(time, member.timezone).format("D MMM YYYY - HH:mm");
+function groupMembersByOffset(sortedMembers, timeNow) {
+  return sortedMembers.reduce(function (map, member) {
+    const offset = moment.tz.zone(member.timezone).utcOffset(timeNow)
 
-  const index = columns.findIndex((col) => {
-    const colTimezone = col.member.timezone;
-    const colTimeZoneTime = moment.tz(time, colTimezone).format("D MMM YYYY - HH:mm");
+    if (!map.has(offset)) {
+      map.set(offset, []);
+    }
 
-    return colTimeZoneTime === memberTimezoneTime;
-  });
+    map.get(offset).push(member);
 
-  return index;
+    return map;
+  }, new Map());
 }
