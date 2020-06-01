@@ -9,9 +9,9 @@
         {{paper-icon "reorder"}}
       </PaperButton>
     </PaperSidenavToggle>
-    <div class="paper-right">
+    <div class="paper-right pointer-cursor">
       <PaperMenu @offset="0 50" as |menu|>
-        <menu.trigger @class="pointer-cursor" data-test="logout-trigger">
+        <menu.trigger data-test="logout-trigger">
           {{paper-icon "arrow_drop_down" class="md-menu-origin"}}
           <span data-test="current-user-span">
             {{currentUser.user.username}}
