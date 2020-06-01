@@ -36,9 +36,19 @@
       {{#if this.model.length}}
         <PaperList>
           {{#each this.sortedTeams as |team index|}}
-            {{#paper-link-item "landing.teams.team" team.id data-test-team=index}}
-              {{team.name}}
-            {{/paper-link-item}}
+            <div class="team-list-item">
+              {{#paper-link-item "landing.teams.team" team.id class="list-team-name" data-test-team=index}}
+                <span class="team-name-span">{{team.name}}</span>
+              {{/paper-link-item}}
+              <PaperButton
+                @class="delete-team-button"
+                @iconButton={{true}}
+                @onClick={{action "deleteTeamModal" team}}
+                data-test-delete-team={{index}}
+              >
+                {{paper-icon "delete"}}
+              </PaperButton>
+            </div>
           {{/each}}
         </PaperList>
       {{else}}
@@ -61,3 +71,11 @@
     {{outlet}}
   </PaperCardContent>
 </PaperSidenavContainer>
+{{#if showDeleteTeamModal}}
+  <DeleteTeamModal
+    @closeDeleteTeamModal={{action "closeDeleteTeamModal"}}
+    @deleteTeam={{action "deleteTeam"}}
+    @teamToDeleteName={{teamToDelete.name}}
+    data-test-delete-team="modal"
+  />
+{{/if}}

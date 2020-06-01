@@ -170,7 +170,7 @@ defmodule Timo.APITest do
       team = team_factory(owner)
 
       assert {:error, %Ecto.Changeset{}} = API.update_team(team, @invalid_team_attrs)
-      {:ok, %Team{} = fetched_team} = API.get_team_by_id(team.id)
+      fetched_team = Repo.get(Team, team.id)
 
       assert fetched_team == team
     end
@@ -196,6 +196,14 @@ defmodule Timo.APITest do
 
     test "get_team_by_share_id/1 with share_id nil return nil" do
       assert nil == API.get_team_by_share_id(nil)
+    end
+
+    test "delete_team/1 deletes a team" do
+      owner = user_factory()
+      team = team_factory(owner)
+
+      assert {:ok, _team} = API.delete_team(team)
+      assert Repo.get(Team, team.id) == nil
     end
   end
 
@@ -269,7 +277,7 @@ defmodule Timo.APITest do
       member = member_factory()
 
       assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_attrs)
-      {:ok, %Member{} = fetched_member} = API.get_member(member.id)
+      fetched_member = Repo.get(Member, member.id)
 
       assert fetched_member == member
     end

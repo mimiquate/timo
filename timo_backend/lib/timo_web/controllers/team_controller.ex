@@ -6,8 +6,8 @@ defmodule TimoWeb.TeamController do
 
   action_fallback TimoWeb.FallbackController
 
-  plug TimoWeb.Plugs.SetCurrentUser when action in [:create, :show, :index, :update]
-  plug :authenticate_current_user when action in [:create, :show, :update]
+  plug TimoWeb.Plugs.SetCurrentUser when action in [:create, :show, :index, :update, :delete]
+  plug :authenticate_current_user when action in [:create, :show, :update, :delete]
 
   def index(conn, params = %{"filter" => %{"share_id" => share_id}}) do
     with {:ok, %Team{} = team} <- API.get_team_by_share_id(share_id) do
@@ -55,6 +55,15 @@ defmodule TimoWeb.TeamController do
     with {:ok, team} <- API.get_user_team(current_user, id),
          {:ok, %Team{} = team} <- API.update_team(team, team_params) do
       render(conn, "show.json-api", data: team)
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    current_user = conn.assigns.current_user
+
+    with {:ok, team} <- API.get_user_team(current_user, id),
+         {:ok, %Team{}} <- API.delete_team(team) do
+      send_resp(conn, :no_content, "")
     end
   end
 

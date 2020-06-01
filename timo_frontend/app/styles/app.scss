@@ -27,6 +27,15 @@ body, body > .ember-view, .login-main, .public-main {
     min-width: calc(60%);
     max-width: calc(100% - 56px);
   }
+  .inner-sidenav {
+    height: calc(100% - 56px);
+  }
+}
+
+@media (max-width: 959px) {
+  .inner-sidenav {
+    height: calc(100% - 48px);
+  }
 }
 
 .side-container, .side-content {
@@ -63,6 +72,12 @@ body, body > .ember-view, .login-main, .public-main {
 .flex-title {
   display: flex;
   height: fit-content;
+}
+
+.flex-title > h1, .list-team-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .add-button {
@@ -179,4 +194,28 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 
 .public-share-item {
   margin: 6px 8px;
+}
+
+.team-list-item {
+  display: flex;
+  align-items: center;
+  .delete-team-button {
+    display: none;
+  }
+  &:hover {
+    .delete-team-button {
+      display: block;
+    }
+  }
+}
+
+.list-team-name {
+  flex-grow: 1;
+}
+
+.team-name-span {
+  width: 206px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

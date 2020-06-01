@@ -64,5 +64,67 @@ module('Acceptance | Landing', function (hooks) {
     await visit('/');
 
     assert.equal(currentURL(), `/login`, 'Stays on login page');
+  });
+
+  test('Opens delete team modal', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('[data-test-delete-team="0"]');
+
+    assert.dom('[data-test-delete-team=modal]').exists('Opens delete team modal');
+    assert.dom('[data-test-delete-team=title]')
+      .hasText('Confirm team deletion', 'Correct title');
+    assert.dom('[data-test-delete-team=message]')
+      .hasText(`Are you sure you want to delete team ${newTeam.name} ?`, 'Correct message');
+    assert.dom('[data-test-delete-team=cancel]').hasText('Cancel', 'Cancel button');
+    assert.dom('[data-test-delete-team=yes]').hasText('Yes', 'Delete team button');
   })
+
+  test('Deletes team', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('[data-test-delete-team="0"]');
+    await click('[data-test-delete-team=yes]');
+
+    assert.dom('[data-test-delete-team=modal]').doesNotExist('Closes delete team modal');
+    assert.notOk(this.server.db.teams.find(newTeam.id), 'Succesfully deletes team');
+  });
+
+  test('Cancels team deletion', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('[data-test-delete-team="0"]');
+    await click('[data-test-delete-team=cancel]');
+
+    assert.dom('[data-test-delete-team=modal]').doesNotExist('Closes delete team modal');
+    assert.ok(this.server.db.teams.find(newTeam.id), 'Team still exists');
+    assert.equal(currentURL(), '/', 'Stays in landing page');
+  });
+
+  test('Deletes currently viewing team', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('[data-test-team="0"] a');
+
+    assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Moves to team page');
+
+    await click('[data-test-delete-team="0"]');
+    await click('[data-test-delete-team=yes]');
+
+    assert.dom('[data-test-delete-team=modal]').doesNotExist('Closes delete team modal');
+    assert.notOk(this.server.db.teams.find(newTeam.id), 'Succesfully deletes team');
+    assert.equal(currentURL(), '/', 'Redirects to landing page');
+  });
 });
