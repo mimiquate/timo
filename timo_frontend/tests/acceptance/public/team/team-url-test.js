@@ -19,7 +19,7 @@ module('Acceptance | Public Team', function (hooks) {
   }
 
   test('Visiting /p/team/:share_id without exisiting team', async function (assert) {
-    this.server.post('/teams', { errors: { detail: ['Not Found'] } }, 404);
+    this.server.get('/teams', { errors: [{ detail: 'Not Found' }] }, 404);
     await visit('/p/team/yjHktCOyBDTb');
 
     assert.dom('[data-test=team-error]').exists('Visits team page error');
@@ -27,7 +27,7 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Visiting /p/team/:share_id with private team', async function (assert) {
-    this.server.post('/teams', { errors: { detail: ['Not Found'] } }, 404);
+    this.server.get('/teams', { errors: [{ detail: 'Not Found' }] }, 404);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create(
       'team',
