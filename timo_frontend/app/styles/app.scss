@@ -1,6 +1,5 @@
 @import 'ember-paper';
 @import './material-table.scss';
-@import 'ember-paper-link';
 
 body, body > .ember-view, .login-main, .public-main {
   height: 100%;
@@ -38,7 +37,7 @@ body, body > .ember-view, .login-main, .public-main {
   }
 }
 
-.side-container, .side-content {
+.side-container, .side-container > md-content {
   background-color: paper-color(deep-orange, '300');
 }
 
@@ -199,13 +198,17 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 .team-list-item {
   display: flex;
   align-items: center;
-  .delete-team-button {
-    display: none;
+  @media (hover: hover) {
+    .delete-team-button {
+      display: none;
+    }
   }
   &:hover {
     .delete-team-button {
       display: block;
     }
+    background-color: rgba(paper-color($background, "500"), 0.2);
+    background-color: RGBA(var(--background-500), 0.2);
   }
 }
 
@@ -218,4 +221,9 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.active-list-item {
+  background-color: rgba(paper-color($background, "500"), 0.2);
+  background-color: RGBA(var(--background-500), 0.2);
 }

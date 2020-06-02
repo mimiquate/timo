@@ -60,8 +60,6 @@ module('Acceptance | New member', function (hooks) {
     assert.dom('[data-test=new-member-modal]').exists('Stays in new member modal');
     assert.ok(errorMessage[0].textContent
       .includes('This is required'), 'No member name error');
-    assert.ok(errorMessage[1].textContent
-      .includes('This is required'), 'No member time zone error');
   });
 
   test('Create member with name but no time zone error', async function (assert) {
@@ -73,11 +71,7 @@ module('Acceptance | New member', function (hooks) {
     await fillIn('#memberName-input input', 'Member');
     await click('[data-test=saveMember-button]');
 
-    let errorMessage = this.element.parentElement.querySelectorAll('.paper-input-error');
-
     assert.dom('[data-test=new-member-modal]').exists('Stays in new member modal');
-    assert.ok(errorMessage[0].textContent
-      .includes('This is required'), 'No member time zone error');
   });
 
   test('Create member with time zone but no name error', async function (assert) {

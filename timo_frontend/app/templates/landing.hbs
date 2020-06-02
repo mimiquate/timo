@@ -9,9 +9,9 @@
         {{paper-icon "reorder"}}
       </PaperButton>
     </PaperSidenavToggle>
-    <div class="paper-right">
+    <div class="paper-right pointer-cursor">
       <PaperMenu @offset="0 50" as |menu|>
-        <menu.trigger @class="pointer-cursor" data-test="logout-trigger">
+        <menu.trigger data-test="logout-trigger">
           {{paper-icon "arrow_drop_down" class="md-menu-origin"}}
           <span data-test="current-user-span">
             {{currentUser.user.username}}
@@ -32,14 +32,18 @@
     <PaperToolbar>
       <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
     </PaperToolbar>
-    <PaperContent @padding={{false}} @class="side-content">
+    <PaperContent @padding={{false}}>
       {{#if this.model.length}}
         <PaperList>
           {{#each this.sortedTeams as |team index|}}
-            <div class="team-list-item">
-              {{#paper-link-item "landing.teams.team" team.id class="list-team-name" data-test-team=index}}
+            <div class="team-list-item {{if (eq currentTeamId team.id) "active-list-item"}}">
+              <PaperItem
+                @class="list-team-name"
+                @onClick={{action "goToTeam" team}}
+                data-test-team={{index}}
+              >
                 <span class="team-name-span">{{team.name}}</span>
-              {{/paper-link-item}}
+              </PaperItem>
               <PaperButton
                 @class="delete-team-button"
                 @iconButton={{true}}
