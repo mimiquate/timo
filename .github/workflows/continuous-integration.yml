@@ -54,9 +54,7 @@ jobs:
           node-version: '10.x'
 
       - name: Install ember
-        run: |
-          cd timo_frontend
-          yarn global add ember-cli
+        run: npm install -g ember-cli
 
       - name: Yarn dependencies
         run: |
