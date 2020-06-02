@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   buildAndTestBackend:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     services:
@@ -21,7 +20,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        
+
       - name: Setup elixir
         uses: actions/setup-elixir@v1
         with:
@@ -32,6 +31,11 @@ jobs:
         run: |
           cd timo_backend
           mix deps.get
+
+      - name: Check format
+        run: |
+          cd timo_backend
+          mix format --check-formatted
 
       - name: Run phoenix tests
         run: |
