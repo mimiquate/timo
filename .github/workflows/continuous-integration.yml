@@ -1,0 +1,35 @@
+name: Continuous Integration
+
+on: [push]
+
+jobs:
+  buildAndTestBackend:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:12.1
+        ports: ['5432:5432']
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+        
+      - name: Setup elixir
+        uses: actions/setup-elixir@v1
+        with:
+          otp-version: '22.2.1'
+          elixir-version: '1.9.4'
+
+      - name: Get phoenix dependencies
+        run: mix deps.get
+
+      - name: Run phoenix tests
+        run: mix test
