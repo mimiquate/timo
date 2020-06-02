@@ -51,7 +51,12 @@ jobs:
       - name: Setup Node.js 10.x
         uses: actions/setup-node@v1
         with:
-          node-verison: '10.x'
+          node-version: '10.x'
+
+      - name: Install ember
+        run: |
+          cd timo_frontend
+          npm install ember-cli
 
       - name: Yarn dependencies
         run: |
