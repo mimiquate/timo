@@ -41,3 +41,22 @@ jobs:
         run: |
           cd timo_backend
           mix test
+
+  buildAndTestFrontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js 10.x with yarn dependencies
+        uses: actions/setup-node@v1
+        with:
+          node-verison: '10.x'
+        run: |
+          cd timo_frontend
+          yarn install
+
+      - name: Run ember tests
+        run: |
+          cd timo_frontend
+          ember test
