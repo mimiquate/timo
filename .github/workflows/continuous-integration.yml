@@ -56,7 +56,7 @@ jobs:
       - name: Install ember
         run: |
           cd timo_frontend
-          npm install ember-cli
+          yarn global add ember-cli
 
       - name: Yarn dependencies
         run: |
