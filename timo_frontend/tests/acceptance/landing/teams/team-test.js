@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
+import { setSession, setMomentTimezone } from 'timo-frontend/tests/helpers/custom-helpers';
 import { TablePage } from 'ember-table/test-support';
 import moment from 'moment';
 
@@ -44,6 +44,8 @@ module('Acceptance | Team', function (hooks) {
       timezone: 'America/Buenos_Aires',
       team: newTeam
     });
+
+    setMomentTimezone.call(this, 'America/Montevideo');
 
     await visit(`/teams/${newTeam.id}`);
 

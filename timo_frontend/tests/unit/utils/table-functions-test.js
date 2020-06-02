@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { compareMemberTimeZones, filterClass, hoursLeftOver, createMemberArray } from 'timo-frontend/utils/table-functions'
+import { compareMemberTimeZones, filterClass, hoursLeftOver, createMemberArray } from 'timo-frontend/utils/table-functions';
 
 module('Unit | Utils | table functions', function (hooks) {
   setupTest(hooks);
@@ -19,7 +19,8 @@ module('Unit | Utils | table functions', function (hooks) {
     const memberBiggerTZ = { timezone: "America/Montevideo" };
     const membersArray = [memberSmallerTZ, memberBiggerTZ]
 
-    const ret = hoursLeftOver(membersArray, new Date(2020, 3, 18, 15));
+    const dateString = ("Sat Apr 18 2020 15:00:00 GMT-0300 (Uruguay Standard Time)");
+    const ret = hoursLeftOver(membersArray, new Date(dateString));
 
     assert.equal(ret[0], 0, 'Initial left over');
     assert.equal(ret[1], 4, 'Final left over');

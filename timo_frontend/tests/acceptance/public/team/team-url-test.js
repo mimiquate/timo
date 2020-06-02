@@ -3,6 +3,7 @@ import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { TablePage } from 'ember-table/test-support';
+import { setMomentTimezone } from 'timo-frontend/tests/helpers/custom-helpers';
 import moment from 'moment';
 
 module('Acceptance | Public Team', function (hooks) {
@@ -86,6 +87,8 @@ module('Acceptance | Public Team', function (hooks) {
       timezone: 'America/Buenos_Aires',
       team: newTeam
     });
+
+    setMomentTimezone.call(this, 'America/Montevideo');
 
     await visit(`/p/team/${newTeam.share_id}`);
 

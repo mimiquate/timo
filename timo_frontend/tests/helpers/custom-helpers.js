@@ -49,3 +49,8 @@ export function invalidUserServerPost() {
     400
   );
 }
+
+export function setMomentTimezone(timezone) {
+  const momentService = this.owner.lookup('service:moment');
+  momentService.setTimeZone(timezone);
+}
