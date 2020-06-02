@@ -27,12 +27,13 @@ jobs:
         with:
           otp-version: '22.2.1'
           elixir-version: '1.9.4'
-      
-      - name: Change directory
-        run: cd timo_backend
 
       - name: Get phoenix dependencies
-        run: mix deps.get
+        run: |
+          cd timo_backend
+          mix deps.get
 
       - name: Run phoenix tests
-        run: mix test
+        run: |
+          cd timo_backend
+          mix test
