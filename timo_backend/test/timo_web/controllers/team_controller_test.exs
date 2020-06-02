@@ -38,7 +38,7 @@ defmodule TimoWeb.TeamControllerTest do
 
   test "lists all entries on index", %{conn: conn, user: user} do
     team1 = team_factory(user)
-    team2 = team_factory(user)
+    team2 = team_factory(user, %{share_id: "unique_id_2"})
     conn = get(conn, Routes.team_path(conn, :index))
 
     [data1, data2 | []] = json_response(conn, 200)["data"]
