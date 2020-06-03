@@ -31,6 +31,10 @@ jobs:
         working-directory: ./timo_backend
         run: mix deps.get
 
+      - name: Compile phoenix app
+        working-directory: ./timo_backend
+        run: mix compile
+
       - name: Check format
         working-directory: ./timo_backend
         run: mix format --check-formatted
