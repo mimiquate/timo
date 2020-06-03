@@ -14,19 +14,18 @@ export function compareMemberTimeZones(memberA, memberB) {
   return ret;
 }
 
-export function hoursLeftOver(membersArray, date) {
+export function hoursLeftOver(membersArray, timezoneNow) {
   const length = membersArray.length;
 
-  const now = moment.utc(date);
-  const offSetNow = date.getTimezoneOffset();
+  const offSetNow = moment().tz(timezoneNow).utcOffset();
 
   const earlyTZ = membersArray[length - 1].timezone;
-  const earlyTime = moment.tz.zone(earlyTZ).utcOffset(now);
-  const hoursStart = (offSetNow - earlyTime) / 60;
+  const earlyTime = moment.tz(earlyTZ).utcOffset();
+  const hoursStart = (earlyTime - offSetNow) / 60;
 
   const lateTz = membersArray[0].timezone;
-  const lateTime = moment.tz.zone(lateTz).utcOffset(now);
-  const hoursLeft = (lateTime - earlyTime) / 60;
+  const lateTime = moment.tz(lateTz).utcOffset();
+  const hoursLeft = (earlyTime - lateTime) / 60;
 
   return [hoursStart, hoursLeft];
 }

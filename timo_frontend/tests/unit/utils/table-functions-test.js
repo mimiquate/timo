@@ -19,7 +19,7 @@ module('Unit | Utils | table functions', function (hooks) {
     const memberBiggerTZ = { timezone: "America/Montevideo" };
     const membersArray = [memberSmallerTZ, memberBiggerTZ]
 
-    const ret = hoursLeftOver(membersArray, new Date(2020, 3, 18, 15));
+    const ret = hoursLeftOver(membersArray, "America/Montevideo");
 
     assert.equal(ret[0], 0, 'Initial left over');
     assert.equal(ret[1], 4, 'Final left over');

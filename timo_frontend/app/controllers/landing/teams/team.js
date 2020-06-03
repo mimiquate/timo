@@ -1,9 +1,9 @@
 import Controller from '@ember/controller';
 import { computed } from "@ember/object";
-import moment from 'moment';
 import { set } from "@ember/object";
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
 import { createMembersTableColumns, createMembersTableRows } from 'timo-frontend/utils/member-column-rows';
+import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 
 export default Controller.extend({
   savedMembers: computed('model.members.{[],@each.id}', function () {
@@ -11,7 +11,7 @@ export default Controller.extend({
   }),
 
   sortedMembers: computed('savedMembers.{[],@each.name,@each.timezone}', 'showCurrent', function () {
-    const timezoneNow = moment.tz.guess(true);
+    const timezoneNow = guessTimezoneNow();
     const membersToArray = createMemberArray(this.savedMembers, this.showCurrent, timezoneNow);
 
     return membersToArray.sort(compareMemberTimeZones);
@@ -22,7 +22,9 @@ export default Controller.extend({
   }),
 
   rows: computed('sortedMembers.[]', function () {
-    return createMembersTableRows(this.sortedMembers);
+    const timezoneNow = guessTimezoneNow();
+
+    return createMembersTableRows(this.sortedMembers, timezoneNow);
   }),
 
   currentRowIndex: computed('rows.[]', function () {
