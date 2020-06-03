@@ -29,15 +29,15 @@ jobs:
 
       - name: Get phoenix dependencies
         run: mix deps.get
-          working-directory: timo_backend
+          working-directory: ./timo_backend
 
       - name: Check format
         run: mix format --check-formatted
-          working-directory: timo_backend
+          working-directory: ./timo_backend
 
       - name: Run phoenix tests
         run: mix test
-          working-directory: timo_backend
+          working-directory: ./timo_backend
 
   buildAndTestFrontend:
     runs-on: ubuntu-latest
@@ -55,8 +55,8 @@ jobs:
 
       - name: Yarn dependencies
         run: yarn install
-          working-directory: timo_frontend
+          working-directory: ./timo_frontend
 
       - name: Run ember tests
         run: ember test
-          working-directory: timo_frontend
+          working-directory: ./timo_frontend
