@@ -155,10 +155,9 @@ module('Acceptance | Team', function (hooks) {
     setSession.call(this, newUser);
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
-    const timezoneNow = moment.tz.guess(true);
     this.server.create('member', {
       name: 'Member 1',
-      timezone: timezoneNow,
+      timezone: 'America/Montevideo',
       team: newTeam
     });
 
@@ -169,7 +168,7 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(table.headers.length, 1, 'Table has one column');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
-      `Member 1 (${timezoneNow})`,
+      'Member 1 (America/Montevideo)',
       'Member 1 is listed'
     );
 
@@ -185,8 +184,6 @@ module('Acceptance | Team', function (hooks) {
     setSession.call(this, newUser);
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
 
-    const timezoneNow = moment.tz.guess(true);
-
     await visit(`/teams/${newTeam.id}`);
 
     const table = new TablePage();
@@ -197,7 +194,7 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(table.headers.length, 1, 'Table has one column');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
-      `You (${timezoneNow}) Current timezone`,
+      `You (America/Montevideo) Current timezone`,
       'Current timezone is listed'
     );
 

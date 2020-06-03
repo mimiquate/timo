@@ -1,11 +1,12 @@
 import { hoursLeftOver, filterClass } from 'timo-frontend/utils/table-functions';
 import moment from 'moment';
 import { isEmpty } from '@ember/utils';
+import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 
 export function createMembersTableColumns(sortedMembers) {
   const memberCol = [];
 
-  const timezoneNow = moment.tz.guess(true);
+  const timezoneNow = guessTimezoneNow();
 
   sortedMembers.forEach(m => {
     memberCol.pushObject({
@@ -20,7 +21,7 @@ export function createMembersTableColumns(sortedMembers) {
   return memberCol;
 }
 
-export function createMembersTableRows(sortedMembers) {
+export function createMembersTableRows(sortedMembers, timezoneNow) {
   if (isEmpty(sortedMembers)) {
     return {};
   }
@@ -28,7 +29,7 @@ export function createMembersTableRows(sortedMembers) {
   const memberRows = [];
   let row = {};
 
-  const hours = hoursLeftOver(sortedMembers, new Date());
+  const hours = hoursLeftOver(sortedMembers, timezoneNow);
   const hoursStart = hours[0];
   const hoursEnd = 24 + hours[1];
 
