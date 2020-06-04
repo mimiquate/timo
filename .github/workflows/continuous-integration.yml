@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   buildAndTestBackend:
+    name: Builds and test backend
     runs-on: ubuntu-latest
 
     services:
@@ -40,6 +41,7 @@ jobs:
         run: mix test
 
   buildAndTestFrontend:
+    name: Builds and test frontend
     runs-on: ubuntu-latest
 
     steps:
@@ -51,7 +53,7 @@ jobs:
           node-version: '10.x'
 
       - name: Install ember
-        run: npm install -g ember-cli
+        run: npm install -g ember-cli@3.12.0
 
       - name: Yarn dependencies
         working-directory: ./timo_frontend
