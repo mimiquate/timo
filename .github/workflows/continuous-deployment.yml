@@ -19,6 +19,9 @@ jobs:
           heroku_app_name: "timo-backend"
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
 
+      - name: Run migrations
+        run: heroku run "POOL_SIZE=2 cd timo_backend && mix ecto.migrate"
+
   deployFrontend:
     name: Deploy frontend to surge.sh with own domain
     runs-on: ubuntu-latest
