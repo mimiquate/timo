@@ -13,7 +13,9 @@ export default Controller.extend({
   }),
 
   columns: computed('sortedMembers.[]', function () {
-    return createMembersTableColumns(this.sortedMembers);
+    const timezoneNow = guessTimezoneNow();
+
+    return createMembersTableColumns(this.sortedMembers, timezoneNow);
   }),
 
   rows: computed('sortedMembers.[]', function () {
@@ -35,6 +37,8 @@ export default Controller.extend({
       return [];
     }
 
-    return createCollapsedColumns(this.sortedMembers);
+    const timezoneNow = guessTimezoneNow();
+
+    return createCollapsedColumns(this.sortedMembers, timezoneNow);
   }),
 });
