@@ -17,7 +17,7 @@
     <PaperCheckbox
       @value={{isCollapsed}}
       @onChange={{action (mut isCollapsed)}}
-      @disabled={{not this.sortedMembers.length}}
+      @disabled={{lte this.sortedMembers.length 1}}
       data-test-checkbox="collapsed"
     >
       Collapse table

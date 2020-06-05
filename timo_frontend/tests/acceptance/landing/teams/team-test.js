@@ -270,12 +270,36 @@ module('Acceptance | Team', function (hooks) {
     assert.equal('disabled', collapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
   });
 
-  test('Collapse table checkbox enable if there are members', async function (assert) {
+  test('Collapse table checkbox disable if only one member', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${newTeam.id}`);
+
+    assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
+    assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
+
+    const collapsedCheckbox = assert.dom('[data-test-checkbox=collapsed]').findTargetElement();
+    assert.equal('disabled', collapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
+  });
+
+  test('Collapse table checkbox enable if there are at least 2 members', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'America/Los_Angeles',
       team: newTeam
     });
     setSession.call(this, newUser);
