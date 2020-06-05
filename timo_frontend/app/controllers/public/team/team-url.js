@@ -12,8 +12,12 @@ export default Controller.extend({
     return membersToArray.sort(compareMemberTimeZones);
   }),
 
-  columns: computed('sortedMembers.[]', function () {
+  columns: computed('sortedMembers.[]', 'isCollapsed', function () {
     const timezoneNow = guessTimezoneNow();
+
+    if (this.isCollapsed) {
+      return createCollapsedColumns(this.sortedMembers, timezoneNow);
+    }
 
     return createMembersTableColumns(this.sortedMembers, timezoneNow);
   }),
@@ -30,15 +34,5 @@ export default Controller.extend({
     }
 
     return 0;
-  }),
-
-  collapsedColumns: computed('sortedMembers.[]', 'isCollapsed', function () {
-    if (!this.isCollapsed) {
-      return [];
-    }
-
-    const timezoneNow = guessTimezoneNow();
-
-    return createCollapsedColumns(this.sortedMembers, timezoneNow);
-  }),
+  })
 });
