@@ -37,7 +37,10 @@ export function createMembersTableRows(sortedMembers, timezoneNow) {
   time.subtract(hoursStart, 'hour');
 
   for (let i = 0; i < hoursEnd; i++) {
-    row = { filter: filterClass(i, hoursStart, hoursTime) };
+    row = {
+      filter: filterClass(i, hoursStart, hoursTime),
+      time: moment(time)
+    };
 
     sortedMembers.forEach(m => {
       row[m.id] = moment.tz(time, m.timezone);
