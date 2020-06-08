@@ -5,6 +5,14 @@ import { createMembersTableColumns, createMembersTableRows, createCollapsedColum
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 
 export default Controller.extend({
+  queryParams: {
+    showCurrent: 'current',
+    isCollapsed: 'collapsed'
+  },
+
+  showCurrent: false,
+  isCollapsed: false,
+
   sortedMembers: computed('model.members.[]', 'showCurrent', function () {
     const timezoneNow = guessTimezoneNow();
     const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);

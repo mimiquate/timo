@@ -6,6 +6,14 @@ import { createMembersTableColumns, createMembersTableRows, createCollapsedColum
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 
 export default Controller.extend({
+  queryParams: {
+    showCurrent: 'current',
+    isCollapsed: 'collapsed'
+  },
+
+  showCurrent: false,
+  isCollapsed: false,
+
   savedMembers: computed('model.members.{[],@each.id}', function () {
     return this.model.members.filterBy('id');
   }),
