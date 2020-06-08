@@ -66,9 +66,11 @@ export default Controller.extend({
       }).save().then(() => set(this, 'newMemberModal', false));
     },
 
-    editMember(member) {
-      set(this, 'memberToEdit', member);
-      set(this, 'editMemberModal', true);
+    onHeaderClick(columnValue) {
+      if (columnValue.valuePath != 'current' && !this.isCollapsed) {
+        set(this, 'memberToEdit', columnValue.member);
+        set(this, 'editMemberModal', true);
+      }
     },
 
     async saveEditMember(memberName, memberTimeZone) {

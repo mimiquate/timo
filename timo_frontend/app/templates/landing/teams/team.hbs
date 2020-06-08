@@ -36,7 +36,7 @@
       <h.row @class="mat-header-row" as |hr|>
         <hr.cell
           @class="mat-header-cell cell-text-align {{if (not isCollapsed) "pointer-cursor"}}"
-          onclick={{if (and (not-eq hr.columnValue.valuePath "current") (not isCollapsed)) (action "editMember" hr.columnValue.member)}}
+          onclick={{action "onHeaderClick" hr.columnValue}}
           data-test-member={{hr.columnValue.valuePath}}
           as |column|
         >
