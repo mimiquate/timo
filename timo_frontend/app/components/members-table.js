@@ -3,10 +3,12 @@ import { later } from '@ember/runloop';
 
 function scrollMembersTable(currentRowIndex) {
   const table = document.getElementById('scroll-target');
-  const tableMiddle = (table.offsetHeight / 2) - 56;
-  const scrollTargetAmount = (48 * currentRowIndex) - tableMiddle;
+  if (table) {
+    const tableMiddle = (table.offsetHeight / 2) - 56;
+    const scrollTargetAmount = (48 * currentRowIndex) - tableMiddle;
 
-  table.scrollTop = scrollTargetAmount;
+    table.scrollTop = scrollTargetAmount;
+  }
 }
 
 export default EmberTable.extend({
