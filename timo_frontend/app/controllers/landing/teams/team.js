@@ -2,10 +2,18 @@ import Controller from '@ember/controller';
 import { computed } from "@ember/object";
 import { set } from "@ember/object";
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
-import { createMembersTableColumns, createMembersTableRows } from 'timo-frontend/utils/member-column-rows';
+import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 
 export default Controller.extend({
+  queryParams: {
+    showCurrent: 'current',
+    isCollapsed: 'collapsed'
+  },
+
+  showCurrent: false,
+  isCollapsed: false,
+
   savedMembers: computed('model.members.{[],@each.id}', function () {
     return this.model.members.filterBy('id');
   }),
@@ -17,8 +25,14 @@ export default Controller.extend({
     return membersToArray.sort(compareMemberTimeZones);
   }),
 
-  columns: computed('sortedMembers.[]', function () {
-    return createMembersTableColumns(this.sortedMembers);
+  columns: computed('sortedMembers.[]', 'isCollapsed', function () {
+    const timezoneNow = guessTimezoneNow();
+
+    if (this.isCollapsed) {
+      return createCollapsedColumns(this.sortedMembers, timezoneNow);
+    }
+
+    return createMembersTableColumns(this.sortedMembers, timezoneNow);
   }),
 
   rows: computed('sortedMembers.[]', function () {
@@ -52,9 +66,11 @@ export default Controller.extend({
       }).save().then(() => set(this, 'newMemberModal', false));
     },
 
-    editMember(member) {
-      set(this, 'memberToEdit', member);
-      set(this, 'editMemberModal', true);
+    onHeaderClick(columnValue) {
+      if (columnValue.valuePath != 'current' && !this.isCollapsed) {
+        set(this, 'memberToEdit', columnValue.member);
+        set(this, 'editMemberModal', true);
+      }
     },
 
     async saveEditMember(memberName, memberTimeZone) {

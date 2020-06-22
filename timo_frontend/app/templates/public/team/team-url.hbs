@@ -4,13 +4,23 @@
       {{this.model.name}}
     </h1>
   </div>
-  <div class="current-checkbox">
+  <div class="side-checkbox">
     <PaperCheckbox
       @value={{showCurrent}}
       @onChange={{action (mut showCurrent)}}
-      data-test="checkbox"
+      data-test-checkbox="current"
     >
       List my current timezone
+    </PaperCheckbox>
+  </div>
+  <div class="side-checkbox">
+    <PaperCheckbox
+      @value={{isCollapsed}}
+      @onChange={{action (mut isCollapsed)}}
+      @disabled={{lte this.sortedMembers.length 1}}
+      data-test-checkbox="collapsed"
+    >
+      Collapse table
     </PaperCheckbox>
   </div>
   {{#if this.sortedMembers.length}}
@@ -24,6 +34,9 @@
         <h.row @class="mat-header-row" as |hr|>
           <hr.cell @class="mat-header-cell cell-text-align" as |column|>
             {{column.member.name}} ({{column.member.timezone}})
+            {{#if isCollapsed}}
+              {{collapsed-amount column.collapsedMembersCount}}
+            {{/if}}
             {{#if showCurrent}}
               {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
             {{/if}}

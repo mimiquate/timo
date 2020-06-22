@@ -1,12 +1,9 @@
 import { hoursLeftOver, filterClass } from 'timo-frontend/utils/table-functions';
 import moment from 'moment';
 import { isEmpty } from '@ember/utils';
-import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 
-export function createMembersTableColumns(sortedMembers) {
+export function createMembersTableColumns(sortedMembers, timezoneNow) {
   const memberCol = [];
-
-  const timezoneNow = guessTimezoneNow();
 
   sortedMembers.forEach(m => {
     memberCol.pushObject({
@@ -51,4 +48,42 @@ export function createMembersTableRows(sortedMembers, timezoneNow) {
   }
 
   return memberRows;
+}
+
+export function createCollapsedColumns(sortedMembers, timezoneNow) {
+  const timeNow = moment.utc();
+
+  const membersByOffset = groupMembersByOffset(sortedMembers, timeNow);
+
+  return Array.from(membersByOffset).map(args => {
+    const members = args[1];
+
+    const findMember = members.find(m => m.id === 'current');
+    const member = findMember ? findMember : members[0];
+
+    const isCurrentTimezone = members.some(m => m.timezone === timezoneNow);
+
+    return {
+      member: member,
+      valuePath: member.id,
+      textAlign: 'center',
+      width: 225,
+      isCurrent: isCurrentTimezone,
+      collapsedMembersCount: members.length
+    };
+  })
+}
+
+function groupMembersByOffset(sortedMembers, timeNow) {
+  return sortedMembers.reduce(function (map, member) {
+    const offset = moment.tz.zone(member.timezone).utcOffset(timeNow)
+
+    if (!map.has(offset)) {
+      map.set(offset, []);
+    }
+
+    map.get(offset).push(member);
+
+    return map;
+  }, new Map());
 }

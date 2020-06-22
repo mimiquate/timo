@@ -1,10 +1,18 @@
 import Controller from '@ember/controller';
 import { computed } from "@ember/object";
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
-import { createMembersTableColumns, createMembersTableRows } from 'timo-frontend/utils/member-column-rows';
+import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 
 export default Controller.extend({
+  queryParams: {
+    showCurrent: 'current',
+    isCollapsed: 'collapsed'
+  },
+
+  showCurrent: false,
+  isCollapsed: false,
+
   sortedMembers: computed('model.members.[]', 'showCurrent', function () {
     const timezoneNow = guessTimezoneNow();
     const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);
@@ -12,8 +20,14 @@ export default Controller.extend({
     return membersToArray.sort(compareMemberTimeZones);
   }),
 
-  columns: computed('sortedMembers.[]', function () {
-    return createMembersTableColumns(this.sortedMembers);
+  columns: computed('sortedMembers.[]', 'isCollapsed', function () {
+    const timezoneNow = guessTimezoneNow();
+
+    if (this.isCollapsed) {
+      return createCollapsedColumns(this.sortedMembers, timezoneNow);
+    }
+
+    return createMembersTableColumns(this.sortedMembers, timezoneNow);
   }),
 
   rows: computed('sortedMembers.[]', function () {

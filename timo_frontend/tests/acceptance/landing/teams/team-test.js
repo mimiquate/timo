@@ -143,10 +143,10 @@ module('Acceptance | Team', function (hooks) {
       'Member 1 is listed'
     );
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 2, 'Table has two columns');
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 1, 'Table has one column');
   });
 
@@ -172,10 +172,10 @@ module('Acceptance | Team', function (hooks) {
       'Member 1 is listed'
     );
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 1, 'Table has one column');
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 1, 'Table has one column');
   });
 
@@ -190,7 +190,7 @@ module('Acceptance | Team', function (hooks) {
 
     assert.equal(table.headers.length, 0, 'Table has no column');
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 1, 'Table has one column');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
@@ -198,7 +198,7 @@ module('Acceptance | Team', function (hooks) {
       'Current timezone is listed'
     );
 
-    await click('[data-test=checkbox]');
+    await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 0, 'Table has no column');
   });
 
@@ -254,5 +254,200 @@ module('Acceptance | Team', function (hooks) {
     await click('[data-test=public-checkbox]');
 
     assert.equal(newTeam.public, false, 'Changes view to not public');
+  });
+
+  test('Collapse table checkbox disable if no members', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${newTeam.id}`);
+
+    assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
+    assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
+
+    const collapsedCheckbox = assert.dom('[data-test-checkbox=collapsed]').findTargetElement();
+    assert.equal('disabled', collapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
+  });
+
+  test('Collapse table checkbox disable if only one member', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${newTeam.id}`);
+
+    assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
+    assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
+
+    const collapsedCheckbox = assert.dom('[data-test-checkbox=collapsed]').findTargetElement();
+    assert.equal('disabled', collapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
+  });
+
+  test('Collapse table checkbox enable if there are at least 2 members', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'America/Los_Angeles',
+      team: newTeam
+    });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${newTeam.id}`);
+
+    assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
+    assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
+
+    const collapsedCheckbox = assert.dom('[data-test-checkbox=collapsed]').findTargetElement();
+    assert.notOk(collapsedCheckbox.attributes.disabled, 'Checkbox is enabled');
+  });
+
+  test('Collapse member into another', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${newTeam.id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 2, 'Table has two columns');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo)',
+      'Member 1 is listed'
+    );
+    assert.equal(
+      table.headers.objectAt(1).text.trim(),
+      'Member 2 (America/Montevideo)',
+      'Member 2 is listed'
+    );
+
+    await click('[data-test-checkbox=collapsed]');
+
+    assert.equal(table.headers.length, 1, 'Table has one column');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo) + 1 member',
+      'Member 1 is listed showing collapsed state'
+    );
+  });
+
+  test('Collapse 2 members into another', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 3',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${newTeam.id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 3, 'Table has two columns');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo)',
+      'Member 1 is listed'
+    );
+    assert.equal(
+      table.headers.objectAt(1).text.trim(),
+      'Member 2 (America/Montevideo)',
+      'Member 2 is listed'
+    );
+    assert.equal(
+      table.headers.objectAt(2).text.trim(),
+      'Member 3 (America/Montevideo)',
+      'Member 3 is listed'
+    );
+
+    await click('[data-test-checkbox=collapsed]');
+
+    assert.equal(table.headers.length, 1, 'Table has one column');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo) + 2 members',
+      'Member 1 is listed showing collapsed state'
+    );
+  });
+
+  test('No member collapses into another', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'Asia/Ho_Chi_Minh',
+      team: newTeam
+    });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${newTeam.id}`);
+
+    const table = new TablePage();
+
+    assert.equal(table.headers.length, 2, 'Table has two columns');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo)',
+      'Member 1 is listed'
+    );
+    assert.equal(
+      table.headers.objectAt(1).text.trim(),
+      'Member 2 (Asia/Ho_Chi_Minh)',
+      'Member 2 is listed'
+    );
+
+    await click('[data-test-checkbox=collapsed]');
+
+    assert.equal(table.headers.length, 2, 'Table has two columns');
+    assert.equal(
+      table.headers.objectAt(0).text.trim(),
+      'Member 1 (America/Montevideo)',
+      'Member 1 is listed'
+    );
+    assert.equal(
+      table.headers.objectAt(1).text.trim(),
+      'Member 2 (Asia/Ho_Chi_Minh)',
+      'Member 2 is listed'
+    );
   });
 });
