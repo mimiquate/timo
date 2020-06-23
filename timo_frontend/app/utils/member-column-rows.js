@@ -1,4 +1,3 @@
-import { hoursLeftOver, filterClass } from 'timo-frontend/utils/table-functions';
 import moment from 'moment';
 import { isEmpty } from '@ember/utils';
 
@@ -18,7 +17,7 @@ export function createMembersTableColumns(sortedMembers, timezoneNow) {
   return memberCol;
 }
 
-export function createMembersTableRows(sortedMembers, timezoneNow) {
+export function createMembersTableRows(sortedMembers) {
   if (isEmpty(sortedMembers)) {
     return {};
   }
@@ -26,19 +25,28 @@ export function createMembersTableRows(sortedMembers, timezoneNow) {
   const memberRows = [];
   let row = {};
 
-  const hours = hoursLeftOver(sortedMembers, timezoneNow);
-  const hoursStart = hours[0];
-  const hoursEnd = 24 + hours[1];
+  const earlyTimezone = sortedMembers[0].timezone;
+  const lateTimezone = sortedMembers[sortedMembers.length - 1].timezone;
+
+  const startHour = moment.tz(moment.tz(earlyTimezone).startOf('day'), lateTimezone).startOf('day');
+  const endHour = moment.tz(earlyTimezone).endOf('day');
 
   const momentNow = moment();
-  const hoursTime = momentNow.hours();
-  let time = momentNow.minute(0);
-  time.hour(0);
-  time.subtract(hoursStart, 'hour');
+  let time = moment(startHour);
+  const hoursEnd = endHour.diff(startHour, 'hours');
 
-  for (let i = 0; i < hoursEnd; i++) {
+  for (let i = 0; i < hoursEnd + 1; i++) {
+    let diff = time.diff(momentNow, 'minutes');
+    let filter = '';
+
+    if (diff >= 0 && diff < 60) {
+      filter = 'row-current-time';
+    } else if (diff < 0) {
+      filter = 'row-past-time';
+    }
+
     row = {
-      filter: filterClass(i, hoursStart, hoursTime),
+      filter: filter,
       time: moment(time)
     };
 
