@@ -14,35 +14,6 @@ export function compareMemberTimeZones(memberA, memberB) {
   return ret;
 }
 
-export function hoursLeftOver(membersArray, timezoneNow) {
-  const length = membersArray.length;
-
-  const offSetNow = moment().tz(timezoneNow).utcOffset();
-
-  const earlyTZ = membersArray[length - 1].timezone;
-  const earlyTime = moment.tz(earlyTZ).utcOffset();
-  const hoursStart = (earlyTime - offSetNow) / 60;
-
-  const lateTz = membersArray[0].timezone;
-  const lateTime = moment.tz(lateTz).utcOffset();
-  const hoursLeft = (earlyTime - lateTime) / 60;
-
-  return [hoursStart, hoursLeft];
-}
-
-export function filterClass(hour, offset, hoursTime) {
-  const hourNow = hoursTime + offset;
-
-  let retClass = '';
-  if (hour < hourNow) {
-    retClass = 'row-past-time';
-  } else if (hour === hourNow) {
-    retClass = 'row-current-time';
-  }
-
-  return retClass;
-}
-
 export function createMemberArray(modelMembers, showCurrent, timezoneNow) {
   const returnArray = modelMembers.toArray();
 

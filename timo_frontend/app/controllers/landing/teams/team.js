@@ -38,9 +38,7 @@ export default Controller.extend({
   }),
 
   rows: computed('sortedMembers.[]', function () {
-    const timezoneNow = guessTimezoneNow();
-
-    return createMembersTableRows(this.sortedMembers, timezoneNow);
+    return createMembersTableRows(this.sortedMembers);
   }),
 
   currentRowIndex: computed('rows.[]', function () {
