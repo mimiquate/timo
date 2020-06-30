@@ -1,0 +1,49 @@
+<PaperMenu @position="target-right target" as |menu|>
+  <menu.trigger>
+    <PaperButton @iconButton={{true}} @raised={{true}} data-test="table-options-icon">
+      {{paper-icon "toc"}}
+    </PaperButton>
+  </menu.trigger>
+  <menu.content>
+    <div class="side-checkbox">
+      <PaperCheckbox
+        @value={{showCurrent}}
+        @onChange={{action (mut showCurrent)}}
+        data-test-checkbox="current"
+      >
+        List my current timezone
+      </PaperCheckbox>
+    </div>
+    <div class="side-checkbox">
+      <PaperCheckbox
+        @value={{isCollapsed}}
+        @onChange={{action (mut isCollapsed)}}
+        @disabled={{lte sortedMembers.length 1}}
+        data-test-checkbox="collapsed"
+      >
+        Collapse table
+      </PaperCheckbox>
+    </div>
+    {{#if this.team}}
+      <PaperDivider class="table-options-divider" />
+      <div class="side-checkbox">
+        <PaperCheckbox
+          @value={{this.team.public}}
+          @onChange={{action "setPublic"}}
+          data-test-checkbox="public"
+        >
+          Public Access
+        </PaperCheckbox>
+        <PaperButton
+          @iconButton={{true}}
+          @raised={{this.team.public}}
+          @onClick={{action "copyLink"}}
+          @disabled={{not this.team.public}}
+          data-test="copy-link-button"
+        >
+          {{paper-icon "content_copy"}}
+        </PaperButton>
+      </div>
+    {{/if}}
+  </menu.content>
+</PaperMenu>
