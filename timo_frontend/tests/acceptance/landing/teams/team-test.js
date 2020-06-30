@@ -146,6 +146,8 @@ module('Acceptance | Team', function (hooks) {
       'Member 1 is listed'
     );
 
+    await click('[data-test=table-options-icon]');
+
     await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 2, 'Table has two columns');
 
@@ -175,6 +177,8 @@ module('Acceptance | Team', function (hooks) {
       'Member 1 is listed'
     );
 
+    await click('[data-test=table-options-icon]');
+
     await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 1, 'Table has one column');
 
@@ -192,6 +196,8 @@ module('Acceptance | Team', function (hooks) {
     const table = new TablePage();
 
     assert.equal(table.headers.length, 0, 'Table has no column');
+
+    await click('[data-test=table-options-icon]');
 
     await click('[data-test-checkbox=current]');
     assert.equal(table.headers.length, 1, 'Table has one column');
@@ -229,32 +235,36 @@ module('Acceptance | Team', function (hooks) {
       .hasText('America/Montevideo', 'Member timezone is there');
   });
 
-  test('Clicks share icon', async function (assert) {
+  test('Clicks options icon', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser, public: false });
     setSession.call(this, newUser);
 
     await visit(`/teams/${newTeam.id}`);
-    await click('[data-test=share-icon]');
+    await click('[data-test=table-options-icon]');
 
-    assert.dom('[data-test=public-share-item]').hasText('Public Access', 'Modal has content');
-    assert.dom('[data-test=public-checkbox]').exists('Checkbox exists');
+    assert.dom('[data-test-checkbox=current]').exists('Current timezone checkbox exists');
+    assert.dom('[data-test-checkbox=current]').hasText('List my current timezone', 'Checkbox has correct text');
+    assert.dom('[data-test-checkbox=collapsed]').exists('Collapse checkbox exists');
+    assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Checkbox has correct text');
+    assert.dom('[data-test-checkbox=public]').exists('Share checkbox exists');
+    assert.dom('[data-test-checkbox=public]').hasText('Public Access', 'Checkbox has correct text');
     assert.dom('[data-test=copy-link-button]').exists('Copy link button exists');
-    assert.dom('[data-test=copy-link-button]').hasText('Copy Link', 'Button has correct text');
+    assert.dom('[data-test=copy-link-button]').hasText('content_copy', 'Button has correct text');
   });
 
-  test('Clicks share icon', async function (assert) {
+  test('Clicks share checkbox', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser, public: false });
     setSession.call(this, newUser);
 
     await visit(`/teams/${newTeam.id}`);
-    await click('[data-test=share-icon]');
-    await click('[data-test=public-checkbox]');
+    await click('[data-test=table-options-icon]');
+    await click('[data-test-checkbox=public]');
 
     assert.equal(newTeam.public, true, 'Changes view to public');
 
-    await click('[data-test=public-checkbox]');
+    await click('[data-test-checkbox=public]');
 
     assert.equal(newTeam.public, false, 'Changes view to not public');
   });
@@ -265,6 +275,7 @@ module('Acceptance | Team', function (hooks) {
     setSession.call(this, newUser);
 
     await visit(`/teams/${newTeam.id}`);
+    await click('[data-test=table-options-icon]');
 
     assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
     assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
@@ -284,6 +295,7 @@ module('Acceptance | Team', function (hooks) {
     setSession.call(this, newUser);
 
     await visit(`/teams/${newTeam.id}`);
+    await click('[data-test=table-options-icon]');
 
     assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
     assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
@@ -308,6 +320,7 @@ module('Acceptance | Team', function (hooks) {
     setSession.call(this, newUser);
 
     await visit(`/teams/${newTeam.id}`);
+    await click('[data-test=table-options-icon]');
 
     assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
     assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
@@ -347,6 +360,7 @@ module('Acceptance | Team', function (hooks) {
       'Member 2 is listed'
     );
 
+    await click('[data-test=table-options-icon]');
     await click('[data-test-checkbox=collapsed]');
 
     assert.equal(table.headers.length, 1, 'Table has one column');
@@ -398,6 +412,7 @@ module('Acceptance | Team', function (hooks) {
       'Member 3 is listed'
     );
 
+    await click('[data-test=table-options-icon]');
     await click('[data-test-checkbox=collapsed]');
 
     assert.equal(table.headers.length, 1, 'Table has one column');
@@ -439,6 +454,7 @@ module('Acceptance | Team', function (hooks) {
       'Member 2 is listed'
     );
 
+    await click('[data-test=table-options-icon]');
     await click('[data-test-checkbox=collapsed]');
 
     assert.equal(table.headers.length, 2, 'Table has two columns');

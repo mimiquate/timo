@@ -63,7 +63,7 @@ body, body > .ember-view, .login-main, .public-main {
   align-self: center;
 }
 
-.flex-title, .no-member, .side-checkbox {
+.flex-title, .no-member {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
 }
@@ -186,13 +186,13 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
   padding-bottom: $error-padding;
 }
 
-.share-icon {
+.options-icon {
   margin-left: auto;
   margin-top: 21px;
 }
 
-.public-share-item {
-  margin: 6px 8px;
+.side-checkbox {
+  margin: 0px 8px;
 }
 
 .team-list-item {
@@ -228,6 +228,9 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
   background-color: RGBA(var(--background-500), 0.2);
 }
 
+.table-options-divider {
+  margin-bottom: 10px;
+}
 .event-tooltip {
   max-width: max-content;
 }

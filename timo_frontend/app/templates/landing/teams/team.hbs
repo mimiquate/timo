@@ -3,28 +3,14 @@
   <h1 data-test="team-title">
     {{this.model.name}}
   </h1>
-  <div class="share-icon">
-    <ShareMenu @team={{this.model}} />
+  <div class="options-icon">
+    <TableOptionsMenu
+      @team={{this.model}}
+      @showCurrent={{showCurrent}}
+      @isCollapsed={{isCollapsed}}
+      @sortedMembers={{this.sortedMembers}}
+    />
   </div>
-</div>
-<div class="side-checkbox">
-  <PaperCheckbox
-    @value={{showCurrent}}
-    @onChange={{action (mut showCurrent)}}
-    data-test-checkbox="current"
-  >
-    List my current timezone
-  </PaperCheckbox>
-</div>
-<div class="side-checkbox">
-  <PaperCheckbox
-    @value={{isCollapsed}}
-    @onChange={{action (mut isCollapsed)}}
-    @disabled={{lte this.sortedMembers.length 1}}
-    data-test-checkbox="collapsed"
-  >
-    Collapse table
-  </PaperCheckbox>
 </div>
 {{#if this.sortedMembers.length}}
   <MembersTable @currentRowIndex={{currentRowIndex}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
