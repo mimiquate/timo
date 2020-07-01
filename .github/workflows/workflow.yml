@@ -82,7 +82,7 @@ jobs:
         run: heroku run "POOL_SIZE=2 cd timo_backend && mix ecto.migrate"
 
   deploy_frontend:
-    name: Deploy frontend to surge.sh with own domain
+    name: Deploy frontend to Netlify with own domain
     needs: [build_and_test_backend, build_and_test_frontend]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
@@ -109,5 +109,5 @@ jobs:
       - name: Install netlify-cli
         run: npm install netlify-cli -g
 
-      - name: Deploy to timo.mimiquate.xyz with Netlify
-        run: netlify deploy --prod --dir=timo_frontend/dist --auth={{secrets.NETLIFY_AUTH_TOKEN}} --site={{secrets.NETLIFY_SITE_ID}}
+      - name: Deploy to timo.mimiquate.xyz with netlify-cli
+        run: netlify deploy --prod --dir=timo_frontend/dist --auth={{ secrets.NETFLY_AUTH }} --site={{ secrets.NETLIFY_SITE_ID }}
