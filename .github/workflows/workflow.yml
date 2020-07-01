@@ -104,13 +104,10 @@ jobs:
 
       - name: Build ember project
         working-directory: ./timo_frontend
-        run: |
-          ember build --environment production
-          mv dist/index.html dist/200.html
+        run: ember build --environment production
 
-      - name: Install surge
-        run: npm install -g surge
+      - name: Install netlify-cli
+        run: npm install netlify-cli -g
 
-      - name: Deploy to timo.mimiquate.xyz with surge
-        working-directory: ./timo_frontend
-        run: surge dist timo.mimiquate.xyz --token ${{ secrets.SURGE_TOKEN }}
+      - name: Deploy to timo.mimiquate.xyz with Netlify
+        run: netlify deploy --prod --dir=timo_frontend/dist --auth={{secrets.NETLIFY_AUTH_TOKEN}} --site={{secrets.NETLIFY_SITE_ID}}
