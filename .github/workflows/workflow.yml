@@ -110,4 +110,4 @@ jobs:
         run: npm install netlify-cli -g
 
       - name: Deploy to timo.mimiquate.xyz with netlify-cli
-        run: netlify deploy --prod --dir=timo_frontend/dist --auth={{ secrets.NETFLY_AUTH }} --site={{ secrets.NETLIFY_SITE_ID }}
+        run: netlify deploy --prod --dir=timo_frontend/dist --auth=${{ secrets.NETLIFY_AUTH_TOKEN }} --site=${{ secrets.NETLIFY_SITE_ID }}
