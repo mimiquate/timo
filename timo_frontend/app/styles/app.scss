@@ -227,3 +227,7 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
   background-color: rgba(paper-color($background, "500"), 0.2);
   background-color: RGBA(var(--background-500), 0.2);
 }
+
+.event-tooltip {
+  max-width: max-content;
+}
