@@ -188,7 +188,8 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 
 .options-icon {
   margin-left: auto;
-  margin-top: 21px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .side-checkbox {
@@ -231,6 +232,7 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 .table-options-divider {
   margin-bottom: 10px;
 }
+
 .event-tooltip {
   max-width: max-content;
 }
