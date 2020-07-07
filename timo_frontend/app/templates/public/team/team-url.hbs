@@ -52,7 +52,11 @@
               {{moment-format value "D MMM YYYY - HH:mm"}}
             {{/if}}
           </rr.cell>
-          <EmberTooltip @text="Schedule Event on Google Calendar" @tooltipClass="event-tooltip" />
+          <EmberTooltip
+            @text="Schedule Event on Google Calendar"
+            @tooltipClass="event-tooltip"
+            @popperContainer="body"
+          />
         </r.row>
       </t.body>
     </MembersTable>

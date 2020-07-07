@@ -230,4 +230,22 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 
 .event-tooltip {
   max-width: max-content;
+  z-index: 1000;
+}
+
+$select-row-color: white;
+
+.mat-row:hover {
+  & > td {
+    -webkit-box-shadow:
+      inset 0px -6px 3px -3px $select-row-color,
+      inset 0px 6px 3px -3px $select-row-color;
+    -moz-box-shadow:
+      inset 0px -6px 3px -3px $select-row-color,
+      inset 0px 6px 3px -3px $select-row-color;
+    box-shadow:
+      inset 0px -6px 3px -3px $select-row-color,
+      inset 0px 6px 3px -3px $select-row-color;
+  }
+  filter: brightness(110%);
 }
