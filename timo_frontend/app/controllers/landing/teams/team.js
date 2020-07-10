@@ -89,10 +89,10 @@ export default Controller.extend({
 
     scheduleEvent(row) {
       let rowTime = moment(row.rowValue.time);
-      const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmSS');
+      const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
 
       rowTime.add(1, 'hour');
-      const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmSS');
+      const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
 
       const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
       openGoogleCalendarEvent(time, this.model.name);
