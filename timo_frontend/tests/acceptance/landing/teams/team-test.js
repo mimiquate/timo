@@ -5,10 +5,13 @@ import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
 import { TablePage } from 'ember-table/test-support';
 import moment from 'moment';
+import { setupWindowMock } from 'ember-window-mock/test-support';
+import window from 'ember-window-mock';
 
 module('Acceptance | Team', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
+  setupWindowMock(hooks);
 
   test('Visiting /teams/team without exisiting username', async function (assert) {
     await visit('/teams/team');
@@ -449,5 +452,32 @@ module('Acceptance | Team', function (hooks) {
       'Member 2 (Asia/Ho_Chi_Minh)',
       'Member 2 is listed'
     );
+  });
+
+  test('Opens google calendar when clicking row', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    setSession.call(this, newUser);
+
+    const calendarUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Team Team scheduled event&dates=20200713T060000/20200713T070000'
+
+    await visit(`/teams/${newTeam.id}`);
+
+    window.open = (urlToOpen) => {
+      assert.equal(
+        urlToOpen,
+        calendarUrl,
+        'Correct google calendar link'
+      );
+    };
+
+    new TablePage();
+
+    await click('[data-test-row="6"]');
   });
 });

@@ -89,6 +89,8 @@ export default Controller.extend({
 
     scheduleEvent(row) {
       let rowTime = moment(row.rowValue.time);
+
+      rowTime.seconds(0)
       const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
 
       rowTime.add(1, 'hour');

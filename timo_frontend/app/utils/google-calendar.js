@@ -1,3 +1,5 @@
+import window from 'ember-window-mock';
+
 export default function openGoogleCalendarEvent(time, teamName) {
   const baseLink = "https://calendar.google.com/calendar/render";
   const actionOption = "action=TEMPLATE";

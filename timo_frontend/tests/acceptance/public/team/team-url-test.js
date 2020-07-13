@@ -4,10 +4,13 @@ import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { TablePage } from 'ember-table/test-support';
 import moment from 'moment';
+import { setupWindowMock } from 'ember-window-mock/test-support';
+import window from 'ember-window-mock';
 
 module('Acceptance | Public Team', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
+  setupWindowMock(hooks);
 
   function setGETTeamsHandler(server) {
     server.get('/teams', function (schema, request) {
@@ -500,5 +503,40 @@ module('Acceptance | Public Team', function (hooks) {
       'Member 2 (Asia/Ho_Chi_Minh)',
       'Member 2 is listed'
     );
+  });
+
+  test('Opens google calendar when clicking row', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      }
+    );
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+
+    const calendarUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Team Team scheduled event&dates=20200713T060000/20200713T070000'
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    window.open = (urlToOpen) => {
+      assert.equal(
+        urlToOpen,
+        calendarUrl,
+        'Correct google calendar link'
+      );
+    };
+
+    new TablePage();
+
+    await click('[data-test-row="6"]');
   });
 });
