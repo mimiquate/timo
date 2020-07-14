@@ -523,7 +523,11 @@ module('Acceptance | Public Team', function (hooks) {
       team: newTeam
     });
 
-    const calendarUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Team Team scheduled event&dates=20200713T060000/20200713T070000'
+    const calendarBase = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Team Team scheduled event&';
+    const timeNow = moment();
+    const timeFormat = `${timeNow.year()}${timeNow.format('MM')}${timeNow.format('DD')}`;
+    const calendarDate = `dates=${timeFormat}T060000/${timeFormat}T070000`;
+    const calendarUrl = `${calendarBase}${calendarDate}`;
 
     await visit(`/p/team/${newTeam.share_id}`);
 
@@ -534,8 +538,6 @@ module('Acceptance | Public Team', function (hooks) {
         'Correct google calendar link'
       );
     };
-
-    new TablePage();
 
     await click('[data-test-row="6"]');
   });
