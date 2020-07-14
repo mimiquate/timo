@@ -45,13 +45,21 @@
       </t.head>
 
       <t.body @rows={{rows}} as |r|>
-        <r.row @class="mat-row {{row-filter r.rowValue}}" as |rr|>
+        <r.row
+          @class="mat-row {{row-filter r.rowValue}} pointer-cursor" onclick={{action "scheduleEvent" r}}
+          data-test-row={{row-index r.rowMeta}}
+          as |rr|
+        >
           <rr.cell @class="mat-cell cell-text-align cell-color-{{cell-color rr.cellValue}}" as |value|>
             {{!-- Check if value exists because of rendering issue --}}
             {{#if value}}
               {{moment-format value "D MMM YYYY - HH:mm"}}
             {{/if}}
           </rr.cell>
+          <EmberTooltip
+            @text="Schedule Event on Google Calendar"
+            @tooltipClass="event-tooltip"
+          />
         </r.row>
       </t.body>
     </MembersTable>

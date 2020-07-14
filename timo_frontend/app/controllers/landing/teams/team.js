@@ -4,6 +4,8 @@ import { set } from "@ember/object";
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
 import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
+import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
+import moment from 'moment';
 
 export default Controller.extend({
   queryParams: {
@@ -83,6 +85,19 @@ export default Controller.extend({
       }
 
       set(this, 'editMemberModal', false);
+    },
+
+    scheduleEvent(row) {
+      let rowTime = moment(row.rowValue.time);
+
+      rowTime.seconds(0)
+      const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
+
+      rowTime.add(1, 'hour');
+      const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
+
+      const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
+      openGoogleCalendarEvent(time, this.model.name);
     }
   }
 });
