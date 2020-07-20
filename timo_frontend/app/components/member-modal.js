@@ -21,6 +21,23 @@ export default Component.extend({
       const memberTimeZone = this.memberTimeZone;
 
       this.addMember(memberName, memberTimeZone);
+    },
+
+    deleteMemberModal() {
+      set(this, 'showDeleteMemberModal', true);
+    },
+
+    closeDeleteMemberModal() {
+      set(this, 'showDeleteMemberModal', false);
+    },
+
+    async deleteMember() {
+      if (this.member) {
+        set(this, 'showDeleteTeamModal', false);
+        this.closeModal.call()
+
+        await this.member.destroyRecord();
+      }
     }
   }
 });

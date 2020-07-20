@@ -8,6 +8,11 @@
       <h1 data-test="member-modal-title">
         {{this.title}}
       </h1>
+      {{#if this.member}}
+        <PaperButton @iconButton={{true}} @onClick={{action "deleteMemberModal"}} data-test="delete-member">
+          {{paper-icon icon="delete"}}
+        </PaperButton>
+      {{/if}}
       <span class="flex"></span>
       <PaperButton @iconButton={{true}} @onClick={{this.closeModal}} data-test="close-member-modal">
         {{paper-icon icon="close"}}
@@ -49,3 +54,11 @@
     </PaperForm>
   </PaperDialogContent>
 </PaperDialog>
+{{#if showDeleteMemberModal}}
+  <DeleteMemberModal
+    @closeDeleteMemberModal={{action "closeDeleteMemberModal"}}
+    @memberName={{memberName}}
+    @memberTimeZone={{memberTimeZone}}
+    @deleteMember={{action "deleteMember"}}
+  />
+{{/if}}

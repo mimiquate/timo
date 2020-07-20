@@ -1,0 +1,17 @@
+<PaperDialog @clickOutsideToClose={{true}} @onClose={{closeDeleteMemberModal}}>
+  <PaperDialogContent>
+    <h2 class="md-title" data-test-delete-member="title">Confirm member deletion</h2>
+    <span data-test-delete-member="message">
+      Are you sure you want to delete member
+      <strong> {{memberName}} ({{memberTimeZone}})</strong> ?
+    </span>
+  </PaperDialogContent>
+  <PaperDialogActions>
+    <PaperButton @warn={{true}} @onClick={{closeDeleteMemberModal}} data-test-delete-member="cancel">
+      Cancel
+    </PaperButton>
+    <PaperButton @primary={{true}} @onClick={{deleteMember}} data-test-delete-member="yes">
+      Yes
+    </PaperButton>
+  </PaperDialogActions>
+</PaperDialog>
