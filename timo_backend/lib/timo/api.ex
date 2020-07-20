@@ -147,4 +147,8 @@ defmodule Timo.API do
   def delete_team(%Team{} = team) do
     Repo.delete(team)
   end
+
+  def delete_member(%Member{} = member) do
+    Repo.delete(member)
+  end
 end

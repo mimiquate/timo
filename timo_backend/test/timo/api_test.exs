@@ -293,5 +293,12 @@ defmodule Timo.APITest do
 
       assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_nil_tz)
     end
+
+    test "delete_member/1 deletes a member" do
+      member = member_factory()
+
+      assert {:ok, _member} = API.delete_member(member)
+      assert Repo.get(Member, member.id) == nil
+    end
   end
 end

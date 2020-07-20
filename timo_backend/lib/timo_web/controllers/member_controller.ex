@@ -24,4 +24,11 @@ defmodule TimoWeb.MemberController do
       render(conn, "show.json-api", data: member)
     end
   end
+
+  def delete(conn, %{"id" => id}) do
+    with {:ok, member} <- API.get_member(id),
+         {:ok, %Member{}} <- API.delete_member(member) do
+      send_resp(conn, :no_content, "")
+    end
+  end
 end

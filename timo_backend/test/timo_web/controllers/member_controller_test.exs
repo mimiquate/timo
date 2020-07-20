@@ -94,4 +94,15 @@ defmodule TimoWeb.MemberControllerTest do
 
     assert json_response(conn, 422)["errors"] != %{}
   end
+
+  test "delete member and renders empty content", %{conn: conn, team: team} do
+    member = member_factory(team)
+
+    conn = delete(conn, Routes.member_path(conn, :delete, member))
+
+    assert conn.status == 204
+    assert conn.resp_body == ""
+
+    assert Timo.Repo.get(Member, member.id) == nil
+  end
 end
