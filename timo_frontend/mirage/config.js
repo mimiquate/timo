@@ -28,4 +28,5 @@ export default function () {
   }, 200);
   this.patch('/teams/:id');
   this.delete('/teams/:id');
+  this.delete('/members/:id');
 }
