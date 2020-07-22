@@ -14,7 +14,7 @@
         <menu.trigger data-test="logout-trigger">
           {{paper-icon "arrow_drop_down" class="md-menu-origin"}}
           <span data-test="current-user-span">
-            {{currentUser.user.username}}
+            {{this.currentUser.user.username}}
           </span>
         </menu.trigger>
         <menu.content as |content|>
@@ -28,7 +28,7 @@
   </PaperToolbarTools>
 </PaperToolbar>
 <PaperSidenavContainer @class="inner-sidenav">
-  <PaperSidenav @class="side-container box-shadow-z8" @open={{sidenavOpen}} @onToggle={{action (mut sidenavOpen)}}>
+  <PaperSidenav @class="side-container box-shadow-z8" @open={{this.sidenavOpen}} @onToggle={{action (mut this.sidenavOpen)}}>
     <PaperToolbar>
       <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
     </PaperToolbar>
@@ -36,7 +36,7 @@
       {{#if this.model.length}}
         <PaperList>
           {{#each this.sortedTeams as |team index|}}
-            <div class="team-list-item {{if (eq currentTeamId team.id) "active-list-item"}}">
+            <div class="team-list-item {{if (eq this.currentTeamId team.id) "active-list-item"}}">
               <PaperItem
                 @class="list-team-name"
                 @onClick={{action "goToTeam" team}}
@@ -75,11 +75,11 @@
     {{outlet}}
   </PaperCardContent>
 </PaperSidenavContainer>
-{{#if showDeleteTeamModal}}
+{{#if this.showDeleteTeamModal}}
   <DeleteTeamModal
     @closeDeleteTeamModal={{action "closeDeleteTeamModal"}}
     @deleteTeam={{action "deleteTeam"}}
-    @teamToDeleteName={{teamToDelete.name}}
+    @teamToDeleteName={{this.teamToDelete.name}}
     data-test-delete-team="modal"
   />
 {{/if}}

@@ -4,11 +4,11 @@
 <PaperForm @onSubmit={{action "saveTeam"}} as |form|>
   <div class="layout layout-align-center-center">
     <form.input
-      @value={{teamName}}
+      @value={{this.teamName}}
       @placeholder="New team name"
       id="teamName-input"
-      @onChange={{action (mut teamName)}}
-      @customValidations={{emptyInputValidation}}
+      @onChange={{action (mut this.teamName)}}
+      @customValidations={{this.emptyInputValidation}}
     />
   </div>
   <div class="layout layout-align-center-center">

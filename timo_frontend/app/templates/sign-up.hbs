@@ -6,46 +6,46 @@
     <PaperForm @onSubmit={{action "signUp"}} as |form|>
       <div class="layout-column layout-align-center-center">
         <form.input
-          @value={{username}}
+          @value={{this.username}}
           @placeholder="username"
           id="username-input"
-          @onChange={{action (mut username)}}
+          @onChange={{action (mut this.username)}}
           @class="no-margin"
           @minlength={{4}}
-          @customValidations={{emptyInputValidation}}
+          @customValidations={{this.emptyInputValidation}}
         />
         <form.input
-          @value={{email}}
+          @value={{this.email}}
           @placeholder="email"
           id="email-input"
-          @onChange={{action (mut email)}}
+          @onChange={{action (mut this.email)}}
           @class="no-margin"
           @type="email"
-          @customValidations={{emptyInputValidation}}
+          @customValidations={{this.emptyInputValidation}}
         />
         <form.input
-          @value={{password}}
+          @value={{this.password}}
           @placeholder="password"
           id="password-input"
-          @onChange={{action (mut password)}}
+          @onChange={{action (mut this.password)}}
           @class="no-margin"
           @type="password"
           @minlength={{8}}
-          @customValidations={{emptyInputValidation}}
+          @customValidations={{this.emptyInputValidation}}
         />
         <form.input
-          @value={{confirmPassword}}
+          @value={{this.confirmPassword}}
           @placeholder="confirmation password"
           id="confirmPassword-input"
-          @onChange={{action (mut confirmPassword)}}
+          @onChange={{action (mut this.confirmPassword)}}
           @required={{true}}
           @class="no-margin"
           @type="password"
-          @customValidations={{confirmPasswordValidation}}
+          @customValidations={{this.confirmPasswordValidation}}
         />
       </div>
       <div class="layout-column layout-align-center-center">
-        {{#if errorResponse}}
+        {{#if this.errorResponse}}
           <div class="paper-input-error response-error" data-test="sign-up-error">
             That username is already taken
           </div>

@@ -10,7 +10,7 @@
       </h1>
       <span class="flex"></span>
       <PaperButton @iconButton={{true}} @onClick={{this.closeModal}} data-test="close-member-modal">
-        {{paper-icon icon="close"}}
+        {{paper-icon "close"}}
       </PaperButton>
     </PaperToolbarTools>
   </PaperToolbar>
@@ -18,21 +18,21 @@
     <PaperForm class="layout layout-align-center" @onSubmit={{action "add"}} as |form|>
       <div class="layout-column layout-align-center">
         <form.input
-          @value={{memberName}}
+          @value={{this.memberName}}
           @label="Name"
           id="memberName-input"
-          @onChange={{action (mut memberName)}}
-          @customValidations={{emptyInputValidation}}
+          @onChange={{action (mut this.memberName)}}
+          @customValidations={{this.emptyInputValidation}}
         />
         <form.select
           @label="Time Zone"
-          @options={{timezoneList}}
-          @selected={{memberTimeZone}}
+          @options={{this.timezoneList}}
+          @selected={{this.memberTimeZone}}
           @searchPlaceholder="Search for a timezone..."
           @searchEnabled={{true}}
           @closeOnSelect={{true}}
           id="memberTimeZone-select"
-          @onChange={{action (mut memberTimeZone)}}
+          @onChange={{action (mut this.memberTimeZone)}}
           @required={{true}}
           as |timezone|
         >
