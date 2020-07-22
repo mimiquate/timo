@@ -6,11 +6,9 @@ export default DS.JSONAPIAdapter.extend({
   namespace: 'api',
 
   ajaxOptions() {
-    const options = this._super(...arguments);
-    options.xhrFields = {
-      withCredentials: true
-    };
-
-    return options
+    return {
+      ...this._super(...arguments),
+      credentials: 'include'
+    }
   }
 });
