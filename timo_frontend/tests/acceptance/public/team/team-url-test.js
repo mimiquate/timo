@@ -7,6 +7,8 @@ import moment from 'moment';
 import { setupWindowMock } from 'ember-window-mock/test-support';
 import window from 'ember-window-mock';
 
+let table = new TablePage();
+
 module('Acceptance | Public Team', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
@@ -96,8 +98,6 @@ module('Acceptance | Public Team', function (hooks) {
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
 
-    const table = new TablePage();
-
     assert.equal(table.headers.length, 2, 'Table has two columns');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
@@ -146,8 +146,6 @@ module('Acceptance | Public Team', function (hooks) {
 
     await visit(`/p/team/${newTeam.share_id}`);
 
-    const table = new TablePage();
-
     assert.equal(table.headers.length, 2, 'Table has two columns');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
@@ -179,8 +177,6 @@ module('Acceptance | Public Team', function (hooks) {
     });
 
     await visit(`/p/team/${newTeam.share_id}`);
-
-    const table = new TablePage();
 
     assert.equal(table.headers.length, 1, 'Table has one column');
     assert.equal(
@@ -216,8 +212,6 @@ module('Acceptance | Public Team', function (hooks) {
 
     await visit(`/p/team/${newTeam.share_id}`);
 
-    const table = new TablePage();
-
     assert.equal(table.headers.length, 1, 'Table has one column');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
@@ -245,8 +239,6 @@ module('Acceptance | Public Team', function (hooks) {
       });
 
     await visit(`/p/team/${newTeam.share_id}`);
-
-    const table = new TablePage();
 
     assert.equal(table.headers.length, 0, 'Table has no column');
 
@@ -368,8 +360,6 @@ module('Acceptance | Public Team', function (hooks) {
 
     await visit(`/p/team/${newTeam.share_id}`);
 
-    const table = new TablePage();
-
     assert.equal(table.headers.length, 2, 'Table has two columns');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
@@ -422,8 +412,6 @@ module('Acceptance | Public Team', function (hooks) {
 
     await visit(`/p/team/${newTeam.share_id}`);
 
-    const table = new TablePage();
-
     assert.equal(table.headers.length, 3, 'Table has two columns');
     assert.equal(
       table.headers.objectAt(0).text.trim(),
@@ -475,8 +463,6 @@ module('Acceptance | Public Team', function (hooks) {
     });
 
     await visit(`/p/team/${newTeam.share_id}`);
-
-    const table = new TablePage();
 
     assert.equal(table.headers.length, 2, 'Table has two columns');
     assert.equal(
