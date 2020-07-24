@@ -1,14 +1,14 @@
-import DS from 'ember-data';
+import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import config from 'timo-frontend/config/environment';
 
-export default DS.JSONAPIAdapter.extend({
-  host: config.serverHost,
-  namespace: 'api',
+export default class ApplicationAdapter extends JSONAPIAdapter {
+  host = config.serverHost;
+  namespace = 'api';
 
   ajaxOptions() {
     return {
-      ...this._super(...arguments),
+      ...super.ajaxOptions(...arguments),
       credentials: 'include'
-    }
+    };
   }
-});
+}
