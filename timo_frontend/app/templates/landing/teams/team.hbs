@@ -52,7 +52,7 @@
       </h.row>
     </t.head>
 
-    <t.body @rows={{this.rows}} as |r|>
+    <t.body @rows={{this.rows}} @renderAll={{true}} as |r|>
       <r.row
         @class="mat-row {{row-filter r.rowValue}} pointer-cursor" onclick={{action "scheduleEvent" r}}
         data-test-row={{row-index r.rowMeta}}
