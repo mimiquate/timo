@@ -2,9 +2,9 @@ import Route from '@ember/routing/route';
 import config from 'timo-frontend/config/environment';
 import fetch from 'fetch';
 
-export default Route.extend({
+export default class VerifyTokenRoute extends Route {
   async beforeModel(transition) {
-    this._super(...arguments);
+    super.beforeModel(...arguments);
     let params = transition.to.params;
 
     let response = await fetch(
@@ -27,4 +27,4 @@ export default Route.extend({
     transition.abort();
     this.transitionTo('login');
   }
-});
+}
