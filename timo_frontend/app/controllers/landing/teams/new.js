@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { set } from "@ember/object";
+import { set, action } from '@ember/object';
 import emptyInput from 'timo-frontend/custom-paper-validators/empty-input';
 
 export default Controller.extend({
@@ -8,20 +8,19 @@ export default Controller.extend({
     set(this, 'emptyInputValidation', emptyInput);
   },
 
-  actions: {
-    async saveTeam() {
-      let { teamName } = this;
-      let newTeamName = teamName.trim();
+  @action
+  async saveTeam() {
+    let { teamName } = this;
+    let newTeamName = teamName.trim();
 
-      set(this, 'teamName', newTeamName);
+    set(this, 'teamName', newTeamName);
 
-      let team = this.store.createRecord('team', {
-        name: newTeamName,
-        user: this.currentUser.user
-      });
+    let team = this.store.createRecord('team', {
+      name: newTeamName,
+      user: this.currentUser.user
+    });
 
-      await team.save();
-      await this.transitionToRoute('landing.teams.team', team);
-    }
+    await team.save();
+    await this.transitionToRoute('landing.teams.team', team);
   }
 });

@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import moment from 'moment';
-import { set } from "@ember/object";
+import { set, action } from '@ember/object';
 import emptyInput from 'timo-frontend/custom-paper-validators/empty-input';
 
 export default Component.extend({
@@ -15,12 +15,11 @@ export default Component.extend({
 
   timezoneList: moment.tz.names(),
 
-  actions: {
-    add() {
-      const memberName = this.memberName.trim();
-      const memberTimeZone = this.memberTimeZone;
+  @action
+  add() {
+    const memberName = this.memberName.trim();
+    const memberTimeZone = this.memberTimeZone;
 
-      this.addMember(memberName, memberTimeZone);
-    }
+    this.addMember(memberName, memberTimeZone);
   }
 });

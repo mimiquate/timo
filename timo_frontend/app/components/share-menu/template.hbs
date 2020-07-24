@@ -9,14 +9,14 @@
       Public Access
       <PaperCheckbox
         @value={{this.team.public}}
-        @onChange={{action "setPublic"}}
+        @onChange={{this.setPublic}}
         data-test="public-checkbox"
       />
     </div>
     <PaperButton
       @raised={{true}}
       @accent={{true}}
-      @onClick={{action "copyLink"}}
+      @onClick={{this.copyLink}}
       @disabled={{this.disablePublic}}
       data-test="copy-link-button"
     >

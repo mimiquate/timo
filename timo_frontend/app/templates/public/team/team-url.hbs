@@ -8,7 +8,7 @@
   <div class="side-checkbox">
     <PaperCheckbox
       @value={{this.showCurrent}}
-      @onChange={{action (mut this.showCurrent)}}
+      @onChange={{fn (mut this.showCurrent)}}
       data-test-checkbox="current"
     >
       List my current timezone
@@ -17,7 +17,7 @@
   <div class="side-checkbox">
     <PaperCheckbox
       @value={{this.isCollapsed}}
-      @onChange={{action (mut this.isCollapsed)}}
+      @onChange={{fn (mut this.isCollapsed)}}
       @disabled={{lte this.sortedMembers.length 1}}
       data-test-checkbox="collapsed"
     >
@@ -47,7 +47,7 @@
 
       <t.body @rows={{this.rows}} @renderAll={{true}} as |r|>
         <r.row
-          @class="mat-row {{row-filter r.rowValue}} pointer-cursor" onclick={{action "scheduleEvent" r}}
+          @class="mat-row {{row-filter r.rowValue}} pointer-cursor" onclick={{fn this.scheduleEvent r}}
           data-test-row={{row-index r.rowMeta}}
           as |rr|
         >

@@ -2,7 +2,7 @@
   <PaperToolbarTools>
     <PaperSidenavToggle as |toggleAction|>
       <PaperButton
-        @onClick={{action toggleAction}}
+        @onClick={{toggleAction}}
         @iconButton={{true}}
         @classNames="hide-gt-sm"
       >
@@ -18,7 +18,7 @@
           </span>
         </menu.trigger>
         <menu.content as |content|>
-          <content.menu-item data-test="logout-button" @onClick={{action "logOut"}}>
+          <content.menu-item data-test="logout-button" @onClick={{this.logOut}}>
             {{paper-icon "power_settings_new" class="md-menu-align-target"}}
             <span>Logout</span>
           </content.menu-item>
@@ -28,7 +28,7 @@
   </PaperToolbarTools>
 </PaperToolbar>
 <PaperSidenavContainer @class="inner-sidenav">
-  <PaperSidenav @class="side-container box-shadow-z8" @open={{this.sidenavOpen}} @onToggle={{action (mut this.sidenavOpen)}}>
+  <PaperSidenav @class="side-container box-shadow-z8" @open={{this.sidenavOpen}} @onToggle={{fn (mut this.sidenavOpen)}}>
     <PaperToolbar>
       <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
     </PaperToolbar>
@@ -39,7 +39,7 @@
             <div class="team-list-item {{if (eq this.currentTeamId team.id) "active-list-item"}}">
               <PaperItem
                 @class="list-team-name"
-                @onClick={{action "goToTeam" team}}
+                @onClick={{fn this.goToTeam team}}
                 data-test-team={{index}}
               >
                 <span class="team-name-span">{{team.name}}</span>
@@ -47,7 +47,7 @@
               <PaperButton
                 @class="delete-team-button"
                 @iconButton={{true}}
-                @onClick={{action "deleteTeamModal" team}}
+                @onClick={{fn this.deleteTeamModal team}}
                 data-test-delete-team={{index}}
               >
                 {{paper-icon "delete"}}
@@ -62,7 +62,7 @@
       {{/if}}
       <div>
         <PaperButton
-          @onClick={{action "addOne"}}
+          @onClick={{this.addOne}}
           data-test="new-team"
           @raised={{true}}
         >
@@ -77,8 +77,8 @@
 </PaperSidenavContainer>
 {{#if this.showDeleteTeamModal}}
   <DeleteTeamModal
-    @closeDeleteTeamModal={{action "closeDeleteTeamModal"}}
-    @deleteTeam={{action "deleteTeam"}}
+    @closeDeleteTeamModal={{this.closeDeleteTeamModal}}
+    @deleteTeam={{this.deleteTeam}}
     @teamToDeleteName={{this.teamToDelete.name}}
   />
 {{/if}}

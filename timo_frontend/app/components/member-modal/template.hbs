@@ -15,13 +15,13 @@
     </PaperToolbarTools>
   </PaperToolbar>
   <PaperDialogContent>
-    <PaperForm class="layout layout-align-center" @onSubmit={{action "add"}} as |form|>
+    <PaperForm class="layout layout-align-center" @onSubmit={{this.add}} as |form|>
       <div class="layout-column layout-align-center">
         <form.input
           @value={{this.memberName}}
           @label="Name"
           id="memberName-input"
-          @onChange={{action (mut this.memberName)}}
+          @onChange={{fn (mut this.memberName)}}
           @customValidations={{this.emptyInputValidation}}
         />
         <form.select
@@ -32,7 +32,7 @@
           @searchEnabled={{true}}
           @closeOnSelect={{true}}
           id="memberTimeZone-select"
-          @onChange={{action (mut this.memberTimeZone)}}
+          @onChange={{fn (mut this.memberTimeZone)}}
           @required={{true}}
           as |timezone|
         >

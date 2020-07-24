@@ -3,13 +3,13 @@
     <h1>Timo App</h1>
   </div>
   <div class="layout layout-align-center-center">
-    <PaperForm @onSubmit={{action "signUp"}} as |form|>
+    <PaperForm @onSubmit={{this.signUp}} as |form|>
       <div class="layout-column layout-align-center-center">
         <form.input
           @value={{this.username}}
           @placeholder="username"
           id="username-input"
-          @onChange={{action (mut this.username)}}
+          @onChange={{fn (mut this.username)}}
           @class="no-margin"
           @minlength={{4}}
           @customValidations={{this.emptyInputValidation}}
@@ -18,7 +18,7 @@
           @value={{this.email}}
           @placeholder="email"
           id="email-input"
-          @onChange={{action (mut this.email)}}
+          @onChange={{fn (mut this.email)}}
           @class="no-margin"
           @type="email"
           @customValidations={{this.emptyInputValidation}}
@@ -27,7 +27,7 @@
           @value={{this.password}}
           @placeholder="password"
           id="password-input"
-          @onChange={{action (mut this.password)}}
+          @onChange={{fn (mut this.password)}}
           @class="no-margin"
           @type="password"
           @minlength={{8}}
@@ -37,7 +37,7 @@
           @value={{this.confirmPassword}}
           @placeholder="confirmation password"
           id="confirmPassword-input"
-          @onChange={{action (mut this.confirmPassword)}}
+          @onChange={{fn (mut this.confirmPassword)}}
           @required={{true}}
           @class="no-margin"
           @type="password"

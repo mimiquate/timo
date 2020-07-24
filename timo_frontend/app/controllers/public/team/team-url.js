@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { computed } from "@ember/object";
+import { computed, action } from '@ember/object';
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
 import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
@@ -46,18 +46,17 @@ export default Controller.extend({
     return 0;
   }),
 
-  actions: {
-    scheduleEvent(row) {
-      let rowTime = moment(row.rowValue.time);
+  @action
+  scheduleEvent(row) {
+    let rowTime = moment(row.rowValue.time);
 
-      rowTime.seconds(0)
-      const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
+    rowTime.seconds(0)
+    const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
 
-      rowTime.add(1, 'hour');
-      const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
+    rowTime.add(1, 'hour');
+    const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
 
-      const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
-      openGoogleCalendarEvent(time, this.model.name);
-    }
+    const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
+    openGoogleCalendarEvent(time, this.model.name);
   }
 });

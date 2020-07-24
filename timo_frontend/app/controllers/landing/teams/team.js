@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
-import { computed } from "@ember/object";
-import { set } from "@ember/object";
+import { computed, set, action } from '@ember/object';
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
 import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
@@ -51,53 +50,57 @@ export default Controller.extend({
     return 0;
   }),
 
-  actions: {
-    closeMemberModal(modal) {
-      set(this, modal, false);
-    },
+  @action
+  closeMemberModal(modal) {
+    set(this, modal, false);
+  },
 
-    newMember() {
-      set(this, 'newMemberModal', true);
-    },
+  @action
+  newMember() {
+    set(this, 'newMemberModal', true);
+  },
 
-    async saveMember(memberName, memberTimeZone) {
-      await this.store.createRecord('member', {
-        name: memberName,
-        timezone: memberTimeZone,
-        team: this.model
-      }).save().then(() => set(this, 'newMemberModal', false));
-    },
+  @action
+  async saveMember(memberName, memberTimeZone) {
+    await this.store.createRecord('member', {
+      name: memberName,
+      timezone: memberTimeZone,
+      team: this.model
+    }).save().then(() => set(this, 'newMemberModal', false));
+  },
 
-    onHeaderClick(columnValue) {
-      if (columnValue.valuePath != 'current' && !this.isCollapsed) {
-        set(this, 'memberToEdit', columnValue.member);
-        set(this, 'editMemberModal', true);
-      }
-    },
-
-    async saveEditMember(memberName, memberTimeZone) {
-      if (!(memberName === this.memberToEdit.name
-        && memberTimeZone === this.memberToEdit.timezone)) {
-        set(this.memberToEdit, 'name', memberName);
-        set(this.memberToEdit, 'timezone', memberTimeZone);
-
-        this.memberToEdit.save();
-      }
-
-      set(this, 'editMemberModal', false);
-    },
-
-    scheduleEvent(row) {
-      let rowTime = moment(row.rowValue.time);
-
-      rowTime.seconds(0)
-      const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
-
-      rowTime.add(1, 'hour');
-      const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
-
-      const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
-      openGoogleCalendarEvent(time, this.model.name);
+  @action
+  onHeaderClick(columnValue) {
+    if (columnValue.valuePath != 'current' && !this.isCollapsed) {
+      set(this, 'memberToEdit', columnValue.member);
+      set(this, 'editMemberModal', true);
     }
+  },
+
+  @action
+  async saveEditMember(memberName, memberTimeZone) {
+    if (!(memberName === this.memberToEdit.name
+      && memberTimeZone === this.memberToEdit.timezone)) {
+      set(this.memberToEdit, 'name', memberName);
+      set(this.memberToEdit, 'timezone', memberTimeZone);
+
+      this.memberToEdit.save();
+    }
+
+    set(this, 'editMemberModal', false);
+  },
+
+  @action
+  scheduleEvent(row) {
+    let rowTime = moment(row.rowValue.time);
+
+    rowTime.seconds(0)
+    const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
+
+    rowTime.add(1, 'hour');
+    const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
+
+    const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
+    openGoogleCalendarEvent(time, this.model.name);
   }
 });

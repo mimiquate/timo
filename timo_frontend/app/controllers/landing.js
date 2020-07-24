@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
-import { computed } from "@ember/object";
-import { set } from "@ember/object";
+import { computed, set, action } from '@ember/object';
 
 function compareTeamsByCreationTime(teamA, teamB) {
   const aCreationTime = teamA.inserted_at;
@@ -31,40 +30,44 @@ export default Controller.extend({
     return teamsToArray.sort(compareTeamsByCreationTime);
   }),
 
-  actions: {
-    async addOne() {
-      await this.transitionToRoute('landing.teams.new');
-    },
+  @action
+  async addOne() {
+    await this.transitionToRoute('landing.teams.new');
+  },
 
-    async logOut() {
-      this.session.invalidate();
-      await this.currentUser.logOut();
-      this.store.unloadAll();
-      this.transitionToRoute('/login');
-    },
+  @action
+  async logOut() {
+    this.session.invalidate();
+    await this.currentUser.logOut();
+    this.store.unloadAll();
+    this.transitionToRoute('/login');
+  },
 
-    deleteTeamModal(team) {
-      set(this, 'showDeleteTeamModal', true);
-      set(this, 'teamToDelete', team);
-    },
+  @action
+  deleteTeamModal(team) {
+    set(this, 'showDeleteTeamModal', true);
+    set(this, 'teamToDelete', team);
+  },
 
-    closeDeleteTeamModal() {
+  @action
+  closeDeleteTeamModal() {
+    set(this, 'showDeleteTeamModal', false);
+  },
+
+  @action
+  async deleteTeam() {
+    if (this.teamToDelete) {
+      await this.teamToDelete.destroyRecord();
       set(this, 'showDeleteTeamModal', false);
-    },
 
-    async deleteTeam() {
-      if (this.teamToDelete) {
-        await this.teamToDelete.destroyRecord();
-        set(this, 'showDeleteTeamModal', false);
-
-        if (this.currentTeamId === this.teamToDelete.id) {
-          await this.transitionToRoute('landing');
-        }
+      if (this.currentTeamId === this.teamToDelete.id) {
+        await this.transitionToRoute('landing');
       }
-    },
-
-    async goToTeam(team) {
-      await this.transitionToRoute('landing.teams.team', team.id);
     }
+  },
+
+  @action
+  async goToTeam(team) {
+    await this.transitionToRoute('landing.teams.team', team.id);
   }
 });

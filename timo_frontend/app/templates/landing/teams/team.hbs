@@ -10,7 +10,7 @@
 <div class="side-checkbox">
   <PaperCheckbox
     @value={{this.showCurrent}}
-    @onChange={{action (mut this.showCurrent)}}
+    @onChange={{fn (mut this.showCurrent)}}
     data-test-checkbox="current"
   >
     List my current timezone
@@ -19,7 +19,7 @@
 <div class="side-checkbox">
   <PaperCheckbox
     @value={{this.isCollapsed}}
-    @onChange={{action (mut this.isCollapsed)}}
+    @onChange={{fn (mut this.isCollapsed)}}
     @disabled={{lte this.sortedMembers.length 1}}
     data-test-checkbox="collapsed"
   >
@@ -37,7 +37,7 @@
       <h.row @class="mat-header-row" as |hr|>
         <hr.cell
           @class="mat-header-cell cell-text-align {{if (not this.isCollapsed) "pointer-cursor"}}"
-          onclick={{action "onHeaderClick" hr.columnValue}}
+          onclick={{fn this.onHeaderClick hr.columnValue}}
           data-test-member={{hr.columnValue.valuePath}}
           as |column|
         >
@@ -54,7 +54,7 @@
 
     <t.body @rows={{this.rows}} @renderAll={{true}} as |r|>
       <r.row
-        @class="mat-row {{row-filter r.rowValue}} pointer-cursor" onclick={{action "scheduleEvent" r}}
+        @class="mat-row {{row-filter r.rowValue}} pointer-cursor" onclick={{fn this.scheduleEvent r}}
         data-test-row={{row-index r.rowMeta}}
         as |rr|
       >
@@ -80,7 +80,7 @@
   @raised={{true}}
   @fab={{true}}
   @accent={{true}}
-  @onClick={{action "newMember"}}
+  @onClick={{this.newMember}}
   data-test="add-member-button"
   @class="add-button"
   id="new-member-origin"
@@ -89,8 +89,8 @@
 </PaperButton>
 {{#if this.newMemberModal}}
   <MemberModal
-    @addMember={{action "saveMember"}}
-    @closeModal={{action "closeMemberModal" "newMemberModal"}}
+    @addMember={{this.saveMember}}
+    @closeModal={{fn this.closeMemberModal "newMemberModal"}}
     @title="New Member"
     @modalOrigin="#new-member-origin"
     data-test="new-member-modal"
@@ -98,9 +98,9 @@
 {{/if}}
 {{#if this.editMemberModal}}
   <MemberModal
-    @addMember={{action "saveEditMember"}}
+    @addMember={{this.saveEditMember}}
     @member={{this.memberToEdit}}
-    @closeModal={{action "closeMemberModal" "editMemberModal"}}
+    @closeModal={{fn this.closeMemberModal "editMemberModal"}}
     @title="Edit Member"
     data-test="edit-member-modal"
   />
