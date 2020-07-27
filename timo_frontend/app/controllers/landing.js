@@ -16,24 +16,26 @@ function compareTeamsByCreationTime(teamA, teamB) {
   return ret;
 }
 
-export default Controller.extend({
-  session: service(),
-  router: service(),
+export default class LandiingController extends Controller {
+  @service session;
+  @service router;
 
-  currentTeamId: computed('router.currentURL', function () {
+  @computed('router.currentURL')
+  get currentTeamId() {
     return this.router.currentRoute.attributes.id;
-  }),
+  }
 
-  sortedTeams: computed('model.[]', function () {
+  @computed('model.[]')
+  get sortedTeams() {
     const teamsToArray = this.model.toArray();
 
     return teamsToArray.sort(compareTeamsByCreationTime);
-  }),
+  }
 
   @action
   async addOne() {
     await this.transitionToRoute('landing.teams.new');
-  },
+  }
 
   @action
   async logOut() {
@@ -41,18 +43,18 @@ export default Controller.extend({
     await this.currentUser.logOut();
     this.store.unloadAll();
     this.transitionToRoute('/login');
-  },
+  }
 
   @action
   deleteTeamModal(team) {
     set(this, 'showDeleteTeamModal', true);
     set(this, 'teamToDelete', team);
-  },
+  }
 
   @action
   closeDeleteTeamModal() {
     set(this, 'showDeleteTeamModal', false);
-  },
+  }
 
   @action
   async deleteTeam() {
@@ -64,10 +66,10 @@ export default Controller.extend({
         await this.transitionToRoute('landing');
       }
     }
-  },
+  }
 
   @action
   async goToTeam(team) {
     await this.transitionToRoute('landing.teams.team', team.id);
   }
-});
+}

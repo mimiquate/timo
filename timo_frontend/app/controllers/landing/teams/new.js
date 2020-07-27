@@ -2,11 +2,11 @@ import Controller from '@ember/controller';
 import { set, action } from '@ember/object';
 import emptyInput from 'timo-frontend/custom-paper-validators/empty-input';
 
-export default Controller.extend({
-  init() {
-    this._super(...arguments);
+export default class LandingTeamsNewController extends Controller {
+  constructor() {
+    super(...arguments);
     set(this, 'emptyInputValidation', emptyInput);
-  },
+  }
 
   @action
   async saveTeam() {
@@ -23,4 +23,4 @@ export default Controller.extend({
     await team.save();
     await this.transitionToRoute('landing.teams.team', team);
   }
-});
+}

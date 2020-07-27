@@ -1,25 +1,26 @@
-import Component from '@ember/component';
+import Component from "@glimmer/component";
 import moment from 'moment';
-import { set, action } from '@ember/object';
+import { action } from '@ember/object';
 import emptyInput from 'timo-frontend/custom-paper-validators/empty-input';
 
-export default Component.extend({
-  init() {
-    this._super(...arguments);
-    if (this.member) {
-      set(this, 'memberName', this.member.name);
-      set(this, 'memberTimeZone', this.member.timezone);
-    }
-    set(this, 'emptyInputValidation', emptyInput);
-  },
+export default class MemberModalComponent extends Component {
+  constructor(owner, args) {
+    super(owner, args);
 
-  timezoneList: moment.tz.names(),
+    if (this.args.member) {
+      this.memberName = this.args.member.name;
+      this.memberTimeZone = this.args.member.timezone;
+    }
+    this.emptyInputValidation = emptyInput;
+  }
+
+  timezoneList = moment.tz.names();
 
   @action
   add() {
     const memberName = this.memberName.trim();
     const memberTimeZone = this.memberTimeZone;
 
-    this.addMember(memberName, memberTimeZone);
+    this.args.addMember(memberName, memberTimeZone);
   }
-});
+}

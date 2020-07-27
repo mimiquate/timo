@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, currentURL, click } from '@ember/test-helpers';
+import { visit, currentURL, click, find } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { TablePage } from 'ember-table/test-support';
@@ -272,7 +272,7 @@ module('Acceptance | Public Team', function (hooks) {
     assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
     assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
 
-    const collapsedCheckbox = assert.dom('[data-test-checkbox=collapsed]').findTargetElement();
+    const collapsedCheckbox = find('[data-test-checkbox=collapsed]');
     assert.equal('disabled', collapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
   });
 
@@ -299,7 +299,7 @@ module('Acceptance | Public Team', function (hooks) {
     assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
     assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
 
-    const collapsedCheckbox = assert.dom('[data-test-checkbox=collapsed]').findTargetElement();
+    const collapsedCheckbox = find('[data-test-checkbox=collapsed]');
     assert.equal('disabled', collapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
   });
 
@@ -331,7 +331,7 @@ module('Acceptance | Public Team', function (hooks) {
     assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
     assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
 
-    const collapsedCheckbox = assert.dom('[data-test-checkbox=collapsed]').findTargetElement();
+    const collapsedCheckbox = find('[data-test-checkbox=collapsed]');
     assert.notOk(collapsedCheckbox.attributes.disabled, 'Checkbox is enabled');
   });
 

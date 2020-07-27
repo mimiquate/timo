@@ -1,25 +1,26 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import copyTextToClipboard from 'timo-frontend/utils/copy-text-to-clipboard';
-import { set, computed, action } from '@ember/object';
+import { computed, action } from '@ember/object';
 import { isEmpty } from '@ember/utils';
 
-export default Component.extend({
-  disablePublic: computed('team.{public,share_id}', function () {
-    return !this.team.public || isEmpty(this.team.share_id);
-  }),
+export default class ShareMenuComponent extends Component {
+  @computed('args.team.{public,share_id}')
+  get disablePublic() {
+    return !this.args.team.public || isEmpty(this.args.team.share_id);
+  }
 
   @action
   copyLink() {
     const { protocol, host } = window.location;
-    const path = `/p/team/${this.team.share_id}`;
+    const path = `/p/team/${this.args.team.share_id}`;
     const url = `${protocol}//${host}${path}`;
 
     copyTextToClipboard(url);
-  },
+  }
 
   @action
   async setPublic(value) {
-    set(this.team, 'public', value);
-    await this.team.save();
+    this.args.team.public = value;
+    await this.args.team.save();
   }
-});
+}

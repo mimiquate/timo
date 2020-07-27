@@ -33,7 +33,7 @@
       <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
     </PaperToolbar>
     <PaperContent @padding={{false}}>
-      {{#if this.model.length}}
+      {{#if @model.length}}
         <PaperList>
           {{#each this.sortedTeams as |team index|}}
             <div class="team-list-item {{if (eq this.currentTeamId team.id) "active-list-item"}}">

@@ -6,23 +6,25 @@ import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
 
-export default Controller.extend({
-  queryParams: {
-    showCurrent: 'current',
-    isCollapsed: 'collapsed'
-  },
+export default class PublicTeamTeamUrlController extends Controller {
+  queryParams = [
+    { showCurrent: 'current' },
+    { isCollapsed: 'collapsed' }
+  ];
 
-  showCurrent: false,
-  isCollapsed: false,
+  showCurrent = false;
+  isCollapsed = false;
 
-  sortedMembers: computed('model.members.[]', 'showCurrent', function () {
+  @computed('model.members.[]', 'showCurrent')
+  get sortedMembers() {
     const timezoneNow = guessTimezoneNow();
     const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);
 
     return membersToArray.sort(compareMemberTimeZones);
-  }),
+  }
 
-  columns: computed('sortedMembers.[]', 'isCollapsed', function () {
+  @computed('sortedMembers.[]', 'isCollapsed')
+  get columns() {
     const timezoneNow = guessTimezoneNow();
 
     if (this.isCollapsed) {
@@ -30,21 +32,23 @@ export default Controller.extend({
     }
 
     return createMembersTableColumns(this.sortedMembers, timezoneNow);
-  }),
+  }
 
-  rows: computed('sortedMembers.[]', function () {
+  @computed('sortedMembers.[]')
+  get rows() {
     const timezoneNow = guessTimezoneNow();
 
     return createMembersTableRows(this.sortedMembers, timezoneNow);
-  }),
+  }
 
-  currentRowIndex: computed('rows.[]', function () {
+  @computed('rows.[]')
+  get currentRowIndex() {
     if (this.rows) {
       return this.rows.findIndex((row) => row.filter === 'row-current-time');
     }
 
     return 0;
-  }),
+  }
 
   @action
   scheduleEvent(row) {
@@ -59,4 +63,4 @@ export default Controller.extend({
     const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
     openGoogleCalendarEvent(time, this.model.name);
   }
-});
+}

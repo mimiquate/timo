@@ -2,15 +2,15 @@ import Controller from '@ember/controller';
 import { set, action } from '@ember/object';
 import emptyInput from 'timo-frontend/custom-paper-validators/empty-input';
 
-export default Controller.extend({
-  init() {
-    this._super(...arguments);
+export default class SignUpController extends Controller {
+  constructor() {
+    super(...arguments);
     set(this, 'confirmPasswordValidation', [{
       message: 'Passwords don\'t match',
       validate: (inputValue) => inputValue === this.password
     }]);
     set(this, 'emptyInputValidation', emptyInput);
-  },
+  }
 
   @action
   async signUp() {
@@ -36,4 +36,4 @@ export default Controller.extend({
       .then(() => this.transitionToRoute('verification'))
       .catch(() => set(this, 'errorResponse', true));
   }
-});
+}
