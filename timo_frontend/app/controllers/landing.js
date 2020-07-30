@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
-import { computed, set, action } from '@ember/object';
+import { computed, action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 function compareTeamsByCreationTime(teamA, teamB) {
   const aCreationTime = teamA.inserted_at;
@@ -19,6 +20,9 @@ function compareTeamsByCreationTime(teamA, teamB) {
 export default class LandiingController extends Controller {
   @service session;
   @service router;
+
+  @tracked showDeleteTeamModal = false;
+  @tracked teamToDelete = null;
 
   @computed('router.currentURL')
   get currentTeamId() {
@@ -47,20 +51,20 @@ export default class LandiingController extends Controller {
 
   @action
   deleteTeamModal(team) {
-    set(this, 'showDeleteTeamModal', true);
-    set(this, 'teamToDelete', team);
+    this.showDeleteTeamModal = true;
+    this.teamToDelete = team;
   }
 
   @action
   closeDeleteTeamModal() {
-    set(this, 'showDeleteTeamModal', false);
+    this.showDeleteTeamModal = false;
   }
 
   @action
   async deleteTeam() {
     if (this.teamToDelete) {
       await this.teamToDelete.destroyRecord();
-      set(this, 'showDeleteTeamModal', false);
+      this.showDeleteTeamModal = false;
 
       if (this.currentTeamId === this.teamToDelete.id) {
         await this.transitionToRoute('landing');

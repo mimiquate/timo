@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
-import { computed, set, action } from '@ember/object';
+import { computed, action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
 import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
@@ -11,6 +12,10 @@ export default class LandingTeamsTeamController extends Controller {
     { showCurrent: 'current' },
     { isCollapsed: 'collapsed' }
   ];
+
+  @tracked memberToEdit = null;
+  @tracked newMemberModal = false;
+  @tracked editMemberModal = false;
 
   showCurrent = false;
   isCollapsed = false;
@@ -56,13 +61,18 @@ export default class LandingTeamsTeamController extends Controller {
   }
 
   @action
-  closeMemberModal(modal) {
-    set(this, modal, false);
+  closeEditMemberModal() {
+    this.editMemberModal = false;
+  }
+
+  @action
+  closeNewMemberModal() {
+    this.newMemberModal = false;
   }
 
   @action
   newMember() {
-    set(this, 'newMemberModal', true);
+    this.newMemberModal = true;
   }
 
   @action
@@ -71,14 +81,14 @@ export default class LandingTeamsTeamController extends Controller {
       name: memberName,
       timezone: memberTimeZone,
       team: this.model
-    }).save().then(() => set(this, 'newMemberModal', false));
+    }).save().then(() => this.newMemberModal = false);
   }
 
   @action
   onHeaderClick(columnValue) {
     if (columnValue.valuePath != 'current' && !this.isCollapsed) {
-      set(this, 'memberToEdit', columnValue.member);
-      set(this, 'editMemberModal', true);
+      this.memberToEdit = columnValue.member;
+      this.editMemberModal = true;
     }
   }
 
@@ -86,13 +96,13 @@ export default class LandingTeamsTeamController extends Controller {
   async saveEditMember(memberName, memberTimeZone) {
     if (!(memberName === this.memberToEdit.name
       && memberTimeZone === this.memberToEdit.timezone)) {
-      set(this.memberToEdit, 'name', memberName);
-      set(this.memberToEdit, 'timezone', memberTimeZone);
+      this.memberToEdit.name = memberName;
+      this.memberToEdit.timezone = memberTimeZone
 
       this.memberToEdit.save();
     }
 
-    set(this, 'editMemberModal', false);
+    this.editMemberModal = false;
   }
 
   @action

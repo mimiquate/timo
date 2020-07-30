@@ -1,19 +1,18 @@
 import Controller from '@ember/controller';
-import { set, action } from '@ember/object';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import emptyInput from 'timo-frontend/custom-paper-validators/empty-input';
 
 export default class LandingTeamsNewController extends Controller {
-  constructor() {
-    super(...arguments);
-    set(this, 'emptyInputValidation', emptyInput);
-  }
+  @tracked teamName = '';
+  emptyInputValidation = emptyInput;
 
   @action
   async saveTeam() {
     let { teamName } = this;
     let newTeamName = teamName.trim();
 
-    set(this, 'teamName', newTeamName);
+    this.teamName = newTeamName;
 
     let team = this.store.createRecord('team', {
       name: newTeamName,

@@ -90,7 +90,7 @@
 {{#if this.newMemberModal}}
   <MemberModal
     @addMember={{this.saveMember}}
-    @closeModal={{fn this.closeMemberModal "newMemberModal"}}
+    @closeModal={{this.closeNewMemberModal}}
     @title="New Member"
     @modalOrigin="#new-member-origin"
     @dataTestName="new-member-modal"
@@ -100,7 +100,7 @@
   <MemberModal
     @addMember={{this.saveEditMember}}
     @member={{this.memberToEdit}}
-    @closeModal={{fn this.closeMemberModal "editMemberModal"}}
+    @closeModal={{this.closeEditMemberModal}}
     @title="Edit Member"
     @dataTestName="edit-member-modal"
   />
