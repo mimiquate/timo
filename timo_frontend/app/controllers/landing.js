@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
-import { computed, action } from '@ember/object';
+import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 function compareTeamsByCreationTime(teamA, teamB) {
@@ -24,12 +24,6 @@ export default class LandiingController extends Controller {
   @tracked showDeleteTeamModal = false;
   @tracked teamToDelete = null;
 
-  @computed('router.currentURL')
-  get currentTeamId() {
-    return this.router.currentRoute.attributes.id;
-  }
-
-  @computed('model.[]')
   get sortedTeams() {
     const teamsToArray = this.model.toArray();
 
@@ -66,7 +60,7 @@ export default class LandiingController extends Controller {
       await this.teamToDelete.destroyRecord();
       this.showDeleteTeamModal = false;
 
-      if (this.currentTeamId === this.teamToDelete.id) {
+      if (this.router.currentRoute.attributes.id === this.teamToDelete.id) {
         await this.transitionToRoute('landing');
       }
     }

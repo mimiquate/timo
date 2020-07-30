@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
-import { computed, action } from '@ember/object';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
 import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
@@ -13,11 +14,10 @@ export default class PublicTeamTeamUrlController extends Controller {
     { isCollapsed: 'collapsed' }
   ];
 
-  showCurrent = false;
-  isCollapsed = false;
+  @tracked showCurrent = false;
+  @tracked isCollapsed = false;
   renderAll = ENV.environment === 'test';
 
-  @computed('model.members.[]', 'showCurrent')
   get sortedMembers() {
     const timezoneNow = guessTimezoneNow();
     const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);
@@ -25,7 +25,6 @@ export default class PublicTeamTeamUrlController extends Controller {
     return membersToArray.sort(compareMemberTimeZones);
   }
 
-  @computed('sortedMembers.[]', 'isCollapsed')
   get columns() {
     const timezoneNow = guessTimezoneNow();
 
@@ -36,12 +35,10 @@ export default class PublicTeamTeamUrlController extends Controller {
     return createMembersTableColumns(this.sortedMembers, timezoneNow);
   }
 
-  @computed('sortedMembers.[]')
   get rows() {
     return createMembersTableRows(this.sortedMembers);
   }
 
-  @computed('rows.[]')
   get currentRowIndex() {
     if (this.rows) {
       return this.rows.findIndex((row) => row.filter === 'row-current-time');
