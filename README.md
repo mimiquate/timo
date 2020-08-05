@@ -12,7 +12,7 @@ create multiple teams and add members to each one with their timezone.
 
 This will create a table, showing your current time, and showing what time is in
 each member location.
-![](create-user.gif =650x350)
+![](create-user.gif)
 
 
 Also, you can generate a link to let others see your calendar, even if they don't have account in Timo.
