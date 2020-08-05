@@ -16,12 +16,12 @@ each member location.
 
 
 Also, you can generate a link to let others see your calendar, even if they don't have account in Timo.
-![](share-link.gif =650x350)
+![](share-link.gif)
 
 
 Clicking in any row will redirect to your Google Calendar in order to create
 an event using the selected time.
-![](calendar.gif =650x350)
+![](calendar.gif)
 
 
 # Pull requests welcome!
