@@ -6,6 +6,7 @@ import { createMembersTableColumns, createMembersTableRows, createCollapsedColum
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
+import ENV from 'timo-frontend/config/environment';
 
 export default class LandingTeamsTeamController extends Controller {
   queryParams = [
@@ -19,6 +20,7 @@ export default class LandingTeamsTeamController extends Controller {
 
   showCurrent = false;
   isCollapsed = false;
+  renderAll = ENV.environment === 'test';
 
   @computed('model.members.{[],@each.id}')
   get savedMembers() {
