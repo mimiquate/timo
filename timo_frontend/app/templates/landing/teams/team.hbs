@@ -1,16 +1,16 @@
-{{page-title this.model.name prepend=false}}
+{{page-title @model.name prepend=false}}
 <div class="flex-title">
   <h1 data-test="team-title">
-    {{this.model.name}}
+    {{@model.name}}
   </h1>
   <div class="share-icon">
-    <ShareMenu @team={{this.model}} />
+    <ShareMenu @team={{@model}} />
   </div>
 </div>
 <div class="side-checkbox">
   <PaperCheckbox
-    @value={{showCurrent}}
-    @onChange={{action (mut showCurrent)}}
+    @value={{this.showCurrent}}
+    @onChange={{fn (mut this.showCurrent)}}
     data-test-checkbox="current"
   >
     List my current timezone
@@ -18,8 +18,8 @@
 </div>
 <div class="side-checkbox">
   <PaperCheckbox
-    @value={{isCollapsed}}
-    @onChange={{action (mut isCollapsed)}}
+    @value={{this.isCollapsed}}
+    @onChange={{fn (mut this.isCollapsed)}}
     @disabled={{lte this.sortedMembers.length 1}}
     data-test-checkbox="collapsed"
   >
@@ -27,34 +27,34 @@
   </PaperCheckbox>
 </div>
 {{#if this.sortedMembers.length}}
-  <MembersTable @currentRowIndex={{currentRowIndex}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
+  <MembersTable @currentRowIndex={{this.currentRowIndex}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
     <t.head
-      @columns={{columns}}
+      @columns={{this.columns}}
       @enableResize={{false}}
       @enableReorder={{false}}
       as |h|
     >
       <h.row @class="mat-header-row" as |hr|>
         <hr.cell
-          @class="mat-header-cell cell-text-align {{if (not isCollapsed) "pointer-cursor"}}"
-          onclick={{action "onHeaderClick" hr.columnValue}}
+          @class="mat-header-cell cell-text-align {{if (not this.isCollapsed) "pointer-cursor"}}"
+          onclick={{fn this.onHeaderClick hr.columnValue}}
           data-test-member={{hr.columnValue.valuePath}}
           as |column|
         >
           {{column.member.name}} ({{column.member.timezone}})
-          {{#if isCollapsed}}
+          {{#if this.isCollapsed}}
             {{collapsed-amount column.collapsedMembersCount}}
           {{/if}}
-          {{#if showCurrent}}
+          {{#if this.showCurrent}}
             {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
           {{/if}}
         </hr.cell>
       </h.row>
     </t.head>
 
-    <t.body @rows={{rows}} as |r|>
+    <t.body @rows={{this.rows}} @renderAll={{this.renderAll}} as |r|>
       <r.row
-        @class="mat-row {{row-filter r.rowValue}} pointer-cursor" onclick={{action "scheduleEvent" r}}
+        @class="mat-row {{row-filter r.rowValue}} pointer-cursor" onclick={{fn this.scheduleEvent r}}
         data-test-row={{row-index r.rowMeta}}
         as |rr|
       >
@@ -80,28 +80,28 @@
   @raised={{true}}
   @fab={{true}}
   @accent={{true}}
-  @onClick={{action "newMember"}}
+  @onClick={{this.newMember}}
   data-test="add-member-button"
   @class="add-button"
   id="new-member-origin"
 >
   +
 </PaperButton>
-{{#if newMemberModal}}
+{{#if this.newMemberModal}}
   <MemberModal
-    @addMember={{action "saveMember"}}
-    @closeModal={{action "closeMemberModal" "newMemberModal"}}
+    @addMember={{this.saveMember}}
+    @closeModal={{this.closeNewMemberModal}}
     @title="New Member"
     @modalOrigin="#new-member-origin"
-    data-test="new-member-modal"
+    @dataTestName="new-member-modal"
   />
 {{/if}}
-{{#if editMemberModal}}
+{{#if this.editMemberModal}}
   <MemberModal
-    @addMember={{action "saveEditMember"}}
-    @member={{memberToEdit}}
-    @closeModal={{action "closeMemberModal" "editMemberModal"}}
+    @addMember={{this.saveEditMember}}
+    @member={{this.memberToEdit}}
+    @closeModal={{this.closeEditMemberModal}}
     @title="Edit Member"
-    data-test="edit-member-modal"
+    @dataTestName="edit-member-modal"
   />
 {{/if}}

@@ -1,7 +1,7 @@
 @import 'ember-paper';
 @import './material-table.scss';
 
-body, body > .ember-view, .login-main, .public-main {
+.ember-application, .login-main, .public-main {
   height: 100%;
 }
 

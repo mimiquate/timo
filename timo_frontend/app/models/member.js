@@ -1,8 +1,7 @@
-import DS from 'ember-data';
-const { Model, attr, belongsTo } = DS;
+import Model, { attr, belongsTo } from '@ember-data/model';
 
-export default Model.extend({
-  name: attr('string'),
-  timezone: attr('string'),
-  team: belongsTo('team')
-});
+export default class MemberModel extends Model {
+  @attr('string') name;
+  @attr('string') timezone;
+  @belongsTo('team') team;
+}

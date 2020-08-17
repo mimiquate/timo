@@ -1,28 +1,32 @@
 import Controller from '@ember/controller';
-import { computed } from "@ember/object";
+import { computed, action } from '@ember/object';
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
 import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
+import ENV from 'timo-frontend/config/environment';
 
-export default Controller.extend({
-  queryParams: {
-    showCurrent: 'current',
-    isCollapsed: 'collapsed'
-  },
+export default class PublicTeamTeamUrlController extends Controller {
+  queryParams = [
+    { showCurrent: 'current' },
+    { isCollapsed: 'collapsed' }
+  ];
 
-  showCurrent: false,
-  isCollapsed: false,
+  showCurrent = false;
+  isCollapsed = false;
+  renderAll = ENV.environment === 'test';
 
-  sortedMembers: computed('model.members.[]', 'showCurrent', function () {
+  @computed('model.members.[]', 'showCurrent')
+  get sortedMembers() {
     const timezoneNow = guessTimezoneNow();
     const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);
 
     return membersToArray.sort(compareMemberTimeZones);
-  }),
+  }
 
-  columns: computed('sortedMembers.[]', 'isCollapsed', function () {
+  @computed('sortedMembers.[]', 'isCollapsed')
+  get columns() {
     const timezoneNow = guessTimezoneNow();
 
     if (this.isCollapsed) {
@@ -30,34 +34,35 @@ export default Controller.extend({
     }
 
     return createMembersTableColumns(this.sortedMembers, timezoneNow);
-  }),
+  }
 
-  rows: computed('sortedMembers.[]', function () {
+  @computed('sortedMembers.[]')
+  get rows() {
     const timezoneNow = guessTimezoneNow();
 
     return createMembersTableRows(this.sortedMembers, timezoneNow);
-  }),
+  }
 
-  currentRowIndex: computed('rows.[]', function () {
+  @computed('rows.[]')
+  get currentRowIndex() {
     if (this.rows) {
       return this.rows.findIndex((row) => row.filter === 'row-current-time');
     }
 
     return 0;
-  }),
-
-  actions: {
-    scheduleEvent(row) {
-      let rowTime = moment(row.rowValue.time);
-
-      rowTime.seconds(0)
-      const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
-
-      rowTime.add(1, 'hour');
-      const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
-
-      const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
-      openGoogleCalendarEvent(time, this.model.name);
-    }
   }
-});
+
+  @action
+  scheduleEvent(row) {
+    let rowTime = moment(row.rowValue.time);
+
+    rowTime.seconds(0)
+    const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
+
+    rowTime.add(1, 'hour');
+    const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
+
+    const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
+    openGoogleCalendarEvent(time, this.model.name);
+  }
+}

@@ -1,14 +1,14 @@
 <h1 class="flex-title" data-test="newTeam-title">
   New Team
 </h1>
-<PaperForm @onSubmit={{action "saveTeam"}} as |form|>
+<PaperForm @onSubmit={{this.saveTeam}} as |form|>
   <div class="layout layout-align-center-center">
     <form.input
-      @value={{teamName}}
+      @value={{this.teamName}}
       @placeholder="New team name"
       id="teamName-input"
-      @onChange={{action (mut teamName)}}
-      @customValidations={{emptyInputValidation}}
+      @onChange={{fn (mut this.teamName)}}
+      @customValidations={{this.emptyInputValidation}}
     />
   </div>
   <div class="layout layout-align-center-center">

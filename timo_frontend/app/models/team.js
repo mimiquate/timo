@@ -1,11 +1,10 @@
-import DS from 'ember-data';
-const { Model, attr, belongsTo, hasMany } = DS;
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 
-export default Model.extend({
-  name: attr('string'),
-  user: belongsTo('user'),
-  members: hasMany('member', { async: false }),
-  share_id: attr('string'),
-  public: attr('boolean'),
-  inserted_at: attr('string')
-});
+export default class TeamModel extends Model {
+  @attr('string') name;
+  @belongsTo('user') user;
+  @hasMany('member', { async: false }) members;
+  @attr('string') share_id;
+  @attr('boolean') public;
+  @attr('string') inserted_at;
+}

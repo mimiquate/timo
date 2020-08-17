@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
-import { computed } from "@ember/object";
-import { set } from "@ember/object";
+import { computed, action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 function compareTeamsByCreationTime(teamA, teamB) {
   const aCreationTime = teamA.inserted_at;
@@ -17,54 +17,63 @@ function compareTeamsByCreationTime(teamA, teamB) {
   return ret;
 }
 
-export default Controller.extend({
-  session: service(),
-  router: service(),
+export default class LandiingController extends Controller {
+  @service session;
+  @service router;
 
-  currentTeamId: computed('router.currentURL', function () {
+  @tracked showDeleteTeamModal = false;
+  @tracked teamToDelete = null;
+
+  @computed('router.currentURL')
+  get currentTeamId() {
     return this.router.currentRoute.attributes.id;
-  }),
+  }
 
-  sortedTeams: computed('model.[]', function () {
+  @computed('model.[]')
+  get sortedTeams() {
     const teamsToArray = this.model.toArray();
 
     return teamsToArray.sort(compareTeamsByCreationTime);
-  }),
+  }
 
-  actions: {
-    async addOne() {
-      await this.transitionToRoute('landing.teams.new');
-    },
+  @action
+  async addOne() {
+    await this.transitionToRoute('landing.teams.new');
+  }
 
-    async logOut() {
-      this.session.invalidate();
-      await this.currentUser.logOut();
-      this.store.unloadAll();
-      this.transitionToRoute('/login');
-    },
+  @action
+  async logOut() {
+    this.session.invalidate();
+    await this.currentUser.logOut();
+    this.store.unloadAll();
+    this.transitionToRoute('/login');
+  }
 
-    deleteTeamModal(team) {
-      set(this, 'showDeleteTeamModal', true);
-      set(this, 'teamToDelete', team);
-    },
+  @action
+  deleteTeamModal(team) {
+    this.showDeleteTeamModal = true;
+    this.teamToDelete = team;
+  }
 
-    closeDeleteTeamModal() {
-      set(this, 'showDeleteTeamModal', false);
-    },
+  @action
+  closeDeleteTeamModal() {
+    this.showDeleteTeamModal = false;
+  }
 
-    async deleteTeam() {
-      if (this.teamToDelete) {
-        await this.teamToDelete.destroyRecord();
-        set(this, 'showDeleteTeamModal', false);
+  @action
+  async deleteTeam() {
+    if (this.teamToDelete) {
+      await this.teamToDelete.destroyRecord();
+      this.showDeleteTeamModal = false;
 
-        if (this.currentTeamId === this.teamToDelete.id) {
-          await this.transitionToRoute('landing');
-        }
+      if (this.currentTeamId === this.teamToDelete.id) {
+        await this.transitionToRoute('landing');
       }
-    },
-
-    async goToTeam(team) {
-      await this.transitionToRoute('landing.teams.team', team.id);
     }
   }
-});
+
+  @action
+  async goToTeam(team) {
+    await this.transitionToRoute('landing.teams.team', team.id);
+  }
+}

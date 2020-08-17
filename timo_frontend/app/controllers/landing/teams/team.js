@@ -1,33 +1,42 @@
 import Controller from '@ember/controller';
-import { computed } from "@ember/object";
-import { set } from "@ember/object";
+import { computed, action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
 import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
+import ENV from 'timo-frontend/config/environment';
 
-export default Controller.extend({
-  queryParams: {
-    showCurrent: 'current',
-    isCollapsed: 'collapsed'
-  },
+export default class LandingTeamsTeamController extends Controller {
+  queryParams = [
+    { showCurrent: 'current' },
+    { isCollapsed: 'collapsed' }
+  ];
 
-  showCurrent: false,
-  isCollapsed: false,
+  @tracked memberToEdit = null;
+  @tracked newMemberModal = false;
+  @tracked editMemberModal = false;
 
-  savedMembers: computed('model.members.{[],@each.id}', function () {
+  showCurrent = false;
+  isCollapsed = false;
+  renderAll = ENV.environment === 'test';
+
+  @computed('model.members.{[],@each.id}')
+  get savedMembers() {
     return this.model.members.filterBy('id');
-  }),
+  }
 
-  sortedMembers: computed('savedMembers.{[],@each.name,@each.timezone}', 'showCurrent', function () {
+  @computed('savedMembers.{[],@each.name,@each.timezone}', 'showCurrent')
+  get sortedMembers() {
     const timezoneNow = guessTimezoneNow();
     const membersToArray = createMemberArray(this.savedMembers, this.showCurrent, timezoneNow);
 
     return membersToArray.sort(compareMemberTimeZones);
-  }),
+  }
 
-  columns: computed('sortedMembers.[]', 'isCollapsed', function () {
+  @computed('sortedMembers.[]', 'isCollapsed')
+  get columns() {
     const timezoneNow = guessTimezoneNow();
 
     if (this.isCollapsed) {
@@ -35,69 +44,80 @@ export default Controller.extend({
     }
 
     return createMembersTableColumns(this.sortedMembers, timezoneNow);
-  }),
+  }
 
-  rows: computed('sortedMembers.[]', function () {
+  @computed('sortedMembers.[]')
+  get rows() {
     const timezoneNow = guessTimezoneNow();
 
     return createMembersTableRows(this.sortedMembers, timezoneNow);
-  }),
+  }
 
-  currentRowIndex: computed('rows.[]', function () {
+  @computed('rows.[]')
+  get currentRowIndex() {
     if (this.rows) {
       return this.rows.findIndex((row) => row.filter === 'row-current-time');
     }
 
     return 0;
-  }),
+  }
 
-  actions: {
-    closeMemberModal(modal) {
-      set(this, modal, false);
-    },
+  @action
+  closeEditMemberModal() {
+    this.editMemberModal = false;
+  }
 
-    newMember() {
-      set(this, 'newMemberModal', true);
-    },
+  @action
+  closeNewMemberModal() {
+    this.newMemberModal = false;
+  }
 
-    async saveMember(memberName, memberTimeZone) {
-      await this.store.createRecord('member', {
-        name: memberName,
-        timezone: memberTimeZone,
-        team: this.model
-      }).save().then(() => set(this, 'newMemberModal', false));
-    },
+  @action
+  newMember() {
+    this.newMemberModal = true;
+  }
 
-    onHeaderClick(columnValue) {
-      if (columnValue.valuePath != 'current' && !this.isCollapsed) {
-        set(this, 'memberToEdit', columnValue.member);
-        set(this, 'editMemberModal', true);
-      }
-    },
+  @action
+  async saveMember(memberName, memberTimeZone) {
+    await this.store.createRecord('member', {
+      name: memberName,
+      timezone: memberTimeZone,
+      team: this.model
+    }).save().then(() => this.newMemberModal = false);
+  }
 
-    async saveEditMember(memberName, memberTimeZone) {
-      if (!(memberName === this.memberToEdit.name
-        && memberTimeZone === this.memberToEdit.timezone)) {
-        set(this.memberToEdit, 'name', memberName);
-        set(this.memberToEdit, 'timezone', memberTimeZone);
-
-        this.memberToEdit.save();
-      }
-
-      set(this, 'editMemberModal', false);
-    },
-
-    scheduleEvent(row) {
-      let rowTime = moment(row.rowValue.time);
-
-      rowTime.seconds(0)
-      const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
-
-      rowTime.add(1, 'hour');
-      const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
-
-      const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
-      openGoogleCalendarEvent(time, this.model.name);
+  @action
+  onHeaderClick(columnValue) {
+    if (columnValue.valuePath != 'current' && !this.isCollapsed) {
+      this.memberToEdit = columnValue.member;
+      this.editMemberModal = true;
     }
   }
-});
+
+  @action
+  async saveEditMember(memberName, memberTimeZone) {
+    if (!(memberName === this.memberToEdit.name
+      && memberTimeZone === this.memberToEdit.timezone)) {
+      this.memberToEdit.name = memberName;
+      this.memberToEdit.timezone = memberTimeZone
+
+      this.memberToEdit.save();
+    }
+
+    this.editMemberModal = false;
+  }
+
+  @action
+  scheduleEvent(row) {
+    let rowTime = moment(row.rowValue.time);
+
+    rowTime.seconds(0)
+    const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
+
+    rowTime.add(1, 'hour');
+    const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
+
+    const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
+    openGoogleCalendarEvent(time, this.model.name);
+  }
+}

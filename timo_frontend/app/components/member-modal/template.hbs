@@ -1,0 +1,53 @@
+<div data-test={{@dataTestName}}>
+  <PaperDialog
+      @clickOutsideToClose={{true}}
+      @onClose={{@closeModal}}
+      @origin={{@modalOrigin}}
+    >
+    <PaperToolbar>
+      <PaperToolbarTools>
+        <h1 data-test="member-modal-title">
+          {{@title}}
+        </h1>
+        <span class="flex"></span>
+        <PaperButton @iconButton={{true}} @onClick={{@closeModal}} data-test="close-member-modal">
+          {{paper-icon "close"}}
+        </PaperButton>
+      </PaperToolbarTools>
+    </PaperToolbar>
+    <PaperDialogContent>
+      <PaperForm class="layout layout-align-center" @onSubmit={{this.add}} as |form|>
+        <div class="layout-column layout-align-center">
+          <form.input
+            @value={{this.memberName}}
+            @label="Name"
+            id="memberName-input"
+            @onChange={{fn (mut this.memberName)}}
+            @customValidations={{this.emptyInputValidation}}
+          />
+          <form.select
+            @label="Time Zone"
+            @options={{this.timezoneList}}
+            @selected={{this.memberTimeZone}}
+            @searchPlaceholder="Search for a timezone..."
+            @searchEnabled={{true}}
+            @closeOnSelect={{true}}
+            id="memberTimeZone-select"
+            @onChange={{fn (mut this.memberTimeZone)}}
+            @required={{true}}
+            as |timezone|
+          >
+            {{timezone}}
+          </form.select>
+          <form.submit-button
+            @raised={{true}}
+            @primary={{true}}
+            data-test="saveMember-button"
+          >
+            Save
+          </form.submit-button>
+        </div>
+      </PaperForm>
+    </PaperDialogContent>
+  </PaperDialog>
+</div>

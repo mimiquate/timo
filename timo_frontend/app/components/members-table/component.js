@@ -11,20 +11,20 @@ function scrollMembersTable(currentRowIndex) {
   }
 }
 
-export default EmberTable.extend({
+export default class MembersTableComponent extends EmberTable {
   didInsertElement() {
-    this._super(...arguments);
-
-    later(() => {
-      scrollMembersTable(this.currentRowIndex);
-    }, 500);
-  },
-
-  didUpdateAttrs() {
-    this._super(...arguments);
+    super.didInsertElement(...arguments);
 
     later(() => {
       scrollMembersTable(this.currentRowIndex);
     }, 500);
   }
-});
+
+  didUpdateAttrs() {
+    super.didUpdateAttrs(...arguments);
+
+    later(() => {
+      scrollMembersTable(this.currentRowIndex);
+    }, 500);
+  }
+}

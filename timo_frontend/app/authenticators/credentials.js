@@ -1,11 +1,11 @@
-import Base from "ember-simple-auth/authenticators/base";
+import Base from 'ember-simple-auth/authenticators/base';
 import fetch from 'fetch';
 import config from 'timo-frontend/config/environment';
 
-export default Base.extend({
+export default class CredentialsAuthenticator extends Base {
   async restore(data) {
     return data;
-  },
+  }
 
   async authenticate(username, password) {
     let response = await fetch(
@@ -31,4 +31,4 @@ export default Base.extend({
 
     return response;
   }
-})
+}

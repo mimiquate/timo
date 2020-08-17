@@ -1,22 +1,23 @@
 import Service from '@ember/service';
-import { set } from "@ember/object";
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
-export default Service.extend({
-  store: service(),
-  session: service(),
-  router: service(),
-  user: null,
+export default class CurrentUserService extends Service {
+  @service store;
+  @service session;
+  @service router;
+
+  @tracked user = null;
 
   setCurrentUser(user) {
-    set(this, 'user', user);
-  },
+    this.user = user;
+  }
 
   async logOut() {
     const adapter = await this.store.adapterFor('user');
     await adapter.deleteSession();
-    set(this, 'user', null);
-  },
+    this.user = null;
+  }
 
   async load() {
     if (this.session.isAuthenticated) {
@@ -27,7 +28,7 @@ export default Service.extend({
           this.router.transitionTo('login');
         });
 
-      set(this, 'user', user);
+      this.user = user;
     }
   }
-});
+}
