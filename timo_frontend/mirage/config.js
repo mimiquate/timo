@@ -26,16 +26,6 @@ export default function () {
       }
     }
   }, 200);
-  this.patch('/teams/:id', function ({ teams }, request) {
-    let { data } = JSON.parse(request.requestBody);
-    let team = teams.findBy({ id: data.id });
-    let public_flag = data.attributes.public;
-    let share_id = public_flag ? 'yjHktCOyBDTb' : null;
-
-    return team.update({
-      share_id: share_id,
-      public: public_flag
-    })
-  }, 200);
+  this.patch('/teams/:id');
   this.delete('/teams/:id');
 }

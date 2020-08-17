@@ -240,6 +240,17 @@ module('Acceptance | Team', function (hooks) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser, public: false });
     setSession.call(this, newUser);
+    this.server.patch('/teams/:id', function ({ teams }, request) {
+      let { data } = JSON.parse(request.requestBody);
+      let team = teams.findBy({ id: data.id });
+      let public_flag = data.attributes.public;
+      let share_id = public_flag ? 'yjHktCOyBDTb' : null;
+
+      return team.update({
+        share_id: share_id,
+        public: public_flag
+      })
+    }, 200);
 
     await visit(`/teams/${newTeam.id}`);
     await click('[data-test=share-icon]');
