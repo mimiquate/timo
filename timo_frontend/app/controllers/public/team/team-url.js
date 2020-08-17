@@ -38,9 +38,7 @@ export default class PublicTeamTeamUrlController extends Controller {
 
   @computed('sortedMembers.[]')
   get rows() {
-    const timezoneNow = guessTimezoneNow();
-
-    return createMembersTableRows(this.sortedMembers, timezoneNow);
+    return createMembersTableRows(this.sortedMembers);
   }
 
   @computed('rows.[]')
