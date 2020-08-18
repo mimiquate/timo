@@ -5,44 +5,8 @@
   height: 100%;
 }
 
-.inner-sidenav {
-  height: calc(100% - 64px);
-}
-
 .paper-right {
   margin-left: auto;
-}
-
-.side-title {
-  background-color: paper-color(deep-orange, '400');
-}
-
-.side-container {
-  width: 238px;
-}
-
-@media (max-width: 456px) {
-  .side-container {
-    min-width: calc(60%);
-    max-width: calc(100% - 56px);
-  }
-  .inner-sidenav {
-    height: calc(100% - 56px);
-  }
-}
-
-@media (max-width: 959px) {
-  .inner-sidenav {
-    height: calc(100% - 48px);
-  }
-}
-
-.side-container, .side-container > md-content {
-  background-color: paper-color(deep-orange, '300');
-}
-
-.no-team {
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
 }
 
 .flex-content {
@@ -71,12 +35,6 @@
 .flex-title {
   display: flex;
   height: fit-content;
-}
-
-.flex-title > h1, .list-team-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .add-button {
@@ -195,39 +153,6 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
   margin: 6px 8px;
 }
 
-.team-list-item {
-  display: flex;
-  align-items: center;
-  @media (hover: hover) {
-    .delete-team-button {
-      display: none;
-    }
-  }
-  &:hover {
-    .delete-team-button {
-      display: block;
-    }
-    background-color: rgba(paper-color($background, "500"), 0.2);
-    background-color: RGBA(var(--background-500), 0.2);
-  }
-}
-
-.list-team-name {
-  flex-grow: 1;
-}
-
-.team-name-span {
-  width: 206px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.active-list-item {
-  background-color: rgba(paper-color($background, "500"), 0.2);
-  background-color: RGBA(var(--background-500), 0.2);
-}
-
 .event-tooltip {
   max-width: max-content;
 }
@@ -247,4 +172,122 @@ $select-row-color: white;
       inset 0px 6px 3px -3px $select-row-color;
   }
   filter: brightness(110%);
+}
+
+//side navbar
+.main-container {
+  height: 100%;
+}
+
+.sidenavbar {
+  display: flex;
+  flex-direction: column;
+  background-color: #2a358b;
+
+  &__header {
+    padding: 24px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+  }
+
+  &__add-group {
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    padding: 6px 24px;
+    border-radius: 40px;
+    outline: none;
+
+    &.green {
+      background-color: #21939e;
+    }
+
+    &.red {
+      background-color: #be3e5c;
+    }
+
+    &.blue {
+      background-color: #5c77f8;
+    }
+  }
+
+  &__no-team {
+    color: white;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  }
+}
+
+.team-list {
+  color: white;
+  background-color: #2a358b;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+
+  @media (hover: hover) {
+    .delete-team-button {
+      display: none;
+    }
+  }
+
+  &:hover {
+    .delete-team-button {
+      border: none;
+      color: white;
+      background-color: inherit;
+      display: block;
+      outline: none;
+    }
+    background-color: #536895;
+  }
+
+  &.active {
+    background-color: #27488f;
+    border-left: 4px #20939e solid;
+  }
+
+  &__name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  &__button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    margin: 0;
+    font-weight: 400;
+    text-align: left;
+    border: none;
+    background: inherit;
+    color: white;
+    outline: none;
+  }
+}
+
+.current-user-container {
+  color: white;
+  margin-top: auto;
+  padding: 30px;
+  cursor: pointer;
+}
+
+.avatar {
+  margin-right: 12px;
+  vertical-align: middle;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
 }

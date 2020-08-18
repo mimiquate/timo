@@ -53,11 +53,11 @@ module('Acceptance | New team', function (hooks) {
 
     assert.equal(currentURL(), '/teams/2', 'Lands in team page');
     assert.dom('[data-test-team]').exists({ count: 2 }, 'All teams are listed');
-    assert.dom('[data-test-team="0"]').hasText(
+    assert.dom('[data-test-team="0"] span').hasText(
       'Team 1',
       'The first team in the list contains the team name'
     );
-    assert.dom('[data-test-team="1"]').hasText(
+    assert.dom('[data-test-team="1"] span').hasText(
       'Team 2',
       'The second team in the list contains the team name'
     );

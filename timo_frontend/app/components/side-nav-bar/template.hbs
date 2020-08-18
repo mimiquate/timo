@@ -1,0 +1,41 @@
+<div class="sidenavbar flex-20">
+  <div class="layout-row layout-align-space-between-center sidenavbar__header">
+    <span class="sidenavbar__title">Teams</span>
+    <button type="button" {{on "click" @addOne}} data-test="new-team" class="sidenavbar__add-group blue">
+      Add
+    </button>
+  </div>
+  {{#if @groups.length}}
+    {{#each @sortedTeams as |team index|}}
+      <SideNavBar::Team
+        @team={{team}}
+        @selectedTeam={{eq @currentTeamId team.id}}
+        @index={{index}}
+        @goToTeam={{fn @goToTeam team}}
+        @deleteTeamModal={{fn @deleteTeamModal team}}
+      />
+    {{/each}}
+  {{else}}
+    <div class="sidenavbar__no-team" data-test="no-team">
+      You don't have any teams yet
+    </div>
+  {{/if}}
+  <div class="current-user-container">
+    <PaperMenu as |menu|>
+      <menu.trigger data-test="logout-trigger">
+        <div data-test="current-user-span">
+          <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Avatar" class="avatar">
+          {{@currentUser.user.username}}
+        </div>
+      </menu.trigger>
+      <menu.content class="menu-popup" @dense={{true}} as |content|>
+        <content.menu-item data-test="logout-button" @onClick={{@logOut}}>
+          {{paper-icon "power_settings_new" class="md-menu-align-target"}}
+          <span>Logout</span>
+        </content.menu-item>
+      </menu.content>
+    </PaperMenu>
+  </div>
+</div>
+
+
