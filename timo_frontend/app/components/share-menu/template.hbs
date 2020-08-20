@@ -1,8 +1,8 @@
 <PaperMenu @offset="-20 50" as |menu|>
   <menu.trigger>
-    <PaperButton @iconButton={{true}} @raised={{true}} data-test="share-icon">
-      {{paper-icon "share"}}
-    </PaperButton>
+    <button type="button" data-test="add-member-button" class="group-header__share">
+      Share
+    </button>
   </menu.trigger>
   <menu.content>
     <div class="public-share-item" data-test="public-share-item">

@@ -1,31 +1,11 @@
-{{page-title @model.name prepend=false}}
 <div class="flex-content public-main">
   <div class="flex-title">
     <h1 data-test="team-title">
       {{@model.name}}
     </h1>
   </div>
-  <div class="side-checkbox">
-    <PaperCheckbox
-      @value={{this.showCurrent}}
-      @onChange={{fn (mut this.showCurrent)}}
-      data-test-checkbox="current"
-    >
-      List my current timezone
-    </PaperCheckbox>
-  </div>
-  <div class="side-checkbox">
-    <PaperCheckbox
-      @value={{this.isCollapsed}}
-      @onChange={{fn (mut this.isCollapsed)}}
-      @disabled={{lte this.sortedMembers.length 1}}
-      data-test-checkbox="collapsed"
-    >
-      Collapse table
-    </PaperCheckbox>
-  </div>
   {{#if this.sortedMembers.length}}
-    <TimezoneList @timezones={{this.timezones}} />
+    <TimezoneList @timezones={{this.timezones}} @scheduleEvent={{this.scheduleEvent}} />
   {{else}}
     <div class="no-member" data-test="no-member">
       No members in this team
