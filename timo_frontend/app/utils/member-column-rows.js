@@ -98,3 +98,65 @@ function groupMembersByOffset(sortedMembers, timeNow) {
     return map;
   }, new Map());
 }
+
+export function createNewRows(sortedMembers) {
+  if (isEmpty(sortedMembers)) {
+    return [];
+  }
+
+  const memberCol = [];
+
+  sortedMembers.forEach(m => {
+    memberCol.pushObject({
+      member: m,
+      times: []
+    })
+  });
+
+  const earlyTimezone = sortedMembers[0].timezone;
+  const lateTimezone = sortedMembers[sortedMembers.length - 1].timezone;
+
+  const startHour = moment.tz(moment.tz(earlyTimezone).startOf('day'), lateTimezone).startOf('day');
+  const endHour = moment.tz(earlyTimezone).endOf('day');
+
+  const momentNow = moment();
+  let time = moment(startHour);
+  const hoursEnd = endHour.diff(startHour, 'hours');
+
+  for (let i = 0; i < hoursEnd + 1; i++) {
+    const diff = time.diff(momentNow, 'minutes');
+    const currentTime = (diff >= 0 && diff < 60) ? true : false;
+
+    memberCol.forEach(col => {
+      const value = moment.tz(time, col.member.timezone);
+      const color = cellColor(value);
+      const calendarTime = moment(time);
+
+      col.times.pushObject({
+        value,
+        currentTime,
+        calendarTime,
+        color
+      });
+    });
+
+    time.add(1, 'hour');
+  }
+
+  return memberCol;
+}
+
+function cellColor(time) {
+  const hour = time.hours();
+  let color = '';
+
+  if (hour >= 8 && hour <= 17) {
+    color = 'green';
+  } else if (hour >= 18 && hour <= 21) {
+    color = 'blue';
+  } else {
+    color = 'red';
+  }
+
+  return color
+}

@@ -1,49 +1,6 @@
 <GroupHeader @group={{@model}} @addMember={{this.newMember}} />
 {{#if this.sortedMembers.length}}
-  <MembersTable @currentRowIndex={{this.currentRowIndex}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
-    <t.head
-      @columns={{this.columns}}
-      @enableResize={{false}}
-      @enableReorder={{false}}
-      as |h|
-    >
-      <h.row @class="mat-header-row" as |hr|>
-        <hr.cell
-          @class="mat-header-cell cell-text-align {{if (not this.isCollapsed) "pointer-cursor"}}"
-          onclick={{fn this.onHeaderClick hr.columnValue}}
-          data-test-member={{hr.columnValue.valuePath}}
-          as |column|
-        >
-          {{column.member.name}} ({{column.member.timezone}})
-          {{#if this.isCollapsed}}
-            {{collapsed-amount column.collapsedMembersCount}}
-          {{/if}}
-          {{#if this.showCurrent}}
-            {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
-          {{/if}}
-        </hr.cell>
-      </h.row>
-    </t.head>
-
-    <t.body @rows={{this.rows}} @renderAll={{this.renderAll}} as |r|>
-      <r.row
-        @class="mat-row {{row-filter r.rowValue}} pointer-cursor" onclick={{fn this.scheduleEvent r}}
-        data-test-row={{row-index r.rowMeta}}
-        as |rr|
-      >
-        <rr.cell @class="mat-cell cell-text-align cell-color-{{cell-color rr.cellValue}}" as |value|>
-          {{!-- Check if value exists because of rendering issue --}}
-          {{#if value}}
-            {{moment-format value "D MMM YYYY - HH:mm"}}
-          {{/if}}
-        </rr.cell>
-        <EmberTooltip
-          @text="Schedule Event on Google Calendar"
-          @tooltipClass="event-tooltip"
-        />
-      </r.row>
-    </t.body>
-  </MembersTable>
+  <TimezoneList @timezones={{this.timezones}} @scheduleEvent={{this.scheduleEvent}} />
 {{else}}
   <div class="no-member" data-test="no-member">
     No members in this team

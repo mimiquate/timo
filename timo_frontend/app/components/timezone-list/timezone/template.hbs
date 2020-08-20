@@ -1,0 +1,16 @@
+<div class="timezone-list__row">
+  <div class="timezone-list__details">
+    <span class="timezone-list__details__country">
+      {{this.country}}
+    </span>
+    {{this.state}}
+  </div>
+  <div class="timezone-list__date">
+    {{this.memberDate}}
+  </div>
+  <div class="timezone-list__time-zone">
+    {{#each @timezone.times as |time|}}
+      <TimezoneList::Timezone::Box @time={{time}} @scheduleEvent={{@scheduleEvent}} />
+    {{/each}}
+  </div>
+</div>

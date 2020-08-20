@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
-import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
+import { createNewRows } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
@@ -22,6 +22,11 @@ export default class LandingTeamsTeamController extends Controller {
   isCollapsed = false;
   renderAll = ENV.environment === 'test';
 
+  @computed('sortedMembers.[]')
+  get timezones() {
+    return createNewRows(this.sortedMembers);
+  }
+
   @computed('model.members.{[],@each.id}')
   get savedMembers() {
     return this.model.members.filterBy('id');
@@ -33,31 +38,6 @@ export default class LandingTeamsTeamController extends Controller {
     const membersToArray = createMemberArray(this.savedMembers, this.showCurrent, timezoneNow);
 
     return membersToArray.sort(compareMemberTimeZones);
-  }
-
-  @computed('sortedMembers.[]', 'isCollapsed')
-  get columns() {
-    const timezoneNow = guessTimezoneNow();
-
-    if (this.isCollapsed) {
-      return createCollapsedColumns(this.sortedMembers, timezoneNow);
-    }
-
-    return createMembersTableColumns(this.sortedMembers, timezoneNow);
-  }
-
-  @computed('sortedMembers.[]')
-  get rows() {
-    return createMembersTableRows(this.sortedMembers);
-  }
-
-  @computed('rows.[]')
-  get currentRowIndex() {
-    if (this.rows) {
-      return this.rows.findIndex((row) => row.filter === 'row-current-time');
-    }
-
-    return 0;
   }
 
   @action
@@ -85,14 +65,6 @@ export default class LandingTeamsTeamController extends Controller {
   }
 
   @action
-  onHeaderClick(columnValue) {
-    if (columnValue.valuePath != 'current' && !this.isCollapsed) {
-      this.memberToEdit = columnValue.member;
-      this.editMemberModal = true;
-    }
-  }
-
-  @action
   async saveEditMember(memberName, memberTimeZone) {
     if (!(memberName === this.memberToEdit.name
       && memberTimeZone === this.memberToEdit.timezone)) {
@@ -106,8 +78,8 @@ export default class LandingTeamsTeamController extends Controller {
   }
 
   @action
-  scheduleEvent(row) {
-    let rowTime = moment(row.rowValue.time);
+  scheduleEvent(time) {
+    let rowTime = moment(time);
 
     rowTime.seconds(0)
     const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
@@ -115,7 +87,7 @@ export default class LandingTeamsTeamController extends Controller {
     rowTime.add(1, 'hour');
     const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
 
-    const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
-    openGoogleCalendarEvent(time, this.model.name);
+    const url = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
+    openGoogleCalendarEvent(url, this.model.name);
   }
 }

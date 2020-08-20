@@ -1,0 +1,6 @@
+<span
+  class="timezone-list__hour {{@time.color}} {{if @time.currentTime "timezone-list__current"}}"
+  {{on "click" (fn @scheduleEvent @time.value)}}
+>
+  {{moment-format @time.value "HH:mm"}}
+</span>

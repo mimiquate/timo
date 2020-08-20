@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
 import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
-import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
+import { createNewRows } from 'timo-frontend/utils/member-column-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
@@ -25,34 +25,14 @@ export default class PublicTeamTeamUrlController extends Controller {
     return membersToArray.sort(compareMemberTimeZones);
   }
 
-  @computed('sortedMembers.[]', 'isCollapsed')
-  get columns() {
-    const timezoneNow = guessTimezoneNow();
-
-    if (this.isCollapsed) {
-      return createCollapsedColumns(this.sortedMembers, timezoneNow);
-    }
-
-    return createMembersTableColumns(this.sortedMembers, timezoneNow);
-  }
-
   @computed('sortedMembers.[]')
-  get rows() {
-    return createMembersTableRows(this.sortedMembers);
-  }
-
-  @computed('rows.[]')
-  get currentRowIndex() {
-    if (this.rows) {
-      return this.rows.findIndex((row) => row.filter === 'row-current-time');
-    }
-
-    return 0;
+  get timezones() {
+    return createNewRows(this.sortedMembers);
   }
 
   @action
-  scheduleEvent(row) {
-    let rowTime = moment(row.rowValue.time);
+  scheduleEvent(time) {
+    let rowTime = moment(time);
 
     rowTime.seconds(0)
     const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
@@ -60,7 +40,7 @@ export default class PublicTeamTeamUrlController extends Controller {
     rowTime.add(1, 'hour');
     const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
 
-    const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
-    openGoogleCalendarEvent(time, this.model.name);
+    const url = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
+    openGoogleCalendarEvent(url, this.model.name);
   }
 }

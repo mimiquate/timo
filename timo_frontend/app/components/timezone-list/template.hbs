@@ -1,0 +1,5 @@
+<div class="timezone-list">
+  {{#each @timezones as |timezone|}}
+    <TimezoneList::Timezone @timezone={{timezone}} @scheduleEvent={{@scheduleEvent}} />
+  {{/each}}
+</div>
