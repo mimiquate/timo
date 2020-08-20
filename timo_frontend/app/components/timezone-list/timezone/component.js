@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { computed } from '@ember/object';
 
-export default class CellComponent extends Component {
+export default class TimezoneComponent extends Component {
   @computed('timezone.member')
   get country() {
     const timezone = this.args.timezone.member.timezone;
