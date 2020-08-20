@@ -1,0 +1,111 @@
+@import '../variables.scss';
+
+.main-container {
+  height: 100%;
+}
+
+.sidenavbar {
+  display: flex;
+  flex-direction: column;
+  background-color: $dark-blue;
+
+  &__header {
+    padding: 24px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+  }
+
+  &__add-group {
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    padding: 6px 24px;
+    border-radius: 40px;
+    outline: none;
+
+    &.green {
+      background-color: $green;
+    }
+
+    &.red {
+      background-color: $red;
+    }
+
+    &.blue {
+      background-color: $blue;
+    }
+  }
+
+  &__no-team {
+    color: white;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  }
+}
+
+.team-list {
+  color: white;
+  background-color: $dark-blue;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+
+  @media (hover: hover) {
+    .delete-team-button {
+      display: none;
+    }
+  }
+
+  &:hover {
+    .delete-team-button {
+      border: none;
+      color: white;
+      background-color: inherit;
+      display: block;
+      outline: none;
+    }
+    background-color: #536895;
+  }
+
+  &.active {
+    background-color: #27488f;
+    border-left: 4px $green solid;
+  }
+
+  &__button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 12px 16px;
+    margin: 0;
+    font-weight: 400;
+    text-align: left;
+    border: none;
+    background: inherit;
+    color: white;
+    outline: none;
+  }
+}
+
+.current-user-container {
+  color: white;
+  margin-top: auto;
+  padding: 30px;
+  cursor: pointer;
+}
+
+.avatar {
+  margin-right: 12px;
+  vertical-align: middle;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
