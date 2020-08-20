@@ -1,31 +1,4 @@
-{{page-title @model.name prepend=false}}
-<div class="flex-title">
-  <h1 data-test="team-title">
-    {{@model.name}}
-  </h1>
-  <div class="share-icon">
-    <ShareMenu @team={{@model}} />
-  </div>
-</div>
-<div class="side-checkbox">
-  <PaperCheckbox
-    @value={{this.showCurrent}}
-    @onChange={{fn (mut this.showCurrent)}}
-    data-test-checkbox="current"
-  >
-    List my current timezone
-  </PaperCheckbox>
-</div>
-<div class="side-checkbox">
-  <PaperCheckbox
-    @value={{this.isCollapsed}}
-    @onChange={{fn (mut this.isCollapsed)}}
-    @disabled={{lte this.sortedMembers.length 1}}
-    data-test-checkbox="collapsed"
-  >
-    Collapse table
-  </PaperCheckbox>
-</div>
+<GroupHeader @group={{@model}} @addMember={{this.newMember}} />
 {{#if this.sortedMembers.length}}
   <MembersTable @currentRowIndex={{this.currentRowIndex}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
     <t.head
@@ -76,17 +49,6 @@
     No members in this team
   </div>
 {{/if}}
-<PaperButton
-  @raised={{true}}
-  @fab={{true}}
-  @accent={{true}}
-  @onClick={{this.newMember}}
-  data-test="add-member-button"
-  @class="add-button"
-  id="new-member-origin"
->
-  +
-</PaperButton>
 {{#if this.newMemberModal}}
   <MemberModal
     @addMember={{this.saveMember}}

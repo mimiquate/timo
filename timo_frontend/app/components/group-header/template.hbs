@@ -1,0 +1,15 @@
+<div class="group-header">
+  <div class="group-header__container">
+    <span class="group-header__title" data-test="team-title">
+      {{@group.name}}
+    </span>
+    <span class="group-header__details">
+      {{timezonesLabel}} | {{membersLabel}}
+    </span>
+  </div>
+  <div>
+    <button type="button" {{on "click" @addMember}} data-test="add-member-button" class="group-header__add-member">
+      Add members
+    </button>
+  </div>
+</div>
