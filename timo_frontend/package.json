@@ -51,7 +51,7 @@
     "ember-simple-auth": "^3.0.0",
     "ember-source": "~3.16.0",
     "ember-table": "^2.2.3",
-    "ember-tooltips": "^3.4.3",
+    "ember-tooltips": "^3.4.5",
     "ember-truth-helpers": "^2.1.0",
     "ember-window-mock": "^0.7.0",
     "eslint-plugin-ember": "^7.7.2",
