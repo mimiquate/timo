@@ -1,5 +1,11 @@
 <div class="timezone-list">
   {{#each @timezones as |timezone|}}
-    <TimezoneList::Timezone @timezone={{timezone}} @scheduleEvent={{@scheduleEvent}} />
+    <TimezoneList::Timezone
+      @timezone={{timezone}}
+      @scheduleEvent={{@scheduleEvent}}
+      @onHover={{this.onHover}}
+      @mouseLeave={{this.mouseLeave}}
+      @hover={{this.hover}}
+    />
   {{/each}}
 </div>
