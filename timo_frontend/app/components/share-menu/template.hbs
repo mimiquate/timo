@@ -1,26 +1,34 @@
-<PaperMenu @offset="-20 50" as |menu|>
-  <menu.trigger>
-    <button type="button" data-test="add-member-button" class="group-header__share">
-      Share
-    </button>
-  </menu.trigger>
-  <menu.content>
-    <div class="public-share-item" data-test="public-share-item">
-      Public Access
-      <PaperCheckbox
-        @value={{@team.public}}
-        @onChange={{this.setPublic}}
-        data-test="public-checkbox"
-      />
-    </div>
-    <PaperButton
-      @raised={{true}}
-      @accent={{true}}
-      @onClick={{this.copyLink}}
-      @disabled={{this.disablePublic}}
-      data-test="copy-link-button"
-    >
-      Copy Link
-    </PaperButton>
-  </menu.content>
-</PaperMenu>
+<button
+  id="share-button"
+  type="button"
+  data-test="add-member-button"
+  class="group-header__share"
+  {{on "click" this.togglePopover}}
+>
+  Share
+</button>
+<EmberPopover
+  @isShown={{this.showToggleablePopover}}
+  @targetId="share-button"
+  @event="none"
+  @hideOn="click"
+>
+  <div class="public-share-item" data-test="public-share-item">
+    Public Access
+    <Input
+      data-test="public-checkbox"
+      @type="checkbox"
+      @checked={{@team.public}}
+      {{on "click" this.setPublic}}
+    />
+  </div>
+  <button
+    id="share-button"
+    type="button"
+    data-test="add-member-button"
+    class="group-header__share"
+    {{on "click" this.copyLink}}
+  >
+    Copy Link
+  </button>
+</EmberPopover>
