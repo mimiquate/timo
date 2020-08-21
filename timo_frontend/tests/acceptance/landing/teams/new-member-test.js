@@ -1,9 +1,8 @@
 import { module, test } from 'qunit';
-import { click, fillIn } from '@ember/test-helpers';
+import { click, fillIn, findAll } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession, chooseTimeZone, openNewMemberModal } from 'timo-frontend/tests/helpers/custom-helpers';
-import { TablePage } from 'ember-table/test-support';
 
 module('Acceptance | New member', function (hooks) {
   setupApplicationTest(hooks);
@@ -37,14 +36,10 @@ module('Acceptance | New member', function (hooks) {
 
     assert.dom('[data-test=new-member-modal]').doesNotExist('Correctly closes new member modal');
 
-    const table = new TablePage();
+    const timezoneRowDetails = findAll('.timezone-list__details');
 
-    assert.equal(table.headers.length, 1, 'Table has one column');
-    assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member (America/Montevideo)',
-      'Member is listed'
-    );
+    assert.equal(timezoneRowDetails.length, 1, 'List has one row');
+    assert.equal(timezoneRowDetails[0].textContent.trim(), 'America Montevideo', 'Correct timezone');
   });
 
   test('Create member with no name and no time zone error', async function (assert) {
