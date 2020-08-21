@@ -1,15 +1,14 @@
 import Component from '@glimmer/component';
-import { computed, action } from '@ember/object';
+import { action } from '@ember/object';
 
 export default class ShareMenuComponent extends Component {
-  @computed('group.members.[]')
+
   get membersLabel() {
     const members = this.args.group.members.length;
 
     return members > 1 ? `${members} Members` : `${members} Member`
   }
 
-  @computed('group.members.[]')
   get timezonesLabel() {
     const members = this.args.group.members;
     const timezones = members.map(m => {
