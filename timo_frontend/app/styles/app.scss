@@ -79,3 +79,16 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 .event-tooltip {
   max-width: max-content;
 }
+
+.logout-button {
+  background: inherit;
+  border: none;
+  outline: none;
+}
+
+.current-user-name {
+  border: none;
+  background: inherit;
+  color: white;
+  outline: none;
+}

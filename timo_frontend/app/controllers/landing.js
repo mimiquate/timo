@@ -23,6 +23,7 @@ export default class LandiingController extends Controller {
 
   @tracked showDeleteTeamModal = false;
   @tracked teamToDelete = null;
+  @tracked showToggleablePopover = false;
 
   @computed('router.currentURL')
   get currentTeamId() {
@@ -75,5 +76,10 @@ export default class LandiingController extends Controller {
   @action
   async goToTeam(team) {
     await this.transitionToRoute('landing.teams.team', team.id);
+  }
+
+  @action
+  togglePopover() {
+    this.showToggleablePopover = !this.showToggleablePopover;
   }
 }

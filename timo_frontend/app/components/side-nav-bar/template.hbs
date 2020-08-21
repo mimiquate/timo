@@ -21,20 +21,21 @@
     </div>
   {{/if}}
   <div class="current-user-container">
-    <PaperMenu as |menu|>
-      <menu.trigger data-test="logout-trigger">
-        <div data-test="current-user-span">
-          <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Avatar" class="avatar">
-          {{@currentUser.user.username}}
-        </div>
-      </menu.trigger>
-      <menu.content class="menu-popup" @dense={{true}} as |content|>
-        <content.menu-item data-test="logout-button" @onClick={{@logOut}}>
-          {{paper-icon "power_settings_new" class="md-menu-align-target"}}
-          <span>Logout</span>
-        </content.menu-item>
-      </menu.content>
-    </PaperMenu>
+    <div data-test="current-user-span">
+      <EmberPopover
+        @isShown={{@showToggleablePopover}}
+        @targetId="user-name"
+        @event="none"
+        @hideOn="focusout"
+      >
+        {{paper-icon "power_settings_new" class="md-menu-align-target"}}
+        <button type="button" class="logout-button" {{on "click" @logOut}}>Logout</button>
+      </EmberPopover>
+      <button id="user-name" type="button" class="current-user-name" {{on "click" @togglePopover}}>
+        <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Avatar" class="avatar">
+        {{@currentUser.user.username}}
+      </button>
+    </div>
   </div>
 </div>
 
