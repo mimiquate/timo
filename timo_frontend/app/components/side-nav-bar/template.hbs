@@ -1,9 +1,13 @@
 <div class="sidenavbar flex-20">
   <div class="layout-row layout-align-space-between-center sidenavbar__header">
     <span class="sidenavbar__title">Teams</span>
-    <button type="button" {{on "click" @addOne}} data-test="new-team" class="sidenavbar__add-group blue">
-      Add
-    </button>
+    <TButton
+      @color="blue"
+      @testSelector="new-team"
+      @action={{@addOne}}
+      @label="Add"
+      @class="sidenavbar__add-group"
+    />
   </div>
   {{#if @groups.length}}
     {{#each @sortedTeams as |team index|}}

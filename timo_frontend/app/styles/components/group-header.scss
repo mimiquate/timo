@@ -21,33 +21,4 @@
     color: $light-blue;
     font-weight: bold;
   }
-
-  &__add-member {
-    border: none;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    padding: 11px 15px;
-    border-radius: 40px;
-    outline: none;
-    background-color: $dark-blue;
-  }
-
-  &__share {
-    border: none;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    padding: 11px 15px;
-    border-radius: 40px;
-    outline: none;
-    background-color: $dark-blue;
-    margin-left: 6px;
-  }
 }

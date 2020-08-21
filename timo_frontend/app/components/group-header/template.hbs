@@ -8,9 +8,11 @@
     </span>
   </div>
   <div>
-    <button type="button" {{on "click" @addMember}} data-test="add-member-button" class="group-header__add-member">
-      Add members
-    </button>
+    <TButton
+      @testSelector="add-member-button"
+      @action={{@addMember}}
+      @label="Add members"
+    />
     <ShareMenu @team={{@group}} />
   </div>
 </div>

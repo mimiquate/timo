@@ -1,12 +1,8 @@
-<button
-  id="share-button"
-  type="button"
-  data-test="add-member-button"
-  class="group-header__share"
-  {{on "click" this.togglePopover}}
->
-  Share
-</button>
+<TButton
+  @action={{this.togglePopover}}
+  @label="Share"
+  @id="share-button"
+/>
 <EmberPopover
   @isShown={{this.showToggleablePopover}}
   @targetId="share-button"
@@ -22,13 +18,8 @@
       {{on "click" this.setPublic}}
     />
   </div>
-  <button
-    id="share-button"
-    type="button"
-    data-test="add-member-button"
-    class="group-header__share"
-    {{on "click" this.copyLink}}
-  >
-    Copy Link
-  </button>
+  <TButton
+    @action={{this.copyLink}}
+    @label="Copy Link"
+  />
 </EmberPopover>

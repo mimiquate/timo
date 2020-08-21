@@ -20,28 +20,7 @@
   }
 
   &__add-group {
-    border: none;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    padding: 6px 24px;
-    border-radius: 40px;
-    outline: none;
-
-    &.green {
-      background-color: $green;
-    }
-
-    &.red {
-      background-color: $red;
-    }
-
-    &.blue {
-      background-color: $blue;
-    }
+    padding: 6px 24px !important;
   }
 
   &__no-team {
