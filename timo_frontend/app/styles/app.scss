@@ -1,4 +1,5 @@
 @import 'ember-paper';
+@import "ember-power-select";
 @import './variables.scss';
 @import './components/timezone-list.scss';
 @import './components/group-header.scss';
@@ -121,5 +122,19 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 
   &.dark-blue {
     background-color: $dark-blue;
+  }
+}
+
+.member-modal-select {
+  margin-bottom: 18px;
+}
+
+.timezne-ember-power-select {
+  .ember-power-select-options {
+    overflow-x: hidden;
+  }
+
+  .ember-power-select-search {
+    padding: 4px 0;
   }
 }

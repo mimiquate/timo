@@ -1,9 +1,9 @@
 <div data-test={{@dataTestName}}>
   <PaperDialog
-      @clickOutsideToClose={{true}}
-      @onClose={{@closeModal}}
-      @origin={{@modalOrigin}}
-    >
+    @clickOutsideToClose={{true}}
+    @onClose={{@closeModal}}
+    @origin={{@modalOrigin}}
+  >
     <PaperToolbar>
       <PaperToolbarTools>
         <h1 data-test="member-modal-title">
@@ -16,7 +16,7 @@
       </PaperToolbarTools>
     </PaperToolbar>
     <PaperDialogContent>
-      <PaperForm class="layout layout-align-center" @onSubmit={{this.add}} as |form|>
+      <PaperForm class="layout layout-align-center flex" @onSubmit={{this.add}} as |form|>
         <div class="layout-column layout-align-center">
           <form.input
             @value={{this.memberName}}
@@ -25,20 +25,21 @@
             @onChange={{fn (mut this.memberName)}}
             @customValidations={{this.emptyInputValidation}}
           />
-          <form.select
-            @label="Time Zone"
-            @options={{this.timezoneList}}
-            @selected={{this.memberTimeZone}}
-            @searchPlaceholder="Search for a timezone..."
-            @searchEnabled={{true}}
-            @closeOnSelect={{true}}
-            id="memberTimeZone-select"
-            @onChange={{fn (mut this.memberTimeZone)}}
-            @required={{true}}
-            as |timezone|
-          >
-            {{timezone}}
-          </form.select>
+          <div class="member-modal-select">
+            <PowerSelect
+              @dropdownClass="timezone-ember-power-select"
+              @placeholder="Time Zone"
+              @searchPlaceholder="Search for a timezone..."
+              @searchEnabled={{true}}
+              @options={{this.timezoneList}}
+              @selected={{this.memberTimeZone}}
+              id="memberTimeZone-select"
+              @onChange={{fn (mut this.memberTimeZone)}}
+              as |timezone|
+            >
+              {{timezone}}
+            </PowerSelect>
+          </div>
           <form.submit-button
             @raised={{true}}
             @primary={{true}}
