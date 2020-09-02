@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, currentURL, click } from '@ember/test-helpers';
+import { visit, currentURL, click, fillIn } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession, createTeam } from 'timo-frontend/tests/helpers/custom-helpers';
@@ -8,31 +8,15 @@ module('Acceptance | New team', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('Visiting /teams/new without exisiting username', async function (assert) {
-    await visit('/teams/new');
-
-    assert.equal(currentURL(), '/login', 'Correctly redirects to login page');
-  });
-
-  test('Visiting /teams/new with existing username', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-
-    await visit('/teams/new');
-
-    assert.equal(currentURL(), '/teams/new', 'Correctly visits landing page');
-    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
-    assert.dom('[data-test=newTeam-title]').exists('New team page title loads');
-  });
-
   test('Creates new team and redirects', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
 
-    await visit('/teams/new');
+    await visit('/');
     await createTeam('Team 1')
 
     assert.equal(currentURL(), '/teams/1', 'Lands in team page');
+    assert.dom('[data-test=new-team-modal]').doesNotExist('New team modal closes');
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team 1', 'Team title loads');
     assert.dom('[data-test-team]').exists('Team is listed');
@@ -42,13 +26,14 @@ module('Acceptance | New team', function (hooks) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
 
-    await visit('/teams/new');
+    await visit('/');
 
     assert.dom('[data-test=no-team]')
       .hasText('You don\'t have any teams yet', 'No teams are listed');
 
     await createTeam('Team 1')
-    await visit('/teams/new');
+
+    await visit('/');
     await createTeam('Team 2');
 
     assert.equal(currentURL(), '/teams/2', 'Lands in team page');
@@ -67,12 +52,14 @@ module('Acceptance | New team', function (hooks) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
 
-    await visit('/teams/new');
-    await click('[data-test=saveTeam-button]');
+    await visit('/');
+    await click('[data-test=new-team]');
+    await click('[data-test-new-team=save]');
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
-    assert.equal(currentURL(), '/teams/new', 'Stays in new team page');
+    assert.equal(currentURL(), '/', 'Does not redirect to new team');
+    assert.dom('[data-test=new-team-modal]').exists('New team modal does not close');
     assert.ok(errorMessage[0].textContent
       .includes('This is required'), 'No team name error');
   });
@@ -81,13 +68,30 @@ module('Acceptance | New team', function (hooks) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
 
-    await visit('/teams/new');
+    await visit('/');
     await createTeam('    ')
 
     let errorMessage = this.element.querySelectorAll('.paper-input-error');
 
-    assert.equal(currentURL(), '/teams/new', 'Stays in new team page');
+    assert.equal(currentURL(), '/', 'Does not redirect to new team');
+    assert.dom('[data-test=new-team-modal]').exists('New team modal does not close');
     assert.ok(errorMessage[0].textContent
       .includes('This is required'), 'No team name error');
+  });
+
+  test('Closes modal and resets its inputs', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('[data-test=new-team]');
+    await fillIn('#teamName-input input', 'test');
+    await click('[data-test-new-team=close-modal]');
+
+    assert.dom('[data-test=new-team-modal]').doesNotExist('New team modal closes');
+
+    await click('[data-test=new-team]');
+
+    assert.dom('#teamName-input input').hasText('', 'Empty input');
   });
 });

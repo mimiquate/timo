@@ -15,8 +15,9 @@ export function setSession(user) {
 }
 
 export async function createTeam(teamName) {
+  await click('[data-test=new-team]');
   await fillIn('#teamName-input input', teamName);
-  return click('[data-test=saveTeam-button]');
+  return click('[data-test-new-team=save]');
 }
 
 export async function chooseTimeZone(timezone) {

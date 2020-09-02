@@ -5,11 +5,11 @@
   >
     <PaperToolbar>
       <PaperToolbarTools>
-        <h1 data-test="newTeam-title">
+        <h1 data-test-new-team="title">
           {{@title}}
         </h1>
         <span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{@closeModal}} data-test="close-new-team-modal">
+        <PaperButton @iconButton={{true}} @onClick={{@closeModal}} data-test-new-team="close-modal">
           {{paper-icon "close"}}
         </PaperButton>
       </PaperToolbarTools>
@@ -26,7 +26,7 @@
           />
         </div>
         <div class="layout layout-align-center-center">
-          <form.submit-button @raised={{true}} @primary={{true}} data-test="saveTeam-button">
+          <form.submit-button @raised={{true}} @primary={{true}} data-test-new-team="save">
             Save
           </form.submit-button>
         </div>

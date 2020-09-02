@@ -27,14 +27,18 @@ module('Acceptance | Landing', function (hooks) {
       .hasText('You don\'t have any teams yet', 'No teams are listed');
   });
 
-  test('Clicks link to Add one team', async function (assert) {
+  test('Clicks button to Add one team and opens new team modal', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
 
     await visit('/');
     await click('[data-test=new-team]');
 
-    assert.equal(currentURL(), '/teams/new', 'Correctly visits new team page');
+    assert.dom('[data-test=new-team-modal]').exists('Opens new team modal');
+    assert.dom('[data-test-new-team=title]').hasText('New Team', 'Correct title');
+    assert.dom('[data-test-new-team=close-modal]').hasText('close', 'Close modal button');
+    assert.dom('#teamName-input input').hasText('', 'Empty input');
+    assert.dom('[data-test-new-team=save]').hasText('Save', 'Save button');
   });
 
   test('Clicks team name and redirects to selected team page', async function (assert) {
