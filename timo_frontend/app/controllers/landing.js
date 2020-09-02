@@ -24,6 +24,7 @@ export default class LandiingController extends Controller {
   @tracked showDeleteTeamModal = false;
   @tracked teamToDelete = null;
   @tracked showToggleablePopover = false;
+  @tracked showNewTeamModal = false;
 
   @computed('router.currentURL')
   get currentTeamId() {
@@ -38,8 +39,13 @@ export default class LandiingController extends Controller {
   }
 
   @action
-  async addOne() {
-    await this.transitionToRoute('landing.teams.new');
+  addOne() {
+    this.showNewTeamModal = true;
+  }
+
+  @action
+  closeNewTeamModal() {
+    this.showNewTeamModal = false;
   }
 
   @action
@@ -81,5 +87,17 @@ export default class LandiingController extends Controller {
   @action
   togglePopover() {
     this.showToggleablePopover = !this.showToggleablePopover;
+  }
+
+  @action
+  async saveTeam(newTeamName) {
+    let team = this.store.createRecord('team', {
+      name: newTeamName.trim(),
+      user: this.currentUser.user
+    });
+
+    await team.save();
+    this.showNewTeamModal = false;
+    await this.transitionToRoute('landing.teams.team', team);
   }
 }

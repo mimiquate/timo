@@ -1,0 +1,36 @@
+<div data-test={{@dataTestName}}>
+  <PaperDialog
+    @clickOutsideToClose={{true}}
+    @onClose={{@closeModal}}
+  >
+    <PaperToolbar>
+      <PaperToolbarTools>
+        <h1 data-test="newTeam-title">
+          {{@title}}
+        </h1>
+        <span class="flex"></span>
+        <PaperButton @iconButton={{true}} @onClick={{@closeModal}} data-test="close-new-team-modal">
+          {{paper-icon "close"}}
+        </PaperButton>
+      </PaperToolbarTools>
+    </PaperToolbar>
+    <PaperDialogContent>
+      <PaperForm @onSubmit={{fn @saveTeam this.teamName}} as |form|>
+        <div class="layout layout-align-center-center">
+          <form.input
+            @value={{this.teamName}}
+            @placeholder="New team name"
+            id="teamName-input"
+            @onChange={{fn (mut this.teamName)}}
+            @customValidations={{this.emptyInputValidation}}
+          />
+        </div>
+        <div class="layout layout-align-center-center">
+          <form.submit-button @raised={{true}} @primary={{true}} data-test="saveTeam-button">
+            Save
+          </form.submit-button>
+        </div>
+      </PaperForm>
+    </PaperDialogContent>
+  </PaperDialog>
+</div>

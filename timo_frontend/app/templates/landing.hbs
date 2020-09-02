@@ -22,3 +22,11 @@
     @teamToDeleteName={{this.teamToDelete.name}}
   />
 {{/if}}
+{{#if this.showNewTeamModal}}
+  <NewTeamModal
+    @title="New Team"
+    @closeModal={{this.closeNewTeamModal}}
+    @dataTestName="new-team-modal"
+    @saveTeam={{this.saveTeam}}
+  />
+{{/if}}
