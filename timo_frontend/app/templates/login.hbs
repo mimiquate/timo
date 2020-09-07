@@ -1,46 +1,38 @@
-<div class="login-main layout-column layout-align-center-center">
-  <div class="layout layout-align-center-center">
-    <h1>Timo App</h1>
+<div class="login-page">
+  <div class="login-page__image-container">
+    <span class="login-page__title">TIMO, the place where timezones are not a problem anymore.</span>
+    <img class="login-page__image" src="/images/cover.png" alt="timo landing page background">
   </div>
-  <div class="layout layout-align-center-center">
-    <PaperForm @onSubmit={{this.getIn}} as |form|>
-      <div class="layout-column layout-align-center-center">
-        <form.input
-          @value={{this.username}}
-          @placeholder="username"
-          id="username-input"
-          @onChange={{fn (mut this.username)}}
-          @class="no-margin"
-          @customValidations={{this.emptyInputValidation}}
-        />
-        <form.input
-          @value={{this.password}}
-          @placeholder="password"
-          id="password-input"
-          @onChange={{fn (mut this.password)}}
-          @required={{true}}
-          @class="no-margin"
-          @type="password"
-        />
-      </div>
-      <div class="layout-column layout-align-center-center">
-        {{#if this.errorResponse}}
-          <div class="paper-input-error response-error" data-test="login-error">
-            Invalid username or password
-          </div>
-        {{/if}}
-        <form.submit-button @raised={{true}} @primary={{true}} data-test="login-button">
-          Get in
-        </form.submit-button>
-        <LinkTo
-          @route="sign-up"
-          data-test="sign-up-link"
-          @class="sign-link"
-        >
-          Don't have an account? Sign up
-        </LinkTo>
-      </div>
-    </PaperForm>
+  <div class="login-page__form-container">
+    <img src="/images/appicon-signup.png" alt="timo landing appicon">
+    <span class="login-page__login-title">Log in</span>
+    <span class="login-page__login-description">Start scheduling meetings with worldwide teams.</span>
+    <TInput
+      class="login-page__email-input"
+      @label="Username"
+      @value={{this.username}}
+      @showError={{this.usernameError}}
+      @onChange={{fn (mut this.username)}}
+    />
+    <TInput
+      class="login-page__password-input"
+      @type="password"
+      @label="Password"
+      @value={{this.password}}
+      @showError={{this.passwordError}}
+      @onChange={{fn (mut this.password)}}
+    />
+    <div class="login-page__log-in-actions">
+      {{#if this.errorMessage}}
+        <span class="response-error">{{this.errorMessage}}</span>
+      {{/if}}
+      <TButton
+        @class="login-page__log-in-button"
+        @action={{this.logIn}}
+        @label="Log in"
+        @color="green"
+      />
+      <span class="login-page__sign-up-label">Don’t have an account? Sign up</span>
+    </div>
   </div>
 </div>
-{{outlet}}

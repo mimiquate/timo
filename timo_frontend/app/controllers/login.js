@@ -1,33 +1,51 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import emptyInput from 'timo-frontend/custom-paper-validators/empty-input';
+import { isEmpty, isPresent } from '@ember/utils';
 
 export default class LoginController extends Controller {
   @service session;
-
   @tracked errorResponse = false;
   @tracked username = '';
+  @tracked password = '';
+  @tracked passwordError = '';
+  @tracked usernameError = '';
+  @tracked errorMessage = '';
   emptyInputValidation = emptyInput;
 
+  validate() {
+    [
+      { value: this.username, error: 'usernameError' },
+      { value: this.password, error: 'passwordError' }
+    ].forEach(field => {
+      isEmpty(field.value) ? set(this, field.error, true) : set(this, field.error, false);
+    });
+
+    return !this.usernameError && !this.passwordError;
+  }
+
   @action
-  async getIn() {
-    let { username, password } = this;
-    let newUsername = username.trim();
+  async logIn() {
+    this.errorMessage = '';
 
-    this.username = newUsername;
-    this.errorResponse = false;
+    const username = this.username.trim();
+    const password = this.password.trim();
 
-    await this.session.authenticate('authenticator:credentials', newUsername, password)
-      .then(() => this.currentUser.load())
-      .then(() => this.transitionToRoute('landing'))
-      .catch((error) => {
-        if (error.errors[0].title === "Email not verified") {
-          this.transitionToRoute('verification');
-        } else {
-          this.errorResponse = true;
-        }
-      });
+    const isValid = this.validate();
+
+    if (isValid) {
+      await this.session.authenticate('authenticator:credentials', username, password)
+        .then(() => this.currentUser.load())
+        .then(() => this.transitionToRoute('landing'))
+        .catch((error) => {
+          if (error.errors[0].title === "Email not verified") {
+            this.transitionToRoute('verification');
+          } else {
+            this.errorMessage = error.errors[0].title;
+          }
+        });
+    }
   }
 }

@@ -4,6 +4,13 @@
 @import './components/timezone-list.scss';
 @import './components/group-header.scss';
 @import './components/sidenavbar.scss';
+@import './components/t-input.scss';
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
 
 .ember-application, .login-main, .public-main {
   height: 100%;
@@ -41,16 +48,6 @@
   height: fit-content;
 }
 
-$input-error-font-size: 12px !default;
-$input-error-height: 24px !default;
-$input-error-line-height: $input-error-font-size + 2px !default;
-$error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
-
-.paper-input-error {
-  font-size: $input-error-font-size;
-  padding-top: $error-padding;
-}
-
 .pointer-cursor {
   cursor: pointer;
 }
@@ -61,11 +58,6 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
 
 .sign-link {
   margin-top: 10px;
-}
-
-.response-error {
-  color: RGB(var(--warn-A700));
-  padding-bottom: $error-padding;
 }
 
 .share-icon {
@@ -137,4 +129,107 @@ $error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
   .ember-power-select-search {
     padding: 4px 0;
   }
+}
+
+
+.login-page {
+  height: -webkit-fill-available;
+  background: #F0F0F7;
+  display: flex;
+  border-bottom: 7px solid #CED4EA;
+
+  &__form-container {
+    align-items: center;
+    justify-content: center;
+    background: white;
+    width: 50%;
+    padding-left: 110px;
+    padding-right: 110px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-size: 33px;
+    text-align: center;
+    letter-spacing: 0px;
+    color: $dark-blue;
+    opacity: 0.61;
+    font-weight: bold;
+    padding: 60px 125px 0;
+    margin: 0;
+
+    @media (min-width: 1920px) {
+      padding-top: 120px;
+    }
+  }
+
+  &__login-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    color: $dark-blue;
+    margin-top: 26px;
+  }
+
+  &__login-description {
+    width: max-content;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    color: $dark-blue;
+    margin-bottom: 64px;
+  }
+
+  &__log-in-button {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 9px 75px;
+  }
+
+  &__email-input {
+    width: 100%;
+    margin-bottom: 45px;
+  }
+
+  &__password-input {
+    width: 100%;
+    margin-bottom: 111px;
+  }
+
+  &__sign-up-label {
+    color: $green;
+    margin-top: 13px;
+  }
+
+  &__image {
+    width: 578px;
+    height: 411px;
+
+    @media (min-width: 1920px) {
+      width: 778px;
+      height: 611px;
+    }
+  }
+
+  &__log-in-actions {
+    align-items: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.response-error {
+  top: -20px;
+  position: absolute;
+  color: RGB(var(--warn-A700));
+  font-size: 12px;
 }

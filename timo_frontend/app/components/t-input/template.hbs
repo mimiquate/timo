@@ -1,0 +1,12 @@
+<div class="t-input" ...attributes>
+  <input
+    class={{if @showError 'error'}}
+    value={{@value}}
+    type={{@type}}
+    onchange={{this.onChange}}
+  />
+  <label class="{{if @value "t-input not-empty"}}">{{@label}}</label>
+  {{#if @showError}}
+    <span class="t-input__response-error">Required</span>
+  {{/if}}
+</div>
