@@ -1,4 +1,4 @@
-<div class="layout-row main-container">
+<div class="landing">
   <SideNavBar
     @groups={{this.model}}
     @addOne={{this.addOne}}
@@ -11,7 +11,7 @@
     @showToggleablePopover={{this.showToggleablePopover}}
     @togglePopover={{this.togglePopover}}
   />
-  <div class="flex-80 flex-content">
+  <div class="flex-content side-content">
     {{outlet}}
   </div>
 </div>

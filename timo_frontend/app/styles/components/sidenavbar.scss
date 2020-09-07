@@ -1,31 +1,46 @@
 @import '../variables.scss';
 
-.main-container {
-  height: 100%;
-}
-
 .sidenavbar {
   display: flex;
   flex-direction: column;
   background-color: $dark-blue;
+  min-width: 215px;
 
   &__header {
-    padding: 24px;
+    margin-left: 30px;
+    margin-bottom: 15px;
   }
 
   &__title {
-    font-size: 20px;
+    font-size: 16px;
+    line-height: 25px;
     font-weight: bold;
-    color: white;
+    color: $ghost-white;
   }
 
   &__add-group {
-    padding: 6px 24px !important;
+    padding: 5px 20px !important;
+    margin-right: 16px;
+    font-size: 14px;
+    line-height: 21px;
+    width: 74px;
+    height: 30px;
+    font-family: 'Poppins', sans-serif;
   }
 
-  &__no-team {
-    color: white;
-    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  &__icon {
+    margin-left: 30px;
+    margin-top: 36.69px;
+    margin-bottom: 75px;
+    align-self: start;
+  }
+
+  &__content {
+    overflow: scroll;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 }
 
@@ -53,9 +68,11 @@
     background-color: #536895;
   }
 
-  &.active {
-    background-color: #27488f;
-    border-left: 4px $green solid;
+  &__name {
+    font-size: 14px;
+    line-height: 21px;
+    color: $white-grey;
+    font-family: 'Poppins', sans-serif;
   }
 
   &__button {
@@ -63,7 +80,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 12px 16px;
+    padding: 8px 30px;
     margin: 0;
     font-weight: 400;
     text-align: left;
@@ -72,19 +89,42 @@
     color: white;
     outline: none;
   }
+
+  &.active {
+    background-color: #27488f;
+    border-left: 4px $green solid;
+
+    .team-list__button {
+      padding-left: 26px;
+    }
+
+    .team-list__name {
+      color: white;
+    }
+  }
 }
 
 .current-user-container {
-  color: white;
-  margin-top: auto;
-  padding: 30px;
+  font-size: 15px;
+  line-height: 23px;
+  color: $ghost-white;
   cursor: pointer;
+  margin-left: 20px;
+  margin-bottom: 36px;
+}
+
+.current-user-name {
+  border: none;
+  background: inherit;
+  color: white;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
 }
 
 .avatar {
-  margin-right: 12px;
+  margin-right: 13px;
   vertical-align: middle;
-  width: 35px;
-  height: 35px;
+  width: 33px;
+  height: 33px;
   border-radius: 50%;
 }
