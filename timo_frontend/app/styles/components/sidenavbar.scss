@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   background-color: $dark-blue;
-  min-width: 215px;
+  width: 215px;
 
   &__header {
     margin-left: 30px;
@@ -32,6 +32,7 @@
     margin-left: 30px;
     margin-top: 36.69px;
     margin-bottom: 75px;
+    margin-right: auto;
     align-self: start;
   }
 
@@ -108,9 +109,7 @@
   font-size: 15px;
   line-height: 23px;
   color: $ghost-white;
-  cursor: pointer;
-  margin-left: 20px;
-  margin-bottom: 36px;
+  margin: 20px;
 }
 
 .current-user-name {
@@ -119,12 +118,48 @@
   color: white;
   outline: none;
   font-family: 'Poppins', sans-serif;
+  padding: 0px;
+  width: max-content;
+  display: flex;
 }
 
-.avatar {
-  margin-right: 13px;
+.user-avatar {
+  margin-right: 12px;
   vertical-align: middle;
-  width: 33px;
-  height: 33px;
-  border-radius: 50%;
+}
+
+.logout-popover {
+  box-shadow: 0px 3px 6px #00000029;
+  margin: 0;
+  padding: 14px 0px;
+  padding-left: 24px;
+  padding-right: 111px;
+  border: 0;
+  border-radius: 15px;
+  left: -5px !important;
+}
+
+.logout-popover-arrow {
+  border-top-color: white !important;
+  left: 40px !important;
+  transform: scale(2);
+}
+
+.logout-button {
+  background: inherit;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  line-height: 23px;
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+}
+
+.logout-name {
+  max-width: 132px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  align-self: center;
+  text-align: left;
 }

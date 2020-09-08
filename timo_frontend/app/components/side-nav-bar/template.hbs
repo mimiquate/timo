@@ -22,22 +22,26 @@
         />
       {{/each}}
     </div>
-    <div class="current-user-container">
-      <div data-test="current-user-span">
-        <EmberPopover
-          @isShown={{@showToggleablePopover}}
-          @targetId="user-name"
-          @event="none"
-          @hideOn="focusout"
-        >
-          {{paper-icon "power_settings_new" class="md-menu-align-target"}}
-          <button type="button" class="logout-button" {{on "click" @logOut}}>Logout</button>
-        </EmberPopover>
-        <button id="user-name" type="button" class="current-user-name" {{on "click" @togglePopover}}>
-          <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Avatar" class="avatar">
-          {{@currentUser.user.username}}
-        </button>
+  </div>
+  <div class="current-user-container" data-test="current-user-span">
+    <EmberPopover
+      @isShown={{@showToggleablePopover}}
+      @targetId="user-name"
+      @event="none"
+      @hideOn="focusout"
+      @tooltipClass="logout-popover"
+      @arrowClass="logout-popover-arrow"
+      @side="top-start"
+    >
+      <button type="button" class="logout-button" {{on "click" @logOut}}>Logout</button>
+    </EmberPopover>
+    <button id="user-name" type="button" class="current-user-name" {{on "click" @togglePopover}}>
+      <div class="avatar user-avatar">
+        {{avatar-initial @currentUser.user.username}}
       </div>
-    </div>
+      <div class="logout-name">
+        {{@currentUser.user.username}}
+      </div>
+    </button>
   </div>
 </div>

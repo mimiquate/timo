@@ -82,12 +82,6 @@ body {
   max-width: max-content;
 }
 
-.logout-button {
-  background: inherit;
-  border: none;
-  outline: none;
-}
-
 .t-button {
   border: none;
   color: white;
@@ -130,7 +124,6 @@ body {
     padding: 4px 0;
   }
 }
-
 
 .login-page {
   height: calc(100% - 7px);
@@ -243,4 +236,15 @@ body {
   position: absolute;
   color: RGB(var(--warn-A700));
   font-size: 12px;
+}
+
+.avatar {
+  border-radius: 50%;
+  width: 33px;
+  height: 33px;
+  font-size: 18px;
+  background-color: $green;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }

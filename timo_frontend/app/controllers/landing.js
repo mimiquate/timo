@@ -53,6 +53,7 @@ export default class LandiingController extends Controller {
     this.session.invalidate();
     await this.currentUser.logOut();
     this.store.unloadAll();
+    this.togglePopover();
     this.transitionToRoute('/login');
   }
 
