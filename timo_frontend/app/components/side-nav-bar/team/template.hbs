@@ -4,13 +4,6 @@
     class="team-list__button"
     {{on "click" @goToTeam}}
   >
-  <span class="team-list__name">{{@team.name}}</span>
-  </button>
-  <button
-    {{on "click" @deleteTeamModal}}
-    data-test-delete-team={{@index}}
-    class="delete-team-button"
-  >
-    {{paper-icon "delete"}}
+    <span class="team-list__name">{{@team.name}}</span>
   </button>
 </div>

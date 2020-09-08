@@ -15,13 +15,6 @@
     {{outlet}}
   </div>
 </div>
-{{#if this.showDeleteTeamModal}}
-  <DeleteTeamModal
-    @closeDeleteTeamModal={{this.closeDeleteTeamModal}}
-    @deleteTeam={{this.deleteTeam}}
-    @teamToDeleteName={{this.teamToDelete.name}}
-  />
-{{/if}}
 {{#if this.showNewTeamModal}}
   <NewTeamModal
     @title="New Team"

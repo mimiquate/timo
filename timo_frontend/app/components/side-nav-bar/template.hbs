@@ -12,13 +12,11 @@
   </div>
   <div class="sidenavbar__content">
     <div>
-      {{#each @sortedTeams as |team index|}}
+      {{#each @sortedTeams as |team|}}
         <SideNavBar::Team
           @team={{team}}
           @selectedTeam={{eq @currentTeamId team.id}}
-          @index={{index}}
           @goToTeam={{fn @goToTeam team}}
-          @deleteTeamModal={{fn @deleteTeamModal team}}
         />
       {{/each}}
     </div>

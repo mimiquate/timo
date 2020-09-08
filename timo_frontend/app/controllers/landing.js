@@ -21,8 +21,6 @@ export default class LandiingController extends Controller {
   @service session;
   @service router;
 
-  @tracked showDeleteTeamModal = false;
-  @tracked teamToDelete = null;
   @tracked showToggleablePopover = false;
   @tracked showNewTeamModal = false;
 
@@ -55,29 +53,6 @@ export default class LandiingController extends Controller {
     this.store.unloadAll();
     this.togglePopover();
     this.transitionToRoute('/login');
-  }
-
-  @action
-  deleteTeamModal(team) {
-    this.showDeleteTeamModal = true;
-    this.teamToDelete = team;
-  }
-
-  @action
-  closeDeleteTeamModal() {
-    this.showDeleteTeamModal = false;
-  }
-
-  @action
-  async deleteTeam() {
-    if (this.teamToDelete) {
-      await this.teamToDelete.destroyRecord();
-      this.showDeleteTeamModal = false;
-
-      if (this.currentTeamId === this.teamToDelete.id) {
-        await this.transitionToRoute('landing');
-      }
-    }
   }
 
   @action

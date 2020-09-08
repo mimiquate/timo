@@ -52,23 +52,6 @@
   align-items: center;
   transition: 0.3s;
 
-  @media (hover: hover) {
-    .delete-team-button {
-      display: none;
-    }
-  }
-
-  &:hover {
-    .delete-team-button {
-      border: none;
-      color: white;
-      background-color: inherit;
-      display: block;
-      outline: none;
-    }
-    background-color: #536895;
-  }
-
   &__name {
     font-size: 14px;
     line-height: 21px;
