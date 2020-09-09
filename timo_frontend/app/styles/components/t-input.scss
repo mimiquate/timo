@@ -2,7 +2,6 @@
 
 .t-input {
   position: relative;
-  margin-bottom:2 5px;
 }
 
 .t-input label {
@@ -22,8 +21,9 @@
   background: transparent;
   width: 100%;
   padding: 8px 0 5px 6px;
-  font-size: 14px;
+  font-size: 16px;
   color: $grey;
+  height: 17px;
 
   &.error {
     border-bottom: 1px solid RGB(var(--warn-A700));
@@ -33,8 +33,7 @@
 .t-input input:focus {
   border: none;
   outline: none;
-  height: 17px;
-  border-bottom: 1px solid $grey;
+  border-bottom: 2px solid $grey;
 
   &.error {
     border-bottom: 1px solid RGB(var(--warn-A700));
@@ -54,7 +53,9 @@
 }
 
 .t-input__response-error {
+  position: absolute;
+  left: 0px;
+  top: 30px;
   color: RGB(var(--warn-A700));
-  top: 12px;
   font-size: 12px;
 }
