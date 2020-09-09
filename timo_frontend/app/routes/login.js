@@ -7,8 +7,10 @@ export default class LoginRoute extends Route.extend(UnauthenticatedRouteMixin) 
   resetController(controller) {
     controller.setProperties({
       username: '',
+      usernameError: '',
       password: '',
-      errorResponse: false
+      passwordError: '',
+      errorMessage: ''
     });
   }
 }
