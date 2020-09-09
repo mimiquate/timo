@@ -6,7 +6,7 @@
     onchange={{this.onChange}}
   />
   <label class="{{if @value "t-input not-empty"}}">{{@label}}</label>
-  {{#if @showError}}
-    <span class="t-input__response-error">Required</span>
+  {{#if @error}}
+    <span class="t-input__response-error">{{@error}}</span>
   {{/if}}
 </div>

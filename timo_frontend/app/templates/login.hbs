@@ -11,7 +11,7 @@
       class="login-page__email-input"
       @label="Username"
       @value={{this.username}}
-      @showError={{this.usernameError}}
+      @error={{this.usernameError}}
       @onChange={{fn (mut this.username)}}
     />
     <TInput
@@ -19,7 +19,7 @@
       @type="password"
       @label="Password"
       @value={{this.password}}
-      @showError={{this.passwordError}}
+      @error={{this.passwordError}}
       @onChange={{fn (mut this.password)}}
     />
     <div class="login-page__log-in-actions">
