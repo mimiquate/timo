@@ -3,9 +3,9 @@ import { clickTrigger, selectChoose } from 'ember-power-select/test-support/help
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 export async function loginAs(username, password) {
-  await fillIn('#username-input input', username);
-  await fillIn('#password-input input', password);
-  return click('[data-test=login-button]');
+  await fillIn('.login-page__email-input input', username);
+  await fillIn('.login-page__password-input input', password);
+  return click('.login-page__log-in-button');
 }
 
 export function setSession(user) {

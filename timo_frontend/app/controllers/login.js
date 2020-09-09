@@ -2,7 +2,6 @@ import Controller from '@ember/controller';
 import { action, set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { isEmpty, isPresent } from '@ember/utils';
 import { Changeset } from 'ember-changeset';
 import loginValidation from 'timo-frontend/validators/user';
 import lookupValidator from 'ember-changeset-validations';

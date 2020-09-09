@@ -40,13 +40,12 @@ module('Acceptance | Login', function (hooks) {
   test('Login with no username error', async function (assert) {
     await visit('/login');
     await loginAs('', 'password');
-    await click('[data-test=login-button]');
 
-    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+    let errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/login', 'Stays in login page');
     assert.ok(
-      errorMessage[0].textContent.includes('This is required'),
+      errorMessage[0].textContent.includes(`Username can't be blank`),
       'No username error'
     );
   });
@@ -55,11 +54,11 @@ module('Acceptance | Login', function (hooks) {
     await visit('/login');
     await loginAs('     ', 'password');
 
-    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+    let errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
     assert.ok(
-      errorMessage[0].textContent.includes('This is required'),
+      errorMessage[0].textContent.includes(`Username can't be blank`),
       'No username error'
     );
   });
@@ -67,13 +66,12 @@ module('Acceptance | Login', function (hooks) {
   test('Login with no password error', async function (assert) {
     await visit('/login');
     await loginAs('juan', '');
-    await click('[data-test=login-button]');
 
-    let errorMessage = this.element.querySelectorAll('.paper-input-error');
+    let errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/login', 'Stays in login page');
     assert.ok(
-      errorMessage[0].textContent.includes('This is required'),
+      errorMessage[0].textContent.includes(`Password can't be blank`),
       'No password error'
     );
   });
@@ -86,7 +84,7 @@ module('Acceptance | Login', function (hooks) {
     await loginAs('marcelo', 'password');
 
     assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
-    assert.dom('[data-test=login-error]')
+    assert.dom('.response-error')
       .hasText('Invalid username or password', 'Wrong username');
   });
 
@@ -98,7 +96,7 @@ module('Acceptance | Login', function (hooks) {
     await loginAs('juan', 'wrong_password');
 
     assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
-    assert.dom('[data-test=login-error]')
+    assert.dom('.response-error')
       .hasText('Invalid username or password', 'Wrong password');
   });
 
@@ -126,6 +124,8 @@ module('Acceptance | Login', function (hooks) {
     await visit('/login');
     await loginAs('juan', 'password');
 
-    assert.equal(currentURL(), '/verification', 'Correctly redirects to verification page');
+    assert.equal(currentURL(), '/login', 'Show verification message');
+    assert.dom('.response-error')
+      .hasText('Please check your email and verify your account', 'Wrong password');
   });
 });
