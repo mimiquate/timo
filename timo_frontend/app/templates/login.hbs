@@ -32,7 +32,13 @@
         @label="Log in"
         @color="green"
       />
-      <span class="login-page__sign-up-label">Don’t have an account? Sign up</span>
+      <LinkTo
+        @route="sign-up"
+        data-test="sign-up-link"
+        @class="login-page__sign-up-label"
+      >
+        Don't have an account? Sign up
+      </LinkTo>
     </div>
   </div>
 </div>
