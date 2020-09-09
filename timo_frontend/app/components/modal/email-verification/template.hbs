@@ -1,0 +1,17 @@
+<ModalDialog
+  @containerClassNames="verify-email-modal"
+  @translucentOverlay={{true}}
+  @onClose={{@onClose}}
+  @clickOutsideToClose={{true}}
+>
+  <img
+    class="verify-email-modal__close"
+    src="/images/close.svg"
+    {{on "click" @onClose}}
+  >
+  <img class="verify-email-modal__image" src="/images/verify-email.png" alt="verify email">
+  <span class="verify-email-modal__title">Check your email</span>
+  <span class="verify-email-modal__description">
+    Please check out your email and verify your account.
+  </span>
+</ModalDialog>
