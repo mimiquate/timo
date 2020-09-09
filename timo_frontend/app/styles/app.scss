@@ -5,6 +5,9 @@
 @import './components/group-header.scss';
 @import './components/sidenavbar.scss';
 @import './components/t-input.scss';
+@import './components/email-verification.scss';
+@import "ember-modal-dialog/ember-modal-structure";
+@import "ember-modal-dialog/ember-modal-appearance";
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
@@ -242,4 +245,8 @@ body {
   position: absolute;
   color: RGB(var(--warn-A700));
   font-size: 12px;
+}
+
+.ember-modal-overlay.translucent {
+  background-color: rgba(black, .64);
 }

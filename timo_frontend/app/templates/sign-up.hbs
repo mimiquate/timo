@@ -57,3 +57,8 @@
     </div>
   </div>
 </div>
+{{#if this.showEmailVerificationModal}}
+  <Modal::EmailVerification
+    @onClose={{this.closeEmailVerificationModal}}
+  />
+{{/if}}
