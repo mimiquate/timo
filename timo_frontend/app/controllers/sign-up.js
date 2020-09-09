@@ -1,42 +1,83 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import emptyInput from 'timo-frontend/custom-paper-validators/empty-input';
+import { Changeset } from 'ember-changeset';
+import { signUpValidator } from 'timo-frontend/validators/user';
+import lookupValidator from 'ember-changeset-validations';
 
 export default class SignUpController extends Controller {
   @tracked username = '';
-  @tracked password = '';
-  @tracked confirmPassword = '';
   @tracked email = '';
-  @tracked errorResponse = false;
-  emptyInputValidation = emptyInput;
-  confirmPasswordValidation = [{
-    message: 'Passwords don\'t match',
-    validate: (inputValue) => inputValue === this.password
-  }];
+  @tracked password = '';
+  @tracked passwordConfirmation = '';
+  @tracked passwordError = '';
+  @tracked usernameError = '';
+  @tracked passwordConfirmationError = '';
+  @tracked emailError = '';
+  @tracked errorMessage = '';
+  @tracked showEmailVerificationModal = false;
+
+  showErrors(errors) {
+    errors.forEach(field => {
+      set(this, `${field.key}Error`, field.validation[0]);
+    });
+  }
+
+  cleanInputs() {
+    this.password = '';
+    this.username = '';
+    this.passwordConfirmation = '';
+    this.email = '';
+  }
+
+  cleanErrors() {
+    this.passwordError = '';
+    this.usernameError = '';
+    this.passwordConfirmationError = '';
+    this.emailError = '';
+  }
+
+  @action
+  closeEmailVerificationModal() {
+    this.showEmailVerificationModal = false;
+  }
 
   @action
   async signUp() {
-    let { username, password, email } = this;
-    let newUsername = username.trim();
-    let newPassword = password.trim();
-    let newEmail = email.trim();
+    this.cleanErrors();
 
-    this.username = newUsername;
-    this.password = newPassword;
-    this.confirmPassword = newPassword;
-    this.errorResponse = false;
-    this.email = newEmail;
+    const username = this.username.trim();
+    const email = this.email.trim();
+    const password = this.password.trim();
+    const passwordConfirmation = this.passwordConfirmation.trim();
 
-    let user = this.store.createRecord('user',
-      {
-        username: newUsername,
-        password: newPassword,
-        email: newEmail
+    const user = {
+      username,
+      email,
+      password,
+      passwordConfirmation
+    }
+
+    let changeset = Changeset(user, lookupValidator(signUpValidator()), signUpValidator());
+
+    await changeset.validate();
+
+    if (changeset.isValid) {
+      const user = this.store.createRecord('user', {
+        username,
+        password,
+        email
       });
 
-    await user.save()
-      .then(() => this.transitionToRoute('verification'))
-      .catch(() => this.errorResponse = true);
+      await user.save()
+        .then(() => {
+          this.showEmailVerificationModal = true;
+          this.cleanErrors();
+          this.cleanInputs();
+        })
+        .catch(() => this.errorMessage = 'That username is already taken');
+    } else {
+      this.showErrors(changeset.errors);
+    }
   }
 }

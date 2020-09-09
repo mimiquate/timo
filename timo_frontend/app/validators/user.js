@@ -1,12 +1,40 @@
-import { validatePresence, validateLength } from 'ember-changeset-validations/validators';
+import {
+  validatePresence,
+  validateLength,
+  validateFormat,
+  validateConfirmation
+} from 'ember-changeset-validations/validators';
 
-export default {
-  username: [
-    validatePresence(true),
-    validateLength({ min: 4 , message: 'Username must have at least 4 characters'})
-  ],
-  password: [
-    validatePresence(true),
-    validateLength({ min: 8, message: 'Password must have at least 8 characters'}),
-  ],
+export function loginValidator() {
+  return {
+    username: [
+      validatePresence(true),
+      validateLength({ min: 4 , message: 'Username must have at least 4 characters'})
+    ],
+    password: [
+      validatePresence(true),
+      validateLength({ min: 8, message: 'Password must have at least 8 characters'})
+    ],
+  }
+};
+
+export function signUpValidator() {
+  return {
+    username: [
+      validatePresence(true),
+      validateLength({ min: 4 , message: 'Username must have at least 4 characters'})
+    ],
+    email: [
+      validatePresence(true),
+      validateFormat({ type: 'email' })
+    ],
+    password: [
+      validatePresence(true),
+      validateLength({ min: 8, message: 'Password must have at least 8 characters'})
+    ],
+    passwordConfirmation: [
+      validatePresence(true),
+      validateConfirmation({ on: 'password' })
+    ]
+  }
 };
