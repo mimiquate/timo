@@ -14,7 +14,6 @@ export default class LoginController extends Controller {
   @tracked passwordError = '';
   @tracked usernameError = '';
   @tracked errorMessage = '';
-  @tracked showEmailVerificationModal = false;
 
   showErrors(errors) {
     errors.forEach(field => {
