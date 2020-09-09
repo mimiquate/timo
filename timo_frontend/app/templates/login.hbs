@@ -8,14 +8,14 @@
     <span class="login-page__login-title">Log in</span>
     <span class="login-page__login-description">Start scheduling meetings with worldwide teams.</span>
     <TInput
-      class="login-page__email-input"
+      class="login-page__input"
       @label="Username"
       @value={{this.username}}
       @error={{this.usernameError}}
       @onChange={{fn (mut this.username)}}
     />
     <TInput
-      class="login-page__password-input"
+      class="login-page__input"
       @type="password"
       @label="Password"
       @value={{this.password}}
