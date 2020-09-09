@@ -49,7 +49,7 @@ export default class LoginController extends Controller {
         .then(() => this.transitionToRoute('landing'))
         .catch((error) => {
           if (error.errors[0].title === "Email not verified") {
-            this.transitionToRoute('verification');
+            this.errorMessage = 'Please check your email and verify your account';
           } else {
             this.errorMessage = error.errors[0].title;
           }
