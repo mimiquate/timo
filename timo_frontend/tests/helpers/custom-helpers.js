@@ -32,12 +32,15 @@ export async function openNewMemberModal(teamId) {
   return click('[data-test=add-member-button]');
 }
 
-export async function signUp(username, password, confirm, email) {
-  await fillIn('#username-input input', username);
-  await fillIn('#password-input input', password);
-  await fillIn('#confirmPassword-input input', confirm);
-  await fillIn('#email-input input', email);
-  return click('[data-test=sign-up-button]');
+export async function signUp(username, password, passwordConfirmation, email) {
+  const inputs = findAll('.sign-up-page__input input');
+
+  await fillIn(inputs[0], username);
+  await fillIn(inputs[1], email);
+  await fillIn(inputs[2], password);
+  await fillIn(inputs[3], passwordConfirmation);
+
+  return click('.sign-up-page__log-in-button');
 }
 
 export function invalidUserServerPost() {
