@@ -19,7 +19,6 @@ Router.map(function () {
   })
   this.route('login');
   this.route('sign-up');
-  this.route('verification');
   this.route('verify', function () {
     this.route('token', { path: ':token' });
   });
