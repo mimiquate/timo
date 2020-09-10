@@ -1,6 +1,6 @@
 <div class="t-input" ...attributes>
   <input
-    class={{if @showError 'error'}}
+    class={{if @error 'error'}}
     value={{@value}}
     type={{@type}}
     onchange={{this.onChange}}

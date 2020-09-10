@@ -133,10 +133,15 @@ body {
 
 
 .login-page {
-  height: -webkit-fill-available;
+  height: calc(100% - 7px);
   background: #F0F0F7;
   display: flex;
   border-bottom: 7px solid #CED4EA;
+
+  @media (max-width: 1179px) {
+    border-bottom: none;
+    height: 100%;
+  }
 
   &__form-container {
     align-items: center;
@@ -147,6 +152,10 @@ body {
     padding-right: 110px;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 1179px) {
+      width: 100%;
+    }
   }
 
   &__image-container {
@@ -154,6 +163,10 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 1179px) {
+      display: none;
+    }
   }
 
   &__title {
@@ -166,7 +179,7 @@ body {
     padding: 60px 125px 0;
     margin: 0;
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1720px) {
       padding-top: 120px;
     }
   }
@@ -200,6 +213,7 @@ body {
   }
 
   &__sign-up-label {
+    font-size: 14px;
     color: $green;
     margin-top: 13px;
     text-decoration: none;
@@ -209,7 +223,7 @@ body {
     width: 578px;
     height: 411px;
 
-    @media (min-width: 1920px) {
+    @media (min-width: 1520px) {
       width: 778px;
       height: 611px;
     }

@@ -7,6 +7,5 @@ export default {
   ],
   password: [
     validatePresence(true),
-    validateLength({ min: 8, message: 'Password must have at least 8 characters'}),
   ],
 };

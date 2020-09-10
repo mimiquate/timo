@@ -12,7 +12,7 @@
   font-size: 14px;
   color: $grey;
   pointer-events: none;
-  transition: all 0.5s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .t-input input {
@@ -26,7 +26,7 @@
   height: 17px;
 
   &.error {
-    border-bottom: 1px solid RGB(var(--warn-A700));
+    border-bottom: 1px solid $timo-warning;
   }
 }
 
@@ -36,7 +36,7 @@
   border-bottom: 2px solid $grey;
 
   &.error {
-    border-bottom: 1px solid RGB(var(--warn-A700));
+    border-bottom: 1px solid $timo-warning;
   }
 }
 
@@ -55,7 +55,7 @@
 .t-input__error {
   position: absolute;
   left: 0px;
-  top: 30px;
-  color: RGB(var(--warn-A700));
+  top: 32px;
+  color: $timo-warning;
   font-size: 12px;
 }
