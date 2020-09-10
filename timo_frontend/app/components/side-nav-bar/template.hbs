@@ -21,7 +21,7 @@
       {{/each}}
     </div>
   </div>
-  <div class="current-user-container" data-test="current-user-span">
+  <div class="current-user-container">
     <EmberPopover
       @isShown={{@showToggleablePopover}}
       @targetId="user-name"
@@ -37,7 +37,7 @@
       <div class="avatar user-avatar">
         {{avatar-initial @currentUser.user.username}}
       </div>
-      <div class="logout-name">
+      <div class="logout-name" data-test="current-user-span">
         {{@currentUser.user.username}}
       </div>
     </button>

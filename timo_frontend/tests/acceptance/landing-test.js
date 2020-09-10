@@ -1,8 +1,9 @@
 import { module, test } from 'qunit';
-import { visit, currentURL, click } from '@ember/test-helpers';
+import { visit, currentURL, click, findAll, find } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
+import { assertTooltipRendered, assertTooltipContent } from 'ember-tooltips/test-support';
 
 module('Acceptance | Landing', function (hooks) {
   setupApplicationTest(hooks);
@@ -23,8 +24,6 @@ module('Acceptance | Landing', function (hooks) {
     assert.equal(currentURL(), '/', 'Correctly visits landing page');
     assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
     assert.dom('[data-test=landing-image]').exists('Landing page images loads');
-    assert.dom('[data-test=no-team]')
-      .hasText('You don\'t have any teams yet', 'No teams are listed');
   });
 
   test('Clicks button to Add one team and opens new team modal', async function (assert) {
@@ -47,7 +46,8 @@ module('Acceptance | Landing', function (hooks) {
     let newTeam = this.server.create('team', { name: 'Team', user: newUser});
 
     await visit('/');
-    await click('[data-test-team="0"] button');
+    const teamButtons = findAll('.team-list__button');
+    await click(teamButtons[0]);
 
     assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Redirects to team page');
     assert.dom('[data-test=team-title]').exists('Team title loads');
@@ -60,8 +60,13 @@ module('Acceptance | Landing', function (hooks) {
     setSession.call(this, newUser);
 
     await visit('/');
-    await click('[data-test=logout-trigger]');
-    await click('[data-test=logout-button] button');
+
+    await click(find('#user-name'));
+
+    assertTooltipRendered(assert);
+    assertTooltipContent(assert, { contentString: 'Logout' });
+
+    await click(find('.logout-button'));
 
     assert.equal(currentURL(), `/login`, 'Redirects to login page');
 
