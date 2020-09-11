@@ -135,7 +135,7 @@ body {
 }
 
 .login-page, .sign-up-page {
-  height: calc(100% - 7px);
+  min-height: calc(100% - 7px);
   background: #F0F0F7;
   display: flex;
   border-bottom: 7px solid #CED4EA;
@@ -226,10 +226,14 @@ body {
   &__image {
     width: 578px;
     height: 411px;
+    min-width: 378px;
+    min-height: 211px;
 
     @media (min-width: 1520px) {
       width: 778px;
       height: 611px;
+      min-width: 578px;
+      min-height: 411px;
     }
   }
 
