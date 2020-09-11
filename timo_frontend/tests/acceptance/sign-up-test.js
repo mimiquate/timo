@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, click, currentURL } from '@ember/test-helpers';
+import { visit, click, currentURL, find } from '@ember/test-helpers';
 import { setSession, signUp } from 'timo-frontend/tests/helpers/custom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
@@ -39,6 +39,14 @@ module('Acceptance | Sign-up', function (hooks) {
     const user = this.server.db.users.findBy({ username: 'juan'});
 
     assert.dom('.verify-email-modal').exists();
+    assert.equal(
+      find('.verify-email-modal__title').textContent.trim(),
+      'Check your email'
+    );
+    assert.equal(
+      find('.verify-email-modal__description').textContent.trim(),
+      'Please check out your email and verify your account.'
+    );
     assert.notEqual(user, null, 'New user is created');
   });
 
