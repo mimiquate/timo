@@ -73,7 +73,6 @@ export default class LandingController extends Controller {
     });
 
     await team.save();
-    this.showNewTeamModal = false;
     await this.transitionToRoute('landing.teams.team', team);
   }
 }

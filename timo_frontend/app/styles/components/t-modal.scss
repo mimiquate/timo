@@ -1,0 +1,70 @@
+@import '../variables.scss';
+
+.t-modal {
+  &.ember-modal-dialog {
+    border-radius: 13px;
+    padding: 0;
+  }
+
+  &__title {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  &__team-name {
+    margin-top: 73px;
+  }
+
+  &__content {
+    padding: 28px 105px 75px 105px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  &__actions-container {
+    display: flex;
+
+      >:first-child {
+        border-radius: 0 0 0 13px;
+      }
+
+      >:last-child {
+        border-radius: 0 0 13px 0;
+      }
+
+      >:only-child {
+        border-radius: 0 0 13px 13px;
+    }
+  }
+
+  &__button {
+    width:100%;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    padding: 14px 107px;
+    outline: none;
+
+    &.blue {
+      background-color: #ADBAE4;
+    }
+
+    &.green {
+      background-color: $green;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+  }
+}

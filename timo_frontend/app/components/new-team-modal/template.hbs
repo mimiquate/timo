@@ -1,36 +1,15 @@
-<div data-test={{@dataTestName}}>
-  <PaperDialog
-    @clickOutsideToClose={{true}}
-    @onClose={{@closeModal}}
-  >
-    <PaperToolbar>
-      <PaperToolbarTools>
-        <h1 data-test-new-team="title">
-          {{@title}}
-        </h1>
-        <span class="flex"></span>
-        <PaperButton @iconButton={{true}} @onClick={{@closeModal}} data-test-new-team="close-modal">
-          {{paper-icon "close"}}
-        </PaperButton>
-      </PaperToolbarTools>
-    </PaperToolbar>
-    <PaperDialogContent>
-      <PaperForm @onSubmit={{fn @saveTeam this.teamName}} as |form|>
-        <div class="layout layout-align-center-center">
-          <form.input
-            @value={{this.teamName}}
-            @placeholder="New team name"
-            id="teamName-input"
-            @onChange={{fn (mut this.teamName)}}
-            @customValidations={{this.emptyInputValidation}}
-          />
-        </div>
-        <div class="layout layout-align-center-center">
-          <form.submit-button @raised={{true}} @primary={{true}} data-test-new-team="save">
-            Save
-          </form.submit-button>
-        </div>
-      </PaperForm>
-    </PaperDialogContent>
-  </PaperDialog>
-</div>
+<TModal
+  @title="Create a Team"
+  @closeModal={{@closeModal}}
+  @action={{this.addTeam}}
+  @actionLabel="Create"
+>
+  <TInput
+    class="t-modal__team-name"
+    @label="Team's name"
+    @value={{this.team}}
+    @error={{this.teamError}}
+    @onChange={{fn (mut this.team)}}
+    @cleanError={{fn this.cleanError 'teamError'}}
+  />
+</TModal>
