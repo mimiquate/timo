@@ -7,10 +7,15 @@ export default class SignUpRoute extends Route.extend(UnauthenticatedRouteMixin)
   resetController(controller) {
     controller.setProperties({
       username: '',
+      usernameError: '',
       password: '',
-      confirmPassword: '',
-      errorResponse: false,
-      email: ''
+      passwordError: '',
+      email: '',
+      emailError: '',
+      passwordConfirmation: '',
+      passwordConfirmationError: '',
+      errorMessage: '',
+      showEmailVerificationModal: false
     });
   }
 }

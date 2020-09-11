@@ -26,7 +26,7 @@
   height: 17px;
 
   &.error {
-    border-bottom: 1px solid $timo-warning;
+    border-bottom: 2px solid $timo-warning;
   }
 }
 
@@ -36,7 +36,7 @@
   border-bottom: 2px solid $grey;
 
   &.error {
-    border-bottom: 1px solid $timo-warning;
+    border-bottom: 2px solid $timo-warning;
   }
 }
 

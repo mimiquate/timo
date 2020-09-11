@@ -3,12 +3,11 @@ import { action, set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { Changeset } from 'ember-changeset';
-import loginValidation from 'timo-frontend/validators/user';
+import { loginValidator } from 'timo-frontend/validators/user';
 import lookupValidator from 'ember-changeset-validations';
 
 export default class LoginController extends Controller {
   @service session;
-  @tracked errorResponse = false;
   @tracked username = '';
   @tracked password = '';
   @tracked passwordError = '';
@@ -37,7 +36,7 @@ export default class LoginController extends Controller {
     let changeset = Changeset({
       username,
       password
-    }, lookupValidator(loginValidation), loginValidation);
+    }, lookupValidator(loginValidator()), loginValidator());
 
     await changeset.validate();
 
