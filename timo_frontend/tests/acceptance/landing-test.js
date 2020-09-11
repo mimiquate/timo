@@ -33,11 +33,13 @@ module('Acceptance | Landing', function (hooks) {
     await visit('/');
     await click('[data-test=new-team]');
 
-    assert.dom('[data-test=new-team-modal]').exists('Opens new team modal');
-    assert.dom('[data-test-new-team=title]').hasText('New Team', 'Correct title');
-    assert.dom('[data-test-new-team=close-modal]').hasText('close', 'Close modal button');
-    assert.dom('#teamName-input input').hasText('', 'Empty input');
-    assert.dom('[data-test-new-team=save]').hasText('Save', 'Save button');
+    assert.dom('.t-modal').exists('Opens new team modal');
+    assert.dom('.t-modal__title').hasText('Create a Team', 'Correct title');
+    assert.dom('.t-modal__close').exists('Close modal button');
+    assert.dom('.t-modal__team-name input').hasText('', 'Empty input');
+
+    assert.dom('[data-test=cancel-button]').hasText('Cancel', 'Cancel button');
+    assert.dom('[data-test=save-button]').hasText('Create', 'Save button');
   });
 
   test('Clicks team name and redirects to selected team page', async function (assert) {

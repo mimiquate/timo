@@ -18,8 +18,8 @@ export function setSession(user) {
 
 export async function createTeam(teamName) {
   await click('[data-test=new-team]');
-  await fillIn('#teamName-input input', teamName);
-  return click('[data-test-new-team=save]');
+  await fillIn('.t-modal__team-name input', teamName);
+  return click('[data-test=save-button]');
 }
 
 export async function chooseTimeZone(timezone) {
