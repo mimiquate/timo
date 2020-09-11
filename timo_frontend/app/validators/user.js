@@ -16,7 +16,7 @@ export function loginValidator() {
       validatePresence(true),
     ],
   }
-};
+}
 
 export function signUpValidator() {
   return {
@@ -37,4 +37,4 @@ export function signUpValidator() {
       validateConfirmation({ on: 'password' })
     ]
   }
-};
+}
