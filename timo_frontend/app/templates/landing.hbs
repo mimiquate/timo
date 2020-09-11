@@ -1,27 +1,18 @@
-<div class="layout-row main-container">
+<div class="landing">
   <SideNavBar
-    @groups={{this.model}}
     @addOne={{this.addOne}}
     @sortedTeams={{this.sortedTeams}}
     @goToTeam={{this.goToTeam}}
-    @deleteTeamModal={{this.deleteTeamModal}}
     @currentTeamId={{this.currentTeamId}}
     @currentUser={{this.currentUser}}
     @logOut={{this.logOut}}
     @showToggleablePopover={{this.showToggleablePopover}}
     @togglePopover={{this.togglePopover}}
   />
-  <div class="flex-80 flex-content">
+  <div class="flex-content side-content">
     {{outlet}}
   </div>
 </div>
-{{#if this.showDeleteTeamModal}}
-  <DeleteTeamModal
-    @closeDeleteTeamModal={{this.closeDeleteTeamModal}}
-    @deleteTeam={{this.deleteTeam}}
-    @teamToDeleteName={{this.teamToDelete.name}}
-  />
-{{/if}}
 {{#if this.showNewTeamModal}}
   <NewTeamModal
     @title="New Team"
