@@ -17,7 +17,7 @@ function compareTeamsByCreationTime(teamA, teamB) {
   return ret;
 }
 
-export default class LandiingController extends Controller {
+export default class LandingController extends Controller {
   @service session;
   @service router;
 
