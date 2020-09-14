@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action, set } from '@ember/object';
 import { isPresent } from '@ember/utils';
 
-export default class NewTeamModalComponent extends Component {
+export default class AddTeamModalComponent extends Component {
   @tracked team = '';
   @tracked teamError = '';
 
