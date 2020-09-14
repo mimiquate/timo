@@ -5,7 +5,6 @@ import {
   validateConfirmation
 } from 'ember-changeset-validations/validators';
 
-
 export function loginValidator() {
   return {
     username: [

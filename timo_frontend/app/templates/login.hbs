@@ -13,6 +13,7 @@
       @value={{this.username}}
       @error={{this.usernameError}}
       @onChange={{fn (mut this.username)}}
+      @cleanError={{fn this.cleanError 'usernameError'}}
     />
     <TInput
       class="login-page__input"
@@ -21,6 +22,7 @@
       @value={{this.password}}
       @error={{this.passwordError}}
       @onChange={{fn (mut this.password)}}
+      @cleanError={{fn this.cleanError 'passwordError'}}
     />
     <div class="login-page__log-in-actions">
       {{#if this.errorMessage}}

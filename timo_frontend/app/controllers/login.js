@@ -27,6 +27,11 @@ export default class LoginController extends Controller {
   }
 
   @action
+  cleanError(error) {
+    set(this, error, '');
+  }
+
+  @action
   async logIn() {
     this.cleanErrors();
 

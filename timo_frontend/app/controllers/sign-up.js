@@ -23,6 +23,11 @@ export default class SignUpController extends Controller {
     });
   }
 
+  @action
+  cleanError(error) {
+    set(this, error, '');
+  }
+
   cleanInputs() {
     this.password = '';
     this.username = '';

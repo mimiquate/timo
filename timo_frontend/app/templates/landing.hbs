@@ -1,6 +1,6 @@
 <div class="landing">
   <SideNavBar
-    @addOne={{this.addOne}}
+    @openTeamModal={{this.openTeamModal}}
     @sortedTeams={{this.sortedTeams}}
     @goToTeam={{this.goToTeam}}
     @currentTeamId={{this.currentTeamId}}
@@ -15,9 +15,7 @@
 </div>
 {{#if this.showNewTeamModal}}
   <NewTeamModal
-    @title="New Team"
     @closeModal={{this.closeNewTeamModal}}
-    @dataTestName="new-team-modal"
     @saveTeam={{this.saveTeam}}
   />
 {{/if}}

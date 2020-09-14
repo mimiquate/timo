@@ -37,7 +37,7 @@ export default class LandingController extends Controller {
   }
 
   @action
-  addOne() {
+  openTeamModal() {
     this.showNewTeamModal = true;
   }
 
@@ -73,7 +73,9 @@ export default class LandingController extends Controller {
     });
 
     await team.save();
-    this.showNewTeamModal = false;
     await this.transitionToRoute('landing.teams.team', team);
+
+    const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
+    teamList.scrollTop = teamList.scrollHeight;
   }
 }

@@ -13,6 +13,7 @@
       @value={{this.username}}
       @error={{this.usernameError}}
       @onChange={{fn (mut this.username)}}
+      @cleanError={{fn this.cleanError 'usernameError'}}
     />
     <TInput
       class="sign-up-page__input"
@@ -20,6 +21,7 @@
       @value={{this.email}}
       @error={{this.emailError}}
       @onChange={{fn (mut this.email)}}
+      @cleanError={{fn this.cleanError 'emailError'}}
     />
     <TInput
       class="sign-up-page__input"
@@ -28,6 +30,7 @@
       @value={{this.password}}
       @error={{this.passwordError}}
       @onChange={{fn (mut this.password)}}
+      @cleanError={{fn this.cleanError 'passwordError'}}
     />
     <TInput
       class="sign-up-page__input"
@@ -36,6 +39,7 @@
       @value={{this.passwordConfirmation}}
       @error={{this.passwordConfirmationError}}
       @onChange={{fn (mut this.passwordConfirmation)}}
+      @cleanError={{fn this.cleanError 'passwordConfirmationError'}}
     />
     <div class="sign-up-page__log-in-actions">
       {{#if this.errorMessage}}
@@ -58,7 +62,7 @@
   </div>
 </div>
 {{#if this.showEmailVerificationModal}}
-  <Modal::EmailVerification
+  <EmailVerificationModal
     @onClose={{this.closeEmailVerificationModal}}
   />
 {{/if}}
