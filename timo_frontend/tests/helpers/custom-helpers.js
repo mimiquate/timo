@@ -23,8 +23,8 @@ export async function createTeam(teamName) {
 }
 
 export async function chooseTimeZone(timezone) {
-  await clickTrigger('#memberTimeZone-select');
-  return selectChoose('#memberTimeZone-select', timezone);
+  await clickTrigger('.t-dropdown');
+  return selectChoose('.t-dropdown', timezone);
 }
 
 export async function openNewMemberModal(teamId) {
