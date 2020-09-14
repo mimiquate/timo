@@ -7,7 +7,7 @@
   }
 
   &__title {
-    font-size: 24px;
+    font-size: 25px;
     text-align: center;
   }
 
@@ -25,16 +25,16 @@
   &__actions-container {
     display: flex;
 
-      >:first-child {
-        border-radius: 0 0 0 13px;
-      }
+    >:first-child {
+      border-radius: 0 0 0 13px;
+    }
 
-      >:last-child {
-        border-radius: 0 0 13px 0;
-      }
+    >:last-child {
+      border-radius: 0 0 13px 0;
+    }
 
-      >:only-child {
-        border-radius: 0 0 13px 13px;
+    >:only-child {
+      border-radius: 0 0 13px 13px;
     }
   }
 
