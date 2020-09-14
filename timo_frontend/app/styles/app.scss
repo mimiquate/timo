@@ -7,6 +7,7 @@
 @import './components/t-input.scss';
 @import './components/t-modal.scss';
 @import './components/email-verification.scss';
+@import './components/add-member-modal.scss';
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
@@ -104,20 +105,6 @@ body {
 
   &.dark-blue {
     background-color: $dark-blue;
-  }
-}
-
-.member-modal-select {
-  margin-bottom: 18px;
-}
-
-.timezne-ember-power-select {
-  .ember-power-select-options {
-    overflow-x: hidden;
-  }
-
-  .ember-power-select-search {
-    padding: 4px 0;
   }
 }
 

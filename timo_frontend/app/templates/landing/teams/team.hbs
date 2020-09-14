@@ -7,12 +7,9 @@
   </div>
 {{/if}}
 {{#if this.newMemberModal}}
-  <MemberModal
+  <Modal::AddMember
     @addMember={{this.saveMember}}
     @closeModal={{this.closeNewMemberModal}}
-    @title="New Member"
-    @modalOrigin="#new-member-origin"
-    @dataTestName="new-member-modal"
   />
 {{/if}}
 {{#if this.editMemberModal}}
