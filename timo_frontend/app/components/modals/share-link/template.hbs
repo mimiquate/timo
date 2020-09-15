@@ -1,0 +1,45 @@
+<TModal
+  @title={{this.title}}
+  @closeModal={{@closeModal}}
+  @action={{@closeModal}}
+  @actionLabel="Done"
+  @modalClass="share-link__modal"
+>
+  <div class="share-link__link-input">
+    <input
+      disabled={{true}}
+      value={{this.url}}
+      onchange={{this.onChange}}
+    />
+    <div>
+      <button
+        class="share-link__copy-link-button"
+        disabled={{this.disabledInput}}
+        {{on "click" this.copyLink}}
+      >
+        Copy Link
+      </button>
+      <EmberTooltip @tooltipClass="share-link__tooltip" @event="click" @duration={{1000}}>
+        Copied!
+      </EmberTooltip>
+    </div>
+  </div>
+  <div class="share-link__public-container">
+    <strong>Public</strong>
+    <label class="checkbox">
+      <span class="checkbox__input">
+        <input
+          type="checkbox"
+          name="checkbox"
+          checked={{@team.public}}
+          {{on "click" this.setPublic}}
+        >
+        <span class="checkbox__control">
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' aria-hidden="true" focusable="false">
+            <path fill='none' stroke='#747494' stroke-width='3' d='M1.73 12.91l6.37 6.37L22.79 4.59' /></svg>
+        </span>
+      </span>
+      <span class="share-link__public-label">Anyone with this link can view</span>
+    </label>
+  </div>
+</TModal>

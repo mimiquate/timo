@@ -1,0 +1,112 @@
+@import '../variables.scss';
+
+.share-link {
+  &__public-label {
+    font-size: 16px;
+    color: $grey;
+    margin-left: 10px;
+  }
+
+  &__checkbox-container {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+
+  }
+
+  &__modal {
+    padding: 28px 64px 97px 84px;
+  }
+
+  &__link-input {
+    align-items: baseline;
+    margin-top: 73px;
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: row;
+
+    input {
+      width: 100%;
+      border: 0;
+      border-bottom: 2px solid $light-grey;
+      background: transparent;
+      width: 300px;
+      padding: 8px 0px 5px 0px;
+      font-size: 16px;
+      color: $green;
+      height: 17px;
+    }
+  }
+
+  &__public-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__copy-link-button {
+    border: none;
+    color: $green;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    padding: 9px 20px;
+    border-radius: 40px;
+    outline: none;
+    background-color: white;
+    font-weight: bold;
+
+    &:disabled {
+      color: $grey;
+    }
+  }
+
+  &__tooltip {
+    background-color: $green;
+    color: #fff;
+  }
+}
+
+.share-link__tooltip .ember-tooltip-arrow {
+  display: none;
+}
+
+.share-link__link-input input:focus {
+  border: none;
+  border-bottom: 2px solid $grey;
+  outline: none;
+}
+
+.checkbox {
+  cursor: pointer;
+  margin-top: 8px;
+  color: $grey;
+  display: flex;
+  width: fit-content;
+}
+
+.checkbox__control {
+  display: inline-grid;
+  width: 23px;
+  height: 23px;
+  border-radius: 3px;
+  border: 1px solid $grey;
+
+  svg {
+    transition: transform 0.1s ease-in 25ms;
+    transform: scale(0);
+    transform-origin: bottom left;
+    margin: 3px;
+  }
+}
+
+.checkbox__input {
+  input {
+    display: none;
+    opacity: 0;
+
+    &:checked + .checkbox__control svg {
+      transform: scale(1);
+    }
+  }
+}
