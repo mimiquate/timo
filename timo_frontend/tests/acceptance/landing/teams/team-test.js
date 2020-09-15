@@ -225,15 +225,16 @@ module('Acceptance | Team', function (hooks) {
     setSession.call(this, newUser);
 
     await visit(`/teams/${newTeam.id}`);
-    await click('[data-test=share-icon]');
+    await click('[data-test=share-button]');
 
-    assert.dom('[data-test=public-share-item]').hasText('Public Access', 'Modal has content');
-    assert.dom('[data-test=public-checkbox]').exists('Checkbox exists');
-    assert.dom('[data-test=copy-link-button]').exists('Copy link button exists');
-    assert.dom('[data-test=copy-link-button]').hasText('Copy Link', 'Button has correct text');
+    assert.equal(find('.t-modal__title').textContent.trim(), `Share "Team"`, 'Modal has content');
+    assert.dom('.t-checkbox').exists('Checkbox exists');
 
-    const copyLinkButton = find('[data-test=copy-link-button]');
-    assert.ok(copyLinkButton.disabled, 'Button is disabled');
+    const copyButton = find('.share-link__copy-link-button');
+    assert.dom(copyButton).exists('Copy link button exists');
+    assert.equal(copyButton.textContent.trim(), 'Copy Link', 'Button has correct text');
+
+    assert.ok(copyButton.disabled, 'Button is disabled');
   });
 
   test('Clicks share icon and change public', async function (assert) {
@@ -253,16 +254,15 @@ module('Acceptance | Team', function (hooks) {
     }, 200);
 
     await visit(`/teams/${newTeam.id}`);
-    await click('[data-test=share-icon]');
-    await click('[data-test=public-checkbox]');
+    await click('[data-test=share-button]');
+    await click('.t-checkbox');
 
-    const copyLinkButton = find('[data-test=copy-link-button]');
-
+    const copyLinkButton = find('.share-link__copy-link-button');
 
     assert.equal(newTeam.public, true, 'Changes view to public');
     assert.notOk(copyLinkButton.disabled, 'Button is enabled');
 
-    await click('[data-test=public-checkbox]');
+    await click('.t-checkbox');
 
     assert.equal(newTeam.public, false, 'Changes view to not public');
     assert.ok(copyLinkButton.attributes.disabled, 'Button is disabled');
