@@ -80,12 +80,13 @@
   height: 31px;
   cursor: pointer;
   position: relative;
-
-  &__error {
-    position: absolute;
-    left: 0px;
-    top: 34px;
-    color: $timo-warning;
-    font-size: 12px;
-  }
 }
+
+.t-dropdown-error {
+  position: absolute;
+  left: 0px;
+  top: 31px;
+  color: $timo-warning;
+  font-size: 12px;
+}
+
