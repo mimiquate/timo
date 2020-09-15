@@ -22,6 +22,7 @@
   border-radius: 0;
   border-color: $grey;
   border-bottom: 2px solid $light-grey;
+  line-height: unset;
 
   &:focus {
     outline: none;
@@ -35,18 +36,11 @@
     border-bottom: 2px solid $timo-warning;
   }
 
-  .ember-power-select-placeholder {
+  .ember-power-select-placeholder, .ember-power-select-selected-item {
     margin-left: 0;
     color: $grey;
     padding-left: 6px;
     padding-bottom: 4px;
-  }
-}
-
-.ember-power-select-trigger[aria-expanded="true"] {
-  .ember-power-select-status-icon {
-    transform: rotate(-135deg);
-    animation: open-rotation 0.4s;
   }
 }
 
@@ -69,28 +63,22 @@
   width: 5px;
   height: 5px;
   transform: rotate(45deg);
-  animation: close-rotation 0.4s;
+  transition: all 0.4s ease;
 }
 
-@keyframes close-rotation {
-  from {
+.ember-basic-dropdown-trigger[aria-expanded="true"]
+  .ember-power-select-status-icon {
     transform: rotate(-135deg);
-  }
-  to {
-    transform: rotate(45deg);
-  }
 }
 
-@keyframes open-rotation {
-  from {
+.ember-basic-dropdown-trigger[aria-expanded="false"]
+  .ember-power-select-status-icon {
     transform: rotate(45deg);
-  }
-  to {
-    transform: rotate(-135deg);
-  }
 }
 
 .t-dropdown {
+  height: 31px;
+  cursor: pointer;
   position: relative;
 
   &__error {
