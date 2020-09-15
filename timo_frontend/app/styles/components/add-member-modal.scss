@@ -16,6 +16,7 @@
 }
 
 .ember-power-select-trigger {
+  cursor: pointer;
   border-top: none;
   border-left: none;
   border-right: none;
@@ -78,15 +79,13 @@
 
 .t-dropdown {
   height: 31px;
-  cursor: pointer;
   position: relative;
-}
 
-.t-dropdown-error {
-  position: absolute;
-  left: 0px;
-  top: 31px;
-  color: $timo-warning;
-  font-size: 12px;
+  &__error {
+    position: absolute;
+    left: 0px;
+    top: 31px;
+    color: $timo-warning;
+    font-size: 12px;
+  }
 }
-
