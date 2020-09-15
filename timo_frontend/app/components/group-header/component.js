@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 
-export default class ShareMenuComponent extends Component {
+export default class GroupHeaderComponent extends Component {
 
   get membersLabel() {
     const members = this.args.group.members.length;
