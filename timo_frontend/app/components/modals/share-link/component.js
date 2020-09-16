@@ -23,7 +23,7 @@ export default class AddTeamModalComponent extends Component {
 
   @computed('team.{public,share_id}')
   get disablePublic() {
-    return !this.args.team.public || isEmpty(this.args.team.share_id);
+    return isEmpty(this.args.team.share_id);
   }
 
   @action
