@@ -38,7 +38,7 @@ module('Acceptance | New member', function (hooks) {
 
     assert.dom('.t-modal').doesNotExist('Correctly closes new member modal');
 
-    const timezoneRowDetails = findAll('.timezone-list__details');
+    const timezoneRowDetails = findAll('.timezone-list__location');
 
     assert.equal(timezoneRowDetails.length, 1, 'List has one row');
     assert.equal(timezoneRowDetails[0].textContent.trim(), 'America Montevideo', 'Correct timezone');
