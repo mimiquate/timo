@@ -1,0 +1,36 @@
+@import '../variables.scss';
+
+.t-button {
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  padding: 9px 20px;
+  border-radius: 40px;
+  outline: none;
+  background-color: $dark-blue;
+
+  &.red {
+    background-color: $red;
+  }
+
+  &.blue {
+    background-color: $blue;
+  }
+
+  &.green {
+    background-color: $green;
+  }
+
+  &.dark-blue {
+    background-color: $dark-blue;
+  }
+
+  &.inverted {
+    background-color: inherit;
+    color: $dark-blue;
+    border: 1px solid $dark-blue;
+  }
+}

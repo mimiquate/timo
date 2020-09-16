@@ -6,10 +6,11 @@
 @import './components/sidenavbar.scss';
 @import './components/t-input.scss';
 @import './components/t-modal.scss';
+@import './components/t-checkbox.scss';
+@import './components/t-button.scss';
 @import './components/email-verification.scss';
 @import './components/add-member-modal.scss';
 @import './components/share-team.scss';
-@import './components/t-checkbox.scss';
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
@@ -75,35 +76,6 @@ body {
 .share-icon {
   margin-left: auto;
   margin-top: 21px;
-}
-
-.t-button {
-  border: none;
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  padding: 9px 20px;
-  border-radius: 40px;
-  outline: none;
-  background-color: $dark-blue;
-
-  &.red {
-    background-color: $red;
-  }
-
-  &.blue {
-    background-color: $blue;
-  }
-
-  &.green {
-    background-color: $green;
-  }
-
-  &.dark-blue {
-    background-color: $dark-blue;
-  }
 }
 
 .login-page, .sign-up-page {
