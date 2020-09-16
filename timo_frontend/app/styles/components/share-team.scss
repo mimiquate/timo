@@ -1,0 +1,78 @@
+@import '../variables.scss';
+
+.share-team {
+  &__checkbox-container {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+  }
+
+  &__modal {
+    padding: 38px 84px 58px 84px;
+  }
+
+  &__link-input {
+    align-items: center;
+    margin-top: 73px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: row;
+
+    input {
+      width: 300px;
+      border: 0;
+      border-bottom: 2px solid $light-grey;
+      background: transparent;
+      padding: 8px 0px 10px 5px;
+      font-size: 16px;
+      color: $green;
+      height: 17px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      align-self: center;
+    }
+  }
+
+  &__public-container {
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+
+  &__copy-link-button {
+    border: none;
+    color: $green;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 6px;
+    border-radius: 40px;
+    outline: none;
+    background-color: white;
+    font-weight: bold;
+
+    &:disabled {
+      color: $grey;
+    }
+  }
+
+  &__tooltip {
+    background-color: $green;
+    color: #fff;
+  }
+}
+
+.share-team__tooltip .ember-tooltip-arrow {
+  display: none;
+}
+
+.share-team__link-input input:focus {
+  border: none;
+  border-bottom: 2px solid $grey;
+  outline: none;
+}

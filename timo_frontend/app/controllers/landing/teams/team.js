@@ -17,6 +17,7 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked memberToEdit = null;
   @tracked newMemberModal = false;
   @tracked editMemberModal = false;
+  @tracked showShareModal = false;
 
   showCurrent = false;
   isCollapsed = false;
@@ -38,6 +39,16 @@ export default class LandingTeamsTeamController extends Controller {
     const membersToArray = createMemberArray(this.savedMembers, this.showCurrent, timezoneNow);
 
     return membersToArray.sort(compareMemberTimeZones);
+  }
+
+  @action
+  closeShareModal() {
+    this.showShareModal = false;
+  }
+
+  @action
+  openShareModal() {
+    this.showShareModal = true;
   }
 
   @action

@@ -3,7 +3,7 @@
   @translucentOverlay={{true}}
   @containerClass="t-modal"
 >
-  <div class="t-modal__content">
+  <div class="t-modal__content {{@modalClass}}">
     <span class="t-modal__title">
       {{@title}}
     </span>
@@ -14,20 +14,22 @@
     >
     {{yield}}
   </div>
-  <div class="t-modal__actions-container">
-    <button
-      class="t-modal__button blue"
-      data-test="cancel-button"
-      {{on "click" @closeModal}}
-    >
-      Cancel
-    </button>
-    <button
-      class="t-modal__button green"
-      data-test="save-button"
-      {{on "click" @action}}
-    >
-      {{@actionLabel}}
-    </button>
-  </div>
+  {{#if (and @action @actionLabel)}}
+    <div class="t-modal__actions-container">
+      <button
+        class="t-modal__button blue"
+        data-test="cancel-button"
+        {{on "click" @closeModal}}
+      >
+        Cancel
+      </button>
+      <button
+        class="t-modal__button green"
+        data-test="save-button"
+        {{on "click" @action}}
+      >
+        {{@actionLabel}}
+      </button>
+    </div>
+  {{/if}}
 </ModalDialog>

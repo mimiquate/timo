@@ -13,6 +13,10 @@
       @action={{@addMember}}
       @label="Add members"
     />
-    <ShareMenu @team={{@group}} />
+    <TButton
+      @action={{@openShareModal}}
+      @label="Share"
+      @testSelector={{"share-button"}}
+    />
   </div>
 </div>

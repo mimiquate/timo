@@ -1,4 +1,8 @@
-<GroupHeader @group={{@model}} @addMember={{this.newMember}} />
+<GroupHeader
+  @group={{@model}}
+  @addMember={{this.newMember}}
+  @openShareModal={{this.openShareModal}}
+/>
 {{#if this.sortedMembers.length}}
   <TimezoneList @timezones={{this.timezones}} @scheduleEvent={{this.scheduleEvent}} />
 {{else}}
@@ -19,5 +23,11 @@
     @closeModal={{this.closeEditMemberModal}}
     @title="Edit Member"
     @dataTestName="edit-member-modal"
+  />
+{{/if}}
+{{#if this.showShareModal}}
+  <Modals::ShareTeam
+    @closeModal={{this.closeShareModal}}
+    @team={{this.model}}
   />
 {{/if}}

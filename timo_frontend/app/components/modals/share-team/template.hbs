@@ -1,0 +1,33 @@
+<TModal
+  @title={{this.title}}
+  @closeModal={{@closeModal}}
+  @modalClass="share-team__modal"
+>
+  <div class="share-team__link-input">
+    <input
+      disabled={{true}}
+      value={{this.url}}
+      onchange={{this.onChange}}
+    />
+    <div>
+      <button
+        class="share-team__copy-link-button"
+        disabled={{this.disabledInput}}
+        {{on "click" this.copyLink}}
+      >
+        Copy Link
+      </button>
+      <EmberTooltip @tooltipClass="share-team__tooltip" @event="click" @duration={{1000}}>
+        Copied!
+      </EmberTooltip>
+    </div>
+  </div>
+  <div class="share-team__public-container">
+    <span class="share-team__public-container__title">Public</span>
+    <TCheckbox
+      @checked={{@team.public}}
+      @onChange={{this.setPublic}}
+      @label="Anyone with this link can view"
+    />
+  </div>
+</TModal>
