@@ -9,14 +9,19 @@
   </div>
   <div>
     <TButton
-      @testSelector="add-member-button"
+      @label="Edit team"
+      @inverted={{true}}
       @action={{@addMember}}
-      @label="Add members"
     />
     <TButton
-      @action={{@openShareModal}}
+      @testSelector="add-member-button"
+      @label="Add members"
+      @action={{@addMember}}
+    />
+    <TButton
+      @testSelector="share-button"
       @label="Share"
-      @testSelector={{"share-button"}}
+      @action={{@openShareModal}}
     />
   </div>
 </div>
