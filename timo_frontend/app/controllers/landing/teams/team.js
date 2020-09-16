@@ -1,18 +1,14 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
-import { createNewRows } from 'timo-frontend/utils/member-column-rows';
+import { compareMemberTimeZones } from 'timo-frontend/utils/table-functions';
+import { createNewRows } from 'timo-frontend/utils/timezone-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
-import ENV from 'timo-frontend/config/environment';
 
 export default class LandingTeamsTeamController extends Controller {
-  queryParams = [
-    { showCurrent: 'current' },
-    { isCollapsed: 'collapsed' }
-  ];
+  queryParams = [{ isCollapsed: 'collapsed' }];
 
   @tracked memberToEdit = null;
   @tracked newMemberModal = false;
@@ -21,26 +17,36 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked showMemberListModal = false;
   @tracked showAboutTeamModal = false;
 
-  showCurrent = false;
   isCollapsed = false;
-  renderAll = ENV.environment === 'test';
-
-  @computed('sortedMembers.[]')
-  get timezones() {
-    return createNewRows(this.sortedMembers);
-  }
 
   @computed('model.members.{[],@each.id}')
   get savedMembers() {
     return this.model.members.filterBy('id');
   }
 
-  @computed('savedMembers.{[],@each.name,@each.timezone}', 'showCurrent')
+  @computed('savedMembers.{[],@each.name,@each.timezone}')
   get sortedMembers() {
-    const timezoneNow = guessTimezoneNow();
-    const membersToArray = createMemberArray(this.savedMembers, this.showCurrent, timezoneNow);
+    const membersToArray = this.savedMembers.toArray();
+    membersToArray.sort(compareMemberTimeZones);
 
-    return membersToArray.sort(compareMemberTimeZones);
+    const timezoneNow = guessTimezoneNow();
+    membersToArray.unshiftObject({
+      name: 'You',
+      timezone: timezoneNow,
+      id: 'current'
+    });
+
+    return membersToArray;
+  }
+
+  @computed('sortedMembers.[]')
+  get timezones() {
+    return createNewRows(this.sortedMembers);
+  }
+
+  @computed('timezones')
+  get currentIndex() {
+    return this.timezones[0].times.findIndex((t) => t.isCurrentTime);
   }
 
   @action

@@ -11,7 +11,6 @@ export default class LandingTeamsTeamRoute extends Route {
 
   resetController(controller) {
     controller.setProperties({
-      showCurrent: false,
       isCollapsed: false
     });
   }

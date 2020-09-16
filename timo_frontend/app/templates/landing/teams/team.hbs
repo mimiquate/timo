@@ -5,13 +5,11 @@
   @openMemberListModal={{this.openMemberListModal}}
   @openAboutTeamModal={{this.openAboutTeamModal}}
 />
-{{#if this.sortedMembers.length}}
-  <TimezoneList @timezones={{this.timezones}} @scheduleEvent={{this.scheduleEvent}} />
-{{else}}
-  <div class="no-member" data-test="no-member">
-    No members in this team
-  </div>
-{{/if}}
+<TimezoneList
+  @timezones={{this.timezones}}
+  @scheduleEvent={{this.scheduleEvent}}
+  @currentIndex={{this.currentIndex}}
+/>
 {{#if this.newMemberModal}}
   <Modals::Members::Add
     @addOrUpdateMember={{this.saveMember}}
