@@ -1,6 +1,6 @@
 @import '../variables.scss';
 
-.share-link {
+.share-team {
   &__checkbox-container {
     display: flex;
     flex-direction: row;
@@ -67,11 +67,11 @@
   }
 }
 
-.share-link__tooltip .ember-tooltip-arrow {
+.share-team__tooltip .ember-tooltip-arrow {
   display: none;
 }
 
-.share-link__link-input input:focus {
+.share-team__link-input input:focus {
   border: none;
   border-bottom: 2px solid $grey;
   outline: none;

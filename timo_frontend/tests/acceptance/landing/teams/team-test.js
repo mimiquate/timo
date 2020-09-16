@@ -219,7 +219,7 @@ module('Acceptance | Team', function (hooks) {
       .hasText('America/Montevideo', 'Member timezone is there');
   });
 
-  test('Clicks share icon', async function (assert) {
+  test('Clicks share button', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser, public: false });
     setSession.call(this, newUser);
@@ -230,14 +230,14 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(find('.t-modal__title').textContent.trim(), `Share "Team"`, 'Modal has content');
     assert.dom('.t-checkbox').exists('Checkbox exists');
 
-    const copyButton = find('.share-link__copy-link-button');
+    const copyButton = find('.share-team__copy-link-button');
     assert.dom(copyButton).exists('Copy link button exists');
     assert.equal(copyButton.textContent.trim(), 'Copy Link', 'Button has correct text');
 
     assert.ok(copyButton.disabled, 'Button is disabled');
   });
 
-  test('Clicks share icon and change public', async function (assert) {
+  test('Clicks share button and change public', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser, public: false });
     setSession.call(this, newUser);
@@ -257,7 +257,7 @@ module('Acceptance | Team', function (hooks) {
     await click('[data-test=share-button]');
     await click('.t-checkbox');
 
-    const copyLinkButton = find('.share-link__copy-link-button');
+    const copyLinkButton = find('.share-team__copy-link-button');
 
     assert.equal(newTeam.public, true, 'Changes view to public');
     assert.notOk(copyLinkButton.disabled, 'Button is enabled');
