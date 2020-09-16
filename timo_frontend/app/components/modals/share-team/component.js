@@ -2,7 +2,6 @@ import Component from "@glimmer/component";
 import copyTextToClipboard from 'timo-frontend/utils/copy-text-to-clipboard';
 import { computed, action } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
-import { tracked } from '@glimmer/tracking';
 
 export default class AddTeamModalComponent extends Component {
   get title() {
