@@ -1,4 +1,11 @@
-<div class="{{if @selected "timezone-list__selected-container"}}">
+<div
+  class="{{if @selected "timezone-list__selected-container"}}
+  {{if @time.isCurrentTime "timezone-list__current"}}"
+>
+  {{#if @time.isCurrentTime}}
+    <div class="timezone-list__down-arrow"/>
+    <div class="timezone-list__vertical-line"/>
+  {{/if}}
   <div
     class="timezone-list__hour {{@time.color}}
     {{if @selected "timezone-list__selected"}}"

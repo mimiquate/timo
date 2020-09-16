@@ -79,7 +79,7 @@
     height: 36px;
   }
 
-  &__selected-container {
+  &__selected-container, &__current {
     position: relative;
   }
 
@@ -126,6 +126,27 @@
     }
   }
 
+  &__row:first-child {
+    .timezone-list__down-arrow {
+      position: absolute;
+      top: -24px;
+      left: 10px;
+      width: 0;
+      height: 0;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-top: 12px solid $red;
+    }
+
+    .timezone-list__vertical-line {
+      position: absolute;
+      width: 2px;
+      left: 25px;
+      background-color: $red;
+      height: 90px;
+      top: -90px;
+    }
+  }
 }
 
 .timezone-list::-webkit-scrollbar {
