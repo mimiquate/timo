@@ -3,7 +3,7 @@
     <span class="group-header__title" data-test="team-title">
       {{@group.name}}
     </span>
-    <span class="group-header__details" {{on "click" @openMemberListModal}}>
+    <span class="group-header__details" {{on "click" @openMemberListModal}} role="button">
       {{this.timezonesLabel}} | {{this.membersLabel}}
     </span>
   </div>

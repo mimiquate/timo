@@ -10,18 +10,22 @@
     </span>
     {{#if this.showList}}
       <img
+        role="button"
+        alt="close button"
         class="t-modal__close"
         src="/images/close.svg"
         {{on "click" @closeModal}}
       >
     {{else}}
       <img
+        role="button"
+        alt="left arrow button"
         class="t-modal__close"
         src="/images/left-arrow.svg"
         {{on "click" this.closeEdit}}
       >
     {{/if}}
-    {{#animated-if showList  use=this.transition duration=200}}
+    {{#animated-if this.showList use=this.transition duration=200}}
       <div class="member-list__content">
         {{#each @members as |member|}}
           <div class="member-list__member">
@@ -30,6 +34,7 @@
               <span class="member-list__member__timezone">{{member.timezone}}</span>
             </div>
             <span
+              role="button"
               class="member-list__edit-label"
               {{on "click" (fn this.showEdit member)}}
             >
@@ -67,6 +72,7 @@
       </div>
       <div class="t-modal__actions-container">
         <button
+          type="button"
           class="t-modal__button blue"
           data-test="cancel-button"
           {{on "click" this.closeEdit}}
@@ -74,6 +80,7 @@
           Cancel
         </button>
         <button
+          type="button"
           class="t-modal__button green"
           data-test="update-button"
           {{on "click" this.updateMember}}

@@ -6,6 +6,7 @@ import memberValidator from 'timo-frontend/validators/member';
 import lookupValidator from 'ember-changeset-validations';
 import { fadeOut, fadeIn } from 'ember-animated/motions/opacity';
 import { isPresent } from '@ember/utils';
+import moment from 'moment';
 
 export default class MemberModalComponent extends Component {
   @tracked showList = true;
@@ -19,9 +20,9 @@ export default class MemberModalComponent extends Component {
 
   timezoneList = moment.tz.names();
 
-  *transition({ insertedSprites, keptSprites, removedSprites }) {
-    insertedSprites.forEach(fadeIn);
-    removedSprites.forEach(fadeOut);
+  *transition({ insertedSprites, removedSprites }) {
+    yield insertedSprites.forEach(fadeIn);
+    yield removedSprites.forEach(fadeOut);
   }
 
   showErrors(errors) {
@@ -65,7 +66,7 @@ export default class MemberModalComponent extends Component {
   }
 
   @action
-  async updateMember(member) {
+  async updateMember() {
     this.cleanErrors();
     const changeset = this.memberChangeset;
 
