@@ -7,7 +7,7 @@ import lookupValidator from 'ember-changeset-validations';
 import { tracked } from '@glimmer/tracking';
 import { isPresent } from '@ember/utils';
 
-export default class AddMemberModalComponent extends Component {
+export default class MemberModalComponent extends Component {
   @tracked name = '';
   @tracked timezone = '';
   @tracked nameError = '';
@@ -55,7 +55,7 @@ export default class AddMemberModalComponent extends Component {
     await changeset.validate();
 
     if (changeset.isValid) {
-      this.args.addMember(name, timezone);
+      this.args.addOrUpdateMember(name, timezone);
     } else {
       this.showErrors(changeset.errors);
     }

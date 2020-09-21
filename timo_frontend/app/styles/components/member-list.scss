@@ -1,0 +1,72 @@
+@import '../variables.scss';
+
+.member-list {
+  &__content {
+    overflow: scroll;
+    margin-top: auto;
+    margin-bottom: 16px;
+    padding: 0 60px;
+  }
+
+  &__modal {
+    width:514px;
+    height: 331px;
+    display: flex;
+    flex-direction: column;
+
+    &.ember-modal-dialog {
+      border-radius: 13px;
+      padding: 0;
+    }
+
+    .t-modal__title {
+      margin-top: 30px;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction:column;
+    padding: 0px 105px 40px 105px;
+    margin-bottom: auto;
+  }
+
+  &__member {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0 16px;
+    border-bottom: 1px solid $light-grey;
+    align-items: center;
+
+    &:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    &__name {
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    &__timezone {
+      font-size: 14px;
+    }
+
+    &__information {
+      margin-right: 50px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__container {
+    margin-top: 24px;
+  }
+
+  &__edit-label {
+    cursor: pointer;
+    color: $blue;
+    font-size: 16px;
+    font-weight: bold;
+  }
+}

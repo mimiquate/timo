@@ -3,20 +3,26 @@
     <span class="group-header__title" data-test="team-title">
       {{@group.name}}
     </span>
-    <span class="group-header__details">
+    <span class="group-header__details" {{on "click" @openMemberListModal}} role="button">
       {{this.timezonesLabel}} | {{this.membersLabel}}
     </span>
   </div>
   <div>
     <TButton
-      @testSelector="add-member-button"
-      @action={{@addMember}}
-      @label="Add members"
+      @testSelector="edit-team-button"
+      @label="Edit team"
+      @inverted={{true}}
+      @action={{@openAboutTeamModal}}
     />
     <TButton
-      @action={{@openShareModal}}
+      @testSelector="add-member-button"
+      @label="Add members"
+      @action={{@addMember}}
+    />
+    <TButton
+      @testSelector="share-button"
       @label="Share"
-      @testSelector={{"share-button"}}
+      @action={{@openShareModal}}
     />
   </div>
 </div>

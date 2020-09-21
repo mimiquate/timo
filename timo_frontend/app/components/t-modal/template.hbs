@@ -8,8 +8,10 @@
       {{@title}}
     </span>
     <img
+      alt="close button"
       class="t-modal__close"
       src="/images/close.svg"
+      role="button"
       {{on "click" @closeModal}}
     >
     {{yield}}
@@ -17,6 +19,7 @@
   {{#if (and @action @actionLabel)}}
     <div class="t-modal__actions-container">
       <button
+        type="button"
         class="t-modal__button blue"
         data-test="cancel-button"
         {{on "click" @closeModal}}
@@ -24,6 +27,7 @@
         Cancel
       </button>
       <button
+        type="button"
         class="t-modal__button green"
         data-test="save-button"
         {{on "click" @action}}
