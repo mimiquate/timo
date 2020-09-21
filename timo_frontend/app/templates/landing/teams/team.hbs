@@ -11,8 +11,8 @@
   </div>
 {{/if}}
 {{#if this.newMemberModal}}
-  <Modals::AddMember
-    @addMember={{this.saveMember}}
+  <Modals::Members::Add
+    @addOrUpdateMember={{this.saveMember}}
     @closeModal={{this.closeNewMemberModal}}
   />
 {{/if}}
@@ -26,8 +26,21 @@
   />
 {{/if}}
 {{#if this.showShareModal}}
-  <Modals::ShareTeam
+  <Modals::Team::Share
     @closeModal={{this.closeShareModal}}
     @team={{this.model}}
+  />
+{{/if}}
+{{#if this.showMemberListModal}}
+  <Modals::Members::List
+    @members={{this.model.members}}
+    @closeModal={{this.closeMemberListModal}}
+  />
+{{/if}}
+{{#if this.showAboutTeamModal}}
+  <Modals::Team::About
+    @closeModal={{this.closeAboutTeamModal}}
+    @team={{this.model}}
+    @deleteTeam={{this.deleteTeam}}
   />
 {{/if}}
