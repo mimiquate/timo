@@ -5,5 +5,9 @@
   id={{@id}}
   {{on "click" @action}}
 >
-  {{@label}}
+  {{#if (has-block)}}
+    {{yield}}
+  {{else}}
+    {{@label}}
+  {{/if}}
 </button>

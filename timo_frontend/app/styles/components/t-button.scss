@@ -28,6 +28,10 @@
     background-color: $dark-blue;
   }
 
+  &.warning {
+    background-color: $timo-warning;
+  }
+
   &.inverted {
     background-color: inherit;
     color: $dark-blue;

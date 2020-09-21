@@ -18,6 +18,8 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked newMemberModal = false;
   @tracked editMemberModal = false;
   @tracked showShareModal = false;
+  @tracked showMemberListModal = false;
+  @tracked showAboutTeamModal = false;
 
   showCurrent = false;
   isCollapsed = false;
@@ -39,6 +41,26 @@ export default class LandingTeamsTeamController extends Controller {
     const membersToArray = createMemberArray(this.savedMembers, this.showCurrent, timezoneNow);
 
     return membersToArray.sort(compareMemberTimeZones);
+  }
+
+  @action
+  closeAboutTeamModal() {
+    this.showAboutTeamModal = false;
+  }
+
+  @action
+  openAboutTeamModal() {
+    this.showAboutTeamModal  = true;
+  }
+
+  @action
+  closeMemberListModal() {
+    this.showMemberListModal = false;
+  }
+
+  @action
+  openMemberListModal() {
+    this.showMemberListModal  = true;
   }
 
   @action
@@ -76,19 +98,6 @@ export default class LandingTeamsTeamController extends Controller {
   }
 
   @action
-  async saveEditMember(memberName, memberTimeZone) {
-    if (!(memberName === this.memberToEdit.name
-      && memberTimeZone === this.memberToEdit.timezone)) {
-      this.memberToEdit.name = memberName;
-      this.memberToEdit.timezone = memberTimeZone
-
-      this.memberToEdit.save();
-    }
-
-    this.editMemberModal = false;
-  }
-
-  @action
   scheduleEvent(time) {
     let rowTime = moment(time);
 
@@ -100,5 +109,11 @@ export default class LandingTeamsTeamController extends Controller {
 
     const url = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
     openGoogleCalendarEvent(url, this.model.name);
+  }
+
+  @action
+  async deleteTeam(team) {
+    await team.destroyRecord();
+    await this.transitionToRoute('landing');
   }
 }

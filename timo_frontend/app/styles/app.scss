@@ -11,6 +11,8 @@
 @import './components/email-verification.scss';
 @import './components/add-member-modal.scss';
 @import './components/share-team.scss';
+@import './components/about-team-modal.scss';
+@import './components/member-list.scss';
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
@@ -208,4 +210,3 @@ body {
   justify-content: center;
   align-items: center;
 }
-
