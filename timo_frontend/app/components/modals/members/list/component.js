@@ -41,6 +41,7 @@ export default class MemberModalComponent extends Component {
 
     this.memberChangeset = changeset;
     this.showList = false;
+    this.cleanErrors();
   }
 
   @action
