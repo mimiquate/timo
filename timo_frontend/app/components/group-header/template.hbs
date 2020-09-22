@@ -7,7 +7,7 @@
       {{this.timezonesLabel}} | {{this.membersLabel}}
     </span>
   </div>
-  <div>
+  <div class="group-header__actions">
     <TButton
       @testSelector="edit-team-button"
       @label="Edit team"
@@ -20,6 +20,7 @@
       @action={{@addMember}}
     />
     <TButton
+      @color="red"
       @testSelector="share-button"
       @label="Share"
       @action={{@openShareModal}}
