@@ -20,6 +20,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
+  background: #F3F2F9;
 }
 
 .ember-application, .login-main, .public-main {
@@ -29,12 +30,6 @@ body {
 .landing {
   height: 100%;
   display: flex;
-}
-
-.flex-content {
-  display: flex;
-  flex-direction: column;
-  background: whitesmoke;
 }
 
 .side-content {
