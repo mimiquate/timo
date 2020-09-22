@@ -6,6 +6,8 @@ import { createNewRows } from 'timo-frontend/utils/timezone-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
+import ENV from 'timo-frontend/config/environment';
+import { isPresent } from '@ember/utils';
 
 export default class LandingTeamsTeamController extends Controller {
   queryParams = [{ isCollapsed: 'collapsed' }];
@@ -128,6 +130,16 @@ export default class LandingTeamsTeamController extends Controller {
   @action
   async deleteTeam(team) {
     await team.destroyRecord();
-    await this.transitionToRoute('landing');
+
+    this.store.findAll('team').then(teams => {
+      this.closeAboutTeamModal();
+      if (isPresent(teams.toArray())) {
+        const teamToTransition = teams.toArray().map(t => parseInt(t.id));
+        const id = Math.min(...teamToTransition);
+        this.transitionToRoute('landing.teams.team', id);
+      } else {
+        this.transitionToRoute('landing');
+      }
+    });
   }
 }
