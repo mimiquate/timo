@@ -207,3 +207,18 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.no-team {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__label {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 22px;
+    font-size: 25px;
+    font-weight: bold;
+  }
+}

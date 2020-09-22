@@ -1,3 +1,16 @@
-<div class="flex flex-center" data-test="landing-image">
-  <img src="/images/earth-globe-pointer.svg" alt="BW Earth Globe background" class="landing-image">
+<div class="no-team">
+  <img src="/images/emptyview.svg" alt="no team">
+  <span class="no-team__label">Hi, there,<br> You don’t have any teams yet!</span>
+  <TButton
+    @color="blue"
+    @testSelector="create-team"
+    @action={{this.openTeamModal}}
+    @label="Create a team now!"
+  />
 </div>
+{{#if this.showNewTeamModal}}
+  <Modals::Team::Add
+    @closeModal={{this.closeNewTeamModal}}
+    @saveTeam={{this.saveTeam}}
+  />
+{{/if}}
