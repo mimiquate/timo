@@ -1,3 +1,8 @@
+{{#if this.isShowingCalendarPopover}}
+  {{#ember-wormhole to="tooltip-background"}}
+    <div class="showing-tooltip"></div>
+  {{/ember-wormhole}}
+{{/if}}
 <div class="timezone-list">
   {{#each @timezones as |timezone|}}
     <TimezoneList::Timezone
@@ -7,6 +12,8 @@
       @mouseLeave={{this.mouseLeave}}
       @hover={{this.hover}}
       @scrollAll={{this.scrollAll}}
+      @isShowingCalendarPopover={{this.isShowingCalendarPopover}}
+      @toggleCalendarPopoverBackground={{this.toggleCalendarPopoverBackground}}
     />
   {{/each}}
 </div>

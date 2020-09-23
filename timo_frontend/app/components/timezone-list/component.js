@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 
 export default class TimezoneListComponent extends Component {
   @tracked hover;
+  @tracked isShowingCalendarPopover = false;
 
   @action
   onHover(e) {
@@ -23,5 +24,10 @@ export default class TimezoneListComponent extends Component {
     timezoneDivs.forEach(element => {
       element.scrollLeft = scrollAmount;
     });
+  }
+
+  @action
+  toggleCalendarPopoverBackground(value) {
+    this.isShowingCalendarPopover = value;
   }
 }

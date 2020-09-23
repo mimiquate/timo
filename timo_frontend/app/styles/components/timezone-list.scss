@@ -47,6 +47,10 @@
       opacity: 1;
       cursor: pointer;
     }
+
+    &.disable {
+      pointer-events: none;
+    }
   }
 
   &__current {
@@ -90,4 +94,77 @@
 
 .timezone-list__time-zone::-webkit-scrollbar {
   display: none;
+}
+
+.google-calendar-information-tooltip {
+  border-radius: 20px !important;
+  padding: 10px;
+  text-align: center;
+  top: -5px !important;
+  z-index: 100;
+
+  .ember-tooltip-arrow {
+    transform: scale(4);
+  }
+}
+
+.google-calendar-popover-arrow {
+  border-top-color: white !important;
+  transform: scale(6);
+
+}
+.google-calendar-popover {
+  z-index: 100;
+  width: 327px;
+  height: 150px;
+  padding: 0;
+  border-radius: 10px !important;
+  margin: 0;
+  border-radius: 15px;
+
+  &__inner {
+    padding: 40px 50px;
+    display: flex;
+
+    >:first-child {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  &__label {
+    font-size: 15px;
+  }
+
+  &__details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 9px;
+  }
+
+  &__close {
+    position: absolute;
+    top: 13px;
+    left: 21px;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+  }
+
+  &__icon {
+    margin-right: 14px;
+    height: 42px;
+    width: 43px;
+  }
+
+  &__action {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__button {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
