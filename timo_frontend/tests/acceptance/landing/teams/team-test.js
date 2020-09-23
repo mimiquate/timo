@@ -457,7 +457,11 @@ module('Acceptance | Team', function (hooks) {
     const calendarBase = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Team Team scheduled event&';
     const timeNow = moment();
     const timeFormat = `${timeNow.year()}${timeNow.format('MM')}${timeNow.format('DD')}`;
-    const calendarDate = `dates=${timeFormat}T060000/${timeFormat}T070000`;
+
+    const startHour = timeNow.clone().format('HH');
+    const endHour = timeNow.clone().add(1, 'hours').format('HH');
+
+    const calendarDate = `dates=${timeFormat}T${startHour}0000/${timeFormat}T${endHour}0000`;
     const calendarUrl = `${calendarBase}${calendarDate}`;
 
     await visit(`/teams/${newTeam.id}`);
@@ -470,7 +474,8 @@ module('Acceptance | Team', function (hooks) {
       );
     };
 
-    await click('[data-test-row="6"]');
+    await click('.timezone-list__selected');
+    await click('.google-calendar-popover__button');
   });
 
   test('Select box changes selected time', async function (assert) {
