@@ -1,13 +1,16 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import moment from 'moment';
 
 export default class TimezoneListComponent extends Component {
-  @tracked selected = this.args.currentIndex;
+  @tracked selectedBoxIndex = this.args.currentIndex;
+  @tracked selectedTime = moment();
 
   @action
-  select(i) {
-    this.selected = i;
+  selectBox(index, time) {
+    this.selectedBoxIndex = index;
+    this.selectedTime = time;
   }
 
   @action

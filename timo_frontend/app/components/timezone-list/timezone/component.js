@@ -3,7 +3,7 @@ import { computed } from '@ember/object';
 import moment from 'moment';
 
 export default class TimezoneComponent extends Component {
-  @computed('timezone.members')
+  @computed('args.timezone.members.[]')
   get location() {
     const timezone = this.args.timezone.timezoneName;
 
@@ -20,16 +20,17 @@ export default class TimezoneComponent extends Component {
     return ret;
   }
 
-  @computed('timezone.members')
+  @computed('args.{timezone.members.[],selectedTime}')
   get memberDate() {
     const timezone = this.args.timezone.timezoneName;
-    const formatedDate = moment.tz(timezone);
+    const selectedTime = this.args.selectedTime.format('YYYY-MM-DDTHH:mm:ssZ');
+    const formatedDate = moment.tz(selectedTime, timezone);
     const format = "dddd, DD MMMM YYYY, HH:mm";
 
     return formatedDate.format(format);
   }
 
-  @computed('timezone.members.[]')
+  @computed('args.timezone.members.[]')
   get amountOfMembersMessage() {
     const membersLength = this.args.timezone.members.length;
 

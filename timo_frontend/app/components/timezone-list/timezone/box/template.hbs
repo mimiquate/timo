@@ -9,7 +9,7 @@
   <div
     class="timezone-list__hour {{@time.color}}
     {{if @selected "timezone-list__selected"}}"
-    {{on "click" (fn @selectBox @index)}}
+    {{on "click" (fn @selectBox @index @time.value)}}
   >
     {{moment-format @time.value "HH.mm"}}
   </div>
