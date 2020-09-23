@@ -117,12 +117,12 @@
     overflow-x: scroll;
     display: flex;
 
-    >:first-child {
+    > div:first-child > .timezone-list__hour {
       box-shadow: -1px 0px 0px 0px white inset;
     }
 
-    >:last-child {
-      box-shadow: 1px 0px 0px 0px white inset,
+    > div:last-child > .timezone-list__hour {
+      box-shadow: 1px 0px 0px 0px white inset;
     }
   }
 

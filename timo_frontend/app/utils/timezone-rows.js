@@ -49,7 +49,7 @@ export function createNewRows(sortedMembers) {
       timezoneRows[sameTimezoneIndex].members.pushObject(m);
     } else {
       const currentMemberTime = moment.tz(m.timezone).startOf('hour');
-      const startTime = currentMemberTime.clone().add(-20, 'hours');
+      const startTime = currentMemberTime.clone().add(-12, 'hours');
       const times = [];
 
       for(let i = 0; i < 40; i++) {
