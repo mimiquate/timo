@@ -11,6 +11,8 @@ export default class TimezoneListComponent extends Component {
   selectBox(index, time) {
     this.selectedBoxIndex = index;
     this.selectedTime = time;
+
+    this.scrollToSelected(index);
   }
 
   @action
@@ -21,5 +23,12 @@ export default class TimezoneListComponent extends Component {
     timezoneDivs.forEach(element => {
       element.scrollLeft = scrollAmount;
     });
+  }
+
+  scrollToSelected(index) {
+    const boxWidth = document.getElementsByClassName('timezone-list__hour').item(0).offsetWidth;
+    const firstTimezoneDiv = document.getElementsByClassName('timezone-list__time-zone').item(0);
+
+    firstTimezoneDiv.scrollLeft = boxWidth * (index - 12);
   }
 }
