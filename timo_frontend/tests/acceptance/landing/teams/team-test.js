@@ -513,4 +513,38 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(selectedTimeBox.textContent.trim(), currentTime, 'Correct new selected time');
     assert.ok(newSelectedIndex === selectedIndex + 2, 'Correct selected index');
   });
+
+  test('Selected index resets on team change', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let team_1 = this.server.create('team', { name: 'Team 1', user: newUser });
+    let team_2 = this.server.create('team', { name: 'Team 2', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${team_1.id}`);
+
+    const timezoneHours = findAll('.timezone-list__hour');
+    const selectedIndex = 2 + timezoneHours.findIndex(
+      (h => h.classList.contains('timezone-list__selected'))
+    );
+
+    await click(timezoneHours[selectedIndex]);
+    await click(findAll('.team-list__button')[1]);
+
+    assert.equal(currentURL(), `/teams/${team_2.id}`, 'Verifies team change');
+
+    const selectedTimeBox = find('.timezone-list__selected');
+    const newTimezoneHours = findAll('.timezone-list__hour');
+    const timezoneDetail = find('.timezone-list__details');
+
+    const time = moment.tz('America/Montevideo').startOf('hour');
+    const details = time.format('dddd, DD MMMM YYYY, HH:mm');
+    const currentTime = time.format('HH.mm');
+    const resetedSelectedIndex = newTimezoneHours.findIndex(
+      (h => h.classList.contains('timezone-list__selected'))
+    );
+
+    assert.notEqual(resetedSelectedIndex, selectedIndex, 'Resets selected index');
+    assert.ok(timezoneDetail.textContent.includes(details), 'Correct date details');
+    assert.equal(selectedTimeBox.textContent.trim(), currentTime, 'Correct selected time');
+  })
 });

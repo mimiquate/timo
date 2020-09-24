@@ -1,19 +1,15 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import moment from 'moment';
 import { smoothScrollLeft, getEndPosition } from 'timo-frontend/utils/timo-animations';
 import { later } from '@ember/runloop';
 
 export default class TimezoneListComponent extends Component {
-  @tracked selectedBoxIndex = this.args.currentIndex;
-  @tracked selectedTime = moment();
   @tracked previousAnimationId = null;
 
   @action
-  selectBox(index, time) {
-    this.selectedBoxIndex = index;
-    this.selectedTime = time;
+  selectBoxWithScroll(index, time) {
+    this.args.selectBox(index, time);
 
     later(() => {
       this.scrollToSelected(index);

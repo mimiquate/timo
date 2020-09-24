@@ -16,6 +16,8 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked showShareModal = false;
   @tracked showMemberListModal = false;
   @tracked showAboutTeamModal = false;
+  @tracked selectedBoxIndex = this.currentIndex;
+  @tracked selectedTime = moment();
 
   isCollapsed = false;
 
@@ -47,6 +49,12 @@ export default class LandingTeamsTeamController extends Controller {
   @computed('timezones')
   get currentIndex() {
     return this.timezones[0].times.findIndex((t) => t.isCurrentTime);
+  }
+
+  @action
+  selectBox(index, time) {
+    this.selectedBoxIndex = index;
+    this.selectedTime = time;
   }
 
   @action
