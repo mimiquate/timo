@@ -1,5 +1,6 @@
 <TeamHeader
-  @team={{@model}}
+  @teamName={{@model.name}}
+  @members={{this.sortedMembers}}
   @addMember={{this.newMember}}
   @openShareModal={{this.openShareModal}}
   @openMemberListModal={{this.openMemberListModal}}

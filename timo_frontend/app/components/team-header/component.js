@@ -2,13 +2,13 @@ import Component from '@glimmer/component';
 
 export default class TeamHeaderComponent extends Component {
   get membersLabel() {
-    const members = this.args.team.members.length;
+    const members = this.args.members.length;
 
     return members > 1 ? `Members ${members}` : `Member ${members}`
   }
 
   get timezonesLabel() {
-    const members = this.args.team.members;
+    const members = this.args.members;
     const timezones = members.map(m => {
       return m.timezone
     });
