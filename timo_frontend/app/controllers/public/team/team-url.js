@@ -43,4 +43,14 @@ export default class PublicTeamTeamUrlController extends Controller {
     const url = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
     openGoogleCalendarEvent(url, this.model.name);
   }
+
+  @action
+  transitionToLogin() {
+    this.transitionToRoute('/login');
+  }
+
+  @action
+  transitionToSignUp() {
+    this.transitionToRoute('/sign-up');
+  }
 }
