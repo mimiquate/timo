@@ -20,7 +20,7 @@ export default class AddTeamModalComponent extends Component {
     return  isPresent(shareId) ? `${protocol}//${host}${path}` : '';
   }
 
-  @computed('team.{public,share_id}')
+  @computed('args.team.{public,share_id}')
   get disablePublic() {
     return isEmpty(this.args.team.share_id);
   }

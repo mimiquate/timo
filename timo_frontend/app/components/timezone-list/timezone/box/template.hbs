@@ -1,10 +1,17 @@
-<span
-  class="timezone-list__hour {{@time.color}}
-  {{if @time.currentTime "timezone-list__current"}}
-  {{if @selected "selected"}}"
-  {{on "mouseover" (fn @onHover @index)}}
-  {{on "mouseout" @mouseLeave}}
-  {{on "click" (fn @scheduleEvent @time.value)}}
+<div
+  class="{{if @selected "timezone-list__selected-container"}}
+  {{if @time.isCurrentTime "timezone-list__current"}}"
 >
-  {{moment-format @time.value "HH:mm"}}
-</span>
+  {{#if @time.isCurrentTime}}
+    <div class="timezone-list__down-arrow"/>
+    <div class="timezone-list__vertical-line"/>
+  {{/if}}
+  <div
+    role="button"
+    class="timezone-list__hour {{@time.color}}
+    {{if @selected "timezone-list__selected"}}"
+    {{on "click" (fn @selectBox @index @time.value)}}
+  >
+    {{moment-format @time.value "HH.mm"}}
+  </div>
+</div>
