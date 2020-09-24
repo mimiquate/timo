@@ -7,6 +7,7 @@
     <div class="timezone-list__vertical-line"/>
   {{/if}}
   <div
+    role="button"
     class="timezone-list__hour {{@time.color}}
     {{if @selected "timezone-list__selected"}}"
     {{on "click" (fn @selectBox @index @time.value)}}

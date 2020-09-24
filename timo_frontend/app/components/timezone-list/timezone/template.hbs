@@ -10,7 +10,7 @@
       {{this.amountOfMembersMessage}}
     </div>
   </div>
-  <div class="timezone-list__time-zone" {{on "scroll" @scrollAll}}>
+  <div class="timezone-list__time-zone" {{on "scroll" @scrollAll}} role="button">
     {{#each @timezone.times as |time index|}}
       <TimezoneList::Timezone::Box
         @time={{time}}
