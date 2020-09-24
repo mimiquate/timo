@@ -17,20 +17,6 @@ export default class TimezoneListComponent extends Component {
     }, 200);
   }
 
-  @action
-  scrollAll(event) {
-    if (this.previousAnimationId) cancelAnimationFrame(this.previousAnimationId);
-
-    const scrollAmount = event.target.scrollLeft;
-    const timezoneDivs = Array.from(document.getElementsByClassName('timezone-list__time-zone'));
-
-    timezoneDivs.forEach(element => {
-      if (element != event.target) {
-        element.scrollLeft = scrollAmount;
-      }
-    });
-  }
-
   scrollToSelected(index) {
     const boxWidth = document.getElementsByClassName('timezone-list__hour').item(0).offsetWidth;
     const timezoneDivs = Array.from(document.getElementsByClassName('timezone-list__time-zone'));

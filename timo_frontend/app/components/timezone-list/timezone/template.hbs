@@ -8,7 +8,7 @@
   <div class="timezone-list__date">
     {{this.memberDate}}
   </div>
-  <div class="timezone-list__time-zone" {{on "scroll" @scrollAll}} role="button">
+  <div class="timezone-list__time-zone">
     {{#each @timezone.times as |time index|}}
       <TimezoneList::Timezone::Box
         @time={{time}}
