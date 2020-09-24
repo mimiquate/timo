@@ -6,7 +6,6 @@ import { createNewRows } from 'timo-frontend/utils/timezone-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
-import ENV from 'timo-frontend/config/environment';
 import { isPresent } from '@ember/utils';
 
 export default class LandingTeamsTeamController extends Controller {
