@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import moment from 'moment';
-import { smoothScrollLeft } from 'timo-frontend/utils/timo-animations';
+import { smoothScrollLeft, getEndPosition } from 'timo-frontend/utils/timo-animations';
 
 export default class TimezoneListComponent extends Component {
   @tracked selectedBoxIndex = this.args.currentIndex;
@@ -34,10 +34,11 @@ export default class TimezoneListComponent extends Component {
     const firstTimezoneDiv = document.getElementsByClassName('timezone-list__time-zone').item(0);
 
     const startPosition = firstTimezoneDiv.scrollLeft;
-    const scrollAmount = boxWidth * (index - 12);
-    let endPosition = index < 13 ? 0 : scrollAmount;
+    const endPosition = getEndPosition(firstTimezoneDiv, boxWidth, index);
     const distance = endPosition - startPosition;
 
-    this.previousAnimationId = smoothScrollLeft(firstTimezoneDiv, startPosition, distance, 500, this.previousAnimationId);
+    if (distance != 0) {
+      this.previousAnimationId = smoothScrollLeft(firstTimezoneDiv, startPosition, distance, 500, this.previousAnimationId);
+    }
   }
 }
