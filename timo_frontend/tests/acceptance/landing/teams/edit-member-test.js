@@ -19,7 +19,7 @@ module('Acceptance | Update member', function (hooks) {
     });
 
     await visit(`/teams/${newTeam.id}`);
-    await click('.group-header__details');
+    await click('.team-header__details');
     await click('.member-list__edit-label');
 
     await fillIn('.add-member-modal__member-name input', 'Member 2');
@@ -48,7 +48,7 @@ module('Acceptance | Update member', function (hooks) {
     });
 
     await visit(`/teams/${newTeam.id}`);
-    await click('.group-header__details');
+    await click('.team-header__details');
     await click('.member-list__edit-label');
 
     await fillIn('.add-member-modal__member-name input', 'Member 2');
@@ -77,7 +77,7 @@ module('Acceptance | Update member', function (hooks) {
     });
 
     await visit(`/teams/${newTeam.id}`);
-    await click('.group-header__details');
+    await click('.team-header__details');
 
     assert.dom(find('.member-list__modal'));
     assert.equal(
