@@ -176,7 +176,7 @@ module('Acceptance | Team', function (hooks) {
 
     assert.dom('.t-modal').exists('Correctly opens new member modal');
     assert.dom('.t-modal__title').exists('New member modal title loads');
-    assert.dom('.t-modal__title').hasText('Add Member', 'Correct title');
+    assert.dom('.t-modal__title').hasText('Add Members', 'Correct title');
   });
 
   test('Team with member in users current timezone', async function (assert) {

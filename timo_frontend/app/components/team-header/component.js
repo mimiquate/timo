@@ -1,15 +1,14 @@
 import Component from '@glimmer/component';
 
-export default class GroupHeaderComponent extends Component {
-
+export default class TeamHeaderComponent extends Component {
   get membersLabel() {
-    const members = this.args.group.members.length;
+    const members = this.args.members.length;
 
-    return members > 1 ? `${members} Members` : `${members} Member`
+    return members > 1 ? `Members ${members}` : `Member ${members}`
   }
 
   get timezonesLabel() {
-    const members = this.args.group.members;
+    const members = this.args.members;
     const timezones = members.map(m => {
       return m.timezone
     });
@@ -22,6 +21,6 @@ export default class GroupHeaderComponent extends Component {
       }
     })
 
-    return t.length > 1 ? `${t.length} Timezones` : `${t.length} Timezone`
+    return t.length > 1 ? `Timezones ${t.length}` : `Timezone ${t.length}`;
   }
 }

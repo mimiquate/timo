@@ -1,13 +1,13 @@
-<div class="group-header">
-  <div class="group-header__container">
-    <span class="group-header__title" data-test="team-title">
-      {{@group.name}}
+<div class="team-header">
+  <div class="team-header__container">
+    <span class="team-header__title" data-test="team-title">
+      {{@teamName}}
     </span>
-    <span class="group-header__details" {{on "click" @openMemberListModal}} role="button">
+    <span class="team-header__details" {{on "click" @openMemberListModal}} role="button">
       {{this.timezonesLabel}} | {{this.membersLabel}}
     </span>
   </div>
-  <div>
+  <div class="team-header__actions">
     <TButton
       @testSelector="edit-team-button"
       @label="Edit team"
@@ -20,6 +20,7 @@
       @action={{@addMember}}
     />
     <TButton
+      @color="red"
       @testSelector="share-button"
       @label="Share"
       @action={{@openShareModal}}

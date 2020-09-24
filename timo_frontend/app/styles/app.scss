@@ -2,7 +2,7 @@
 @import "ember-power-select";
 @import './variables.scss';
 @import './components/timezone-list.scss';
-@import './components/group-header.scss';
+@import './components/team-header.scss';
 @import './components/sidenavbar.scss';
 @import './components/t-input.scss';
 @import './components/t-modal.scss';
@@ -20,6 +20,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
+  background: #F3F2F9;
 }
 
 .ember-application, .login-main, .public-main {
@@ -31,14 +32,10 @@ body {
   display: flex;
 }
 
-.flex-content {
-  display: flex;
-  flex-direction: column;
-  background: whitesmoke;
-}
-
 .side-content {
   width: calc(100% - 215px);
+  display: flex;
+  flex-direction: column;
 }
 
 .flex-center {
