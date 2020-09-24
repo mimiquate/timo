@@ -13,11 +13,13 @@ export default class TimezoneListComponent extends Component {
 
     later(() => {
       this.scrollToSelected(index);
-    }, 250);
+    }, 200);
   }
 
   @action
   scrollAll(event) {
+    if (this.previousAnimationId) cancelAnimationFrame(this.previousAnimationId);
+
     const scrollAmount = event.target.scrollLeft;
     const timezoneDivs = Array.from(document.getElementsByClassName('timezone-list__time-zone'));
 
@@ -30,14 +32,15 @@ export default class TimezoneListComponent extends Component {
 
   scrollToSelected(index) {
     const boxWidth = document.getElementsByClassName('timezone-list__hour').item(0).offsetWidth;
-    const firstTimezoneDiv = document.getElementsByClassName('timezone-list__time-zone').item(0);
+    const timezoneDivs = Array.from(document.getElementsByClassName('timezone-list__time-zone'));
+    const firstTimezoneDiv = timezoneDivs[0];
 
     const startPosition = firstTimezoneDiv.scrollLeft;
     const endPosition = getEndPosition(firstTimezoneDiv, boxWidth, index);
     const distance = endPosition - startPosition;
 
     if (distance != 0) {
-      this.previousAnimationId = smoothScrollLeft(firstTimezoneDiv, startPosition, distance, 500, this.previousAnimationId);
+      this.previousAnimationId = smoothScrollLeft(timezoneDivs, startPosition, distance, 500, this.previousAnimationId);
     }
   }
 }

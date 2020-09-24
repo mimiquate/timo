@@ -8,12 +8,14 @@ export function smoothScrollLeft(target, startPosition, distance, duration, prev
     let timeElapsed = currentTime - startTime;
     let run = easeOutQuadratic(timeElapsed, startPosition, distance, duration);
 
-    target.scrollLeft = run;
+    target.forEach(targetDiv => {
+      targetDiv.scrollLeft = run;
+    });
 
     if (timeElapsed < duration) requestAnimationFrame(animation);
   }
 
-  requestAnimationFrame(animation);
+  return requestAnimationFrame(animation);
 }
 
 function easeOutQuadratic (time, startValue, changeValue, duration) {
