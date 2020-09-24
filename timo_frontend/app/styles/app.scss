@@ -34,6 +34,8 @@ body {
 
 .side-content {
   width: calc(100% - 215px);
+  display: flex;
+  flex-direction: column;
 }
 
 .flex-center {
