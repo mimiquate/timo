@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, currentURL, click, find } from '@ember/test-helpers';
+import { visit, currentURL, click, find, findAll } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
@@ -31,8 +31,30 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Correctly visits team page');
     assert.dom('[data-test=team-title]').exists('New team title page loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
-    assert.dom('[data-test=no-member]')
-      .hasText('No members in this team', 'Doesn\'t load members');
+
+    const timezoneDivs = findAll('.timezone-list__row');
+    assert.equal(timezoneDivs.length, 1, 'Has only one timezone, the one from the user');
+
+    const timezoneLocation = find('.timezone-list__location');
+    assert.equal(
+      timezoneLocation.textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct location'
+    );
+
+    const timeNow = moment.tz('America/Montevideo').startOf('hour');
+
+    const timezoneDetail = find('.timezone-list__details');
+    const details = timeNow.format('dddd, DD MMMM YYYY, HH:mm');
+    assert.ok(timezoneDetail.textContent.includes(details), 'Correct date details');
+    assert.ok(timezoneDetail.textContent.includes('1 member'), 'Correct members details');
+
+    const timezoneHours = findAll('.timezone-list__hour');
+    assert.equal(timezoneHours.length, 40, 'Correct amount of hours');
+
+    const currentTimezoneHour = find('.timezone-list__current');
+    const currentTime = timeNow.format('HH.mm');
+    assert.equal(currentTimezoneHour.textContent.trim(), currentTime, 'Correct current time');
   });
 
   test('Visiting /teams/team with existing username and members', async function (assert) {
@@ -56,28 +78,57 @@ module('Acceptance | Team', function (hooks) {
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
 
-    assert.equal(table.headers.length, 2, 'Table has two columns');
+    const timezoneDivs = findAll('.timezone-list__row');
+    assert.equal(timezoneDivs.length, 2, 'Has two timezones');
+
+    const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (America/Montevideo)',
-      'Member 1 is listed'
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct first location'
     );
     assert.equal(
-      table.headers.objectAt(1).text.trim(),
-      'Member 2 (America/Buenos_Aires)',
-      'Member 2 is listed'
+      timezoneLocations[1].textContent.trim(),
+      'America, Buenos_Aires',
+      'Correct second location'
     );
 
-    let time = moment().minute(0);
-    time.startOf('day');
-    let hoursLeft = 24;
+    const timeNowMontevideo = moment.tz('America/Montevideo').startOf('hour');
+    const timeNowBuenosAires = moment.tz('America/Buenos_Aires').startOf('hour');
 
-    let timeMember1 = moment.tz(time, 'America/Montevideo').format("D MMM YYYY - HH:mm");
-    let timeMember2 = moment.tz(time, 'America/Buenos_Aires').format("D MMM YYYY - HH:mm");
+    const timezoneDetails = findAll('.timezone-list__details');
+    const detailsMontevideo = timeNowMontevideo.format('dddd, DD MMMM YYYY, HH:mm');
+    const detailsBuenosAires = timeNowBuenosAires.format('dddd, DD MMMM YYYY, HH:mm');
+    assert.ok(
+      timezoneDetails[0].textContent.includes(detailsMontevideo),
+      'Correct first row date details'
+    );
+    assert.ok(
+      timezoneDetails[0].textContent.includes('2 members'),
+      'Correct first row members details'
+    );
+    assert.ok(
+      timezoneDetails[1].textContent.includes(detailsBuenosAires),
+      'Correct second row date details'
+    );
+    assert.ok(
+      timezoneDetails[1].textContent.includes('1 member'),
+      'Correct second row members details'
+    );
 
-    assert.equal(table.getCell(0, 0).text, timeMember1, 'Correct first time in Member 1');
-    assert.equal(table.getCell(0, 1).text, timeMember2, 'Correct first time in Member 2');
-    assert.equal(table.body.rowCount, hoursLeft, 'Correct number of rows in table');
+    const currentTimezoneHours = findAll('.timezone-list__current');
+    const currentTimeMontevideo = timeNowMontevideo.format('HH.mm');
+    const currentTimeBuenosAires = timeNowBuenosAires.format('HH.mm');
+    assert.equal(
+      currentTimezoneHours[0].textContent.trim(),
+      currentTimeMontevideo,
+      'Correct first row current time'
+    );
+    assert.equal(
+      currentTimezoneHours[1].textContent.trim(),
+      currentTimeBuenosAires,
+      'Correct second row current time'
+    );
   });
 
   test('Visiting /teams/team with members sorted', async function (assert) {
@@ -91,22 +142,27 @@ module('Acceptance | Team', function (hooks) {
     });
     this.server.create('member', {
       name: 'Member 2',
-      timezone: 'America/Montevideo',
+      timezone: 'America/Buenos_Aires',
       team: newTeam
     });
 
     await visit(`/teams/${newTeam.id}`);
 
-    assert.equal(table.headers.length, 2, 'Table has two columns');
+    const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 2 (America/Montevideo)',
-      'Member 2 is listed first'
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct first location'
     );
     assert.equal(
-      table.headers.objectAt(1).text.trim(),
-      'Member 1 (Europe/Rome)',
-      'Member 1 is listed second'
+      timezoneLocations[1].textContent.trim(),
+      'America, Buenos_Aires',
+      'Correct second location'
+    );
+    assert.equal(
+      timezoneLocations[2].textContent.trim(),
+      'Europe, Rome',
+      'Correct third location'
     );
   })
 
@@ -123,37 +179,10 @@ module('Acceptance | Team', function (hooks) {
     assert.dom('.t-modal__title').hasText('Add Member', 'Correct title');
   });
 
-  test('Clicks checkbox lists my current timezone', async function (assert) {
+  test('Team with member in users current timezone', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'Universal',
-      team: newTeam
-    });
-
-    await visit(`/teams/${newTeam.id}`);
-
-    assert.equal(table.headers.length, 1, 'Table has one column');
-    assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (Universal)',
-      'Member 1 is listed'
-    );
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 2, 'Table has two columns');
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 1, 'Table has one column');
-  });
-
-  test('Clicks checkbox with already existing current timezone', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
@@ -162,61 +191,19 @@ module('Acceptance | Team', function (hooks) {
 
     await visit(`/teams/${newTeam.id}`);
 
-    assert.equal(table.headers.length, 1, 'Table has one column');
+    const timezoneLocations = findAll('.timezone-list__location');
+    assert.equal(timezoneLocations.length, 1, 'Only one timezone');
     assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (America/Montevideo)',
-      'Member 1 is listed'
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct location'
     );
 
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 1, 'Table has one column');
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 1, 'Table has one column');
-  });
-
-  test('Clicks checkbox with no members', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-
-    await visit(`/teams/${newTeam.id}`);
-
-    assert.equal(table.headers.length, 0, 'Table has no column');
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 1, 'Table has one column');
-    assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      `You (America/Montevideo) Current timezone`,
-      'Current timezone is listed'
+    const timezoneDetails = find('.timezone-list__details');
+    assert.ok(
+      timezoneDetails.textContent.includes('2 members'),
+      'Correct amount of members in timezone'
     );
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 0, 'Table has no column');
-  });
-
-  test('Clicks member in table to edit it', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    let newMember = this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/teams/${newTeam.id}`);
-
-    await click(`[data-test-member="${newMember.id}"]`);
-
-    assert.dom('[data-test=edit-member-modal]').exists('Correctly opens edit member modal');
-    assert.dom('[data-test=member-modal-title]').exists('Edit member modal title loads');
-    assert.dom('[data-test=member-modal-title]').hasText('Edit Member', 'Correct title');
-    assert.dom('#memberName-input input').hasValue('Member 1', 'Member name is there');
-    assert.dom('#memberTimeZone-select .ember-power-select-selected-item')
-      .hasText('America/Montevideo', 'Member timezone is there');
   });
 
   test('Clicks share button', async function (assert) {
