@@ -24,4 +24,14 @@ module('Unit | Route | index', function (hooks) {
     assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
     assert.dom('[data-test=landing-image]').exists('Landing page images loads');
   });
+
+  test('Redirects to first team', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+
+    await visit('/');
+
+    assert.equal(currentURL(), `/teams/${newTeam.id}`);
+  });
 });
