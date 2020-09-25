@@ -7,6 +7,7 @@ import { TablePage } from 'ember-table/test-support';
 import moment from 'moment';
 import { setupWindowMock } from 'ember-window-mock/test-support';
 import window from 'ember-window-mock';
+import { assertTooltipVisible, assertTooltipNotVisible  } from 'ember-tooltips/test-support';
 
 let table = new TablePage();
 
@@ -444,7 +445,32 @@ module('Acceptance | Team', function (hooks) {
     );
   });
 
-  test('Opens google calendar when clicking row', async function (assert) {
+  test('Opens google calendar when clicking time box and closes it', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${newTeam.id}`);
+    await click('.timezone-list__selected');
+
+    const calendarPopverLabel = find('.google-calendar-popover__label');
+    const calendarPopoverButton = find('.google-calendar-popover__button');
+
+    assertTooltipVisible(assert);
+    assert.equal(calendarPopverLabel.textContent.trim(), 'Schedule event on Google Calendar', 'Correct label');
+    assert.equal(calendarPopoverButton.textContent.trim(), 'Schedule now', 'Correct button text');
+
+    await click('.google-calendar-popover__close');
+
+    assertTooltipNotVisible(assert);
+  })
+
+  test('Schedule event in google calendar', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
     this.server.create('member', {
@@ -457,7 +483,11 @@ module('Acceptance | Team', function (hooks) {
     const calendarBase = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Team Team scheduled event&';
     const timeNow = moment();
     const timeFormat = `${timeNow.year()}${timeNow.format('MM')}${timeNow.format('DD')}`;
-    const calendarDate = `dates=${timeFormat}T060000/${timeFormat}T070000`;
+
+    const startHour = timeNow.clone().format('HH');
+    const endHour = timeNow.clone().add(1, 'hours').format('HH');
+
+    const calendarDate = `dates=${timeFormat}T${startHour}0000/${timeFormat}T${endHour}0000`;
     const calendarUrl = `${calendarBase}${calendarDate}`;
 
     await visit(`/teams/${newTeam.id}`);
@@ -470,7 +500,8 @@ module('Acceptance | Team', function (hooks) {
       );
     };
 
-    await click('[data-test-row="6"]');
+    await click('.timezone-list__selected');
+    await click('.google-calendar-popover__button');
   });
 
   test('Select box changes selected time', async function (assert) {

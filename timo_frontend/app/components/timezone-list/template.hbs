@@ -1,3 +1,8 @@
+{{#if this.isShowingCalendarPopover}}
+  <EmberWormhole @to="tooltip-background">
+    <div class="showing-tooltip"></div>
+  </EmberWormhole>
+{{/if}}
 <div class="timezone-list">
   {{#each @timezones as |timezone|}}
     <TimezoneList::Timezone
@@ -7,6 +12,8 @@
       @selectedBoxIndex={{@selectedBoxIndex}}
       @selectedTime={{@selectedTime}}
       @scrollAll={{this.scrollAll}}
+      @isShowingCalendarPopover={{this.isShowingCalendarPopover}}
+      @toggleCalendarPopoverBackground={{this.toggleCalendarPopoverBackground}}
     />
   {{/each}}
 </div>
