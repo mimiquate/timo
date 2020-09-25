@@ -7,6 +7,7 @@ import { TablePage } from 'ember-table/test-support';
 import moment from 'moment';
 import { setupWindowMock } from 'ember-window-mock/test-support';
 import window from 'ember-window-mock';
+import { assertTooltipVisible, assertTooltipNotVisible  } from 'ember-tooltips/test-support';
 
 let table = new TablePage();
 
@@ -460,9 +461,13 @@ module('Acceptance | Team', function (hooks) {
     const calendarPopverLabel = find('.google-calendar-popover__label');
     const calendarPopoverButton = find('.google-calendar-popover__button');
 
-    assert.dom('.google-calendar-popover').exists('Calendar popover exists');
+    assertTooltipVisible(assert);
     assert.equal(calendarPopverLabel.textContent.trim(), 'Schedule event on Google Calendar', 'Correct label');
     assert.equal(calendarPopoverButton.textContent.trim(), 'Schedule now', 'Correct button text');
+
+    await click('.google-calendar-popover__close');
+
+    assertTooltipNotVisible(assert);
   })
 
   test('Schedule event in google calendar', async function (assert) {
