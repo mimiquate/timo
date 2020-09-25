@@ -14,7 +14,8 @@ export function createGroupedRows(timezones) {
 
     const newTimezone = {
       members: membersConcat,
-      timezoneName: timezoneNameList,
+      timezoneName: null,
+      timezoneNameList,
       times
     }
 

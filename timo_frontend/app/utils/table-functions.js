@@ -33,3 +33,17 @@ export function createMemberArray(modelMembers, showCurrent, timezoneNow) {
 
   return returnArray;
 }
+
+export function splitTimezone(timezone, timezoneNow) {
+  let ret = "";
+
+  ret = timezone
+    .replace(/\//g, ", ")
+    .replace(/_/g, " ")
+
+  if (timezone === timezoneNow) {
+    ret += " (you)";
+  }
+
+  return ret;
+}

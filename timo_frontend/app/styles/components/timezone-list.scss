@@ -45,6 +45,9 @@
     line-height: 20px;
     height: 19px;
     color: $black;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__details {
