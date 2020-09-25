@@ -24,6 +24,12 @@ module('Acceptance | Landing', function (hooks) {
     assert.equal(currentURL(), '/', 'Correctly visits landing page');
     assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
     assert.dom('[data-test=landing-image]').exists('Landing page images loads');
+    assert.dom('.no-team__label').hasText(`Hi, there, You don’t have any teams yet!`);
+    assert.dom('[data-test=create-team]').hasText("Create a team now!");
+
+    await click('[data-test=create-team]');
+
+    assert.dom('.t-modal').exists('Opens new team modal');
   });
 
   test('Clicks button to Add one team and opens new team modal', async function (assert) {
@@ -104,24 +110,15 @@ module('Acceptance | Landing', function (hooks) {
     const buttons = findAll('.about-team-modal__delete-confirmation-container .t-button');
     assert.equal(buttons[0].textContent.trim(), 'Cancel', 'Cancel button');
     assert.equal(buttons[1].textContent.trim(), 'Confirm', 'Delete team button');
-  })
 
-  test('Deletes team', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    setSession.call(this, newUser);
-
-    await visit('/');
-    await click('.team-list__button');
-    await click('[data-test=edit-team-button]');
-    await click('.about-team-modal__delete-label');
-
-    const buttons = findAll('.about-team-modal__delete-confirmation-container .t-button');
     await click(buttons[1]);
 
-    assert.dom('.about-team-modal').doesNotExist('Closes delete team modal');
+    assert.dom('.about-team-modal').doesNotExist();
+    assert.dom('.no-team__label').hasText(`Hi, there, You don’t have any teams yet!`);
+
     assert.notOk(this.server.db.teams.find(newTeam.id), 'Succesfully deletes team');
-  });
+    assert.equal(currentURL(), '/', 'Redirects to landing page');
+  })
 
   test('Cancels team deletion', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
@@ -136,26 +133,5 @@ module('Acceptance | Landing', function (hooks) {
     assert.dom('.about-team-modal').doesNotExist('Closes delete team modal');
     assert.ok(this.server.db.teams.find(newTeam.id), 'Team still exists');
     assert.equal(currentURL(), '/teams/1', 'Stays in landing page');
-  });
-
-  test('Deletes currently viewing team', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    setSession.call(this, newUser);
-
-    await visit('/');
-    await click('.team-list__button');
-
-    assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Moves to team page');
-
-    await click('[data-test=edit-team-button]');
-    await click('.about-team-modal__delete-label');
-
-    const buttons = findAll('.about-team-modal__delete-confirmation-container .t-button');
-    await click(buttons[1]);
-
-    assert.dom('.about-team-modal').doesNotExist('Closes delete team modal');
-    assert.notOk(this.server.db.teams.find(newTeam.id), 'Succesfully deletes team');
-    assert.equal(currentURL(), '/', 'Redirects to landing page');
   });
 });
