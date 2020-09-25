@@ -444,7 +444,28 @@ module('Acceptance | Team', function (hooks) {
     );
   });
 
-  test('Opens google calendar when clicking row', async function (assert) {
+  test('Opens google calendar when clicking time box and closes it', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${newTeam.id}`);
+    await click('.timezone-list__selected');
+
+    const calendarPopverLabel = find('.google-calendar-popover__label');
+    const calendarPopoverButton = find('.google-calendar-popover__button');
+
+    assert.dom('.google-calendar-popover').exists('Calendar popover exists');
+    assert.equal(calendarPopverLabel.textContent.trim(), 'Schedule event on Google Calendar', 'Correct label');
+    assert.equal(calendarPopoverButton.textContent.trim(), 'Schedule now', 'Correct button text');
+  })
+
+  test('Schedule event in google calendar', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
     this.server.create('member', {
