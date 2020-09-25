@@ -19,8 +19,7 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked showAboutTeamModal = false;
   @tracked selectedBoxIndex = this.currentIndex;
   @tracked selectedTime = moment();
-
-  isCollapsed = false;
+  @tracked isCollapsed = false;
 
   @computed('model.members.{[],@each.id}')
   get savedMembers() {
@@ -51,6 +50,11 @@ export default class LandingTeamsTeamController extends Controller {
   @computed('timezones')
   get currentIndex() {
     return this.timezones[0].times.findIndex((t) => t.isCurrentTime);
+  }
+
+  @action
+  groupTimezones() {
+    this.toggleProperty('isCollapsed');
   }
 
   @action

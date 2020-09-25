@@ -4,6 +4,13 @@
   </EmberWormhole>
 {{/if}}
 <div class="timezone-list">
+  <div class="timezone-list__group-timezones">
+    <TCheckbox
+      @checked={{@isCollapsed}}
+      @onChange={{@groupTimezones}}
+      @label="Group same timezones"
+    />
+  </div>
   {{#each @timezones as |timezone|}}
     <TimezoneList::Timezone
       @timezone={{timezone}}
