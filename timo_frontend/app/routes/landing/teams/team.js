@@ -15,7 +15,7 @@ export default class LandingTeamsTeamRoute extends Route {
     const timeNow = moment();
 
     controller.setProperties({
-      isCollapsed: false,
+      isGrouped: false,
       selectedBoxIndex: indexReset,
       selectedTime: timeNow
     });

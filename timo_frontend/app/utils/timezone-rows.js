@@ -1,38 +1,38 @@
 import moment from 'moment';
 
-export function createCollapsedColumns(sortedMembers, timezoneNow) {
+export function createGroupedRows(timezones) {
   const timeNow = moment.utc();
 
-  const membersByOffset = groupMembersByOffset(sortedMembers, timeNow);
+  const timezoneByOffset = groupTimezonesByOffset(timezones, timeNow);
+  const groupedTimezones = [];
 
-  return Array.from(membersByOffset).map(args => {
-    const members = args[1];
+  timezoneByOffset.forEach(timezones => {
+    const times = timezones[0].times;
+    const timezoneNameList = timezones.map(t => t.timezoneName);
+    const membersArrays = timezones.map(t => t.members);
+    const membersConcat = [].concat(...membersArrays);
 
-    const findMember = members.find(m => m.id === 'current');
-    const member = findMember ? findMember : members[0];
+    const newTimezone = {
+      members: membersConcat,
+      timezoneName: timezoneNameList,
+      times
+    }
 
-    const isCurrentTimezone = members.some(m => m.timezone === timezoneNow);
+    groupedTimezones.pushObject(newTimezone)
+  });
 
-    return {
-      member: member,
-      valuePath: member.id,
-      textAlign: 'center',
-      width: 225,
-      isCurrent: isCurrentTimezone,
-      collapsedMembersCount: members.length
-    };
-  })
+  return groupedTimezones;
 }
 
-function groupMembersByOffset(sortedMembers, timeNow) {
-  return sortedMembers.reduce(function (map, member) {
-    const offset = moment.tz.zone(member.timezone).utcOffset(timeNow)
+function groupTimezonesByOffset(timezones, timeNow) {
+  return timezones.reduce(function (map, timezone) {
+    const offset = moment.tz.zone(timezone.timezoneName).utcOffset(timeNow)
 
     if (!map.has(offset)) {
       map.set(offset, []);
     }
 
-    map.get(offset).push(member);
+    map.get(offset).push(timezone);
 
     return map;
   }, new Map());

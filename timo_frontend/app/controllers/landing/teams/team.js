@@ -9,7 +9,7 @@ import moment from 'moment';
 import { isPresent } from '@ember/utils';
 
 export default class LandingTeamsTeamController extends Controller {
-  queryParams = [{ isCollapsed: 'collapsed' }];
+  queryParams = [{ isGrouped: 'groupTimezones' }];
 
   @tracked memberToEdit = null;
   @tracked newMemberModal = false;
@@ -19,7 +19,7 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked showAboutTeamModal = false;
   @tracked selectedBoxIndex = this.currentIndex;
   @tracked selectedTime = moment();
-  @tracked isCollapsed = false;
+  @tracked isGrouped = false;
 
   @computed('model.members.{[],@each.id}')
   get savedMembers() {
@@ -54,7 +54,7 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   groupTimezones() {
-    this.toggleProperty('isCollapsed');
+    this.toggleProperty('isGrouped');
   }
 
   @action
