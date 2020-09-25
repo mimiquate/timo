@@ -1,8 +1,6 @@
 import Component from '@glimmer/component';
-import { action } from '@ember/object';
 
 export default class SharedTeamHeaderComponent extends Component {
-
   get membersLabel() {
     const members = this.args.members.length;
 

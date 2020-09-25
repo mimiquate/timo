@@ -1,5 +1,6 @@
 <div class="shared-team-header">
   <img
+    role="button"
     src="/images/appicon-header.svg"
     alt="Timo sidenavbar icon"
     class="shared-team-header__image"
@@ -13,7 +14,7 @@
       {{this.timezonesLabel}} | {{this.membersLabel}}
     </span>
   </div>
-  {{#if currentUser.user}}
+  {{#if this.currentUser.user}}
     <div class="shared-team-header__actions">
       <TButton
         @testSelector="log-in"

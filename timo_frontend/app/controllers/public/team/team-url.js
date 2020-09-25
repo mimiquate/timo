@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
-import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
+import { compareMemberTimeZones } from 'timo-frontend/utils/table-functions';
 import { createNewRows } from 'timo-frontend/utils/timezone-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
