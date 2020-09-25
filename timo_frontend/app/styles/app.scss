@@ -236,5 +236,10 @@ body {
   height: 100%;
   background-color: rgba(black, .64);
   z-index: 5;
+  overflow: hidden;
 }
 
+.shared-page {
+  overflow: hidden;
+  height: 100%;
+}

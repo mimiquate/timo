@@ -4,13 +4,13 @@ import { action } from '@ember/object';
 export default class SharedTeamHeaderComponent extends Component {
 
   get membersLabel() {
-    const members = this.args.group.members.length;
+    const members = this.args.members.length;
 
     return members > 1 ? `Members ${members}` : `Member ${members}`
   }
 
   get timezonesLabel() {
-    const members = this.args.group.members;
+    const members = this.args.members;
     const timezones = members.map(m => {
       return m.timezone
     });
