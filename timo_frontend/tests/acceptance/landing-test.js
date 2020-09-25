@@ -24,6 +24,12 @@ module('Acceptance | Landing', function (hooks) {
     assert.equal(currentURL(), '/', 'Correctly visits landing page');
     assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
     assert.dom('[data-test=landing-image]').exists('Landing page images loads');
+    assert.dom('.no-team__label').hasText(`Hi, there, You don’t have any teams yet!`);
+    assert.dom('[data-test=create-team]').hasText("Create a team now!");
+
+    await click('[data-test=create-team]');
+
+    assert.dom('.t-modal').exists('Opens new team modal');
   });
 
   test('Clicks button to Add one team and opens new team modal', async function (assert) {

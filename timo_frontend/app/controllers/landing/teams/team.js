@@ -132,8 +132,10 @@ export default class LandingTeamsTeamController extends Controller {
 
     this.store.findAll('team').then(teams => {
       this.closeAboutTeamModal();
-      if (isPresent(teams.toArray())) {
-        const teamToTransition = teams.toArray().map(t => parseInt(t.id));
+      const teamsArray = teams.toArray();
+
+      if (isPresent(teamsArray)) {
+        const teamToTransition = teamsArray.map(t => parseInt(t.id));
         const id = Math.min(...teamToTransition);
         this.transitionToRoute('landing.teams.team', id);
       } else {
