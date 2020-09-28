@@ -588,7 +588,7 @@ module('Acceptance | Public Team', function (hooks) {
     await click('.google-calendar-popover__button');
   });
 
-  test('Redirect to login if user is not logged', async function (assert) {
+  test('User can login if is not logged', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create(
@@ -610,7 +610,7 @@ module('Acceptance | Public Team', function (hooks) {
     assert.equal(currentURL(), '/login');
   });
 
-  test('Redirect to sign-up if user is not logged', async function (assert) {
+  test('User can sign up if is not logged', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create(
