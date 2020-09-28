@@ -14,7 +14,7 @@
       {{this.timezonesLabel}} | {{this.membersLabel}}
     </span>
   </div>
-  {{#if this.currentUser.user}}
+  {{#unless session.isAuthenticated}}
     <div class="shared-team-header__actions">
       <TButton
         @testSelector="log-in"
@@ -29,5 +29,5 @@
         @action={{@transitionToSignUp}}
       />
     </div>
-  {{/if}}
+  {{/unless}}
 </div>
