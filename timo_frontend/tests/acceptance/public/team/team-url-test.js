@@ -7,6 +7,7 @@ import moment from 'moment';
 import { setupWindowMock } from 'ember-window-mock/test-support';
 import window from 'ember-window-mock';
 import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
+import { assertTooltipVisible, assertTooltipNotVisible  } from 'ember-tooltips/test-support';
 
 let table = new TablePage();
 
@@ -414,6 +415,34 @@ module('Acceptance | Public Team', function (hooks) {
     );
   });
 
+  test('Opens google calendar when clicking time box and closes it', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      }
+    );
+
+    await visit(`/p/team/${newTeam.share_id}`);
+    await click('.timezone-list__selected');
+
+    const calendarPopverLabel = find('.google-calendar-popover__label');
+    const calendarPopoverButton = find('.google-calendar-popover__button');
+
+    assertTooltipVisible(assert);
+    assert.equal(calendarPopverLabel.textContent.trim(), 'Schedule event on Google Calendar', 'Correct label');
+    assert.equal(calendarPopoverButton.textContent.trim(), 'Schedule now', 'Correct button text');
+
+    await click('.google-calendar-popover__close');
+
+    assertTooltipNotVisible(assert);
+  })
+
   test('Schedule event in google calendar', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
@@ -426,11 +455,6 @@ module('Acceptance | Public Team', function (hooks) {
         share_id: 'yjHktCOyBDTb'
       }
     );
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
 
     const calendarBase = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Team Team scheduled event&';
     const timeNow = moment();
@@ -454,6 +478,55 @@ module('Acceptance | Public Team', function (hooks) {
 
     await click('.timezone-list__selected');
     await click('.google-calendar-popover__button');
+  });
+
+  test('Select box changes selected time', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      }
+    );
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    let time = moment.tz('America/Montevideo').startOf('hour');
+
+    const timezoneDetail = find('.timezone-list__details');
+    let details = time.format('dddd, DD MMMM YYYY, HH:mm');
+
+    assert.ok(timezoneDetail.textContent.includes(details), 'Correct date details');
+
+    const timezoneHours = findAll('.timezone-list__hour');
+
+    const selectedIndex = timezoneHours.findIndex(
+      (h => h.classList.contains('timezone-list__selected'))
+    );
+    let selectedTimeBox = find('.timezone-list__selected');
+    let currentTime = time.format('HH.mm');
+
+    assert.equal(selectedTimeBox.textContent.trim(), currentTime, 'Correct selected time');
+
+    await click(timezoneHours[selectedIndex + 2]);
+
+    time.add(2, 'hour');
+    details = time.format('dddd, DD MMMM YYYY, HH:mm');
+
+    assert.ok(timezoneDetail.textContent.includes(details), 'Correct new date details');
+
+    const newSelectedIndex = timezoneHours.findIndex(
+      (h => h.classList.contains('timezone-list__selected'))
+    );
+    selectedTimeBox = find('.timezone-list__selected');
+    currentTime = time.format('HH.mm');
+
+    assert.equal(selectedTimeBox.textContent.trim(), currentTime, 'Correct new selected time');
+    assert.ok(newSelectedIndex === selectedIndex + 2, 'Correct selected index');
   });
 
   test('User can login if is not logged', async function (assert) {
