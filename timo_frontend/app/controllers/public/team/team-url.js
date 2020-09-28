@@ -8,13 +8,11 @@ import moment from 'moment';
 import { tracked } from '@glimmer/tracking';
 
 export default class PublicTeamTeamUrlController extends Controller {
-  queryParams = [{ isCollapsed: 'collapsed' }];
-
-  showCurrent = false;
-  isCollapsed = false;
+  queryParams = [{ isGrouped: 'groupTimezones' }];
 
   @tracked selectedBoxIndex = this.currentIndex;
   @tracked selectedTime = moment();
+  @tracked isGrouped = false;
 
   @computed('model.members.{[],@each.id}')
   get savedMembers() {
@@ -36,14 +34,19 @@ export default class PublicTeamTeamUrlController extends Controller {
     return membersToArray;
   }
 
-  @computed('sortedMembers.[]')
+  @computed('sortedMembers.[]', 'isGrouped')
   get timezones() {
-    return createNewRows(this.sortedMembers);
+    return createNewRows(this.sortedMembers, this.isGrouped);
   }
 
   @computed('timezones')
   get currentIndex() {
     return this.timezones[0].times.findIndex((t) => t.isCurrentTime);
+  }
+
+  @action
+  groupTimezones() {
+    this.toggleProperty('isGrouped');
   }
 
   @action

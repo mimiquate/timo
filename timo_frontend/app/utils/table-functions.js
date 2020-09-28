@@ -14,26 +14,6 @@ export function compareMemberTimeZones(memberA, memberB) {
   return ret;
 }
 
-export function createMemberArray(modelMembers, showCurrent, timezoneNow) {
-  const returnArray = modelMembers.toArray();
-
-  if (showCurrent) {
-    const hasCurrent = returnArray.some(m => {
-      return m.timezone === timezoneNow;
-    });
-
-    if (!hasCurrent) {
-      returnArray.pushObject({
-        name: 'You',
-        timezone: timezoneNow,
-        id: 'current'
-      });
-    }
-  }
-
-  return returnArray;
-}
-
 export function splitTimezone(timezone, timezoneNow) {
   let ret = "";
 
