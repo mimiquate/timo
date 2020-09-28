@@ -1,11 +1,19 @@
-<div class="flex-content public-main">
-  <div class="flex-title">
-    <h1 data-test="team-title">
-      {{@model.name}}
-    </h1>
-  </div>
+<div class="shared-page" id="tooltip-background">
+  <SharedTeamHeader
+    @teamName={{this.model.name}}
+    @members={{this.sortedMembers}}
+    @transitionToLogin={{this.transitionToLogin}}
+    @transitionToSignUp={{this.transitionToSignUp}}
+  />
   {{#if this.sortedMembers.length}}
-    <TimezoneList @timezones={{this.timezones}} @scheduleEvent={{this.scheduleEvent}} />
+    <TimezoneList
+      @timezones={{this.timezones}}
+      @scheduleEvent={{this.scheduleEvent}}
+      @currentIndex={{this.currentIndex}}
+      @selectedBoxIndex={{this.selectedBoxIndex}}
+      @selectedTime={{this.selectedTime}}
+      @selectBox={{this.selectBox}}
+    />
   {{else}}
     <div class="no-member" data-test="no-member">
       No members in this team

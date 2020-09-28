@@ -13,6 +13,7 @@
 @import './components/share-team.scss';
 @import './components/about-team-modal.scss';
 @import './components/member-list.scss';
+@import './components/shared-team-header.scss';
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
@@ -235,5 +236,10 @@ body {
   height: 100%;
   background-color: rgba(black, .64);
   z-index: 5;
+  overflow: hidden;
 }
 
+.shared-page {
+  overflow: hidden;
+  height: 100%;
+}

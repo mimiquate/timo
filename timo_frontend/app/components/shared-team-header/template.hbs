@@ -1,0 +1,33 @@
+<div class="shared-team-header">
+  <img
+    role="button"
+    src="/images/appicon-header.svg"
+    alt="Timo sidenavbar icon"
+    class="shared-team-header__image"
+    {{on "click" @transitionToLogin}}
+  >
+  <div class="shared-team-header__container">
+    <span class="shared-team-header__title" data-test="team-title">
+      {{@teamName}}
+    </span>
+    <span class="shared-team-header__details">
+      {{this.timezonesLabel}} | {{this.membersLabel}}
+    </span>
+  </div>
+  {{#unless this.session.isAuthenticated}}
+    <div class="shared-team-header__actions">
+      <TButton
+        @testSelector="log-in"
+        @label="Log in"
+        @color="white"
+        @action={{@transitionToLogin}}
+      />
+      <TButton
+        @testSelector="create-account"
+        @label="Create Account"
+        @color="inverted-white"
+        @action={{@transitionToSignUp}}
+      />
+    </div>
+  {{/unless}}
+</div>

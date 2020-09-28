@@ -1,11 +1,12 @@
 import { module, test } from 'qunit';
-import { visit, currentURL, click, find } from '@ember/test-helpers';
+import { visit, click, find, findAll, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { TablePage } from 'ember-table/test-support';
 import moment from 'moment';
 import { setupWindowMock } from 'ember-window-mock/test-support';
 import window from 'ember-window-mock';
+import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
 
 let table = new TablePage();
 
@@ -63,11 +64,32 @@ module('Acceptance | Public Team', function (hooks) {
 
     await visit(`/p/team/${newTeam.share_id}`);
 
-    assert.equal(currentURL(), '/p/team/yjHktCOyBDTb', 'Correctly visits Team public page');
     assert.dom('[data-test=team-title]').exists('New team title page loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
-    assert.dom('[data-test=no-member]')
-      .hasText('No members in this team', 'Doesn\'t load members');
+
+    const timezoneDivs = findAll('.timezone-list__row');
+    assert.equal(timezoneDivs.length, 1, 'Has only one timezone, the one from the user');
+
+    const timezoneLocation = find('.timezone-list__location');
+    assert.equal(
+      timezoneLocation.textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct location'
+    );
+
+    const timeNow = moment.tz('America/Montevideo').startOf('hour');
+
+    const timezoneDetail = find('.timezone-list__details');
+    const details = timeNow.format('dddd, DD MMMM YYYY, HH:mm');
+    assert.ok(timezoneDetail.textContent.includes(details), 'Correct date details');
+    assert.ok(timezoneDetail.textContent.includes('1 member'), 'Correct members details');
+
+    const timezoneHours = findAll('.timezone-list__hour');
+    assert.equal(timezoneHours.length, 40, 'Correct amount of hours');
+
+    const currentTimezoneHour = find('.timezone-list__current');
+    const currentTime = timeNow.format('HH.mm');
+    assert.equal(currentTimezoneHour.textContent.trim(), currentTime, 'Correct current time');
   });
 
   test('Visiting /p/team/:share_id with existing team and members', async function (assert) {
@@ -94,32 +116,60 @@ module('Acceptance | Public Team', function (hooks) {
 
     await visit(`/p/team/${newTeam.share_id}`);
 
-    assert.equal(currentURL(), '/p/team/yjHktCOyBDTb', 'Correctly visits Team public page');
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
 
-    assert.equal(table.headers.length, 2, 'Table has two columns');
+    const timezoneDivs = findAll('.timezone-list__row');
+    assert.equal(timezoneDivs.length, 2, 'Has two timezones');
+
+    const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (America/Montevideo)',
-      'Member 1 is listed'
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct first location'
     );
     assert.equal(
-      table.headers.objectAt(1).text.trim(),
-      'Member 2 (America/Buenos_Aires)',
-      'Member 2 is listed'
+      timezoneLocations[1].textContent.trim(),
+      'America, Buenos_Aires',
+      'Correct second location'
     );
 
-    let time = moment().minute(0);
-    time.startOf('day');
-    let hoursLeft = 24;
+    const timeNowMontevideo = moment.tz('America/Montevideo').startOf('hour');
+    const timeNowBuenosAires = moment.tz('America/Buenos_Aires').startOf('hour');
 
-    let timeMember1 = moment.tz(time, 'America/Montevideo').format("D MMM YYYY - HH:mm");
-    let timeMember2 = moment.tz(time, 'America/Buenos_Aires').format("D MMM YYYY - HH:mm");
+    const timezoneDetails = findAll('.timezone-list__details');
+    const detailsMontevideo = timeNowMontevideo.format('dddd, DD MMMM YYYY, HH:mm');
+    const detailsBuenosAires = timeNowBuenosAires.format('dddd, DD MMMM YYYY, HH:mm');
+    assert.ok(
+      timezoneDetails[0].textContent.includes(detailsMontevideo),
+      'Correct first row date details'
+    );
+    assert.ok(
+      timezoneDetails[0].textContent.includes('2 members'),
+      'Correct first row members details'
+    );
+    assert.ok(
+      timezoneDetails[1].textContent.includes(detailsBuenosAires),
+      'Correct second row date details'
+    );
+    assert.ok(
+      timezoneDetails[1].textContent.includes('1 member'),
+      'Correct second row members details'
+    );
 
-    assert.equal(table.getCell(0, 0).text, timeMember1, 'Correct first time in Member 1');
-    assert.equal(table.getCell(0, 1).text, timeMember2, 'Correct first time in Member 2');
-    assert.equal(table.body.rowCount, hoursLeft, 'Correct number of rows in table');
+    const currentTimezoneHours = findAll('.timezone-list__current');
+    const currentTimeMontevideo = timeNowMontevideo.format('HH.mm');
+    const currentTimeBuenosAires = timeNowBuenosAires.format('HH.mm');
+    assert.equal(
+      currentTimezoneHours[0].textContent.trim(),
+      currentTimeMontevideo,
+      'Correct first row current time'
+    );
+    assert.equal(
+      currentTimezoneHours[1].textContent.trim(),
+      currentTimeBuenosAires,
+      'Correct second row current time'
+    );
   });
 
   test('Visiting /p/team/:share_id with members sorted', async function (assert) {
@@ -140,22 +190,27 @@ module('Acceptance | Public Team', function (hooks) {
     });
     this.server.create('member', {
       name: 'Member 2',
-      timezone: 'America/Montevideo',
+      timezone: 'America/Buenos_Aires',
       team: newTeam
     });
 
     await visit(`/p/team/${newTeam.share_id}`);
 
-    assert.equal(table.headers.length, 2, 'Table has two columns');
+    const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 2 (America/Montevideo)',
-      'Member 2 is listed first'
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct first location'
     );
     assert.equal(
-      table.headers.objectAt(1).text.trim(),
-      'Member 1 (Europe/Rome)',
-      'Member 1 is listed second'
+      timezoneLocations[1].textContent.trim(),
+      'America, Buenos_Aires',
+      'Correct second location'
+    );
+    assert.equal(
+      timezoneLocations[2].textContent.trim(),
+      'Europe, Rome',
+      'Correct third location'
     );
   })
 
@@ -491,7 +546,7 @@ module('Acceptance | Public Team', function (hooks) {
     );
   });
 
-  test('Opens google calendar when clicking row', async function (assert) {
+  test('Schedule event in google calendar', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create(
@@ -512,7 +567,11 @@ module('Acceptance | Public Team', function (hooks) {
     const calendarBase = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Team Team scheduled event&';
     const timeNow = moment();
     const timeFormat = `${timeNow.year()}${timeNow.format('MM')}${timeNow.format('DD')}`;
-    const calendarDate = `dates=${timeFormat}T060000/${timeFormat}T070000`;
+
+    const startHour = timeNow.clone().format('HH');
+    const endHour = timeNow.clone().add(1, 'hours').format('HH');
+
+    const calendarDate = `dates=${timeFormat}T${startHour}0000/${timeFormat}T${endHour}0000`;
     const calendarUrl = `${calendarBase}${calendarDate}`;
 
     await visit(`/p/team/${newTeam.share_id}`);
@@ -525,6 +584,77 @@ module('Acceptance | Public Team', function (hooks) {
       );
     };
 
-    await click('[data-test-row="6"]');
+    await click('.timezone-list__selected');
+    await click('.google-calendar-popover__button');
+  });
+
+  test('User can login if is not logged', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    assert.dom('[data-test=log-in]').exists();
+    assert.dom('[data-test=log-in]').hasText('Log in');
+
+    await click('[data-test=log-in]');
+
+    assert.equal(currentURL(), '/login');
+  });
+
+  test('User can sign up if is not logged', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    assert.dom('[data-test=create-account]').exists();
+    assert.dom('[data-test=create-account]').hasText('Create Account');
+
+    await click('[data-test=create-account]');
+
+    assert.equal(currentURL(), '/sign-up');
+  });
+
+  test('Login and SignUp button doesnt appear if user is logged', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    assert.dom('[data-test=log-in]').doesNotExist();
+    assert.dom('[data-test=create-account]').doesNotExist();
+
+    server.get('/teams', schema => {
+      return schema.teams.all();
+    }, 200);
+
+    await click('.shared-team-header__image');
+
+    assert.equal(currentURL(), '/teams/1');
   });
 });

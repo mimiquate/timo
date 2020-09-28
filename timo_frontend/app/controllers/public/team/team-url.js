@@ -1,33 +1,55 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
-import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
+import { compareMemberTimeZones } from 'timo-frontend/utils/table-functions';
 import { createNewRows } from 'timo-frontend/utils/timezone-rows';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
-import ENV from 'timo-frontend/config/environment';
+import { tracked } from '@glimmer/tracking';
 
 export default class PublicTeamTeamUrlController extends Controller {
-  queryParams = [
-    { showCurrent: 'current' },
-    { isCollapsed: 'collapsed' }
-  ];
+  queryParams = [{ isCollapsed: 'collapsed' }];
 
   showCurrent = false;
   isCollapsed = false;
-  renderAll = ENV.environment === 'test';
 
-  @computed('model.members.[]', 'showCurrent')
+  @tracked selectedBoxIndex = this.currentIndex;
+  @tracked selectedTime = moment();
+
+  @computed('model.members.{[],@each.id}')
+  get savedMembers() {
+    return this.model.members.filterBy('id');
+  }
+
+  @computed('savedMembers.{[],@each.name,@each.timezone}')
   get sortedMembers() {
-    const timezoneNow = guessTimezoneNow();
-    const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);
+    const membersToArray = this.savedMembers.toArray();
+    membersToArray.sort(compareMemberTimeZones);
 
-    return membersToArray.sort(compareMemberTimeZones);
+    const timezoneNow = guessTimezoneNow();
+    membersToArray.unshiftObject({
+      name: 'You',
+      timezone: timezoneNow,
+      id: 'current'
+    });
+
+    return membersToArray;
   }
 
   @computed('sortedMembers.[]')
   get timezones() {
     return createNewRows(this.sortedMembers);
+  }
+
+  @computed('timezones')
+  get currentIndex() {
+    return this.timezones[0].times.findIndex((t) => t.isCurrentTime);
+  }
+
+  @action
+  selectBox(index, time) {
+    this.selectedBoxIndex = index;
+    this.selectedTime = time;
   }
 
   @action
@@ -42,5 +64,15 @@ export default class PublicTeamTeamUrlController extends Controller {
 
     const url = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
     openGoogleCalendarEvent(url, this.model.name);
+  }
+
+  @action
+  transitionToLogin() {
+    this.transitionToRoute('/login');
+  }
+
+  @action
+  transitionToSignUp() {
+    this.transitionToRoute('/sign-up');
   }
 }

@@ -37,4 +37,15 @@
     color: $dark-blue;
     border: 1px solid $dark-blue;
   }
+
+  &.white {
+    color: $dark-blue;
+    background-color: $ghost-white;
+  }
+
+  &.inverted-white {
+    color: $ghost-white;
+    background-color: $dark-blue;
+    border: 1px solid $ghost-white;
+  }
 }

@@ -1,0 +1,42 @@
+@import '../variables.scss';
+
+.shared-team-header {
+  background-color: $dark-blue;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 26px 36px 30px 44px;
+  align-items: center;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__actions {
+    >:first-child {
+      margin-right: 18px;
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  &__title {
+    line-height: 1;
+    color: #ADBAE4;
+    font-size: 25px;
+    font-weight: bold;
+  }
+
+  &__details {
+   color: $blue;
+   font-size: 14px;
+   font-weight: bold;
+  }
+
+  &__image {
+    cursor: pointer;
+    height: 44px;
+  }
+}
