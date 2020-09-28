@@ -1,11 +1,12 @@
 import { module, test } from 'qunit';
-import { visit, click, find, findAll } from '@ember/test-helpers';
+import { visit, click, find, findAll, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { TablePage } from 'ember-table/test-support';
 import moment from 'moment';
 import { setupWindowMock } from 'ember-window-mock/test-support';
 import window from 'ember-window-mock';
+import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
 
 let table = new TablePage();
 
@@ -585,5 +586,69 @@ module('Acceptance | Public Team', function (hooks) {
 
     await click('.timezone-list__selected');
     await click('.google-calendar-popover__button');
+  });
+
+  test('Redirect to login if user is not logged', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    assert.dom('[data-test=log-in]').exists();
+    assert.dom('[data-test=log-in]').hasText('Log in');
+
+    await click('[data-test=log-in]');
+
+    assert.equal(currentURL(), '/login');
+  });
+
+  test('Redirect to sign-up if user is not logged', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    assert.dom('[data-test=create-account]').exists();
+    assert.dom('[data-test=create-account]').hasText('Create Account');
+
+    await click('[data-test=create-account]');
+
+    assert.equal(currentURL(), '/sign-up');
+  });
+
+  test('Login and SignUp button doesnt appear if user is logged', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    assert.dom('[data-test=log-in]').doesNotExist();
+    assert.dom('[data-test=create-account]').doesNotExist();
   });
 });

@@ -14,7 +14,7 @@
       {{this.timezonesLabel}} | {{this.membersLabel}}
     </span>
   </div>
-  {{#unless session.isAuthenticated}}
+  {{#unless this.session.isAuthenticated}}
     <div class="shared-team-header__actions">
       <TButton
         @testSelector="log-in"
