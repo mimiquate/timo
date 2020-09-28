@@ -28,7 +28,7 @@
 {{/if}}
 {{#if this.showMemberListModal}}
   <Modals::Members::List
-    @members={{this.model.members}}
+    @members={{this.sortedMembers}}
     @closeModal={{this.closeMemberListModal}}
   />
 {{/if}}

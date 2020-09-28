@@ -33,13 +33,15 @@
               <span class="member-list__member__name">{{member.name}}</span>
               <span class="member-list__member__timezone">{{member.timezone}}</span>
             </div>
-            <span
-              role="button"
-              class="member-list__edit-label"
-              {{on "click" (fn this.showEdit member)}}
-            >
-              Edit
-            </span>
+            {{#unless member.isCurrentUser}}
+              <span
+                role="button"
+                class="member-list__edit-label"
+                {{on "click" (fn this.showEdit member)}}
+              >
+                Edit
+              </span>
+            {{/unless}}
           </div>
         {{/each}}
       </div>
