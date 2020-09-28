@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { click, fillIn, visit, find } from '@ember/test-helpers';
+import { click, fillIn, visit, find, findAll } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession, chooseTimeZone } from 'timo-frontend/tests/helpers/custom-helpers';
@@ -8,7 +8,7 @@ module('Acceptance | Update member', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('Resets inputs when entering new member page', async function (assert) {
+  test('Show all members in list', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
@@ -27,14 +27,14 @@ module('Acceptance | Update member', function (hooks) {
 
     await click('[data-test=cancel-button]');
 
-    assert.equal(
-      find('.member-list__member__name').textContent.trim(),
-      'Member 1'
-    );
-    assert.equal(
-      find('.member-list__member__timezone').textContent.trim(),
-      'America/Montevideo'
-    );
+    const members = findAll('.member-list__member__name');
+    const timezones = findAll('.member-list__member__timezone');
+
+    assert.equal(members[0].textContent.trim(), 'You');
+    assert.equal(members[1].textContent.trim(), 'Member 1');
+
+    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
   });
 
   test('Updates member', async function (assert) {
@@ -56,14 +56,14 @@ module('Acceptance | Update member', function (hooks) {
 
     await click('[data-test=update-button]');
 
-    assert.equal(
-      find('.member-list__member__name').textContent.trim(),
-      'Member 2'
-    );
-    assert.equal(
-      find('.member-list__member__timezone').textContent.trim(),
-      'America/Buenos_Aires'
-    );
+    const members = findAll('.member-list__member__name');
+    const timezones = findAll('.member-list__member__timezone');
+
+    assert.equal(members[0].textContent.trim(), 'You');
+    assert.equal(members[1].textContent.trim(), 'Member 2');
+
+    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America/Buenos_Aires');
   });
 
   test('Updates member with time zone but with only whitespace name error', async function (assert) {
@@ -80,17 +80,14 @@ module('Acceptance | Update member', function (hooks) {
     await click('.team-header__details');
 
     assert.dom(find('.member-list__modal'));
-    assert.equal(
-      find('.member-list__member__name').textContent.trim(),
-      'Member 1'
-    );
-    assert.equal(
-      find('.member-list__member__timezone').textContent.trim(),
-      'America/Montevideo'
-    );
+
+    const members = findAll('.member-list__member__name');
+    const timezones = findAll('.member-list__member__timezone');
+
+    assert.equal(members[1].textContent.trim(), 'Member 1');
+    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
 
     await click('.member-list__edit-label');
-
     await fillIn('.add-member-modal__member-name input', '     ');
     await click('[data-test=update-button]');
 
