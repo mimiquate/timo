@@ -130,7 +130,7 @@ module('Acceptance | Public Team', function (hooks) {
     );
     assert.equal(
       timezoneLocations[1].textContent.trim(),
-      'America, Buenos_Aires',
+      'America, Buenos Aires',
       'Correct second location'
     );
 
@@ -204,7 +204,7 @@ module('Acceptance | Public Team', function (hooks) {
     );
     assert.equal(
       timezoneLocations[1].textContent.trim(),
-      'America, Buenos_Aires',
+      'America, Buenos Aires',
       'Correct second location'
     );
     assert.equal(
@@ -214,7 +214,7 @@ module('Acceptance | Public Team', function (hooks) {
     );
   })
 
-  test('Clicks checkbox lists my current timezone', async function (assert) {
+  test('Visit public team with grouped timezones query', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create(
@@ -226,112 +226,23 @@ module('Acceptance | Public Team', function (hooks) {
         share_id: 'yjHktCOyBDTb'
       });
     this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'Universal',
+      name: 'Member 2',
+      timezone: 'America/Buenos_Aires',
       team: newTeam
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${newTeam.share_id}?groupTimezones=true`);
 
-    assert.equal(table.headers.length, 1, 'Table has one column');
+    const timezoneLocations = findAll('.timezone-list__location');
+    assert.equal(timezoneLocations.length, 1, 'Correct amount of timezones');
     assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (Universal)',
-      'Member 1 is listed'
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you) + America, Buenos Aires',
+      'Correct grouped location'
     );
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 2, 'Table has two columns');
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 1, 'Table has one column');
   });
 
-  test('Clicks checkbox with already existing current timezone', async function (assert) {
-    setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      });
-
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/p/team/${newTeam.share_id}`);
-
-    assert.equal(table.headers.length, 1, 'Table has one column');
-    assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (America/Montevideo)',
-      'Member 1 is listed'
-    );
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 1, 'Table has one column');
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 1, 'Table has one column');
-  });
-
-  test('Clicks checkbox with no members', async function (assert) {
-    setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      });
-
-    await visit(`/p/team/${newTeam.share_id}`);
-
-    assert.equal(table.headers.length, 0, 'Table has no column');
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 1, 'Table has one column');
-    assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'You (America/Montevideo) Current timezone',
-      'Current timezone is listed'
-    );
-
-    await click('[data-test-checkbox=current]');
-    assert.equal(table.headers.length, 0, 'Table has no column');
-  });
-
-  test('Collapse table checkbox disable if no members', async function (assert) {
-    setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
-
-    await visit(`/p/team/${newTeam.share_id}`);
-
-    assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
-    assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
-
-    const collapsedCheckbox = find('[data-test-checkbox=collapsed]');
-    assert.equal('disabled', collapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
-  });
-
-  test('Collapse table checkbox disable if only one member', async function (assert) {
+  test('Group 2 timezones into another', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create(
@@ -345,52 +256,47 @@ module('Acceptance | Public Team', function (hooks) {
     );
     this.server.create('member', {
       name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/p/team/${newTeam.share_id}`);
-
-    assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
-    assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
-
-    const collapsedCheckbox = find('[data-test-checkbox=collapsed]');
-    assert.equal('disabled', collapsedCheckbox.attributes.disabled.value, 'Checkbox is disabled');
-  });
-
-  test('Collapse table checkbox enable if there are at least 2 members', async function (assert) {
-    setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
+      timezone: 'America/Argentina/Buenos_Aires',
       team: newTeam
     });
     this.server.create('member', {
       name: 'Member 2',
-      timezone: 'America/Los_Angeles',
+      timezone: 'America/Buenos_Aires',
       team: newTeam
     });
 
     await visit(`/p/team/${newTeam.share_id}`);
 
-    assert.dom('[data-test-checkbox=collapsed]').exists('Collapse table checkbox exists');
-    assert.dom('[data-test-checkbox=collapsed]').hasText('Collapse table', 'Correct text');
+    const timezoneLocations = findAll('.timezone-list__location');
+    assert.equal(timezoneLocations.length, 3, 'Correct amount of timezones');
+    assert.equal(
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct first location'
+    );
+    assert.equal(
+      timezoneLocations[1].textContent.trim(),
+      'America, Argentina, Buenos Aires',
+      'Correct second location'
+    );
+    assert.equal(
+      timezoneLocations[2].textContent.trim(),
+      'America, Buenos Aires',
+      'Correct third location'
+    );
 
-    const collapsedCheckbox = find('[data-test-checkbox=collapsed]');
-    assert.notOk(collapsedCheckbox.attributes.disabled, 'Checkbox is enabled');
+    await click('.timezone-list__group-timezones .t-checkbox');
+
+    const newTimezoneLocations = findAll('.timezone-list__location');
+    assert.equal(newTimezoneLocations.length, 1, 'Correct amount of timezones');
+    assert.equal(
+      newTimezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you) + America, Argentina, Buenos Aires + 1 other timezone',
+      'Correct grouped location'
+    );
   });
 
-  test('Collapse member into another', async function (assert) {
+  test('Group 3 timezones into another', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create(
@@ -404,97 +310,57 @@ module('Acceptance | Public Team', function (hooks) {
     );
     this.server.create('member', {
       name: 'Member 1',
-      timezone: 'America/Montevideo',
+      timezone: 'America/Argentina/Buenos_Aires',
       team: newTeam
     });
     this.server.create('member', {
       name: 'Member 2',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/p/team/${newTeam.share_id}`);
-
-    assert.equal(table.headers.length, 2, 'Table has two columns');
-    assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (America/Montevideo)',
-      'Member 1 is listed'
-    );
-    assert.equal(
-      table.headers.objectAt(1).text.trim(),
-      'Member 2 (America/Montevideo)',
-      'Member 2 is listed'
-    );
-
-    await click('[data-test-checkbox=collapsed]');
-
-    assert.equal(table.headers.length, 1, 'Table has one column');
-    assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (America/Montevideo) + 1 member',
-      'Member 1 is listed showing collapsed state'
-    );
-  });
-
-  test('Collapse 2 members into another', async function (assert) {
-    setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-    this.server.create('member', {
-      name: 'Member 2',
-      timezone: 'America/Montevideo',
+      timezone: 'America/Buenos_Aires',
       team: newTeam
     });
     this.server.create('member', {
       name: 'Member 3',
-      timezone: 'America/Montevideo',
+      timezone: 'America/Cordoba',
       team: newTeam
     });
 
     await visit(`/p/team/${newTeam.share_id}`);
 
-    assert.equal(table.headers.length, 3, 'Table has two columns');
+    const timezoneLocations = findAll('.timezone-list__location');
+    assert.equal(timezoneLocations.length, 4, 'Correct amount of timezones');
     assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (America/Montevideo)',
-      'Member 1 is listed'
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct first location'
     );
     assert.equal(
-      table.headers.objectAt(1).text.trim(),
-      'Member 2 (America/Montevideo)',
-      'Member 2 is listed'
+      timezoneLocations[1].textContent.trim(),
+      'America, Argentina, Buenos Aires',
+      'Correct second location'
     );
     assert.equal(
-      table.headers.objectAt(2).text.trim(),
-      'Member 3 (America/Montevideo)',
-      'Member 3 is listed'
+      timezoneLocations[2].textContent.trim(),
+      'America, Buenos Aires',
+      'Correct third location'
+    );
+    assert.equal(
+      timezoneLocations[3].textContent.trim(),
+      'America, Cordoba',
+      'Correct fourth location'
     );
 
-    await click('[data-test-checkbox=collapsed]');
+    await click('.timezone-list__group-timezones .t-checkbox');
 
-    assert.equal(table.headers.length, 1, 'Table has one column');
+    const newTimezoneLocations = findAll('.timezone-list__location');
+    assert.equal(newTimezoneLocations.length, 1, 'Correct amount of timezones');
     assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (America/Montevideo) + 2 members',
-      'Member 1 is listed showing collapsed state'
+      newTimezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you) + America, Argentina, Buenos Aires + 2 other timezones',
+      'Correct grouped location'
     );
   });
 
-  test('No member collapses into another', async function (assert) {
+  test('No timezones groupes into each other', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create(
@@ -519,30 +385,32 @@ module('Acceptance | Public Team', function (hooks) {
 
     await visit(`/p/team/${newTeam.share_id}`);
 
-    assert.equal(table.headers.length, 2, 'Table has two columns');
+    const timezoneLocations = findAll('.timezone-list__location');
+    assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
     assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (America/Montevideo)',
-      'Member 1 is listed'
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct first location'
     );
     assert.equal(
-      table.headers.objectAt(1).text.trim(),
-      'Member 2 (Asia/Ho_Chi_Minh)',
-      'Member 2 is listed'
+      timezoneLocations[1].textContent.trim(),
+      'Asia, Ho Chi Minh',
+      'Correct second location'
     );
 
-    await click('[data-test-checkbox=collapsed]');
+    await click('.timezone-list__group-timezones .t-checkbox');
 
-    assert.equal(table.headers.length, 2, 'Table has two columns');
+    const newTimezoneLocations = findAll('.timezone-list__location');
+    assert.equal(newTimezoneLocations.length, 2, 'Correct amount of timezones');
     assert.equal(
-      table.headers.objectAt(0).text.trim(),
-      'Member 1 (America/Montevideo)',
-      'Member 1 is listed'
+      newTimezoneLocations[0].textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct first location'
     );
     assert.equal(
-      table.headers.objectAt(1).text.trim(),
-      'Member 2 (Asia/Ho_Chi_Minh)',
-      'Member 2 is listed'
+      newTimezoneLocations[1].textContent.trim(),
+      'Asia, Ho Chi Minh',
+      'Correct second location'
     );
   });
 
