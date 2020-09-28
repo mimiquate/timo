@@ -9,10 +9,19 @@ export default class TimezoneComponent extends Component {
   get location() {
     const timezoneNow = guessTimezoneNow();
     const timezoneNameList = this.args.timezone.timezoneNameList;
+    const timezonesLength = timezoneNameList.length;
+    const timezonesToShow = timezoneNameList.slice(0, 2);
 
-    const timezonesSplited = timezoneNameList.map(t => {
+    const timezonesSplited = timezonesToShow.map(t => {
       return splitTimezone(t, timezoneNow);
     });
+
+    const otherTimezonesLength = timezonesLength - 2;
+    if (otherTimezonesLength > 0) {
+      let message = `${otherTimezonesLength} other `;
+      message += otherTimezonesLength === 1 ? 'timezone' : 'timezones';
+      timezonesSplited.pushObject(message);
+    }
 
     return timezonesSplited.join(' + ');
   }
