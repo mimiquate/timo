@@ -2,14 +2,11 @@ import { module, test } from 'qunit';
 import { visit, click, find, findAll, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { TablePage } from 'ember-table/test-support';
 import moment from 'moment';
 import { setupWindowMock } from 'ember-window-mock/test-support';
 import window from 'ember-window-mock';
 import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
 import { assertTooltipVisible, assertTooltipNotVisible  } from 'ember-tooltips/test-support';
-
-let table = new TablePage();
 
 module('Acceptance | Public Team', function (hooks) {
   setupApplicationTest(hooks);
@@ -43,7 +40,8 @@ module('Acceptance | Public Team', function (hooks) {
         user: newUser,
         public: false,
         share_id: 'yjHktCOyBDTb'
-      });
+      }
+    );
 
     await visit(`/p/team/${newTeam.share_id}`);
 
@@ -61,7 +59,8 @@ module('Acceptance | Public Team', function (hooks) {
         user: newUser,
         public: true,
         share_id: 'yjHktCOyBDTb'
-      });
+      }
+    );
 
     await visit(`/p/team/${newTeam.share_id}`);
 
@@ -103,7 +102,8 @@ module('Acceptance | Public Team', function (hooks) {
         user: newUser,
         public: true,
         share_id: 'yjHktCOyBDTb'
-      });
+      }
+    );
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
@@ -183,7 +183,8 @@ module('Acceptance | Public Team', function (hooks) {
         user: newUser,
         public: true,
         share_id: 'yjHktCOyBDTb'
-      });
+      }
+    );
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'Europe/Rome',
@@ -225,7 +226,8 @@ module('Acceptance | Public Team', function (hooks) {
         user: newUser,
         public: true,
         share_id: 'yjHktCOyBDTb'
-      });
+      }
+    );
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
@@ -539,7 +541,8 @@ module('Acceptance | Public Team', function (hooks) {
         user: newUser,
         public: true,
         share_id: 'yjHktCOyBDTb'
-      });
+      }
+    );
 
     await visit(`/p/team/${newTeam.share_id}`);
 
@@ -561,7 +564,8 @@ module('Acceptance | Public Team', function (hooks) {
         user: newUser,
         public: true,
         share_id: 'yjHktCOyBDTb'
-      });
+      }
+    );
 
     await visit(`/p/team/${newTeam.share_id}`);
 
@@ -578,12 +582,15 @@ module('Acceptance | Public Team', function (hooks) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
 
-    let newTeam = this.server.create('team', {
-      name: 'Team',
-      user: newUser,
-      public: true,
-      share_id: 'yjHktCOyBDTb'
-    });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      }
+    );
 
     await visit(`/p/team/${newTeam.share_id}`);
 
