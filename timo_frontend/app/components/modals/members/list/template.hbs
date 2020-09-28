@@ -27,7 +27,7 @@
     {{/if}}
     {{#animated-if this.showList use=this.transition duration=200}}
       <div class="member-list__content">
-        {{#each this.membersInTeam as |member|}}
+        {{#each @members as |member|}}
           <div class="member-list__member">
             <div class="member-list__member__information">
               <span class="member-list__member__name">{{member.name}}</span>

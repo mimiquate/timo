@@ -1,5 +1,5 @@
 import Component from "@glimmer/component";
-import { action, set, computed } from '@ember/object';
+import { action, set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { Changeset } from 'ember-changeset';
 import memberValidator from 'timo-frontend/validators/member';
@@ -7,7 +7,6 @@ import lookupValidator from 'ember-changeset-validations';
 import { fadeOut, fadeIn } from 'ember-animated/motions/opacity';
 import { isPresent } from '@ember/utils';
 import moment from 'moment';
-import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 
 export default class MemberModalComponent extends Component {
   @tracked showList = true;
@@ -20,20 +19,6 @@ export default class MemberModalComponent extends Component {
   @tracked memberChangeset = null;
 
   timezoneList = moment.tz.names();
-
-  @computed('args.members')
-  get membersInTeam() {
-    const membersToArray = this.args.members.toArray();
-    const timezoneNow = guessTimezoneNow();
-
-    membersToArray.unshiftObject({
-      name: 'You',
-      isCurrentUser: true,
-      timezone: timezoneNow,
-    });
-
-    return membersToArray;
-  }
 
   *transition({ insertedSprites, removedSprites }) {
     yield insertedSprites.forEach(fadeIn);
