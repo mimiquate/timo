@@ -637,18 +637,24 @@ module('Acceptance | Public Team', function (hooks) {
     let newUser = this.server.create('user', { username: 'juan' });
     setSession.call(this, newUser);
 
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      });
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
 
     await visit(`/p/team/${newTeam.share_id}`);
 
     assert.dom('[data-test=log-in]').doesNotExist();
     assert.dom('[data-test=create-account]').doesNotExist();
+
+    server.get('/teams', schema => {
+      return schema.teams.all();
+    }, 200);
+
+    await click('.shared-team-header__image');
+
+    assert.equal(currentURL(), '/teams/1');
   });
 });
