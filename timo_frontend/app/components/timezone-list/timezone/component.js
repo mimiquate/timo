@@ -8,24 +8,18 @@ export default class TimezoneComponent extends Component {
   @computed('args.timezone.members.[]')
   get location() {
     const timezoneNow = guessTimezoneNow();
-    const timezone = this.args.timezone.timezoneName;
+    const timezoneNameList = this.args.timezone.timezoneNameList;
 
-    if (!timezone) {
-      const timezoneNameList = this.args.timezone.timezoneNameList;
+    const timezonesSplited = timezoneNameList.map(t => {
+      return splitTimezone(t, timezoneNow);
+    });
 
-      const timezonesSplited = timezoneNameList.map(t => {
-        return splitTimezone(t, timezoneNow);
-      });
-
-      return timezonesSplited.join(' + ');
-    }
-
-    return splitTimezone(timezone, timezoneNow);
+    return timezonesSplited.join(' + ');
   }
 
   @computed('args.{timezone.members.[],selectedTime}')
   get memberDate() {
-    const timezone = this.args.timezone.timezoneName || this.args.timezone.timezoneNameList[0];
+    const timezone = this.args.timezone.timezoneNameList[0];
     const selectedTime = this.args.selectedTime.format('YYYY-MM-DDTHH:mm:ssZ');
     const formatedDate = moment.tz(selectedTime, timezone).startOf('hour');
     const format = "dddd, DD MMMM YYYY, HH:mm";

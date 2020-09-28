@@ -42,9 +42,9 @@ export default class LandingTeamsTeamController extends Controller {
     return membersToArray;
   }
 
-  @computed('sortedMembers.[]')
+  @computed('sortedMembers.[]', 'isGrouped')
   get timezones() {
-    return createNewRows(this.sortedMembers);
+    return createNewRows(this.sortedMembers, this.isGrouped);
   }
 
   @computed('timezones')

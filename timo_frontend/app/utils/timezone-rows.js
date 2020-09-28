@@ -1,59 +1,30 @@
 import moment from 'moment';
 
-export function createGroupedRows(timezones) {
-  const timeNow = moment.utc();
-
-  const timezoneByOffset = groupTimezonesByOffset(timezones, timeNow);
-  const groupedTimezones = [];
-
-  timezoneByOffset.forEach(timezones => {
-    const times = timezones[0].times;
-    const timezoneNameList = timezones.map(t => t.timezoneName);
-    const membersArrays = timezones.map(t => t.members);
-    const membersConcat = [].concat(...membersArrays);
-
-    const newTimezone = {
-      members: membersConcat,
-      timezoneName: null,
-      timezoneNameList,
-      times
-    }
-
-    groupedTimezones.pushObject(newTimezone)
-  });
-
-  return groupedTimezones;
-}
-
-function groupTimezonesByOffset(timezones, timeNow) {
-  return timezones.reduce(function (map, timezone) {
-    const offset = moment.tz.zone(timezone.timezoneName).utcOffset(timeNow)
-
-    if (!map.has(offset)) {
-      map.set(offset, []);
-    }
-
-    map.get(offset).push(timezone);
-
-    return map;
-  }, new Map());
-}
-
-export function createNewRows(sortedMembers) {
+export function createNewRows(sortedMembers, isGrouped) {
   const timezoneRows = [];
 
+  const timeNow = moment.utc();
+
   sortedMembers.forEach(m => {
-    const isSameTimezone = (row) => row.timezoneName === m.timezone;
+    let { isSameOffset, isSameTimezoneName } = isSameTimeCallback(m, timeNow);
+    const isSameTimezone = isGrouped ? isSameOffset : isSameTimezoneName;
     const sameTimezoneIndex = timezoneRows.findIndex(isSameTimezone);
 
     if (sameTimezoneIndex > -1) {
-      timezoneRows[sameTimezoneIndex].members.pushObject(m);
+      const sameRow = timezoneRows[sameTimezoneIndex];
+
+      if (!sameRow.timezoneNameList.includes(m.timezone)) {
+        sameRow.timezoneNameList.pushObject(m.timezone);
+      }
+
+      sameRow.members.pushObject(m);
+
     } else {
       const currentMemberTime = moment.tz(m.timezone).startOf('hour');
       const startTime = currentMemberTime.clone().add(-12, 'hours');
       const times = [];
 
-      for(let i = 0; i < 40; i++) {
+      for (let i = 0; i < 40; i++) {
         const value = startTime.clone().add(i, 'hour');
         const color = cellColor(value);
         const diff = value.diff(currentMemberTime, 'hours');
@@ -68,7 +39,7 @@ export function createNewRows(sortedMembers) {
 
       timezoneRows.pushObject({
         members: [m],
-        timezoneName: m.timezone,
+        timezoneNameList: [m.timezone],
         times
       })
     }
@@ -90,4 +61,17 @@ function cellColor(time) {
   }
 
   return color
+}
+
+function isSameTimeCallback(member, timeNow) {
+  const isSameOffset = (row) => {
+    const offsetRow = moment.tz.zone(row.timezoneNameList[0]).utcOffset(timeNow);
+    const offsetMember = moment.tz.zone(member.timezone).utcOffset(timeNow);
+
+    return offsetRow === offsetMember;
+  }
+
+  const isSameTimezoneName = (row) => row.timezoneNameList.includes(member.timezone);
+
+  return { isSameOffset, isSameTimezoneName };
 }
