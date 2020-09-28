@@ -90,7 +90,7 @@ module('Acceptance | Team', function (hooks) {
     );
     assert.equal(
       timezoneLocations[1].textContent.trim(),
-      'America, Buenos_Aires',
+      'America, Buenos Aires',
       'Correct second location'
     );
 
@@ -157,7 +157,7 @@ module('Acceptance | Team', function (hooks) {
     );
     assert.equal(
       timezoneLocations[1].textContent.trim(),
-      'America, Buenos_Aires',
+      'America, Buenos Aires',
       'Correct second location'
     );
     assert.equal(
@@ -216,7 +216,7 @@ module('Acceptance | Team', function (hooks) {
     await click('[data-test=share-button]');
 
     assert.equal(find('.t-modal__title').textContent.trim(), `Share "Team"`, 'Modal has content');
-    assert.dom('.t-checkbox').exists('Checkbox exists');
+    assert.dom('.share-team__public-container .t-checkbox').exists('Checkbox exists');
 
     const copyButton = find('.share-team__copy-link-button');
     assert.dom(copyButton).exists('Copy link button exists');
@@ -243,14 +243,14 @@ module('Acceptance | Team', function (hooks) {
 
     await visit(`/teams/${newTeam.id}`);
     await click('[data-test=share-button]');
-    await click('.t-checkbox');
+    await click('.share-team__public-container .t-checkbox');
 
     const copyLinkButton = find('.share-team__copy-link-button');
 
     assert.equal(newTeam.public, true, 'Changes view to public');
     assert.notOk(copyLinkButton.disabled, 'Button is enabled');
 
-    await click('.t-checkbox');
+    await click('.share-team__public-container .t-checkbox');
 
     assert.equal(newTeam.public, false, 'Changes view to not public');
     assert.ok(copyLinkButton.attributes.disabled, 'Button is disabled');
