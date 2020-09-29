@@ -243,15 +243,41 @@ module('Acceptance | Team', function (hooks) {
     await click('.share-team__public-container .t-checkbox');
 
     const copyLinkButton = find('.share-team__copy-link-button');
+    const shareLink = find('.share-team__link-input input');
 
     assert.equal(newTeam.public, true, 'Changes view to public');
     assert.notOk(copyLinkButton.disabled, 'Button is enabled');
+    assert.ok(shareLink.value.includes('/p/team/yjHktCOyBDTb'), 'Correct link');
 
     await click('.share-team__public-container .t-checkbox');
 
     assert.equal(newTeam.public, false, 'Changes view to not public');
     assert.ok(copyLinkButton.attributes.disabled, 'Button is disabled');
+    assert.equal(shareLink.value, '', 'Empty link');
   });
+
+  test('Share link has query params', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create(
+      'team',
+      {
+        name: 'Team',
+        user: newUser,
+        public: true,
+        share_id: 'yjHktCOyBDTb'
+      }
+    );
+    setSession.call(this, newUser);
+    window.location.search = () => '?groupTimezones=true';
+
+    await visit(`/teams/${newTeam.id}`);
+    await click('.timezone-list__group-timezones .t-checkbox');
+    await click('[data-test=share-button]');
+
+    const shareLink = find('.share-team__link-input input');
+
+    assert.ok(shareLink.value.includes('?groupTimezones=true'), 'Correct link');
+  })
 
   test('Visit team with grouped timezones query', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });

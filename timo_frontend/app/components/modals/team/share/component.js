@@ -3,7 +3,7 @@ import copyTextToClipboard from 'timo-frontend/utils/copy-text-to-clipboard';
 import { computed, action } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 
-export default class AddTeamModalComponent extends Component {
+export default class ShareModalComponent extends Component {
   get title() {
     return `Share "${this.args.team.name}"`;
   }
@@ -15,7 +15,8 @@ export default class AddTeamModalComponent extends Component {
   get url() {
     const { protocol, host } = window.location;
     const shareId = this.args.team.share_id;
-    const path = `/p/team/${shareId}`;
+    const queryParams = this.args.isGrouped ? '?groupTimezones=true' : '';
+    const path = `/p/team/${shareId}${queryParams}`;
 
     return  isPresent(shareId) ? `${protocol}//${host}${path}` : '';
   }
