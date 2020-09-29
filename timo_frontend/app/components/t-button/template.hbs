@@ -1,6 +1,6 @@
 <button
   data-test={{@testSelector}}
-  type="button"
+  type="{{@type}} button"
   class="t-button {{@color}} {{@class}} {{if @inverted 'inverted'}}"
   id={{@id}}
   {{on "click" @action}}
