@@ -23,6 +23,10 @@
       &__control {
         width: 16px;
         height: 16px;
+
+        svg {
+          margin: 2px;
+        }
       }
 
       &__label {
