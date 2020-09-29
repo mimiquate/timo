@@ -47,8 +47,10 @@ export default class LoginController extends Controller {
 
     if (changeset.isValid) {
       await this.session.authenticate('authenticator:credentials', username, password)
-        .then(() => this.currentUser.load())
-        .then(() => this.transitionToRoute('landing'))
+        .then(() => {
+          this.currentUser.load();
+          this.transitionToRoute('landing');
+        })
         .catch((error) => {
           if (error.errors[0].title === "Email not verified") {
             this.errorMessage = 'Please check your email and verify your account';
