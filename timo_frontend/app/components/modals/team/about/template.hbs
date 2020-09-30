@@ -3,32 +3,32 @@
   @closeModal={{@closeModal}}
   @modalClass="about-team-modal"
 >
-    <div class="about-team-modal__container">
-      <span class="about-team-modal__name">NAME</span>
-      <TInput
-        @disabled={{true}}
-        @value={{@team.name}}
-      />
-    </div>
-    <div class="about-team-modal__delete-team">
-      <AnimatedContainer class="about-team-modal__animated-container">
-        {{#animated-if this.showDeleteConfirmation rules=this.rules}}
-          <div class="about-team-modal__delete-confirmation-container">
-            <span class="about-team-modal__delete-confirmation-label">
-              Are you sure you want to delete?
-            </span>
-            <TButton
-              @inverted={{true}}
-              @color="green"
-              @action={{this.toggleDeleteConfirmation}}
-              @label="Cancel"
-            />
-            <TButton
-              @color="warning"
-              @action={{fn @deleteTeam @team}}
-              @label="Confirm"
-            />
-          </div>
+  <div class="about-team-modal__container">
+    <span class="about-team-modal__name">NAME</span>
+    <TInput
+      @disabled={{true}}
+      @value={{@team.name}}
+    />
+  </div>
+  <div class="about-team-modal__delete-team">
+    <AnimatedContainer class="about-team-modal__animated-container">
+      {{#animated-if this.showDeleteConfirmation rules=this.rules}}
+        <div class="about-team-modal__delete-confirmation-container">
+          <span class="about-team-modal__delete-confirmation-label">
+            Are you sure you want to delete?
+          </span>
+          <TButton
+            @inverted={{true}}
+            @color="green"
+            @action={{this.toggleDeleteConfirmation}}
+            @label="Cancel"
+          />
+          <TButton
+            @color="warning"
+            @action={{fn @deleteTeam @team}}
+            @label="Confirm"
+          />
+        </div>
       {{else}}
         <div class="about-team-modal__delete-container">
           <TButton
