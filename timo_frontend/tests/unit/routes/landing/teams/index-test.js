@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, currentURL } from '@ember/test-helpers';
+import { visit, currentURL, findAll, click } from '@ember/test-helpers';
 import { setupTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
@@ -22,4 +22,48 @@ module('Unit | Route | landing index', function (hooks) {
 
     assert.equal(currentURL(), '/');
   });
+
+  test('Show correct current routes', async function (assert) {
+    const user = this.server.create('user', { username: 'juan' });
+    const teamOne = this.server.create('team', { name: 'Team1', user });
+    const teamTwo = this.server.create('team', { name: 'Team2', user });
+
+    setSession.call(this, user);
+
+    await visit('/');
+
+    assert.equal(currentURL(), `/teams/${teamOne.id}`);
+
+    await visit(`/teams/${teamTwo.id}`);
+
+    assert.equal(currentURL(), `/teams/${teamTwo.id}`);
+
+    await click('[data-test=edit-team-button]');
+    await click('.about-team-modal__delete-label');
+    let buttons = findAll('.about-team-modal__delete-confirmation-container .t-button');
+    await click(buttons[1]);
+
+    assert.equal(currentURL(), `/teams/${teamOne.id}`);
+
+    await click('[data-test=edit-team-button]');
+    await click('.about-team-modal__delete-label');
+    buttons = findAll('.about-team-modal__delete-confirmation-container .t-button');
+    await click(buttons[1]);
+
+    assert.equal(currentURL(), '/');
+
+    assert.dom('.no-team__label').hasText(`Hi, there, You don’t have any teams yet!`);
+    assert.dom('[data-test=create-team]').hasText("Create a team now!");
+  });
+
+  test('Correct redirect from index teams', async function (assert) {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team1', user });
+
+    setSession.call(this, user);
+
+    await visit('/teams');
+
+    assert.equal(currentURL(), `/teams/${team.id}`);
+  })
 });

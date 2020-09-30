@@ -50,10 +50,13 @@ export default class LoginController extends Controller {
         .then(() => this.currentUser.load())
         .then(() => this.transitionToRoute('landing'))
         .catch((error) => {
-          if (error.errors[0].title === "Email not verified") {
-            this.errorMessage = 'Please check your email and verify your account';
-          } else {
-            this.errorMessage = error.errors[0].title;
+          // Defensive code to ignore TransitionAborted error
+          if (error.errors) {
+            if (error.errors[0].title === "Email not verified") {
+              this.errorMessage = 'Please check your email and verify your account';
+            } else {
+              this.errorMessage = error.errors[0].title;
+            }
           }
         });
     } else {
