@@ -160,28 +160,26 @@
       box-shadow: 1px 0px 0px 0px white inset;
     }
   }
+}
 
-  &__row:first-child {
-    .timezone-list__down-arrow {
-      position: absolute;
-      top: -24px;
-      left: 10px;
-      width: 0;
-      height: 0;
-      border-left: 16px solid transparent;
-      border-right: 16px solid transparent;
-      border-top: 12px solid $red;
-    }
+.timezone-list__down-arrow {
+  position: absolute;
+  top: -24px;
+  left: 10px;
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 12px solid $red;
+}
 
-    .timezone-list__vertical-line {
-      position: absolute;
-      width: 2px;
-      left: 25px;
-      background-color: $red;
-      height: 13px;
-      top: -13px;
-    }
-  }
+.timezone-list__vertical-line {
+  position: absolute;
+  width: 2px;
+  left: 25px;
+  background-color: $red;
+  height: 13px;
+  top: -13px;
 }
 
 .timezone-list::-webkit-scrollbar {

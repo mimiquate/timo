@@ -11,7 +11,7 @@
       @label="Group timezones"
     />
   </div>
-  {{#each @timezones as |timezone|}}
+  {{#each @timezones as |timezone index|}}
     <TimezoneList::Timezone
       @timezone={{timezone}}
       @scheduleEvent={{@scheduleEvent}}
@@ -21,6 +21,7 @@
       @scrollAll={{this.scrollAll}}
       @isShowingCalendarPopover={{this.isShowingCalendarPopover}}
       @toggleCalendarPopoverBackground={{this.toggleCalendarPopoverBackground}}
+      @isFirstRow={{eq index 0}}
     />
   {{/each}}
 </div>
