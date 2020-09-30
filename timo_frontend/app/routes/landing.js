@@ -3,7 +3,8 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 
 export default class LandingRoute extends Route.extend(AuthenticatedRouteMixin) {
   afterModel(model, transition) {
-    if (transition.targetName === 'landing.index' && model.length !== 0) {
+    const correctTarget = transition.targetName === 'landing.index' || transition.targetName === 'landing.teams.index';
+    if (correctTarget && model.length !== 0) {
       const teamToTransition = model.toArray().map(t => parseInt(t.id));
       const id = Math.min(...teamToTransition);
 
