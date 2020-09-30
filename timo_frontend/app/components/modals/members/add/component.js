@@ -41,7 +41,8 @@ export default class MemberModalComponent extends Component {
   }
 
   @action
-  async add() {
+  async add(e) {
+    e.preventDefault();
     this.cleanErrors();
 
     const name = this.name.trim();
