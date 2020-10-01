@@ -520,9 +520,9 @@ module('Acceptance | Team', function (hooks) {
 
     const timezoneHours = findAll('.timezone-list__hour');
 
-    const selectedIndex = timezoneHours.findIndex(
-      (h => h.classList.contains('timezone-list__selected'))
-    );
+    const selectedIndex = timezoneHours.findIndex(h => {
+      return h.classList.contains('timezone-list__selected')
+    });
     let selectedTimeBox = find('.timezone-list__selected');
     let currentTime = time.format('HH.mm');
 
@@ -535,9 +535,9 @@ module('Acceptance | Team', function (hooks) {
 
     assert.ok(timezoneDetail.textContent.includes(details), 'Correct new date details');
 
-    const newSelectedIndex = timezoneHours.findIndex(
-      (h => h.classList.contains('timezone-list__selected'))
-    );
+    const newSelectedIndex = timezoneHours.findIndex(h => {
+      return h.classList.contains('timezone-list__selected')
+    });
     selectedTimeBox = find('.timezone-list__selected');
     currentTime = time.format('HH.mm');
 
@@ -554,9 +554,9 @@ module('Acceptance | Team', function (hooks) {
     await visit(`/teams/${team_1.id}`);
 
     const timezoneHours = findAll('.timezone-list__hour');
-    const selectedIndex = 2 + timezoneHours.findIndex(
-      (h => h.classList.contains('timezone-list__selected'))
-    );
+    const selectedIndex = 2 + timezoneHours.findIndex(h => {
+      return h.classList.contains('timezone-list__selected')
+    });
 
     await click(timezoneHours[selectedIndex]);
     await click(findAll('.team-list__button')[1]);
@@ -570,9 +570,9 @@ module('Acceptance | Team', function (hooks) {
     const time = moment.tz('America/Montevideo').startOf('hour');
     const details = time.format('dddd, DD MMMM YYYY, HH:mm');
     const currentTime = time.format('HH.mm');
-    const resetedSelectedIndex = newTimezoneHours.findIndex(
-      (h => h.classList.contains('timezone-list__selected'))
-    );
+    const resetedSelectedIndex = newTimezoneHours.findIndex(h => {
+      return h.classList.contains('timezone-list__selected')
+    });
 
     assert.notEqual(resetedSelectedIndex, selectedIndex, 'Resets selected index');
     assert.ok(timezoneDetail.textContent.includes(details), 'Correct date details');

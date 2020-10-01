@@ -473,9 +473,9 @@ module('Acceptance | Public Team', function (hooks) {
 
     const timezoneHours = findAll('.timezone-list__hour');
 
-    const selectedIndex = timezoneHours.findIndex(
-      (h => h.classList.contains('timezone-list__selected'))
-    );
+    const selectedIndex = timezoneHours.findIndex(h => {
+      return h.classList.contains('timezone-list__selected')
+    });
     let selectedTimeBox = find('.timezone-list__selected');
     let currentTime = time.format('HH.mm');
 
@@ -488,9 +488,9 @@ module('Acceptance | Public Team', function (hooks) {
 
     assert.ok(timezoneDetail.textContent.includes(details), 'Correct new date details');
 
-    const newSelectedIndex = timezoneHours.findIndex(
-      (h => h.classList.contains('timezone-list__selected'))
-    );
+    const newSelectedIndex = timezoneHours.findIndex(h => {
+      return h.classList.contains('timezone-list__selected')
+    });
     selectedTimeBox = find('.timezone-list__selected');
     currentTime = time.format('HH.mm');
 
