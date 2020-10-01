@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { computed } from '@ember/object';
 import moment from 'moment';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
-import { splitTimezone } from 'timo-frontend/utils/table-functions';
+import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 
 export default class TimezoneComponent extends Component {
   @computed('args.timezone.members.[]')
