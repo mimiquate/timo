@@ -7,40 +7,43 @@
     <img src="/images/appicon-signup.png" alt="timo landing appicon">
     <span class="login-page__login-title">Log in</span>
     <span class="login-page__login-description">Start scheduling meetings with worldwide teams.</span>
-    <TInput
-      class="login-page__input"
-      @label="Username"
-      @value={{this.username}}
-      @error={{this.usernameError}}
-      @onChange={{fn (mut this.username)}}
-      @cleanError={{fn this.cleanError 'usernameError'}}
-    />
-    <TInput
-      class="login-page__input"
-      @type="password"
-      @label="Password"
-      @value={{this.password}}
-      @error={{this.passwordError}}
-      @onChange={{fn (mut this.password)}}
-      @cleanError={{fn this.cleanError 'passwordError'}}
-    />
-    <div class="login-page__log-in-actions">
-      {{#if this.errorMessage}}
-        <span class="response-error">{{this.errorMessage}}</span>
-      {{/if}}
-      <TButton
-        @class="login-page__log-in-button"
-        @action={{this.logIn}}
-        @label="Log in"
-        @color="green"
+    <form class="t-form" {{on 'submit' this.logIn}}>
+      <TInput
+        class="login-page__input"
+        @label="Username"
+        @value={{this.username}}
+        @error={{this.usernameError}}
+        @onChange={{fn (mut this.username)}}
+        @cleanError={{fn this.cleanError 'usernameError'}}
       />
-      <LinkTo
-        @route="sign-up"
-        data-test="sign-up-link"
-        @class="login-page__sign-up-label"
-      >
-        Don't have an account? Sign up
-      </LinkTo>
-    </div>
+      <TInput
+        class="login-page__input"
+        @type="password"
+        @label="Password"
+        @value={{this.password}}
+        @error={{this.passwordError}}
+        @onChange={{fn (mut this.password)}}
+        @cleanError={{fn this.cleanError 'passwordError'}}
+      />
+      <div class="login-page__log-in-actions">
+        {{#if this.errorMessage}}
+          <span class="response-error">{{this.errorMessage}}</span>
+        {{/if}}
+        <TButton
+          @type="submit"
+          @action={{this.logIn}}
+          @class="login-page__log-in-button"
+          @label="Log in"
+          @color="green"
+        />
+        <LinkTo
+          @route="sign-up"
+          data-test="sign-up-link"
+          @class="login-page__sign-up-label"
+        >
+          Don't have an account? Sign up
+        </LinkTo>
+      </div>
+    </form>
   </div>
 </div>

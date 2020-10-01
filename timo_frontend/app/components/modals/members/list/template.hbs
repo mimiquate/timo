@@ -46,50 +46,52 @@
         {{/each}}
       </div>
     {{else}}
-      <div class="member-list__form">
-        <TInput
-          class="add-member-modal__member-name"
-          @label="Name"
-          @value={{this.memberChangeset.name}}
-          @error={{this.nameError}}
-          @onChange={{fn (mut this.memberChangeset.name)}}
-          @cleanError={{fn this.cleanError 'nameError'}}
-        />
-        <div class="t-dropdown">
-          <PowerSelect
-            @triggerClass="{{if this.timezoneError 'error'}}"
-            @placeholder="Select timezone"
-            @searchPlaceholder="Search for a timezone..."
-            @searchEnabled={{true}}
-            @options={{this.timezoneList}}
-            @selected={{this.memberChangeset.timezone}}
-            @onChange={{this.changeTimezone}} as |t|
-          >
-            {{t}}
-          </PowerSelect>
-          {{#if this.timezoneError}}
-            <span class="t-dropdown__error">{{this.timezoneError}}</span>
-          {{/if}}
+      <form class="t-form" {{on 'submit' this.updateMember}}>
+        <div class="member-list__form">
+          <TInput
+            class="add-member-modal__member-name"
+            @label="Name"
+            @value={{this.memberChangeset.name}}
+            @error={{this.nameError}}
+            @onChange={{fn (mut this.memberChangeset.name)}}
+            @cleanError={{fn this.cleanError 'nameError'}}
+          />
+          <div class="t-dropdown">
+            <PowerSelect
+              @triggerClass="{{if this.timezoneError 'error'}}"
+              @placeholder="Select timezone"
+              @searchPlaceholder="Search for a timezone..."
+              @searchEnabled={{true}}
+              @options={{this.timezoneList}}
+              @selected={{this.memberChangeset.timezone}}
+              @onChange={{this.changeTimezone}} as |t|
+            >
+              {{t}}
+            </PowerSelect>
+            {{#if this.timezoneError}}
+              <span class="t-dropdown__error">{{this.timezoneError}}</span>
+            {{/if}}
+          </div>
         </div>
-      </div>
-      <div class="t-modal__actions-container">
-        <button
-          type="button"
-          class="t-modal__button blue"
-          data-test="cancel-button"
-          {{on "click" this.closeEdit}}
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          class="t-modal__button green"
-          data-test="update-button"
-          {{on "click" this.updateMember}}
-        >
-          Update
-        </button>
-      </div>
+        <div class="t-modal__actions-container">
+          <button
+            type="button"
+            class="t-modal__button blue"
+            data-test="cancel-button"
+            {{on "click" this.closeEdit}}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="t-modal__button green"
+            data-test="update-button"
+            {{on "click" this.updateMember}}
+          >
+            Update
+          </button>
+        </div>
+      </form>
     {{/animated-if}}
   </ModalDialog>
 </AnimatedContainer>

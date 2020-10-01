@@ -66,7 +66,8 @@ export default class MemberModalComponent extends Component {
   }
 
   @action
-  async updateMember() {
+  async updateMember(e) {
+    e.preventDefault();
     this.cleanErrors();
     const changeset = this.memberChangeset;
 

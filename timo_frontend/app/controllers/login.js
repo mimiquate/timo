@@ -32,7 +32,8 @@ export default class LoginController extends Controller {
   }
 
   @action
-  async logIn() {
+  async logIn(e) {
+    e.preventDefault();
     this.cleanErrors();
 
     const username = this.username.trim();

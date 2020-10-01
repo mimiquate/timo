@@ -1,5 +1,13 @@
 import { module, test } from 'qunit';
-import { visit, click, currentURL, find } from '@ember/test-helpers';
+import {
+  visit,
+  click,
+  currentURL,
+  find,
+  triggerEvent,
+  findAll,
+  fillIn
+} from '@ember/test-helpers';
 import { setSession, signUp } from 'timo-frontend/tests/helpers/custom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
@@ -48,6 +56,29 @@ module('Acceptance | Sign-up', function (hooks) {
       'Please check out your email and verify your account.'
     );
     assert.notEqual(user, null, 'New user is created');
+  });
+
+  test('Successful sign up pressing enter', async function (assert) {
+    await visit('/sign-up');
+
+    const inputs = findAll('.sign-up-page__input input');
+
+    await fillIn(inputs[0], 'Jhonny');
+    await fillIn(inputs[1], 'jhonny@bravo.com');
+    await fillIn(inputs[2], 'password');
+    await fillIn(inputs[3], 'password');
+
+    await triggerEvent('.t-form', 'submit');
+
+    assert.dom('.verify-email-modal').exists();
+    assert.equal(
+      find('.verify-email-modal__title').textContent.trim(),
+      'Check your email'
+    );
+    assert.equal(
+      find('.verify-email-modal__description').textContent.trim(),
+      'Please check out your email and verify your account.'
+    );
   });
 
   test('Unsuccessful sign up with existing user', async function (assert) {

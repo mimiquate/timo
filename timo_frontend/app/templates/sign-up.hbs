@@ -7,58 +7,61 @@
     <img src="/images/appicon-signup.png" alt="timo landing appicon">
     <span class="sign-up-page__login-title">Create an account</span>
     <span class="sign-up-page__login-description">Start scheduling meetings with worldwide teams.</span>
-    <TInput
-      class="sign-up-page__input"
-      @label="Username"
-      @value={{this.username}}
-      @error={{this.usernameError}}
-      @onChange={{fn (mut this.username)}}
-      @cleanError={{fn this.cleanError 'usernameError'}}
-    />
-    <TInput
-      class="sign-up-page__input"
-      @label="Email"
-      @value={{this.email}}
-      @error={{this.emailError}}
-      @onChange={{fn (mut this.email)}}
-      @cleanError={{fn this.cleanError 'emailError'}}
-    />
-    <TInput
-      class="sign-up-page__input"
-      @type="password"
-      @label="Password"
-      @value={{this.password}}
-      @error={{this.passwordError}}
-      @onChange={{fn (mut this.password)}}
-      @cleanError={{fn this.cleanError 'passwordError'}}
-    />
-    <TInput
-      class="sign-up-page__input"
-      @type="password"
-      @label="Confirm Password"
-      @value={{this.passwordConfirmation}}
-      @error={{this.passwordConfirmationError}}
-      @onChange={{fn (mut this.passwordConfirmation)}}
-      @cleanError={{fn this.cleanError 'passwordConfirmationError'}}
-    />
-    <div class="sign-up-page__log-in-actions">
-      {{#if this.errorMessage}}
-        <span class="response-error">{{this.errorMessage}}</span>
-      {{/if}}
-      <TButton
-        @class="sign-up-page__log-in-button"
-        @action={{this.signUp}}
-        @label="Sign up"
-        @color="green"
+    <form class="t-form" {{on 'submit' this.signUp}}>
+      <TInput
+        class="sign-up-page__input"
+        @label="Username"
+        @value={{this.username}}
+        @error={{this.usernameError}}
+        @onChange={{fn (mut this.username)}}
+        @cleanError={{fn this.cleanError 'usernameError'}}
       />
-      <LinkTo
-        @route="login"
-        data-test="login-link"
-        @class="sign-up-page__sign-up-label"
-      >
-        Already have an account? Log in
-      </LinkTo>
-    </div>
+      <TInput
+        class="sign-up-page__input"
+        @label="Email"
+        @value={{this.email}}
+        @error={{this.emailError}}
+        @onChange={{fn (mut this.email)}}
+        @cleanError={{fn this.cleanError 'emailError'}}
+      />
+      <TInput
+        class="sign-up-page__input"
+        @type="password"
+        @label="Password"
+        @value={{this.password}}
+        @error={{this.passwordError}}
+        @onChange={{fn (mut this.password)}}
+        @cleanError={{fn this.cleanError 'passwordError'}}
+      />
+      <TInput
+        class="sign-up-page__input"
+        @type="password"
+        @label="Confirm Password"
+        @value={{this.passwordConfirmation}}
+        @error={{this.passwordConfirmationError}}
+        @onChange={{fn (mut this.passwordConfirmation)}}
+        @cleanError={{fn this.cleanError 'passwordConfirmationError'}}
+      />
+      <div class="sign-up-page__log-in-actions">
+        {{#if this.errorMessage}}
+          <span class="response-error">{{this.errorMessage}}</span>
+        {{/if}}
+        <TButton
+          @type="submit"
+          @class="sign-up-page__log-in-button"
+          @action={{this.signUp}}
+          @label="Sign up"
+          @color="green"
+        />
+        <LinkTo
+          @route="login"
+          data-test="login-link"
+          @class="sign-up-page__sign-up-label"
+        >
+          Already have an account? Log in
+        </LinkTo>
+      </div>
+    </form>
   </div>
 </div>
 {{#if this.showEmailVerificationModal}}

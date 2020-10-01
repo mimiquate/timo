@@ -1,5 +1,13 @@
 import { module, test } from 'qunit';
-import { visit, currentURL, click, fillIn, find, findAll } from '@ember/test-helpers';
+import {
+  visit,
+  currentURL,
+  click,
+  fillIn,
+  find,
+  findAll,
+  triggerEvent
+} from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession, createTeam } from 'timo-frontend/tests/helpers/custom-helpers';
@@ -14,6 +22,23 @@ module('Acceptance | New team', function (hooks) {
 
     await visit('/');
     await createTeam('Team 1')
+
+    assert.equal(currentURL(), '/teams/1', 'Lands in team page');
+    assert.dom('[data-test=new-team-modal]').doesNotExist('New team modal closes');
+    assert.dom('[data-test=team-title]').exists('Team title loads');
+    assert.dom('[data-test=team-title]').hasText('Team 1', 'Team title loads');
+    assert.dom('.team-list__name').exists('Team is listed');
+  });
+
+  test('Creates new team pressing enter in modal', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('[data-test=new-team]');
+    await fillIn('.t-modal__team-name input', 'Team 1');
+
+    await triggerEvent('.t-form', 'submit');
 
     assert.equal(currentURL(), '/teams/1', 'Lands in team page');
     assert.dom('[data-test=new-team-modal]').doesNotExist('New team modal closes');

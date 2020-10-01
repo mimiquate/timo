@@ -13,7 +13,8 @@ export default class AddTeamModalComponent extends Component {
   }
 
   @action
-  addTeam() {
+  addTeam(e) {
+    e.preventDefault();
     if (isPresent(this.team)) {
       this.args.saveTeam(this.team);
       this.args.closeModal();

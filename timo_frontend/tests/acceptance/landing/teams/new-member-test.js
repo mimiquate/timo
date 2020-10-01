@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { click, fillIn, findAll, find } from '@ember/test-helpers';
+import { click, fillIn, findAll, find, triggerEvent } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession, chooseTimeZone, openNewMemberModal } from 'timo-frontend/tests/helpers/custom-helpers';
@@ -64,6 +64,44 @@ module('Acceptance | New member', function (hooks) {
     await fillIn('.t-input input', 'Member');
     await chooseTimeZone('Europe/Rome');
     await click('[data-test=save-button]');
+
+    assert.dom('.t-modal').doesNotExist('Correctly closes new member modal');
+
+    const timezoneRowLocations = findAll('.timezone-list__location');
+
+    assert.equal(timezoneRowLocations.length, 2, 'List has two rows');
+    assert.equal(
+      timezoneRowLocations[0].textContent.trim(),
+      'America, Montevideo (you)',
+      'Correct first location'
+    );
+    assert.equal(
+      timezoneRowLocations[1].textContent.trim(),
+      'Europe, Rome',
+      'Correct second location'
+    );
+
+    const timezoneRowDetails = findAll('.timezone-list__details');
+
+    assert.ok(
+      timezoneRowDetails[0].textContent.includes('1 member'),
+      'Correct first row member details'
+    );
+    assert.ok(
+      timezoneRowDetails[1].textContent.includes('1 member'),
+      'Correct second row member details'
+    );
+  });
+
+  test('Creates member and closes modal pressing enter', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+
+    await openNewMemberModal(newTeam.id);
+    await fillIn('.t-input input', 'Member');
+    await chooseTimeZone('Europe/Rome');
+    await triggerEvent('.t-form', 'submit');
 
     assert.dom('.t-modal').doesNotExist('Correctly closes new member modal');
 

@@ -48,7 +48,8 @@ export default class SignUpController extends Controller {
   }
 
   @action
-  async signUp() {
+  async signUp(e) {
+    e.preventDefault();
     this.cleanErrors();
 
     const username = this.username.trim();
