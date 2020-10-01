@@ -12,7 +12,7 @@ export default class TimezoneComponent extends Component {
     const timezonesLength = timezoneNameList.length;
     const timezonesToShow = timezoneNameList.slice(0, 2);
 
-    const timezonesSplited = timezonesToShow.map(t => {
+    const splitedTimezones = timezonesToShow.map(t => {
       return splitTimezone(t, timezoneNow);
     });
 
@@ -20,10 +20,10 @@ export default class TimezoneComponent extends Component {
     if (otherTimezonesLength > 0) {
       let message = `${otherTimezonesLength} other `;
       message += otherTimezonesLength === 1 ? 'timezone' : 'timezones';
-      timezonesSplited.pushObject(message);
+      splitedTimezones.pushObject(message);
     }
 
-    return timezonesSplited.join(' + ');
+    return splitedTimezones.join(' + ');
   }
 
   @computed('args.{timezone.members.[],selectedTime}')

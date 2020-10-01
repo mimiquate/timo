@@ -18,9 +18,9 @@ module('Unit | Utils | table functions', function (hooks) {
     const timezone = "America/Montevideo";
     const expected = "America, Montevideo (you)"
 
-    const timezoneSplited = splitTimezone(timezone, timezone);
+    const splitedTimezones = splitTimezone(timezone, timezone);
 
-    assert.equal(timezoneSplited, expected, "Correct text");
+    assert.equal(splitedTimezones, expected, "Correct text");
   })
 
   test('Split complex timezone', function (assert) {
@@ -28,8 +28,8 @@ module('Unit | Utils | table functions', function (hooks) {
     const timezone = "America/Argentina/Buenos_Aires"
     const expected = "America, Argentina, Buenos Aires"
 
-    const timezoneSplited = splitTimezone(timezone, timezoneNow);
+    const splitedTimezones = splitTimezone(timezone, timezoneNow);
 
-    assert.equal(timezoneSplited, expected, "Correct text");
+    assert.equal(splitedTimezones, expected, "Correct text");
   })
 });
