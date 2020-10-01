@@ -1,8 +1,8 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { compareMemberTimeZones, splitTimezone } from 'timo-frontend/utils/table-functions'
+import { compareMemberTimeZones, splitTimezone } from 'timo-frontend/utils/timezone-functions'
 
-module('Unit | Utils | table functions', function (hooks) {
+module('Unit | Utils | timezone functions', function (hooks) {
   setupTest(hooks);
 
   test('Compare timezones', function (assert) {

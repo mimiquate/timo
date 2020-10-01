@@ -5,20 +5,14 @@
     @transitionToLogin={{this.transitionToLogin}}
     @transitionToSignUp={{this.transitionToSignUp}}
   />
-  {{#if this.sortedMembers.length}}
-    <TimezoneList
-      @timezones={{this.timezones}}
-      @scheduleEvent={{this.scheduleEvent}}
-      @currentIndex={{this.currentIndex}}
-      @selectedBoxIndex={{this.selectedBoxIndex}}
-      @selectedTime={{this.selectedTime}}
-      @selectBox={{this.selectBox}}
-      @isGrouped={{this.isGrouped}}
-      @groupTimezones={{this.groupTimezones}}
-    />
-  {{else}}
-    <div class="no-member" data-test="no-member">
-      No members in this team
-    </div>
-  {{/if}}
+  <TimezoneList
+    @timezones={{this.timezones}}
+    @scheduleEvent={{this.scheduleEvent}}
+    @currentIndex={{this.currentIndex}}
+    @selectedBoxIndex={{this.selectedBoxIndex}}
+    @selectedTime={{this.selectedTime}}
+    @selectBox={{this.selectBox}}
+    @isGrouped={{this.isGrouped}}
+    @groupTimezones={{this.groupTimezones}}
+  />
 </div>
