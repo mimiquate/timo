@@ -165,7 +165,7 @@ button {
 .response-error {
   top: -20px;
   position: absolute;
-  color: RGB(var(--warn-A700));
+  color: $timo-warning;
   font-size: 12px;
 }
 
@@ -227,7 +227,7 @@ button {
   align-items: center;
 
   &__error {
-    color: RGB(var(--warn-A700));
+    color: $timo-warning;
     font-size: 12px;
   }
 }
