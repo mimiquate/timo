@@ -258,15 +258,12 @@ module('Acceptance | Team', function (hooks) {
 
   test('Share link has query params', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
     setSession.call(this, newUser);
     window.location.search = () => '?groupTimezones=true';
 

@@ -33,15 +33,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('Visiting /p/team/:share_id with private team', async function (assert) {
     this.server.get('/teams', { errors: [{ detail: 'Not Found' }] }, 404);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: false,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: false,
+      share_id: 'yjHktCOyBDTb'
+    });
 
     await visit(`/p/team/${newTeam.share_id}`);
 
@@ -52,15 +49,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('Visiting /p/team/:share_id with public team and no members', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
 
     await visit(`/p/team/${newTeam.share_id}`);
 
@@ -95,15 +89,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('Visiting /p/team/:share_id with existing team and members', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
@@ -176,15 +167,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('Visiting /p/team/:share_id with members sorted', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'Europe/Rome',
@@ -219,15 +207,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('Visit public team with grouped timezones query', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
@@ -248,15 +233,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('Group 2 timezones into another', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Argentina/Buenos_Aires',
@@ -302,15 +284,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('Group 3 timezones into another', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Argentina/Buenos_Aires',
@@ -366,15 +345,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('No timezones groupes into each other', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
@@ -420,15 +396,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('Opens google calendar when clicking time box and closes it', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
 
     await visit(`/p/team/${newTeam.share_id}`);
     await click('.timezone-list__selected');
@@ -448,15 +421,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('Schedule event in google calendar', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
 
     const calendarBase = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Team Team scheduled event&';
     const timeNow = moment();
@@ -485,15 +455,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('Select box changes selected time', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
 
     await visit(`/p/team/${newTeam.share_id}`);
 
@@ -534,15 +501,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('User can login if is not logged', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
 
     await visit(`/p/team/${newTeam.share_id}`);
 
@@ -557,15 +521,12 @@ module('Acceptance | Public Team', function (hooks) {
   test('User can sign up if is not logged', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
 
     await visit(`/p/team/${newTeam.share_id}`);
 
@@ -580,17 +541,13 @@ module('Acceptance | Public Team', function (hooks) {
   test('Login and SignUp button doesnt appear if user is logged', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
     setSession.call(this, newUser);
-
-    let newTeam = this.server.create(
-      'team',
-      {
-        name: 'Team',
-        user: newUser,
-        public: true,
-        share_id: 'yjHktCOyBDTb'
-      }
-    );
 
     await visit(`/p/team/${newTeam.share_id}`);
 
