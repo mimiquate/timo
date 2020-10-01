@@ -24,7 +24,7 @@ body {
   background: #F3F2F9;
 }
 
-.ember-application, .login-main, .public-main {
+.ember-application, .not-found {
   height: 100%;
 }
 
@@ -246,4 +246,16 @@ body {
 
 .t-form {
   width: 100%;
+}
+
+.not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__error {
+    color: RGB(var(--warn-A700));
+    font-size: 12px;
+  }
 }
