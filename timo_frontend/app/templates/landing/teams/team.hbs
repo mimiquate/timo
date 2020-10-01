@@ -13,6 +13,8 @@
   @selectedBoxIndex={{this.selectedBoxIndex}}
   @selectedTime={{this.selectedTime}}
   @selectBox={{this.selectBox}}
+  @isGrouped={{this.isGrouped}}
+  @groupTimezones={{this.groupTimezones}}
 />
 {{#if this.newMemberModal}}
   <Modals::Members::Add
@@ -24,6 +26,7 @@
   <Modals::Team::Share
     @closeModal={{this.closeShareModal}}
     @team={{this.model}}
+    @isGrouped={{this.isGrouped}}
   />
 {{/if}}
 {{#if this.showMemberListModal}}

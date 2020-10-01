@@ -14,22 +14,14 @@ export function compareMemberTimeZones(memberA, memberB) {
   return ret;
 }
 
-export function createMemberArray(modelMembers, showCurrent, timezoneNow) {
-  const returnArray = modelMembers.toArray();
+export function splitTimezone(timezone, timezoneNow) {
+  let ret = timezone
+    .replace(/\//g, ", ")
+    .replace(/_/g, " ")
 
-  if (showCurrent) {
-    const hasCurrent = returnArray.some(m => {
-      return m.timezone === timezoneNow;
-    });
-
-    if (!hasCurrent) {
-      returnArray.pushObject({
-        name: 'You',
-        timezone: timezoneNow,
-        id: 'current'
-      });
-    }
+  if (timezone === timezoneNow) {
+    ret += " (you)";
   }
 
-  return returnArray;
+  return ret;
 }

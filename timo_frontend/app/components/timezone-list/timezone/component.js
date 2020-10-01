@@ -1,28 +1,34 @@
 import Component from '@glimmer/component';
 import { computed } from '@ember/object';
 import moment from 'moment';
+import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
+import { splitTimezone } from 'timo-frontend/utils/table-functions';
 
 export default class TimezoneComponent extends Component {
   @computed('args.timezone.members.[]')
   get location() {
-    const timezone = this.args.timezone.timezoneName;
+    const timezoneNow = guessTimezoneNow();
+    const timezoneNameList = this.args.timezone.timezoneNameList;
+    const timezonesLength = timezoneNameList.length;
+    const timezonesToShow = timezoneNameList.slice(0, 2);
 
-    let ret = "";
-    timezone.split("/").forEach(t => {
-      ret += `${t}, `;
+    const splitedTimezones = timezonesToShow.map(t => {
+      return splitTimezone(t, timezoneNow);
     });
-    ret = ret.substring(0, ret.length - 2)
 
-    if (this.args.timezone.members[0].id === "current") {
-      ret += " (you)";
+    const otherTimezonesLength = timezonesLength - 2;
+    if (otherTimezonesLength > 0) {
+      let message = `${otherTimezonesLength} other `;
+      message += otherTimezonesLength === 1 ? 'timezone' : 'timezones';
+      splitedTimezones.pushObject(message);
     }
 
-    return ret;
+    return splitedTimezones.join(' + ');
   }
 
   @computed('args.{timezone.members.[],selectedTime}')
   get memberDate() {
-    const timezone = this.args.timezone.timezoneName;
+    const timezone = this.args.timezone.timezoneNameList[0];
     const selectedTime = this.args.selectedTime.format('YYYY-MM-DDTHH:mm:ssZ');
     const formatedDate = moment.tz(selectedTime, timezone).startOf('hour');
     const format = "dddd, DD MMMM YYYY, HH:mm";

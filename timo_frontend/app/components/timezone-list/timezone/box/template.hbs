@@ -2,7 +2,7 @@
   class="{{if @selected "timezone-list__selected-container"}}
   {{if @time.isCurrentTime "timezone-list__current"}}"
 >
-  {{#if @time.isCurrentTime}}
+  {{#if (and @time.isCurrentTime @isFirstRow)}}
     <div class="timezone-list__down-arrow"/>
     <div class="timezone-list__vertical-line"/>
   {{/if}}
