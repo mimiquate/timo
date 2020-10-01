@@ -15,9 +15,7 @@ export function compareMemberTimeZones(memberA, memberB) {
 }
 
 export function splitTimezone(timezone, timezoneNow) {
-  let ret = "";
-
-  ret = timezone
+  let ret = timezone
     .replace(/\//g, ", ")
     .replace(/_/g, " ")
 

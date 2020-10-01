@@ -6,8 +6,7 @@ export function createNewRows(sortedMembers, isGrouped) {
   const timeNow = moment.utc();
 
   sortedMembers.forEach(m => {
-    let { isSameOffset, isSameTimezoneName } = isSameTimeCallback(m, timeNow);
-    const isSameTimezone = isGrouped ? isSameOffset : isSameTimezoneName;
+    const isSameTimezone =  isSameTimezoneCallback(m, timeNow, isGrouped);
     const sameTimezoneIndex = timezoneRows.findIndex(isSameTimezone);
 
     if (sameTimezoneIndex > -1) {
@@ -63,7 +62,7 @@ function cellColor(time) {
   return color
 }
 
-function isSameTimeCallback(member, timeNow) {
+function isSameTimezoneCallback(member, timeNow, isGrouped) {
   const isSameOffset = (row) => {
     const offsetRow = moment.tz.zone(row.timezoneNameList[0]).utcOffset(timeNow);
     const offsetMember = moment.tz.zone(member.timezone).utcOffset(timeNow);
@@ -73,5 +72,5 @@ function isSameTimeCallback(member, timeNow) {
 
   const isSameTimezoneName = (row) => row.timezoneNameList.includes(member.timezone);
 
-  return { isSameOffset, isSameTimezoneName };
+  return  (isGrouped ? isSameOffset : isSameTimezoneName);
 }
