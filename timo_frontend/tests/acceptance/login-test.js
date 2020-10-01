@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, click, currentURL } from '@ember/test-helpers';
+import { visit, click, currentURL, fillIn, triggerEvent, findAll } from '@ember/test-helpers';
 import { loginAs, setSession, invalidUserServerPost } from 'timo-frontend/tests/helpers/custom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
@@ -31,6 +31,24 @@ module('Acceptance | Login', function (hooks) {
 
     await visit('/login');
     await loginAs('juan', 'password');
+
+    assert.equal(currentURL(), '/', 'Correctly goes to landing page');
+    assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
+    assert.dom('[data-test=landing-image]').exists('Landing page images loads');
+  });
+
+  test('Successful login pressing enter', async function (assert) {
+    const user = this.server.create('user', { username: 'juan', password: 'password' });
+    this.server.get('/users/me', user, 200);
+
+    await visit('/login');
+
+    const inputs = findAll('.login-page__input input');
+
+    await fillIn(inputs[0], 'juan');
+    await fillIn(inputs[1], 'password');
+
+    await triggerEvent('.t-form', 'submit');
 
     assert.equal(currentURL(), '/', 'Correctly goes to landing page');
     assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
