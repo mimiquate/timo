@@ -37,9 +37,20 @@ export default class TimezoneComponent extends Component {
   }
 
   @computed('args.timezone.members.[]')
-  get amountOfMembersMessage() {
-    const membersLength = this.args.timezone.members.length;
+  get memberNames() {
+    const members = this.args.timezone.members.map(m => m.name);
+    let membersName = "";
 
-    return membersLength > 1 ? `${membersLength} members` : `${membersLength} member`;
+    if (members.length <= 4) {
+      const lastMember = members[members.length -1];
+      membersName = members.slice(0, members.length -1).join(", ");
+
+      return members.length === 1 ? `${lastMember}` : `${membersName} and ${lastMember}`;
+    } else {
+      const membersLeft = members.length - 4;
+      membersName = members.slice(0, 4).join(", ");
+
+      return `${membersName} and ${membersLeft} more`;
+    }
   }
 }
