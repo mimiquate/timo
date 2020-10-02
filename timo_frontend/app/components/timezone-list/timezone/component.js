@@ -7,13 +7,12 @@ import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 export default class TimezoneComponent extends Component {
   @computed('args.timezone.members.[]')
   get location() {
-    const timezoneNow = guessTimezoneNow();
     const timezoneNameList = this.args.timezone.timezoneNameList;
     const timezonesLength = timezoneNameList.length;
     const timezonesToShow = timezoneNameList.slice(0, 2);
 
     const splitedTimezones = timezonesToShow.map(t => {
-      return splitTimezone(t, timezoneNow);
+      return splitTimezone(t);
     });
 
     const otherTimezonesLength = timezonesLength - 2;
