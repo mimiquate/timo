@@ -6,7 +6,6 @@ import { later } from '@ember/runloop';
 
 export default class TimezoneListComponent extends Component {
   @tracked previousAnimationId = null;
-  @tracked isShowingCalendarPopover = false;
 
   @action
   selectBoxWithScroll(index, time) {
@@ -43,10 +42,5 @@ export default class TimezoneListComponent extends Component {
     if (distance != 0) {
       this.previousAnimationId = smoothScrollLeft(timezoneDivs, startPosition, distance, 500, this.previousAnimationId);
     }
-  }
-
-  @action
-  toggleCalendarPopoverBackground(value) {
-    this.isShowingCalendarPopover = value;
   }
 }
