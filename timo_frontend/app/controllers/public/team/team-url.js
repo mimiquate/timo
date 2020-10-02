@@ -13,6 +13,7 @@ export default class PublicTeamTeamUrlController extends Controller {
   @tracked selectedBoxIndex = this.currentIndex;
   @tracked selectedTime = moment();
   @tracked isGrouped = false;
+  @tracked isShowingCalendarPopover = false;
 
   @computed('model.members.{[],@each.id}')
   get savedMembers() {
@@ -77,5 +78,10 @@ export default class PublicTeamTeamUrlController extends Controller {
   @action
   transitionToSignUp() {
     this.transitionToRoute('/sign-up');
+  }
+
+  @action
+  toggleCalendarPopoverBackground(value) {
+    this.isShowingCalendarPopover = value;
   }
 }

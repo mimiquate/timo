@@ -15,6 +15,8 @@
   @selectBox={{this.selectBox}}
   @isGrouped={{this.isGrouped}}
   @groupTimezones={{this.groupTimezones}}
+  @isShowingCalendarPopover={{this.isShowingCalendarPopover}}
+  @toggleCalendarPopoverBackground={{this.toggleCalendarPopoverBackground}}
 />
 {{#if this.newMemberModal}}
   <Modals::Members::Add
@@ -41,4 +43,9 @@
     @team={{this.model}}
     @deleteTeam={{this.deleteTeam}}
   />
+{{/if}}
+{{#if this.isShowingCalendarPopover}}
+  <EmberWormhole @to="tooltip-background">
+    <div class="showing-tooltip"></div>
+  </EmberWormhole>
 {{/if}}

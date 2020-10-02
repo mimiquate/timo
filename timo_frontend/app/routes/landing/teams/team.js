@@ -17,7 +17,8 @@ export default class LandingTeamsTeamRoute extends Route {
     controller.setProperties({
       isGrouped: false,
       selectedBoxIndex: indexReset,
-      selectedTime: timeNow
+      selectedTime: timeNow,
+      isShowingCalendarPopover: false
     });
   }
 }

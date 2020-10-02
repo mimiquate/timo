@@ -20,6 +20,7 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked selectedBoxIndex = this.currentIndex;
   @tracked selectedTime = moment();
   @tracked isGrouped = false;
+  @tracked isShowingCalendarPopover = false;
 
   @computed('model.members.{[],@each.id}')
   get savedMembers() {
@@ -147,5 +148,10 @@ export default class LandingTeamsTeamController extends Controller {
         this.transitionToRoute('landing');
       }
     });
+  }
+
+  @action
+  toggleCalendarPopoverBackground(value) {
+    this.isShowingCalendarPopover = value;
   }
 }
