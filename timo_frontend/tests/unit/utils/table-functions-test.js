@@ -16,7 +16,7 @@ module('Unit | Utils | timezone functions', function (hooks) {
 
   test('Split current timezone', function (assert) {
     const timezone = "America/Montevideo";
-    const expected = "America, Montevideo (you)"
+    const expected = "America, Montevideo"
 
     const splitedTimezones = splitTimezone(timezone, timezone);
 
