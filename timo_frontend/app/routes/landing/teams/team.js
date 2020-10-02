@@ -18,7 +18,11 @@ export default class LandingTeamsTeamRoute extends Route {
       isGrouped: false,
       selectedBoxIndex: indexReset,
       selectedTime: timeNow,
-      isShowingCalendarPopover: false
+      isShowingCalendarPopover: false,
+      newMemberModal: false,
+      showShareModal: false,
+      showMemberListModal: false,
+      showAboutTeamModal: false
     });
   }
 }
