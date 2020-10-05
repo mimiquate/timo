@@ -575,5 +575,51 @@ module('Acceptance | Team', function (hooks) {
     assert.notEqual(resetedSelectedIndex, selectedIndex, 'Resets selected index');
     assert.ok(timezoneDate.textContent.includes(details), 'Correct date details');
     assert.equal(selectedTimeBox.textContent.trim(), currentTime, 'Correct selected time');
-  })
+  });
+
+  test('Can see the number of members left in each timezone', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 3',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 4',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 5',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+    this.server.create('member', {
+      name: 'Member 6',
+      timezone: 'America/Montevideo',
+      team: newTeam
+    });
+
+    await visit(`/teams/${newTeam.id}`);
+
+    const timezoneMembers = find('.timezone-list__members');
+
+    assert.ok(
+      timezoneMembers.textContent.includes('You, Member 1, Member 2, Member 3 and 3 more'),
+      'Correct first row members details'
+    );
+  });
 });
