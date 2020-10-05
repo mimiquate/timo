@@ -19,19 +19,37 @@ defmodule Timo.Email do
       <head>
         <title></title>
       </head>
-      <body style="font-family:Helvetica; margin: 0; display: flex; justify-content: center; align-items: center;">
-        <div style="background-color: #FFFFFF; width: 54vh; max-width: 685px; max-height: 619px;">
-          <div style="margin: 109px 10px 65px 10px;"><img src="#{@timo_img_url}"></div>
-          <div style="margin: 0px 10px;">
-            <p style="font-size: 25px;">Hi #{user_name},</p>
-            <p style="font-size: 21px;">We received a request to create an account with your email on Timo App.</p>
-          </div>
-          <form action="#{url}" style="margin: 40px 10px 24px 10px;">
-            <button type="submit" style="font-family: Helvetica; font-size: 16px; color: white; background-color: #5C77F8; border-radius: 29px; border: none; outline: none; padding: 16px 70px;">Verify email</button>
-          </form>
-          <div style="margin: 0px 10px;">Thank you,<br>Timo’s Team</div>
-          <div style="padding-top: 19px; margin: 41px 10px 30px 10px; font-size: 13px; color: #5C5C5C; border-top: 1px solid #C4C4C4;">Need help? Contact us: <a style="color: #5C77F8;" href="support@mimiquate.com">support@mimiquate.com</a></div>
-        </div>
+      <body style="font-family: Helvetica;">
+        <table width="75%" border="0" cellspacing="0" cellpadding="0" align="center">
+          <tr>
+            <td style="padding: 109px 0px 65px 0px;">
+              <img src="#{@timo_img_url}">
+            </td>
+          </tr>
+          <tr>
+            <td style="font-size: 25px; color: #000000;">
+              <p>Hi #{user_name},</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-size: 21px; color: #000000;">
+              <p>We received a request to create an account with your email on Timo App.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 40px 0px 28px 0px;">
+              <a href="#{url}" style="display: inline-block; width: 223px; height=48px; text-align: center; line-height: 48px; text-decoration: none; font-family: Helvetica; font-size: 16px; color: white; background-color: #5C77F8; border-radius: 29px;">Verify email</a>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0px 0px 41px 0px; color: #000000;">Thank you,<br>Timo’s Team</td>
+          </tr>
+          <tr>
+            <td style="border-top: 1px solid #C4C4C4; padding: 19px 0px 30px 0px;">
+              <span style="font-size: 13px; color: #5C5C5C;">Need help? Contact us: <a style="color: #5C77F8;" href="support@mimiquate.com">support@mimiquate.com</a></span>
+            </td>
+          </tr>
+        </table>
       </body>
     </html>
     """
