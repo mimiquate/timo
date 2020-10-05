@@ -116,6 +116,11 @@ module('Acceptance | Public Team', function (hooks) {
     const timezoneDivs = findAll('.timezone-list__row');
     assert.equal(timezoneDivs.length, 2, 'Has two timezones');
 
+    assert.equal(
+      find('.shared-team-header__details').textContent.trim(),
+      '3 Members'
+    );
+
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(
       timezoneLocations[0].textContent.trim(),
