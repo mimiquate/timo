@@ -38,7 +38,7 @@ defmodule Timo.Email do
           </tr>
           <tr>
             <td style="padding: 40px 0px 28px 0px;">
-              <a href="#{url}" style="display: inline-block; width: 223px; height=48px; text-align: center; line-height: 48px; text-decoration: none; font-family: Helvetica; font-size: 16px; color: white; background-color: #5C77F8; border-radius: 29px;">Verify email</a>
+              <a href="#{url}" style="display: inline-block; width: 223px; height: 48px; text-align: center; line-height: 48px; text-decoration: none; font-family: Helvetica; font-size: 16px; color: white; background-color: #5C77F8; border-radius: 29px;">Verify email</a>
             </td>
           </tr>
           <tr>
@@ -46,7 +46,7 @@ defmodule Timo.Email do
           </tr>
           <tr>
             <td style="border-top: 1px solid #C4C4C4; padding: 19px 0px 30px 0px;">
-              <span style="font-size: 13px; color: #5C5C5C;">Need help? Contact us: <a style="color: #5C77F8;" href="support@mimiquate.com">support@mimiquate.com</a></span>
+              <span style="font-size: 13px; color: #5C5C5C;">Need help? Contact us: <a style="color: #5C77F8;" href="https://www.mimiquate.com/">support@mimiquate.com</a></span>
             </td>
           </tr>
         </table>
