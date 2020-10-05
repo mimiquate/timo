@@ -268,6 +268,11 @@ module('Acceptance | Team', function (hooks) {
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Argentina/Buenos_Aires',
+      team: newTeam
+    });
     setSession.call(this, newUser);
     window.location.search = () => '?groupTimezones=true';
 
@@ -403,7 +408,7 @@ module('Acceptance | Team', function (hooks) {
     );
   });
 
-  test('No timezones groupes into each other', async function (assert) {
+  test('Cant see group timezones if there is no timezone to group', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
     this.server.create('member', {
@@ -433,20 +438,7 @@ module('Acceptance | Team', function (hooks) {
       'Correct second location'
     );
 
-    await click('.timezone-list__group-timezones .t-checkbox');
-
-    const newTimezoneLocations = findAll('.timezone-list__location');
-    assert.equal(newTimezoneLocations.length, 2, 'Correct amount of timezones');
-    assert.equal(
-      newTimezoneLocations[0].textContent.trim(),
-      'America, Montevideo (you)',
-      'Correct first location'
-    );
-    assert.equal(
-      newTimezoneLocations[1].textContent.trim(),
-      'Asia, Ho Chi Minh',
-      'Correct second location'
-    );
+    assert.dom('.timezone-list__group-timezones .t-checkbox').doesNotExist();
   });
 
   test('Opens google calendar when clicking time box and closes it', async function (assert) {
