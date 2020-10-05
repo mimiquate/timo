@@ -5,7 +5,7 @@ defmodule TimoWeb.SendEmail do
   end
 
   def send_account_verification_email(%Timo.API.User{} = user, verification_url) do
-    Timo.Email.verification_email(user.email, verification_url)
+    Timo.Email.verification_email(user.email, verification_url, user.username)
     |> Timo.Mailer.deliver_now()
   end
 end
