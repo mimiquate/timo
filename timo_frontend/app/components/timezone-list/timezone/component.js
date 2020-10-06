@@ -10,9 +10,7 @@ export default class TimezoneComponent extends Component {
     const timezonesLength = timezoneNameList.length;
     const timezonesToShow = timezoneNameList.slice(0, 2);
 
-    const splitedTimezones = timezonesToShow.map(t => {
-      return splitTimezone(t);
-    });
+    const splitedTimezones = timezonesToShow.map(t => splitTimezone(t));
 
     const otherTimezonesLength = timezonesLength - 2;
     if (otherTimezonesLength > 0) {
