@@ -23,7 +23,7 @@ defmodule Timo.Email do
         <table width="500px" border="0" cellspacing="0" cellpadding="0" align="center">
           <tr>
             <td style="padding: 109px 0px 65px 0px;">
-              <img src="#{@timo_img_url}">
+              <img src="#{@timo_img_url}" alt="Timo logo">
             </td>
           </tr>
           <tr>
