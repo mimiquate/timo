@@ -349,7 +349,7 @@ module('Acceptance | Public Team', function (hooks) {
     );
   });
 
-  test('No timezones groupes into each other', async function (assert) {
+  test('Cant see group timezones if there is no timezone to group', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', {
@@ -387,7 +387,7 @@ module('Acceptance | Public Team', function (hooks) {
     assert.dom('.timezone-list__group-timezones .t-checkbox').doesNotExist();
   });
 
-  test('Cant see group timezones if there is no timezone to group', async function (assert) {
+  test('Opens google calendar when clicking time box and closes it', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', {
