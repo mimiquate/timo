@@ -74,12 +74,12 @@ module('Acceptance | Public Team', function (hooks) {
     );
 
     const timeNow = moment.tz('America/Montevideo').startOf('hour');
-    const timezoneDate = find('.timezone-list__date');
+    const timezoneRowDate = find('.timezone-list__date');
     const timezoneMember = find('.timezone-list__members');
-    const details = timeNow.format('dddd, DD MMMM YYYY, HH:mm');
+    const expectedDate = timeNow.format('dddd, DD MMMM YYYY, HH:mm');
 
-    assert.ok(timezoneDate.textContent.includes(details), 'Correct date details');
-    assert.ok(timezoneMember.textContent.includes('You'), 'Correct members details');
+    assert.ok(timezoneRowDate.textContent.includes(expectedDate), 'Correct row date');
+    assert.ok(timezoneMember.textContent.includes('You'), 'Correct row members');
 
     const timezoneHours = findAll('.timezone-list__hour');
     assert.equal(timezoneHours.length, 40, 'Correct amount of hours');
@@ -137,26 +137,26 @@ module('Acceptance | Public Team', function (hooks) {
     const timeNowMontevideo = moment.tz('America/Montevideo').startOf('hour');
     const timeNowBuenosAires = moment.tz('America/Buenos_Aires').startOf('hour');
 
-    const timezoneDates = findAll('.timezone-list__date');
+    const timezoneRowDates = findAll('.timezone-list__date');
     const timezoneMembers = findAll('.timezone-list__members');
-    const detailsMontevideo = timeNowMontevideo.format('dddd, DD MMMM YYYY, HH:mm');
-    const detailsBuenosAires = timeNowBuenosAires.format('dddd, DD MMMM YYYY, HH:mm');
+    const expectedDateMontevideo = timeNowMontevideo.format('dddd, DD MMMM YYYY, HH:mm');
+    const expectedDateBuenosAires = timeNowBuenosAires.format('dddd, DD MMMM YYYY, HH:mm');
 
     assert.ok(
-      timezoneDates[0].textContent.includes(detailsMontevideo),
-      'Correct first row date details'
+      timezoneRowDates[0].textContent.includes(expectedDateMontevideo),
+      'Correct first row date'
     );
     assert.ok(
       timezoneMembers[0].textContent.includes('You and Member 1'),
-      'Correct first row members details'
+      'Correct first row members'
     );
     assert.ok(
-      timezoneDates[1].textContent.includes(detailsBuenosAires),
-      'Correct second row date details'
+      timezoneRowDates[1].textContent.includes(expectedDateBuenosAires),
+      'Correct second row date'
     );
     assert.ok(
       timezoneMembers[1].textContent.includes('Member 2'),
-      'Correct second row members details'
+      'Correct second row members'
     );
 
     const currentTimezoneHours = findAll('.timezone-list__current');
@@ -463,10 +463,10 @@ module('Acceptance | Public Team', function (hooks) {
 
     let time = moment.tz('America/Montevideo').startOf('hour');
 
-    const timezoneDate = find('.timezone-list__date');
-    let details = time.format('dddd, DD MMMM YYYY, HH:mm');
+    const timezoneRowDate = find('.timezone-list__date');
+    let expectedDate = time.format('dddd, DD MMMM YYYY, HH:mm');
 
-    assert.ok(timezoneDate.textContent.includes(details), 'Correct date details');
+    assert.ok(timezoneRowDate.textContent.includes(expectedDate), 'Correct row date');
 
     const timezoneHours = findAll('.timezone-list__hour');
 
@@ -481,9 +481,9 @@ module('Acceptance | Public Team', function (hooks) {
     await click(timezoneHours[selectedIndex + 2]);
 
     time.add(2, 'hour');
-    details = time.format('dddd, DD MMMM YYYY, HH:mm');
+    expectedDate = time.format('dddd, DD MMMM YYYY, HH:mm');
 
-    assert.ok(timezoneDate.textContent.includes(details), 'Correct new date details');
+    assert.ok(timezoneRowDate.textContent.includes(expectedDate), 'Correct new date');
 
     const newSelectedIndex = timezoneHours.findIndex(h => {
       return h.classList.contains('timezone-list__selected')

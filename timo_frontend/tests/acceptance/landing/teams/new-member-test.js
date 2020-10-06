@@ -47,11 +47,11 @@ module('Acceptance | New member', function (hooks) {
       'Correct location'
     );
 
-    const timezoneRowDetails = find('.timezone-list__members');
+    const timezoneRowMembers = find('.timezone-list__members');
 
     assert.ok(
-      timezoneRowDetails.textContent.includes('You and Member'),
-      'Correct member details'
+      timezoneRowMembers.textContent.includes('You and Member'),
+      'Correct row members'
     );
   });
 
@@ -81,15 +81,15 @@ module('Acceptance | New member', function (hooks) {
       'Correct second location'
     );
 
-    const timezoneRowDetails = findAll('.timezone-list__members');
+    const timezoneRowMembers = findAll('.timezone-list__members');
 
     assert.ok(
-      timezoneRowDetails[0].textContent.includes('You'),
-      'Correct first row member details'
+      timezoneRowMembers[0].textContent.includes('You'),
+      'Correct first row members'
     );
     assert.ok(
-      timezoneRowDetails[1].textContent.includes('Member'),
-      'Correct second row member details'
+      timezoneRowMembers[1].textContent.includes('Member'),
+      'Correct second row members'
     );
   });
 
@@ -119,15 +119,15 @@ module('Acceptance | New member', function (hooks) {
       'Correct second location'
     );
 
-    const timezoneRowDetails = findAll('.timezone-list__members');
+    const timezoneRowMembers = findAll('.timezone-list__members');
 
     assert.ok(
-      timezoneRowDetails[0].textContent.includes('You'),
-      'Correct first row member details'
+      timezoneRowMembers[0].textContent.includes('You'),
+      'Correct first row members'
     );
     assert.ok(
-      timezoneRowDetails[1].textContent.includes('Member'),
-      'Correct second row member details'
+      timezoneRowMembers[1].textContent.includes('Member'),
+      'Correct second row members'
     );
   });
 
