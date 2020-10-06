@@ -162,6 +162,14 @@
   }
 }
 
+.timezone-list > .timezone-list__row {
+  margin-top: 30px;
+}
+
+.timezone-list > .timezone-list__group-timezones + .timezone-list__row {
+  margin-top: 0;
+}
+
 .timezone-list__down-arrow {
   position: absolute;
   top: -21px;
