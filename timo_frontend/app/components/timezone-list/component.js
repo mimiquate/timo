@@ -1,13 +1,10 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 import { smoothScrollLeft, getEndPosition } from 'timo-frontend/utils/timo-animations';
 import { later } from '@ember/runloop';
 import moment from 'moment';
 
 export default class TimezoneListComponent extends Component {
-  @tracked previousAnimationId = null;
-
   @action
   selectBoxWithScroll(index, time) {
     this.args.selectBox(index, time);
@@ -27,7 +24,7 @@ export default class TimezoneListComponent extends Component {
     const distance = endPosition - startPosition;
 
     if (distance != 0) {
-      this.previousAnimationId = smoothScrollLeft(timezoneDivs, startPosition, distance, 500, this.previousAnimationId);
+      smoothScrollLeft(timezoneDivs, startPosition, distance, 500);
     }
   }
 

@@ -1,12 +1,10 @@
-export function smoothScrollLeft(target, startPosition, distance, duration, previousAnimationId) {
-  if (previousAnimationId) cancelAnimationFrame(previousAnimationId);
+export function smoothScrollLeft(target, startPosition, distance, duration) {
   let startTime = null;
 
   function animation(currentTime) {
     if (startTime === null) startTime = currentTime;
-
     let timeElapsed = currentTime - startTime;
-    let run = easeOutQuadratic(timeElapsed, startPosition, distance, duration);
+    let run = Math.round(easeOutQuadratic(timeElapsed, startPosition, distance, duration));
 
     target.forEach(targetDiv => {
       targetDiv.scrollLeft = run;
