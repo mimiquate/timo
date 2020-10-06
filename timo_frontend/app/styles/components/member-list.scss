@@ -34,17 +34,22 @@
     margin-bottom: auto;
   }
 
-  &__member {
-    display: flex;
-    justify-content: space-between;
-    padding: 16px 0 16px;
+  &__animated-container {
+    overflow: hidden;
+    width: 100%;
     border-bottom: 1px solid $light-grey;
-    align-items: center;
 
     &:last-child {
       border-bottom: none;
       padding-bottom: 0;
     }
+  }
+
+  &__member {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0 16px;
+    align-items: center;
 
     &__name {
       font-weight: 800;
@@ -66,10 +71,45 @@
     margin-top: 24px;
   }
 
-  &__edit-label {
+  &__trash-icon {
+    width: 21px;
+    height: 21px;
     cursor: pointer;
-    color: $blue;
-    font-size: 16px;
-    font-weight: bold;
+    margin-right: 12px;
+  }
+
+  &__edit-icon {
+    width: 21px;
+    height: 21px;
+    cursor: pointer;
+  }
+
+  &__delete-confirmation-container {
+    height: 46px;
+    display: flex;
+    align-items: center;
+    color: $timo-warning;
+    font-size: 14px;
+    justify-content: space-between;
+    padding: 16px 0 16px;
+
+    .t-button {
+      padding: 10px;
+
+      &:first-child {
+        margin-right: 15px;
+        border: none;
+      }
+    }
+
+    >:last-child {
+      margin-left: 8px;
+    }
+  }
+
+  &__delete-label {
+    font-weight: 500;
+    margin-left: 8px;
+    font-size: 15px;
   }
 }
