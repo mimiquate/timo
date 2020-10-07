@@ -53,13 +53,11 @@ export default class TimezoneListComponent extends Component {
     if (timesLength - index < currentIndex) {
       timezones.forEach(timezone => {
         const lastTimeValue = timezone.times[timesLength - 1].value;
-        const currentTimValue = timezone.times[currentIndex].value;
 
         for (let i = 1; i <= amount; i++) {
           const value = lastTimeValue.clone().add(i, 'hour');
           const color = cellColor(value);
-          const diff = value.diff(currentTimValue, 'hours');
-          const isCurrentTime = diff == 0;
+          const isCurrentTime = false;
 
           timezone.times.pushObject({
             value,
