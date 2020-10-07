@@ -23,7 +23,7 @@ export function createNewRows(sortedMembers, isGrouped) {
       const startTime = currentMemberTime.clone().add(-12, 'hours');
       const times = [];
 
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < 36; i++) {
         const value = startTime.clone().add(i, 'hour');
         const color = cellColor(value);
         const diff = value.diff(currentMemberTime, 'hours');
