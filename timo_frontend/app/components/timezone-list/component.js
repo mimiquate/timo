@@ -3,11 +3,17 @@ import { action } from '@ember/object';
 import { smoothScrollLeft, getEndPosition } from 'timo-frontend/utils/timo-animations';
 import { later } from '@ember/runloop';
 import moment from 'moment';
+import { cellColor } from 'timo-frontend/utils/timezone-rows';
 
 export default class TimezoneListComponent extends Component {
   @action
   selectBoxWithScroll(index, time) {
+    const previousIndex = this.args.selectedBoxIndex;
     this.args.selectBox(index, time);
+
+    if (index > previousIndex) {
+      this.addTimesRight(index - previousIndex, index);
+    }
 
     later(() => {
       this.scrollToSelected(index);
@@ -37,5 +43,31 @@ export default class TimezoneListComponent extends Component {
     });
 
     return new Set(offsets).size !== new Set(timezonesName).size;
+  }
+
+  addTimesRight(amount, index) {
+    const timezones = this.args.timezones;
+    const timesLength = timezones[0].times.length;
+    const currentIndex = this.args.currentIndex;
+
+    if (timesLength - index < currentIndex) {
+      timezones.forEach(timezone => {
+        const lastTimeValue = timezone.times[timesLength - 1].value;
+        const currentTimValue = timezone.times[currentIndex].value;
+
+        for (let i = 1; i <= amount; i++) {
+          const value = lastTimeValue.clone().add(i, 'hour');
+          const color = cellColor(value);
+          const diff = value.diff(currentTimValue, 'hours');
+          const isCurrentTime = diff == 0;
+
+          timezone.times.pushObject({
+            value,
+            color,
+            isCurrentTime
+          });
+        }
+      });
+    }
   }
 }

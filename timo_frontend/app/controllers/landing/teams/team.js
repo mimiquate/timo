@@ -54,6 +54,7 @@ export default class LandingTeamsTeamController extends Controller {
   @action
   groupTimezones() {
     this.toggleProperty('isGrouped');
+    this.selectBox(this.currentIndex, moment());
   }
 
   @action
