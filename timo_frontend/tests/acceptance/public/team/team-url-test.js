@@ -226,9 +226,14 @@ module('Acceptance | Public Team', function (hooks) {
       team: newTeam
     });
 
-    await visit(`/p/team/${newTeam.share_id}?groupTimezones=true`);
+    await visit(`/p/team/${newTeam.share_id}`);
 
-    const timezoneLocations = findAll('.timezone-list__location');
+    let timezoneLocations = findAll('.timezone-list__location');
+    assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
+
+    await click('.timezone-list__group-timezones .t-checkbox');
+
+    timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 1, 'Correct amount of timezones');
     assert.equal(
       timezoneLocations[0].textContent.trim(),
