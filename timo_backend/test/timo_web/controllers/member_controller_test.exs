@@ -1,5 +1,6 @@
 defmodule TimoWeb.MemberControllerTest do
   use TimoWeb.ConnCase
+  import Plug.Test
 
   alias Timo.API
   alias Timo.API.Member
@@ -31,17 +32,19 @@ defmodule TimoWeb.MemberControllerTest do
   end
 
   setup %{conn: conn} do
-    team = team_factory(user_factory())
+    user = user_factory()
+    team = team_factory(user)
 
     conn =
       conn
+      |> init_test_session(user_id: user.id)
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
 
-    {:ok, conn: conn, team: team}
+    {:ok, conn: conn, team: team, user: user}
   end
 
-  test "creates member and renders member when data is valid", %{conn: conn, team: team} do
+  test "creates member and renders member when data is valid", %{conn: conn, team: team, user: user} do
     conn = post(conn, Routes.member_path(conn, :create), data_fixture(@create_attrs, team.id))
 
     assert data = json_response(conn, 201)["data"]
@@ -49,7 +52,7 @@ defmodule TimoWeb.MemberControllerTest do
     assert data["attributes"]["name"] == @create_attrs.name
     assert data["attributes"]["timezone"] == @create_attrs.timezone
 
-    {:ok, %Member{} = member} = API.get_member(data["id"])
+    {:ok, %Member{} = member} = API.get_user_member(user, data["id"])
 
     assert Integer.to_string(member.id) == data["id"]
     assert member.team_id == team.id

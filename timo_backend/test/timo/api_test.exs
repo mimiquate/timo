@@ -254,15 +254,20 @@ defmodule Timo.APITest do
       assert {:error, %Ecto.Changeset{}} = API.create_member(team, @invalid_member_nil_tz)
     end
 
-    test "get_member/1 with valid id" do
-      member = member_factory()
-      {:ok, %Member{} = fetched_member} = API.get_member(member.id)
+    test "get_user_member/2 with valid id" do
+      user = user_factory()
+      team = team_factory(user)
+      member = member_factory(team)
+
+      {:ok, %Member{} = fetched_member} = API.get_user_member(user, member.id)
 
       assert fetched_member == member
     end
 
-    test "get_member/1 returns nil if the member does not exist" do
-      assert API.get_member(1) == nil
+    test "get_user_member/2 returns nil if the member does not exist" do
+      user = user_factory()
+
+      assert API.get_user_member(user, 1) == nil
     end
 
     test "update_member/2 with valid data updates the member" do
