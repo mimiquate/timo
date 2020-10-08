@@ -109,6 +109,6 @@ defmodule TimoWeb.MemberControllerTest do
     assert conn.status == 204
     assert conn.resp_body == ""
 
-    assert Timo.Repo.get(Timo.API.Member, member.id) == nil
+    assert Timo.Repo.get(Member, member.id) == nil
   end
 end
