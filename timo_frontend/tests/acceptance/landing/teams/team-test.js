@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, currentURL, click, find, findAll } from '@ember/test-helpers';
+import { visit, currentURL, click, find, findAll, fillIn } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
@@ -598,4 +598,34 @@ module('Acceptance | Team', function (hooks) {
       'Correct first row members'
     );
   });
+
+  test('Edit team name', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('.team-list__button');
+    await click('[data-test=edit-team-button]');
+
+    assert.dom('.about-team-modal').exists('Opens delete team modal');
+    assert.dom('.t-modal__title').hasText('About', 'Correct title');
+
+    const team = find('.t-input input');
+
+    assert.equal(team.value, newTeam.name);
+
+    await fillIn('.t-input input', '');
+    await click('[data-test=save-button]');
+
+    const errorMessage = find('.t-input__error');
+
+    assert.equal(errorMessage.textContent.trim(), `Name can't be blank`);
+
+    await fillIn('.t-input input', 'NewTeamName');
+    await click('[data-test=save-button]');
+
+    assert.dom('.about-team-modal').doesNotExist();
+    assert.equal(find('.team-header__title').textContent.trim(), 'NewTeamName');
+  })
 });
