@@ -82,7 +82,7 @@ module('Acceptance | Public Team', function (hooks) {
     assert.ok(timezoneMember.textContent.includes('You'), 'Correct row members');
 
     const timezoneHours = findAll('.timezone-list__hour');
-    assert.equal(timezoneHours.length, 40, 'Correct amount of hours');
+    assert.equal(timezoneHours.length, 36, 'Correct amount of hours');
 
     const currentTimezoneHour = find('.timezone-list__current');
     const currentTime = timeNow.format('HH.mm');
