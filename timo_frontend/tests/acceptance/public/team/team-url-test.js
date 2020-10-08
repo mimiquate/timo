@@ -211,7 +211,7 @@ module('Acceptance | Public Team', function (hooks) {
     );
   })
 
-  test('Visit public team with grouped timezones query', async function (assert) {
+  test('Visit public and group timezones', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', {
