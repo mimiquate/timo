@@ -101,13 +101,13 @@ defmodule Timo.API do
     from(m in query, where: m.team_id == ^team_id)
   end
 
-
   def get_user_member(%User{} = user, id) do
-    query = Member
-            |> join(:inner, [m], t in Team, on: m.team_id == t.id)
-            |> join(:inner, [_, t], u in User, on: t.user_id == u.id)
-            |> where([m, _, u], u.id == ^user.id and m.id == ^id)
-            |> select([m], m)
+    query =
+      Member
+      |> join(:inner, [m], t in Team, on: m.team_id == t.id)
+      |> join(:inner, [_, t], u in User, on: t.user_id == u.id)
+      |> where([m, _, u], u.id == ^user.id and m.id == ^id)
+      |> select([m], m)
 
     with %Member{} = member <- Repo.one(query) do
       {:ok, member}

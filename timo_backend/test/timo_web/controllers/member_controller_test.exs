@@ -44,7 +44,11 @@ defmodule TimoWeb.MemberControllerTest do
     {:ok, conn: conn, team: team, user: user}
   end
 
-  test "creates member and renders member when data is valid", %{conn: conn, team: team, user: user} do
+  test "creates member and renders member when data is valid", %{
+    conn: conn,
+    team: team,
+    user: user
+  } do
     conn = post(conn, Routes.member_path(conn, :create), data_fixture(@create_attrs, team.id))
 
     assert data = json_response(conn, 201)["data"]
