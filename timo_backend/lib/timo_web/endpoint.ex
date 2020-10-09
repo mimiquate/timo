@@ -42,7 +42,8 @@ defmodule TimoWeb.Endpoint do
     secure: true,
     same_site: "None"
 
-  plug CORSPlug, origin: ["http://localhost:4200", "https://timo.mimiquate.xyz"]
+  {:ok, frontend_url} = Application.fetch_env(:timo, :frontend_url)
+  plug CORSPlug, origin: [frontend_url]
 
   plug TimoWeb.Router
 end
