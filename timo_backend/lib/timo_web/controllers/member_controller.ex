@@ -4,9 +4,10 @@ defmodule TimoWeb.MemberController do
   alias Timo.API
   alias Timo.API.Member
   alias JaSerializer.Params
+  alias TimoWeb.Plugs.{SetCurrentUser, AuthenticateCurrentUser}
 
-  plug TimoWeb.Plugs.SetCurrentUser when action in [:create, :update, :delete]
-  plug :authenticate_current_user when action in [:create, :update, :delete]
+  plug SetCurrentUser when action in [:create, :update, :delete]
+  plug AuthenticateCurrentUser when action in [:create, :update, :delete]
 
   action_fallback TimoWeb.FallbackController
 
@@ -36,17 +37,6 @@ defmodule TimoWeb.MemberController do
     with {:ok, member} <- API.get_user_member(current_user, id),
          {:ok, %Member{}} <- API.delete_member(member) do
       send_resp(conn, :no_content, "")
-    end
-  end
-
-  defp authenticate_current_user(conn, _params) do
-    if !conn.assigns.current_user do
-      conn
-      |> put_status(:unauthorized)
-      |> put_view(TimoWeb.ErrorView)
-      |> render(:"401")
-    else
-      conn
     end
   end
 end
