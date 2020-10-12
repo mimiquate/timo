@@ -9,8 +9,6 @@ import moment from 'moment';
 import { isPresent } from '@ember/utils';
 
 export default class LandingTeamsTeamController extends Controller {
-  queryParams = [{ isGrouped: 'groupTimezones' }];
-
   @tracked memberToEdit = null;
   @tracked newMemberModal = false;
   @tracked editMemberModal = false;

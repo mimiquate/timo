@@ -211,7 +211,7 @@ module('Acceptance | Public Team', function (hooks) {
     );
   })
 
-  test('Visit public team with grouped timezones query', async function (assert) {
+  test('Visit public and group timezones', async function (assert) {
     setGETTeamsHandler(this.server);
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', {
@@ -226,9 +226,14 @@ module('Acceptance | Public Team', function (hooks) {
       team: newTeam
     });
 
-    await visit(`/p/team/${newTeam.share_id}?groupTimezones=true`);
+    await visit(`/p/team/${newTeam.share_id}`);
 
-    const timezoneLocations = findAll('.timezone-list__location');
+    let timezoneLocations = findAll('.timezone-list__location');
+    assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
+
+    await click('.timezone-list__group-timezones .t-checkbox');
+
+    timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 1, 'Correct amount of timezones');
     assert.equal(
       timezoneLocations[0].textContent.trim(),

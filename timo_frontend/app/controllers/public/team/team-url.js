@@ -8,8 +8,6 @@ import moment from 'moment';
 import { tracked } from '@glimmer/tracking';
 
 export default class PublicTeamTeamUrlController extends Controller {
-  queryParams = [{ isGrouped: 'groupTimezones' }];
-
   @tracked selectedBoxIndex = this.currentIndex;
   @tracked selectedTime = moment();
   @tracked isGrouped = false;

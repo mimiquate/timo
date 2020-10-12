@@ -15,8 +15,7 @@ export default class ShareModalComponent extends Component {
   get url() {
     const { protocol, host } = window.location;
     const shareId = this.args.team.share_id;
-    const queryParams = this.args.isGrouped ? '?groupTimezones=true' : '';
-    const path = `/p/team/${shareId}${queryParams}`;
+    const path = `/p/team/${shareId}`;
 
     return  isPresent(shareId) ? `${protocol}//${host}${path}` : '';
   }

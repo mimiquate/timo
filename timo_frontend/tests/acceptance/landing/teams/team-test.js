@@ -260,32 +260,7 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(shareLink.value, '', 'Empty link');
   });
 
-  test('Share link has query params', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
-      name: 'Team',
-      user: newUser,
-      public: true,
-      share_id: 'yjHktCOyBDTb'
-    });
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Argentina/Buenos_Aires',
-      team: newTeam
-    });
-    setSession.call(this, newUser);
-    window.location.search = () => '?groupTimezones=true';
-
-    await visit(`/teams/${newTeam.id}`);
-    await click('.timezone-list__group-timezones .t-checkbox');
-    await click('[data-test=share-button]');
-
-    const shareLink = find('.share-team__link-input input');
-
-    assert.ok(shareLink.value.includes('?groupTimezones=true'), 'Correct link');
-  })
-
-  test('Visit team with grouped timezones query', async function (assert) {
+  test('Visit team with and group timezones', async function (assert) {
     let newUser = this.server.create('user', { username: 'juan' });
     let newTeam = this.server.create('team', { name: 'Team', user: newUser });
     this.server.create('member', {
@@ -295,7 +270,8 @@ module('Acceptance | Team', function (hooks) {
     });
     setSession.call(this, newUser);
 
-    await visit(`/teams/${newTeam.id}?groupTimezones=true`);
+    await visit(`/teams/${newTeam.id}`);
+    await click('.timezone-list__group-timezones .t-checkbox');
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 1, 'Correct amount of timezones');
