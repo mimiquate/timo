@@ -40,7 +40,7 @@ defmodule TimoWeb.Endpoint do
     key: "_timo_key",
     signing_salt: "iKpGBV7H",
     secure: true,
-    same_site: "None"
+    extra: "SameSite=None"
 
   {:ok, frontend_url} = Application.fetch_env(:timo, :frontend_url)
   plug CORSPlug, origin: [frontend_url]
