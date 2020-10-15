@@ -45,20 +45,13 @@
   }
 
   &__location {
-    font-size:  13px;
+    font-size:  16px;
     line-height: 20px;
     height: 19px;
     color: $black;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  &__details {
-    display: flex;
-    justify-content: space-between;
-    line-height: 25px;
-    height: 23px;
   }
 
   &__date {
@@ -68,8 +61,10 @@
 
   &__members {
     font-size: 13px;
-    line-height: 26px;
-    color: $blue;
+    color: $black;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__hour {

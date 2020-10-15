@@ -1,20 +1,16 @@
 import Component from '@glimmer/component';
 import { computed } from '@ember/object';
 import moment from 'moment';
-import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 
 export default class TimezoneComponent extends Component {
   @computed('args.timezone.members.[]')
   get location() {
-    const timezoneNow = guessTimezoneNow();
     const timezoneNameList = this.args.timezone.timezoneNameList;
     const timezonesLength = timezoneNameList.length;
     const timezonesToShow = timezoneNameList.slice(0, 2);
 
-    const splitedTimezones = timezonesToShow.map(t => {
-      return splitTimezone(t, timezoneNow);
-    });
+    const splitedTimezones = timezonesToShow.map(t => splitTimezone(t));
 
     const otherTimezonesLength = timezonesLength - 2;
     if (otherTimezonesLength > 0) {
@@ -37,9 +33,20 @@ export default class TimezoneComponent extends Component {
   }
 
   @computed('args.timezone.members.[]')
-  get amountOfMembersMessage() {
-    const membersLength = this.args.timezone.members.length;
+  get memberNames() {
+    const members = this.args.timezone.members.map(m => m.name);
+    let membersName = "";
 
-    return membersLength > 1 ? `${membersLength} members` : `${membersLength} member`;
+    if (members.length <= 4) {
+      const lastMember = members[members.length -1];
+      membersName = members.slice(0, members.length -1).join(", ");
+
+      return members.length === 1 ? `${lastMember}` : `${membersName} and ${lastMember}`;
+    } else {
+      const membersLeft = members.length - 4;
+      membersName = members.slice(0, 4).join(", ");
+
+      return `${membersName} and ${membersLeft} more`;
+    }
   }
 }

@@ -15,20 +15,19 @@ module('Unit | Utils | timezone functions', function (hooks) {
   });
 
   test('Split current timezone', function (assert) {
-    const timezone = "America/Montevideo";
-    const expected = "America, Montevideo (you)"
+    const timezone = "America/Montevideo"
+    const expected = "America, Montevideo"
 
-    const splitedTimezones = splitTimezone(timezone, timezone);
+    const splitedTimezones = splitTimezone(timezone);
 
     assert.equal(splitedTimezones, expected, "Correct text");
   })
 
   test('Split complex timezone', function (assert) {
-    const timezoneNow = "America/Montevideo";
     const timezone = "America/Argentina/Buenos_Aires"
     const expected = "America, Argentina, Buenos Aires"
 
-    const splitedTimezones = splitTimezone(timezone, timezoneNow);
+    const splitedTimezones = splitTimezone(timezone);
 
     assert.equal(splitedTimezones, expected, "Correct text");
   })

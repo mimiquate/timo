@@ -2,13 +2,11 @@
   <div class="timezone-list__location">
     {{this.location}}
   </div>
-  <div class="timezone-list__details">
-    <div class="timezone-list__date">
-      {{this.memberDate}}
-    </div>
-    <div class="timezone-list__members">
-      {{this.amountOfMembersMessage}}
-    </div>
+  <div class="timezone-list__members">
+    {{this.memberNames}}
+  </div>
+  <div class="timezone-list__date">
+    {{this.memberDate}}
   </div>
   <div class="timezone-list__time-zone" {{on "scroll" @scrollAll}} role="button">
     {{#each @timezone.times as |time index|}}

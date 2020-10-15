@@ -14,14 +14,6 @@ export function compareMemberTimeZones(memberA, memberB) {
   return ret;
 }
 
-export function splitTimezone(timezone, timezoneNow) {
-  let ret = timezone
-    .replace(/\//g, ", ")
-    .replace(/_/g, " ")
-
-  if (timezone === timezoneNow) {
-    ret += " (you)";
-  }
-
-  return ret;
+export function splitTimezone(timezone) {
+  return timezone.replace(/\//g, ", ").replace(/_/g, " ")
 }

@@ -43,15 +43,15 @@ module('Acceptance | New member', function (hooks) {
     assert.equal(timezoneRowLocations.length, 1, 'List has one row');
     assert.equal(
       timezoneRowLocations[0].textContent.trim(),
-      'America, Montevideo (you)',
+      'America, Montevideo',
       'Correct location'
     );
 
-    const timezoneRowDetails = find('.timezone-list__details');
+    const timezoneRowMembers = find('.timezone-list__members');
 
     assert.ok(
-      timezoneRowDetails.textContent.includes('2 members'),
-      'Correct member details'
+      timezoneRowMembers.textContent.includes('You and Member'),
+      'Correct row members'
     );
   });
 
@@ -72,7 +72,7 @@ module('Acceptance | New member', function (hooks) {
     assert.equal(timezoneRowLocations.length, 2, 'List has two rows');
     assert.equal(
       timezoneRowLocations[0].textContent.trim(),
-      'America, Montevideo (you)',
+      'America, Montevideo',
       'Correct first location'
     );
     assert.equal(
@@ -81,15 +81,15 @@ module('Acceptance | New member', function (hooks) {
       'Correct second location'
     );
 
-    const timezoneRowDetails = findAll('.timezone-list__details');
+    const timezoneRowMembers = findAll('.timezone-list__members');
 
     assert.ok(
-      timezoneRowDetails[0].textContent.includes('1 member'),
-      'Correct first row member details'
+      timezoneRowMembers[0].textContent.includes('You'),
+      'Correct first row members'
     );
     assert.ok(
-      timezoneRowDetails[1].textContent.includes('1 member'),
-      'Correct second row member details'
+      timezoneRowMembers[1].textContent.includes('Member'),
+      'Correct second row members'
     );
   });
 
@@ -110,7 +110,7 @@ module('Acceptance | New member', function (hooks) {
     assert.equal(timezoneRowLocations.length, 2, 'List has two rows');
     assert.equal(
       timezoneRowLocations[0].textContent.trim(),
-      'America, Montevideo (you)',
+      'America, Montevideo',
       'Correct first location'
     );
     assert.equal(
@@ -119,15 +119,15 @@ module('Acceptance | New member', function (hooks) {
       'Correct second location'
     );
 
-    const timezoneRowDetails = findAll('.timezone-list__details');
+    const timezoneRowMembers = findAll('.timezone-list__members');
 
     assert.ok(
-      timezoneRowDetails[0].textContent.includes('1 member'),
-      'Correct first row member details'
+      timezoneRowMembers[0].textContent.includes('You'),
+      'Correct first row members'
     );
     assert.ok(
-      timezoneRowDetails[1].textContent.includes('1 member'),
-      'Correct second row member details'
+      timezoneRowMembers[1].textContent.includes('Member'),
+      'Correct second row members'
     );
   });
 
