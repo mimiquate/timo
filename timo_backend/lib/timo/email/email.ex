@@ -38,7 +38,13 @@ defmodule Timo.Email do
           </tr>
           <tr>
             <td style="padding: 40px 0px 28px 0px;">
-              <a href="#{url}" style="display: inline-block; width: 223px; height: 48px; text-align: center; line-height: 48px; text-decoration: none; font-family: Helvetica; font-size: 16px; color: white; background-color: #5C77F8; border-radius: 29px;">Verify email</a>
+              <table cellspacing="0" cellpadding="0">
+                <tr>
+                  <td style="background-color: #5C77F8; border-radius: 29px;">
+                    <a href="#{url}" style="display: inline-block; width: 223px; height: 48px; text-align: center; line-height: 48px; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff;">Verify email</a>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
           <tr>
