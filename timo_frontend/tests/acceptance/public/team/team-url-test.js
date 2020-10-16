@@ -564,4 +564,53 @@ module('Acceptance | Public Team', function (hooks) {
 
     assert.equal(currentURL(), '/teams/1');
   });
+
+  test('Select box to the right of selected adds more boxes', async function (assert) {
+    setGETTeamsHandler(this.server);
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', {
+      name: 'Team',
+      user: newUser,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
+
+    await visit(`/p/team/${newTeam.share_id}`);
+
+    let timezoneHours = findAll('.timezone-list__hour');
+    let selectedIndex = timezoneHours.findIndex(h => {
+      return h.classList.contains('timezone-list__selected')
+    });
+    const currentIndex = selectedIndex;
+
+    assert.equal(timezoneHours.length, 36, 'Correct initial amount of hours');
+
+    await click(timezoneHours[selectedIndex + currentIndex]);
+
+    timezoneHours = findAll('.timezone-list__hour');
+    selectedIndex += currentIndex;
+
+    assert.equal(timezoneHours.length, 36, 'Does not add unnecessary time boxes');
+
+    await click(timezoneHours[selectedIndex + 4]);
+
+    timezoneHours = findAll('.timezone-list__hour');
+    selectedIndex += 4;
+
+    assert.equal(timezoneHours.length, 40, 'Correctly adds four time boxes');
+
+    await click(timezoneHours[selectedIndex - 4]);
+
+    timezoneHours = findAll('.timezone-list__hour');
+    selectedIndex -= 4;
+
+    assert.equal(timezoneHours.length, 40, 'Clicking to the left does not add time boxes');
+
+    await click(timezoneHours[selectedIndex + 3]);
+
+    timezoneHours = findAll('.timezone-list__hour');
+    selectedIndex += 3;
+
+    assert.equal(timezoneHours.length, 40, 'Does not add already added time boxes');
+  });
 });
