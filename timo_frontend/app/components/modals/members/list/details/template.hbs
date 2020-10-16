@@ -1,0 +1,46 @@
+<AnimatedContainer class="member-list__animated-container">
+  {{#animated-if this.showDeleteConfirmation rules=this.rules}}
+    <div class="member-list__delete-confirmation-container">
+      <span class="member-list__delete-confirmation-label">
+        Remove <strong>{{@member.name}}</strong>?
+      </span>
+      <div>
+        <TButton
+          @inverted={{true}}
+          @label="Cancel"
+          @action={{this.closeDeleteConfirmation}}
+        />
+        <TButton
+          @color="warning"
+          @label="Confirm"
+          @action={{fn @deleteMember @member}}
+        />
+      </div>
+    </div>
+  {{else}}
+    <div class="member-list__member">
+      <div class="member-list__member__information">
+        <span class="member-list__member__name">{{@member.name}}</span>
+        <span class="member-list__member__timezone">{{@member.timezone}}</span>
+      </div>
+      <div>
+        {{#unless @member.isCurrentUser}}
+          <img
+            role="button"
+            alt="delete button"
+            class="member-list__trash-icon"
+            src="/images/red-trash.svg"
+            {{on "click" this.openDeleteConfirmation}}
+          >
+          <img
+            role="button"
+            alt="delete button"
+            class="member-list__edit-icon"
+            src="/images/edit-pen.svg"
+            {{on "click" (fn @showEdit @member)}}
+          >
+        {{/unless}}
+      </div>
+    </div>
+  {{/animated-if}}
+</AnimatedContainer>

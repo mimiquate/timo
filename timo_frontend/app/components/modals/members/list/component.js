@@ -10,6 +10,7 @@ import moment from 'moment';
 
 export default class MemberModalComponent extends Component {
   @tracked showList = true;
+  @tracked showDeleteConfirmation = false;
   @tracked memberToEdit = null;
 
   @tracked name = '';
@@ -57,6 +58,16 @@ export default class MemberModalComponent extends Component {
   }
 
   @action
+  openDeleteConfirmation() {
+    this.showDeleteConfirmation = true;
+  }
+
+  @action
+  closeDeleteConfirmation() {
+    this.showDeleteConfirmation = false;
+  }
+
+  @action
   changeTimezone(value) {
     this.memberChangeset.timezone = value;
 
@@ -79,5 +90,10 @@ export default class MemberModalComponent extends Component {
     } else {
       this.showErrors(changeset.errors);
     }
+  }
+
+  @action
+  deleteMember(member) {
+    member.destroyRecord();
   }
 }

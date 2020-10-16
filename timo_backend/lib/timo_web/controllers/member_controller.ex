@@ -4,6 +4,10 @@ defmodule TimoWeb.MemberController do
   alias Timo.API
   alias Timo.API.Member
   alias JaSerializer.Params
+  alias TimoWeb.Plugs.{SetCurrentUser, AuthenticateCurrentUser}
+
+  plug SetCurrentUser when action in [:create, :update, :delete]
+  plug AuthenticateCurrentUser when action in [:create, :update, :delete]
 
   action_fallback TimoWeb.FallbackController
 
@@ -19,9 +23,20 @@ defmodule TimoWeb.MemberController do
   end
 
   def update(conn, %{"id" => id, "data" => %{"type" => "members", "attributes" => member_params}}) do
-    with {:ok, member} <- API.get_member(id),
+    current_user = conn.assigns.current_user
+
+    with {:ok, member} <- API.get_user_member(current_user, id),
          {:ok, %Member{} = member} <- API.update_member(member, member_params) do
       render(conn, "show.json-api", data: member)
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    current_user = conn.assigns.current_user
+
+    with {:ok, member} <- API.get_user_member(current_user, id),
+         {:ok, %Member{}} <- API.delete_member(member) do
+      send_resp(conn, :no_content, "")
     end
   end
 end
