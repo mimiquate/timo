@@ -696,5 +696,4 @@ module('Acceptance | Team', function (hooks) {
     assert.dom('[data-test=cancel-button]').hasText('Cancel', 'Cancel button');
     assert.dom('[data-test=save-button]').hasText('Create', 'Save button');
   });
-
 });
