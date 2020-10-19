@@ -1,8 +1,14 @@
 @import '../variables.scss';
+@import "../media-query.scss";
 
 .about-team-modal {
   width: 490px;
   padding: 28px 75px 45px 75px;
+
+  @include mobile {
+    width: unset;
+    height: 100%;
+  }
 
   &__content {
     padding: 32px;
@@ -76,6 +82,10 @@
 
   &__container {
     margin-top: 24px;
+
+    @include mobile {
+      margin-top: 50%;
+    }
   }
 
   &__trash-icon {

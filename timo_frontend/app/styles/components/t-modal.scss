@@ -1,9 +1,15 @@
 @import '../variables.scss';
+@import "../media-query.scss";
 
 .t-modal {
   &.ember-modal-dialog {
     border-radius: 13px;
     padding: 0;
+
+    @include mobile {
+      width: 100%;
+      height: 100%;
+    }
   }
 
   &__title {
