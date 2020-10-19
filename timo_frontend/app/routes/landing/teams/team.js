@@ -1,13 +1,20 @@
 import Route from '@ember/routing/route';
 import moment from 'moment';
+import { hash } from 'rsvp';
 
 export default class LandingTeamsTeamRoute extends Route {
   model(params) {
-    return this.store.findRecord(
+    const teams = this.modelFor('landing');
+    const team = this.store.findRecord(
       'team',
       params.id,
       { include: 'members', reload: true }
     );
+
+    return hash({
+      teams,
+      team
+    })
   }
 
   resetController(controller) {

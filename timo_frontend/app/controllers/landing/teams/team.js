@@ -7,8 +7,26 @@ import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
 import { isPresent } from '@ember/utils';
+import { inject as service } from '@ember/service';
+
+function compareTeamsByCreationTime(teamA, teamB) {
+  const aCreationTime = teamA.inserted_at;
+  const bCreationTime = teamB.inserted_at;
+
+  let ret = 0
+  if (aCreationTime < bCreationTime) {
+    ret = -1;
+  } else if (aCreationTime > bCreationTime) {
+    ret = 1;
+  }
+
+  return ret;
+}
 
 export default class LandingTeamsTeamController extends Controller {
+  @service media;
+  @service session;
+
   @tracked memberToEdit = null;
   @tracked newMemberModal = false;
   @tracked editMemberModal = false;
@@ -19,10 +37,20 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked selectedTime = moment();
   @tracked isGrouped = false;
   @tracked isShowingCalendarPopover = false;
+  @tracked sideNavBarIsOpen = false;
+  @tracked showNewTeamModal = false;
+  @tracked showToggleablePopover = false;
 
-  @computed('model.members.{[],@each.id}')
+  @computed('model.team.members.{[],@each.id}')
   get savedMembers() {
-    return this.model.members.filterBy('id');
+    return this.model.team.members.filterBy('id');
+  }
+
+  @computed('model.teams.[]')
+  get sortedTeams() {
+    const teamsToArray = this.model.teams.toArray();
+
+    return teamsToArray.sort(compareTeamsByCreationTime);
   }
 
   @computed('savedMembers.{[],@each.name,@each.timezone}')
@@ -49,6 +77,34 @@ export default class LandingTeamsTeamController extends Controller {
   @computed('timezones')
   get currentIndex() {
     return this.timezones[0].times.findIndex((t) => t.isCurrentTime);
+  }
+
+  get showSideNavBar() {
+    return this.media.isMobile && this.sideNavBarIsOpen;
+  }
+
+  @action
+  openSideNavBar() {
+    this.sideNavBarIsOpen = true;
+  }
+
+  @action
+  closeSideNavBar() {
+    if (this.media.isMobile) {
+      this.isShowingCalendarPopover = false;
+      this.sideNavBarIsOpen = false;
+    }
+  }
+
+  @action
+  openTeamModal() {
+    this.closeSideNavBar();
+    this.showNewTeamModal = true;
+  }
+
+  @action
+  closeNewTeamModal() {
+    this.showNewTeamModal = false;
   }
 
   @action
@@ -112,7 +168,7 @@ export default class LandingTeamsTeamController extends Controller {
     await this.store.createRecord('member', {
       name: memberName,
       timezone: memberTimeZone,
-      team: this.model
+      team: this.model.team
     }).save().then(() => this.newMemberModal = false);
   }
 
@@ -127,7 +183,7 @@ export default class LandingTeamsTeamController extends Controller {
     const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
 
     const url = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
-    openGoogleCalendarEvent(url, this.model.name);
+    openGoogleCalendarEvent(url, this.model.team.name);
   }
 
   @action
@@ -151,5 +207,25 @@ export default class LandingTeamsTeamController extends Controller {
   @action
   toggleCalendarPopoverBackground(value) {
     this.isShowingCalendarPopover = value;
+  }
+
+  @action
+  async goToTeam(team) {
+    this.closeSideNavBar();
+    await this.transitionToRoute('landing.teams.team', team.id);
+  }
+
+  @action
+  togglePopover() {
+    this.showToggleablePopover = !this.showToggleablePopover;
+  }
+
+  @action
+  async logOut() {
+    this.session.invalidate();
+    await this.currentUser.logOut();
+    this.store.unloadAll();
+    this.togglePopover();
+    this.transitionToRoute('/login');
   }
 }
