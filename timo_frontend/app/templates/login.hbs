@@ -1,8 +1,10 @@
 <div class="login-page">
-  <div class="login-page__image-container">
-    <span class="login-page__title">TIMO, the place where timezones are not a problem anymore.</span>
-    <img class="login-page__image" src="/images/cover.png" alt="timo landing page background">
-  </div>
+  {{#unless this.media.isMobile}}
+    <div class="login-page__image-container">
+      <span class="login-page__title">TIMO, the place where timezones are not a problem anymore.</span>
+      <img class="login-page__image" src="/images/cover.png" alt="timo landing page background">
+    </div>
+  {{/unless}}
   <div class="login-page__form-container">
     <img src="/images/appicon-signup.png" alt="timo landing appicon">
     <span class="login-page__login-title">Log in</span>
