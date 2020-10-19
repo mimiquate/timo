@@ -229,6 +229,12 @@ button {
 
 .t-form {
   width: 100%;
+
+  @include mobile {
+    height: 100%;
+    flex-direction: column;
+    display: flex
+  }
 }
 
 .not-found {
