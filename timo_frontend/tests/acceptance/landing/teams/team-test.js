@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, currentURL, click, find, findAll } from '@ember/test-helpers';
+import { visit, currentURL, click, find, findAll, fillIn } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
@@ -597,5 +597,103 @@ module('Acceptance | Team', function (hooks) {
       timezoneMembers.textContent.includes('You, Member 1, Member 2, Member 3 and 3 more'),
       'Correct first row members'
     );
+  });
+
+  test('Edit team name', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('.team-list__button');
+    await click('[data-test=edit-team-button]');
+
+    assert.dom('.about-team-modal').exists('Opens delete team modal');
+    assert.dom('.t-modal__title').hasText('About', 'Correct title');
+
+    const team = find('.t-input input');
+
+    assert.equal(team.value, newTeam.name);
+
+    await fillIn('.t-input input', '');
+    await click('[data-test=save-button]');
+
+    const errorMessage = find('.t-input__error');
+
+    assert.equal(errorMessage.textContent.trim(), `Name can't be blank`);
+
+    await fillIn('.t-input input', 'NewTeamName');
+    await click('[data-test=save-button]');
+
+    assert.dom('.about-team-modal').doesNotExist();
+    assert.equal(find('.team-header__title').textContent.trim(), 'NewTeamName');
+  });
+
+  test('Opens delete team modal', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('.team-list__button');
+    await click('[data-test=edit-team-button]');
+
+    assert.dom('.about-team-modal').exists('Opens delete team modal');
+    assert.dom('.t-modal__title').hasText('About', 'Correct title');
+
+    const team = find('.t-input input');
+
+    assert.equal(team.value, newTeam.name);
+    assert.dom('.about-team-modal__delete-label').hasText('Delete team', 'Cancel button');
+
+    await click('.about-team-modal__delete-label');
+
+    assert.equal(
+      find('.about-team-modal__delete-confirmation-label').textContent.trim(),
+      'Are you sure you want to delete?'
+    );
+
+    const buttons = findAll('.about-team-modal__delete-confirmation-container .t-button');
+    assert.equal(buttons[0].textContent.trim(), 'Cancel', 'Cancel button');
+    assert.equal(buttons[1].textContent.trim(), 'Confirm', 'Delete team button');
+
+    await click(buttons[1]);
+
+    assert.dom('.about-team-modal').doesNotExist();
+    assert.dom('.no-team__label').hasText(`Hi, there, You don’t have any teams yet!`);
+
+    assert.notOk(this.server.db.teams.find(newTeam.id), 'Succesfully deletes team');
+    assert.equal(currentURL(), '/', 'Redirects to landing page');
+  })
+
+  test('Cancels team deletion', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('.team-list__button');
+    await click('[data-test=edit-team-button]');
+    await click('.t-modal__close');
+
+    assert.dom('.about-team-modal').doesNotExist('Closes delete team modal');
+    assert.ok(this.server.db.teams.find(newTeam.id), 'Team still exists');
+    assert.equal(currentURL(), '/teams/1', 'Stays in landing page');
+  });
+
+  test('Clicks button to Add one team and opens new team modal', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    setSession.call(this, newUser);
+
+    await visit('/');
+    await click('[data-test=new-team]');
+
+    assert.dom('.t-modal').exists('Opens new team modal');
+    assert.dom('.t-modal__title').hasText('Create a Team', 'Correct title');
+    assert.dom('.t-modal__close').exists('Close modal button');
+    assert.dom('.t-modal__team-name input').hasText('', 'Empty input');
+
+    assert.dom('[data-test=cancel-button]').hasText('Cancel', 'Cancel button');
+    assert.dom('[data-test=save-button]').hasText('Create', 'Save button');
   });
 });

@@ -2,12 +2,16 @@
   @title="About"
   @closeModal={{@closeModal}}
   @modalClass="about-team-modal"
+  @action={{this.updateTeam}}
+  @actionLabel="Save"
 >
   <div class="about-team-modal__container">
     <span class="about-team-modal__name">NAME</span>
     <TInput
-      @disabled={{true}}
-      @value={{@team.name}}
+      @value={{this.teamChangeset.name}}
+      @error={{this.nameError}}
+      @onChange={{fn (mut this.teamChangeset.name)}}
+      @cleanError={{this.cleanError}}
     />
   </div>
   <div class="about-team-modal__delete-team">
