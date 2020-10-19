@@ -82,10 +82,6 @@
 
   &__container {
     margin-top: 24px;
-
-    @include mobile {
-      margin-top: 50%;
-    }
   }
 
   &__trash-icon {

@@ -29,7 +29,10 @@ export default class LandingTeamsTeamRoute extends Route {
       newMemberModal: false,
       showShareModal: false,
       showMemberListModal: false,
-      showAboutTeamModal: false
+      showAboutTeamModal: false,
+      sideNavBarIsOpen: false,
+      showNewTeamModal: false,
+      showToggleablePopover: false
     });
   }
 }

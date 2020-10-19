@@ -1,4 +1,5 @@
 @import '../variables.scss';
+@import "../media-query.scss";
 
 .timezone-list {
   overflow: scroll;
@@ -14,6 +15,11 @@
 
   @media (min-width: 2135px) {
     align-self: center;
+  }
+
+  @include mobile {
+    margin: 16px;
+    padding: 16px;
   }
 
   &__group-timezones {
