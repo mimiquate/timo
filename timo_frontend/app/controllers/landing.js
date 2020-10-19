@@ -28,7 +28,7 @@ export default class LandingController extends Controller {
 
   @computed('router.currentURL')
   get currentTeamId() {
-    return this.router.currentRoute.attributes.id;
+    return this.router.currentRoute.attributes.team.id;
   }
 
   @computed('model.[]')
