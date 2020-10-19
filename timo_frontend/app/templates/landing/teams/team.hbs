@@ -1,4 +1,4 @@
-{{#if this.showSideNavBar}}
+{{#animated-if this.showSideNavBar rules=this.rules duration=300}}
   <SideNavBar
     @openTeamModal={{this.openTeamModal}}
     @sortedTeams={{this.sortedTeams}}
@@ -9,7 +9,9 @@
     @showToggleablePopover={{this.showToggleablePopover}}
     @togglePopover={{this.togglePopover}}
   />
-{{/if}}
+{{else}}
+  <div></div>
+{{/animated-if}}
 <TeamHeader
   @teamName={{@model.team.name}}
   @members={{this.sortedMembers}}

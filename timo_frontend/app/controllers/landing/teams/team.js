@@ -7,6 +7,7 @@ import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
 import { isPresent } from '@ember/utils';
 import { inject as service } from '@ember/service';
+import { toLeft, toRight } from 'ember-animated/transitions/move-over';
 
 function compareTeamsByCreationTime(teamA, teamB) {
   const aCreationTime = teamA.inserted_at;
@@ -39,6 +40,14 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked sideNavBarIsOpen = false;
   @tracked showNewTeamModal = false;
   @tracked showToggleablePopover = false;
+
+  rules({ oldItems }) {
+    if (oldItems[0]) {
+      return toLeft;
+    } else {
+      return toRight;
+    }
+  }
 
   @computed('model.team.members.{[],@each.id}')
   get savedMembers() {
