@@ -17,6 +17,7 @@
 @import "ember-modal-dialog/ember-modal-appearance";
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import "./media-query.scss";
 
 html, .ember-application, .not-found {
   height: 100%;
@@ -69,12 +70,9 @@ button {
     display: flex;
     flex-direction: column;
 
-    @media (max-width: 1179px) {
+    @include mobile {
       width: 100%;
-    }
-
-    @media (min-width: 1720px) {
-      padding-top: 160px;
+      padding: 110px 25px;
     }
   }
 
@@ -83,10 +81,6 @@ button {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-
-    @media (max-width: 1179px) {
-      display: none;
-    }
   }
 
   &__title {
@@ -98,6 +92,10 @@ button {
     font-weight: bold;
     padding: 60px 125px 0;
     margin: 0;
+
+    @include mobile {
+      margin-top: 16px;
+    }
 
     @media (min-width: 1720px) {
       padding-top: 120px;
@@ -119,6 +117,13 @@ button {
     font-size: 15px;
     color: $dark-blue;
     margin-bottom: 64px;
+
+    @include mobile {
+      font-size: 13px;
+      margin-top: 16px;
+      margin-bottom: 32px;
+      width: fit-content;
+    }
   }
 
   &__log-in-button {

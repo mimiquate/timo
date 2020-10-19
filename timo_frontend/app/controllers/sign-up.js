@@ -4,8 +4,11 @@ import { tracked } from '@glimmer/tracking';
 import { Changeset } from 'ember-changeset';
 import { signUpValidator } from 'timo-frontend/validators/user';
 import lookupValidator from 'ember-changeset-validations';
+import { inject as service } from '@ember/service';
 
 export default class SignUpController extends Controller {
+  @service media;
+
   @tracked username = '';
   @tracked email = '';
   @tracked password = '';
