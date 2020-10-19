@@ -20,6 +20,7 @@ function compareTeamsByCreationTime(teamA, teamB) {
 export default class LandingController extends Controller {
   @service session;
   @service router;
+  @service media;
 
   @tracked showToggleablePopover = false;
   @tracked showNewTeamModal = false;

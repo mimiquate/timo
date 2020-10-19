@@ -43,6 +43,10 @@ button {
   width: calc(100% - 215px);
   display: flex;
   flex-direction: column;
+
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .landing-image {
