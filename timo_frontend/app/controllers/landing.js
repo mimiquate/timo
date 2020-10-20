@@ -31,9 +31,7 @@ export default class LandingController extends Controller {
   get currentTeamId() {
     const team = this.router.currentRoute.attributes.team;
 
-    if (isPresent(team)){
-      return team.id;
-    }
+    return isPresent(team) ? team.id : null;
   }
 
   @computed('model.[]')

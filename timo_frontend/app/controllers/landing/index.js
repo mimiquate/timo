@@ -30,8 +30,10 @@ export default class LandingIndexController extends Controller {
     this.closeNewTeamModal();
     await this.transitionToRoute('landing.teams.team', team.id);
 
-    const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
-    teamList.scrollTop = teamList.scrollHeight;
+    if (!this.media.isMobile) {
+      const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
+      teamList.scrollTop = teamList.scrollHeight;
+    }
   }
 
   @action
