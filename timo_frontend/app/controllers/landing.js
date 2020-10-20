@@ -28,7 +28,7 @@ export default class LandingController extends Controller {
 
   @computed('router.currentURL')
   get currentTeamId() {
-    return this.router.currentRoute.attributes.team.id;
+    return this.router.currentRoute.attributes.id;
   }
 
   @computed('model.[]')
@@ -75,7 +75,7 @@ export default class LandingController extends Controller {
     });
 
     await team.save();
-    await this.transitionToRoute('landing.teams.team', team);
+    await this.transitionToRoute('landing.teams.team', team.id);
 
     const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
     teamList.scrollTop = teamList.scrollHeight;

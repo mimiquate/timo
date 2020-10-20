@@ -237,4 +237,20 @@ export default class LandingTeamsTeamController extends Controller {
     this.togglePopover();
     this.transitionToRoute('/login');
   }
+
+  @action
+  async saveTeam(newTeamName) {
+    let team = this.store.createRecord('team', {
+      name: newTeamName.trim(),
+      user: this.currentUser.user
+    });
+
+    await team.save();
+    await this.transitionToRoute('landing.teams.team', team.id);
+
+    if (!this.media.isMobile) {
+      const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
+      teamList.scrollTop = teamList.scrollHeight;
+    }
+  }
 }

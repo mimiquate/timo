@@ -17,7 +17,6 @@ export default class LandingIndexController extends Controller {
     this.showNewTeamModal = false;
   }
 
-
   @action
   async saveTeam(newTeamName) {
     let team = this.store.createRecord('team', {
@@ -27,7 +26,7 @@ export default class LandingIndexController extends Controller {
 
     await team.save();
     this.closeNewTeamModal();
-    await this.transitionToRoute('landing.teams.team', team);
+    await this.transitionToRoute('landing.teams.team', team.id);
 
     const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
     teamList.scrollTop = teamList.scrollHeight;
