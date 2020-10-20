@@ -127,7 +127,7 @@
     max-width: 64px;
     min-width: 64px;
     position: absolute;
-    z-index: 11;
+    z-index: 10;
     top: -8px;
     left: -16px;
 
@@ -195,7 +195,7 @@
   padding: 10px;
   text-align: center;
   top: -5px !important;
-  z-index: 100;
+  z-index: 10;
 
   .ember-tooltip-arrow {
     transform: scale(4);
