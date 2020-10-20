@@ -7,6 +7,14 @@
     @action={{this.openTeamModal}}
     @label="Create a team now!"
   />
+  {{#if this.media.isMobile}}
+    <TButton
+      @color="blue"
+      @testSelector="log-out"
+      @action={{this.logOut}}
+      @label="Log out"
+    />
+  {{/if}}
 </div>
 {{#if this.showNewTeamModal}}
   <Modals::Team::Add

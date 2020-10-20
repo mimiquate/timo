@@ -209,6 +209,12 @@ button {
     font-size: 25px;
     font-weight: bold;
   }
+
+  @include mobile {
+    >:last-child {
+      margin-top: 16px;
+    }
+  }
 }
 
 .showing-tooltip {
