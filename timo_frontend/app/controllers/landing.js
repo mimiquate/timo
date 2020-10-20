@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { isPresent } from '@ember/utils';
 
 function compareTeamsByCreationTime(teamA, teamB) {
   const aCreationTime = teamA.inserted_at;
@@ -28,7 +29,11 @@ export default class LandingController extends Controller {
 
   @computed('router.currentURL')
   get currentTeamId() {
-    return this.router.currentRoute.attributes.id;
+    const team = this.router.currentRoute.attributes.team;
+
+    if (isPresent(team)){
+      return team.id;
+    }
   }
 
   @computed('model.[]')
