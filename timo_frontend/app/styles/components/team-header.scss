@@ -20,6 +20,10 @@
   &__container {
     display: flex;
     flex-direction: column;
+
+    @include mobile {
+      align-items: center;
+    }
   }
 
   &__title {
@@ -34,6 +38,10 @@
     cursor: pointer;
     color: $blue;
     font-weight: bold;
+
+    @include mobile {
+      font-size: 16px;
+    }
   }
 
   &__actions {
