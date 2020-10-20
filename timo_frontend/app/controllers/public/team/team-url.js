@@ -12,6 +12,7 @@ export default class PublicTeamTeamUrlController extends Controller {
   @tracked selectedTime = moment();
   @tracked isGrouped = false;
   @tracked isShowingCalendarPopover = false;
+  @tracked showAccountOptions = false;
 
   @computed('model.members.{[],@each.id}')
   get savedMembers() {
@@ -70,16 +71,28 @@ export default class PublicTeamTeamUrlController extends Controller {
 
   @action
   transitionToLogin() {
+    this.showAccountOptions = false;
     this.transitionToRoute('/login');
   }
 
   @action
   transitionToSignUp() {
+    this.showAccountOptions = false;
     this.transitionToRoute('/sign-up');
   }
 
   @action
   toggleCalendarPopoverBackground(value) {
     this.isShowingCalendarPopover = value;
+  }
+
+  @action
+  openAccountOptions() {
+    this.showAccountOptions = true;
+  }
+
+  @action
+  closeAccountOptions() {
+    this.showAccountOptions = false;
   }
 }
