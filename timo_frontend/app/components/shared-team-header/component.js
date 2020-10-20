@@ -1,8 +1,10 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export default class SharedTeamHeaderComponent extends Component {
   @service session;
+  @service media;
 
   get membersLabel() {
     const members = this.args.members.length;

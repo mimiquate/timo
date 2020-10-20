@@ -15,19 +15,52 @@
     </span>
   </div>
   {{#unless this.session.isAuthenticated}}
-    <div class="shared-team-header__actions">
-      <TButton
-        @testSelector="log-in"
-        @label="Log in"
-        @color="white"
-        @action={{@transitionToLogin}}
-      />
-      <TButton
-        @testSelector="create-account"
-        @label="Create Account"
-        @color="inverted-white"
-        @action={{@transitionToSignUp}}
-      />
-    </div>
+    {{#if this.media.isMobile}}
+      <div>
+        <img
+          role="button"
+          alt="delete button"
+          class="shared-team-header__actions"
+          src="/images/grey-menu.svg"
+          {{on "click" @openAccountOptions}}
+        >
+        <EmberPopover
+          @popoverHideDelay={{0}}
+          @isShown={{@showAccountOptions}}
+          @side="left-start"
+          @tooltipClass="header-tooltip"
+        >
+          <div
+            class="header-tooltip__item"
+            role="button"
+            {{on "click" @transitionToLogin}}
+          >
+            Log in
+          </div>
+          <div
+            class="header-tooltip__item"
+            role="button"
+            {{on "click" @transitionToSignUp}}
+          >
+            Create Account
+          </div>
+        </EmberPopover>
+      </div>
+    {{else}}
+      <div class="shared-team-header__actions">
+        <TButton
+          @testSelector="log-in"
+          @label="Log in"
+          @color="white"
+          @action={{@transitionToLogin}}
+        />
+        <TButton
+          @testSelector="create-account"
+          @label="Create Account"
+          @color="inverted-white"
+          @action={{@transitionToSignUp}}
+        />
+      </div>
+    {{/if}}
   {{/unless}}
 </div>
