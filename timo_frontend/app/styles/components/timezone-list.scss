@@ -87,6 +87,10 @@
       1px 0px 0px 0px white inset,
       -1px 0px 0px 0px white inset;
 
+    @include mobile {
+      font-size: 13px
+    }
+
     &.red {
       border-top: 5px solid $soft-red;
     }
