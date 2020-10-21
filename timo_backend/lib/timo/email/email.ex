@@ -41,7 +41,20 @@ defmodule Timo.Email do
               <table cellspacing="0" cellpadding="0" border="0" style="border-spacing:0; font-family: Helvetica, Arial, sans-serif; font-size: 16px;">
                 <tr>
                   <td bgcolor="#5C77F8" style="width: 100%; min-width: 222px; max-width: 100%; -webkit-border-radius: 29px; -moz-border-radius: 29px; border-radius: 29px; padding: 0; text-align: center;">
-                    <a href="#{url}" style="display: inline-block; padding: 16px 70px; line-height: 16px; text-decoration: none; font-family: Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-align: center; -webkit-border-radius:29px; -moz-border-radius:29px; border-radius:29px;">Verify email</a>
+                    <div>
+                      <!--[if mso]>
+                      <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="#{url}" style="height:48px;v-text-anchor:middle;width:223px;" arcsize="61%" stroke="f" fillcolor="#5C77F8">
+                        <w:anchorlock/>
+                        <center>
+                      <![endif]-->
+                      <a href="#{url}"
+                        style="background-color:#5C77F8;border-radius:29px;color:#ffffff;display:inline-block;font-family: Helvetica, Arial, sans-serif;font-size:16px;line-height:48px;text-align:center;text-decoration:none;width:223px;-webkit-text-size-adjust:none;"
+                      >Verify email</a>
+                      <!--[if mso]>
+                        </center>
+                      </v:roundrect>
+                    <![endif]-->
+                    </div>
                   </td>
                 </tr>
               </table>
