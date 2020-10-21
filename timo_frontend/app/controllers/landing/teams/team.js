@@ -30,6 +30,7 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked sideNavBarIsOpen = false;
   @tracked showNewTeamModal = false;
   @tracked showToggleablePopover = false;
+  @tracked showTeamOptions = false;
 
   rules({ oldItems }) {
     if (oldItems[0]) {
@@ -124,6 +125,7 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   openAboutTeamModal() {
+    this.showTeamOptions = false;
     this.showAboutTeamModal  = true;
   }
 
@@ -143,7 +145,13 @@ export default class LandingTeamsTeamController extends Controller {
   }
 
   @action
+  openTeamOptions() {
+    this.showTeamOptions = true;
+  }
+
+  @action
   openShareModal() {
+    this.showTeamOptions = false;
     this.showShareModal = true;
   }
 
@@ -159,6 +167,7 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   newMember() {
+    this.showTeamOptions = false;
     this.newMemberModal = true;
   }
 
