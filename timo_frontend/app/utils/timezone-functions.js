@@ -113,3 +113,17 @@ function isSameTimezoneCallback(member, timeNow, isGrouped) {
 
   return  (isGrouped ? isSameOffset : isSameTimezoneName);
 }
+
+export function compareTeamsByCreationTime(teamA, teamB) {
+  const aCreationTime = teamA.inserted_at;
+  const bCreationTime = teamB.inserted_at;
+
+  let ret = 0
+  if (aCreationTime < bCreationTime) {
+    ret = -1;
+  } else if (aCreationTime > bCreationTime) {
+    ret = 1;
+  }
+
+  return ret;
+}

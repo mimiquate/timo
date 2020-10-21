@@ -1,27 +1,17 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { compareMemberTimeZones, createNewRows } from 'timo-frontend/utils/timezone-functions';
+import {
+  compareMemberTimeZones,
+  compareTeamsByCreationTime,
+  createNewRows
+} from 'timo-frontend/utils/timezone-functions';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
 import { isPresent } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { toLeft, toRight } from 'ember-animated/transitions/move-over';
-
-function compareTeamsByCreationTime(teamA, teamB) {
-  const aCreationTime = teamA.inserted_at;
-  const bCreationTime = teamB.inserted_at;
-
-  let ret = 0
-  if (aCreationTime < bCreationTime) {
-    ret = -1;
-  } else if (aCreationTime > bCreationTime) {
-    ret = 1;
-  }
-
-  return ret;
-}
 
 export default class LandingTeamsTeamController extends Controller {
   @service media;
