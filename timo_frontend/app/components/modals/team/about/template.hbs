@@ -21,17 +21,19 @@
           <span class="about-team-modal__delete-confirmation-label">
             Are you sure you want to delete?
           </span>
-          <TButton
-            @inverted={{true}}
-            @color="green"
-            @action={{this.toggleDeleteConfirmation}}
-            @label="Cancel"
-          />
-          <TButton
-            @color="warning"
-            @action={{fn @deleteTeam @team}}
-            @label="Confirm"
-          />
+          <div>
+            <TButton
+              @inverted={{true}}
+              @color="green"
+              @action={{this.toggleDeleteConfirmation}}
+              @label="Cancel"
+            />
+            <TButton
+              @color="warning"
+              @action={{fn @deleteTeam @team}}
+              @label="Confirm"
+            />
+          </div>
         </div>
       {{else}}
         <div class="about-team-modal__delete-container">
