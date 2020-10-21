@@ -1,0 +1,12 @@
+Timo
+
+Hi <%= @email.user_name %>,
+
+We received a request to create an account with your email on Timo App.
+
+Verify email at: <%= @email.url %>
+
+Thank you,
+Timo's Team
+
+Need help? Contact us: support@mimiquate.com
