@@ -3,20 +3,7 @@ import { inject as service } from '@ember/service';
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { isPresent } from '@ember/utils';
-
-function compareTeamsByCreationTime(teamA, teamB) {
-  const aCreationTime = teamA.inserted_at;
-  const bCreationTime = teamB.inserted_at;
-
-  let ret = 0
-  if (aCreationTime < bCreationTime) {
-    ret = -1;
-  } else if (aCreationTime > bCreationTime) {
-    ret = 1;
-  }
-
-  return ret;
-}
+import { compareTeamsByCreationTime } from 'timo-frontend/utils/timezone-functions';
 
 export default class LandingController extends Controller {
   @service session;
