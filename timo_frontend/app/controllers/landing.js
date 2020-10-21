@@ -12,7 +12,6 @@ export default class LandingController extends Controller {
 
   @tracked showToggleablePopover = false;
   @tracked showNewTeamModal = false;
-  @tracked isOpenSideNavBar = false;
 
   @computed('router.currentURL')
   get currentTeamId() {

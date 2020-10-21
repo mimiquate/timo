@@ -17,8 +17,4 @@ export default class TeamHeaderComponent extends Component {
   openTeamOptions() {
     this.showTeamOptions = true;
   }
-
-  closeTeamOptions() {
-    this.showTeamOptions = false;
-  }
 }
