@@ -10,7 +10,7 @@
   align-items: center;
 
   @include mobile {
-    padding: 26px 36px;
+    padding: 26px 36px 26px 36px;
   }
 
   &__container {
@@ -19,7 +19,7 @@
     align-items: center;
   }
 
-  &__actions {
+  &__user-actions {
     >:first-child {
       margin-right: 18px;
       padding-left: 40px;
