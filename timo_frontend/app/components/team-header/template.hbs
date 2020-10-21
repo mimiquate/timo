@@ -23,10 +23,10 @@
         alt="open team options"
         class="team-header__mobile-tooltip-actions"
         src="/images/edit-pen.svg"
-        {{on "click" this.openTeamOptions}}
+        {{on "click" @openTeamOptions}}
       >
        <HeaderTooltip
-         @showTeamOptions={{this.showTeamOptions}}
+         @showTeamOptions={{@showTeamOptions}}
          @addMember={{@addMember}}
          @openShareModal={{@openShareModal}}
          @openAboutTeamModal={{@openAboutTeamModal}}
