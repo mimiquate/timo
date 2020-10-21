@@ -40,6 +40,12 @@ button {
   display: flex;
 }
 
+.shared-page {
+  display:flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .side-content {
   width: calc(100% - 215px);
   display: flex;
@@ -237,11 +243,6 @@ button {
   background-color: rgba(black, .64);
   z-index: 15;
   overflow: hidden;
-}
-
-.shared-page {
-  overflow: hidden;
-  height: 100%;
 }
 
 .t-form {
