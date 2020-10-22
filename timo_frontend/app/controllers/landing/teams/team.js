@@ -19,7 +19,6 @@ export default class LandingTeamsTeamController extends Controller {
 
   @tracked memberToEdit = null;
   @tracked newMemberModal = false;
-  @tracked editMemberModal = false;
   @tracked showShareModal = false;
   @tracked showMemberListModal = false;
   @tracked showAboutTeamModal = false;
@@ -153,11 +152,6 @@ export default class LandingTeamsTeamController extends Controller {
   openShareModal() {
     this.showTeamOptions = false;
     this.showShareModal = true;
-  }
-
-  @action
-  closeEditMemberModal() {
-    this.editMemberModal = false;
   }
 
   @action
