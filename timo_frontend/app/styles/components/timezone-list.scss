@@ -225,9 +225,18 @@
   top: -10px !important;
   border-radius: 15px !important;
 
+  @include mobile {
+    width: inherit;
+    height: inherit;
+  }
+
   &__inner {
     padding: 40px 50px;
     display: flex;
+
+    @include mobile {
+      padding: 30px;
+    }
 
     >:first-child {
       display: flex;
@@ -253,12 +262,21 @@
     width: 14px;
     height: 14px;
     cursor: pointer;
+
+    @include mobile {
+      top: 13px;
+      left: 13px;
+    }
   }
 
   &__icon {
     margin-right: 14px;
     height: 42px;
     width: 43px;
+
+    @include mobile {
+      margin-right: 0;
+    }
   }
 
   &__action {

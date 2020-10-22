@@ -1,8 +1,11 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 
 export default class BoxComponent extends Component {
+  @service media;
+
   @tracked showCalendarPopover = false;
 
   @action

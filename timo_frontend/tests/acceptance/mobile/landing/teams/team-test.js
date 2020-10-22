@@ -395,12 +395,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
     await visit(`/teams/${newTeam.id}`);
     await click('.timezone-list__selected');
 
-    const calendarPopverLabel = find('.google-calendar-popover__label');
-    const calendarPopoverButton = find('.google-calendar-popover__button');
-
     assertTooltipVisible(assert);
-    assert.equal(calendarPopverLabel.textContent.trim(), 'Schedule event on Google Calendar', 'Correct label');
-    assert.equal(calendarPopoverButton.textContent.trim(), 'Schedule now', 'Correct button text');
 
     await click('.google-calendar-popover__close');
 
@@ -438,7 +433,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
     };
 
     await click('.timezone-list__selected');
-    await click('.google-calendar-popover__button');
+    await click('.google-calendar-popover__icon');
   });
 
   test('Select box changes selected time', async function (assert) {
