@@ -13,7 +13,7 @@ module('Mobile | Complete Test', function (hooks) {
     setBreakpoint('mobile');
   });
 
-  test('Full user path', async function (assert) {
+  test('Complete user path', async function (assert) {
     // Create Account
     await visit('/sign-up');
 
