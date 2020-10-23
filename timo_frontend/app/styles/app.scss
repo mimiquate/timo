@@ -73,6 +73,10 @@ button {
     height: 100%;
   }
 
+  @include mobile {
+    height: max-content;
+  }
+
   &__form-container {
     align-items: center;
     background: white;
