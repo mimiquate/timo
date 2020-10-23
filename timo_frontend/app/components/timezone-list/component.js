@@ -1,34 +1,23 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 import { smoothScrollLeft, getEndPosition } from 'timo-frontend/utils/timo-animations';
 import { later } from '@ember/runloop';
 import moment from 'moment';
+import { addMoreHours } from 'timo-frontend/utils/timezone-functions';
 
 export default class TimezoneListComponent extends Component {
-  @tracked previousAnimationId = null;
-
   @action
   selectBoxWithScroll(index, time) {
+    const previousIndex = this.args.selectedBoxIndex;
     this.args.selectBox(index, time);
+
+    if (index > previousIndex) {
+      addMoreHours(index - previousIndex, index, this.args.timezones, this.args.currentIndex);
+    }
 
     later(() => {
       this.scrollToSelected(index);
     }, 200);
-  }
-
-  @action
-  scrollAll(event) {
-    if (this.previousAnimationId) cancelAnimationFrame(this.previousAnimationId);
-
-    const scrollAmount = event.target.scrollLeft;
-    const timezoneDivs = Array.from(document.getElementsByClassName('timezone-list__time-zone'));
-
-    timezoneDivs.forEach(element => {
-      if (element != event.target) {
-        element.scrollLeft = scrollAmount;
-      }
-    });
   }
 
   scrollToSelected(index) {
@@ -41,7 +30,7 @@ export default class TimezoneListComponent extends Component {
     const distance = endPosition - startPosition;
 
     if (distance != 0) {
-      this.previousAnimationId = smoothScrollLeft(timezoneDivs, startPosition, distance, 500, this.previousAnimationId);
+      smoothScrollLeft(timezoneDivs, startPosition, distance, 500);
     }
   }
 

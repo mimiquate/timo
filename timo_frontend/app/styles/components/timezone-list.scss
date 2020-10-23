@@ -12,6 +12,10 @@
   background: #fff;
   box-shadow: 0px 3px 20px #74749429;
 
+  @media (min-width: 2135px) {
+    align-self: center;
+  }
+
   &__group-timezones {
     margin-bottom: 5px;
     display: flex;
@@ -144,7 +148,7 @@
 
   &__time-zone {
     padding: 24px 0;
-    overflow-x: scroll;
+    overflow-x: hidden;
     display: flex;
 
     > div:first-child > .timezone-list__hour {

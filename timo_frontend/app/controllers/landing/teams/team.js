@@ -1,8 +1,7 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { compareMemberTimeZones } from 'timo-frontend/utils/timezone-functions';
-import { createNewRows } from 'timo-frontend/utils/timezone-rows';
+import { compareMemberTimeZones, createNewRows } from 'timo-frontend/utils/timezone-functions';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
@@ -54,6 +53,7 @@ export default class LandingTeamsTeamController extends Controller {
   @action
   groupTimezones() {
     this.toggleProperty('isGrouped');
+    this.selectBox(this.currentIndex, moment());
   }
 
   @action
