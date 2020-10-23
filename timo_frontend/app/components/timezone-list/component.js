@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { smoothScrollLeft, getEndPosition } from 'timo-frontend/utils/timo-animations';
 import { later } from '@ember/runloop';
 import moment from 'moment';
-import { addTimesRight } from 'timo-frontend/utils/timezone-functions';
+import { addMoreHours } from 'timo-frontend/utils/timezone-functions';
 
 export default class TimezoneListComponent extends Component {
   @action
@@ -12,7 +12,7 @@ export default class TimezoneListComponent extends Component {
     this.args.selectBox(index, time);
 
     if (index > previousIndex) {
-      addTimesRight(index - previousIndex, index, this.args.timezones, this.args.currentIndex);
+      addMoreHours(index - previousIndex, index, this.args.timezones, this.args.currentIndex);
     }
 
     later(() => {

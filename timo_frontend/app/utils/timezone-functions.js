@@ -18,7 +18,7 @@ export function splitTimezone(timezone) {
   return timezone.replace(/\//g, ", ").replace(/_/g, " ")
 }
 
-export function addTimesRight(amount, index, timezones, currentIndex) {
+export function addMoreHours(amount, index, timezones, currentIndex) {
   const timesLength = timezones[0].times.length;
 
   if (timesLength - index < currentIndex) {
