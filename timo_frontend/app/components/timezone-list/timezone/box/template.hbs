@@ -22,7 +22,7 @@
     {{/if}}
   {{/unless}}
   <EmberPopover
-    @popperOptions={{this.popperOptions}}
+    @side={{this.tooltipPosition}}
     @popoverHideDelay={{0}}
     @isShown={{this.showCalendarPopover}}
     @event="none"
@@ -46,7 +46,7 @@
         {{on "click" this.tooltipAction}}
       >
     {{else}}
-       <div class="google-calendar-popover__details">
+      <div class="google-calendar-popover__details">
         <img
           class="google-calendar-popover__icon"
           alt="google calendar"

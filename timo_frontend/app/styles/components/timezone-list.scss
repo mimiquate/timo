@@ -138,7 +138,6 @@
     z-index: 10;
     top: -8px;
     left: -16px;
-
     border-radius: 7px;
     border-top: none !important;
     box-shadow: 0px 3px 13px #00000029;
@@ -163,6 +162,10 @@
 
     > div:first-child > .timezone-list__hour {
       box-shadow: -1px 0px 0px 0px white inset;
+
+      &.timezone-list__selected {
+        box-shadow: none;
+      }
     }
 
     > div:last-child > .timezone-list__hour {
@@ -211,9 +214,19 @@
 }
 
 .google-calendar-popover-arrow {
-  border-top-color: white !important;
-  border-bottom-color: white !important;
   transform: scale(6);
+}
+
+.ember-popover[x-placement^="top"] .ember-popover-arrow {
+  border-top-color: white !important;
+}
+
+.ember-popover[x-placement^="bottom"] .ember-popover-arrow {
+  border-bottom-color: white !important;
+}
+
+.ember-popover[x-placement^="right"] .ember-popover-arrow {
+  border-right-color: white !important;
 }
 
 .google-calendar-popover {

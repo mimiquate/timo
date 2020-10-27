@@ -10,6 +10,7 @@
   {{/if}}
   {{#each @timezones as |timezone index|}}
     <TimezoneList::Timezone
+      @timezoneIndex={{index}}
       @timezone={{timezone}}
       @scheduleEvent={{@scheduleEvent}}
       @selectBox={{this.selectBoxWithScroll}}

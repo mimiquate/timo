@@ -8,6 +8,10 @@ export default class BoxComponent extends Component {
 
   @tracked showCalendarPopover = false;
 
+  get tooltipPosition() {
+    return this.args.index === 0 ? "left" : "top";
+  }
+
   @action
   tooltipAction() {
     this.args.scheduleEvent(this.args.time.value);
