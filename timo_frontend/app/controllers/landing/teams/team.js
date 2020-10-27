@@ -17,6 +17,7 @@ export default class LandingTeamsTeamController extends Controller {
   @service media;
   @service session;
 
+  @tracked isMobile = this.media.isMobile;
   @tracked memberToEdit = null;
   @tracked newMemberModal = false;
   @tracked showShareModal = false;
@@ -67,9 +68,9 @@ export default class LandingTeamsTeamController extends Controller {
     return membersToArray;
   }
 
-  @computed('sortedMembers.[]', 'isGrouped')
+  @computed('sortedMembers.[]', 'isGrouped', 'media')
   get timezones() {
-    return createNewRows(this.sortedMembers, this.isGrouped);
+    return createNewRows(this.sortedMembers, this.isGrouped, this.media.isMobile);
   }
 
   @computed('timezones')

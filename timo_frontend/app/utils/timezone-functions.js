@@ -40,12 +40,21 @@ export function addMoreHours(amount, index, timezones, currentIndex) {
   }
 }
 
-export function createNewRows(sortedMembers, isGrouped) {
+export function createNewRows(sortedMembers, isGrouped, rowsFromMobile) {
+  let amountOfLeftBoxes = 0;
+
+  if (rowsFromMobile) {
+    const timezonesWidth = document.getElementsByClassName('timezone-list')[0].clientWidth;
+    amountOfLeftBoxes = Math.floor((timezonesWidth/50)/2);
+  } else {
+    amountOfLeftBoxes = 12;
+  }
+
   const timezoneRows = [];
   const timeNow = moment.utc();
 
   sortedMembers.forEach(m => {
-    const isSameTimezone =  isSameTimezoneCallback(m, timeNow, isGrouped);
+    const isSameTimezone = isSameTimezoneCallback(m, timeNow, isGrouped);
     const sameTimezoneIndex = timezoneRows.findIndex(isSameTimezone);
 
     if (sameTimezoneIndex > -1) {
@@ -59,7 +68,7 @@ export function createNewRows(sortedMembers, isGrouped) {
 
     } else {
       const currentMemberTime = moment.tz(m.timezone).startOf('hour');
-      const startTime = currentMemberTime.clone().add(-12, 'hours');
+      const startTime = currentMemberTime.clone().add(-amountOfLeftBoxes, 'hours');
       const times = [];
 
       for (let i = 0; i < 36; i++) {

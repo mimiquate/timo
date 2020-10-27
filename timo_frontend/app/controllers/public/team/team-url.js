@@ -5,8 +5,11 @@ import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 
 export default class PublicTeamTeamUrlController extends Controller {
+  @service media;
+
   @tracked selectedBoxIndex = this.currentIndex;
   @tracked selectedTime = moment();
   @tracked isGrouped = false;
@@ -33,9 +36,9 @@ export default class PublicTeamTeamUrlController extends Controller {
     return membersToArray;
   }
 
-  @computed('sortedMembers.[]', 'isGrouped')
+  @computed('sortedMembers.[]', 'isGrouped', 'media')
   get timezones() {
-    return createNewRows(this.sortedMembers, this.isGrouped);
+    return createNewRows(this.sortedMembers, this.isGrouped, this.media.isMobile);
   }
 
   @computed('timezones')
