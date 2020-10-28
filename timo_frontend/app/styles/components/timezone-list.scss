@@ -172,6 +172,12 @@
       box-shadow: 1px 0px 0px 0px white inset;
     }
   }
+
+  &__timezone-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
 }
 
 .timezone-list > .timezone-list__row {

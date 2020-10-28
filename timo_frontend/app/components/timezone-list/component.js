@@ -20,6 +20,14 @@ export default class TimezoneListComponent extends Component {
     }, 200);
   }
 
+  @action
+  scrollToCurrent(){
+    const currentIndex = this.args.currentIndex;
+
+    this.args.selectBox(currentIndex, moment());
+    this.scrollToSelected(currentIndex);
+  }
+
   scrollToSelected(index) {
     const boxWidth = document.getElementsByClassName('timezone-list__hour').item(0).offsetWidth;
     const timezoneDivs = Array.from(document.getElementsByClassName('timezone-list__time-zone'));

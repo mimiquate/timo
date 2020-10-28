@@ -1,13 +1,19 @@
 <div class="timezone-list">
-  {{#if this.showGroupTimezonesCheckbox}}
-    <div class="timezone-list__group-timezones">
-      <TCheckbox
-        @checked={{@isGrouped}}
-        @onChange={{@groupTimezones}}
-        @label="Group timezones"
-      />
-    </div>
-  {{/if}}
+  <div class="timezone-list__timezone-actions">
+    <TButton
+      @label="Take me to current time"
+      @action={{this.scrollToCurrent}}
+    />
+    {{#if this.showGroupTimezonesCheckbox}}
+      <div class="timezone-list__group-timezones">
+        <TCheckbox
+          @checked={{@isGrouped}}
+          @onChange={{@groupTimezones}}
+          @label="Group timezones"
+        />
+      </div>
+    {{/if}}
+  </div>
   {{#each @timezones as |timezone index|}}
     <TimezoneList::Timezone
       @timezoneIndex={{index}}
