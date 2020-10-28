@@ -1,6 +1,12 @@
 //Screen
 @mixin mobile {
-  @media (max-width: 767px) {
+  @media (max-width: 786px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: 575px) {
     @content;
   }
 }
