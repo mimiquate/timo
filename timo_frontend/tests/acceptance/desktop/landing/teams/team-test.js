@@ -740,4 +740,29 @@ module('Acceptance | Team', function (hooks) {
 
     assert.equal(timezoneHours.length, 40, 'Does not add already added time boxes');
   });
+
+  test('Can go to current time after change selected one', async function (assert) {
+    let newUser = this.server.create('user', { username: 'juan' });
+    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    setSession.call(this, newUser);
+
+    await visit(`/teams/${newTeam.id}`);
+
+    let timezoneHours = findAll('.timezone-list__hour');
+    let selectedIndex = timezoneHours.findIndex(h => {
+      return h.classList.contains('timezone-list__selected')
+    });
+    const currentIndex = selectedIndex;
+
+    await click(timezoneHours[selectedIndex + currentIndex]);
+
+    const goToCurrentButton = find('[data-test=go-to-current]');
+
+    assert.equal(goToCurrentButton.textContent.trim(), 'Take me to current time');
+    await click(goToCurrentButton);
+
+    const currentBox = find('.timezone-list__current');
+
+    assert.ok(currentBox.classList.contains("timezone-list__selected-container"));
+  });
 });

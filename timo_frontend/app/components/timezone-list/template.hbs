@@ -1,6 +1,7 @@
 <div class="timezone-list">
   <div class="timezone-list__timezone-actions">
     <TButton
+      @testSelector="go-to-current"
       @label="Take me to current time"
       @action={{this.scrollToCurrent}}
     />
