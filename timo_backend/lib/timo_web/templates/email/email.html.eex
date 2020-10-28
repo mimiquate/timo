@@ -13,7 +13,7 @@
     </tr>
     <tr>
       <td style="font-size: 25px; color: #000000;">
-        <p>Hi <%= @email.user_name %>,</p>
+        <p style="margin: 0;">Hi <%= @email.user_name %>,</p>
       </td>
     </tr>
     <tr>
@@ -22,7 +22,7 @@
       </td>
     </tr>
     <tr>
-      <td height="48" style="padding: 40px 0px 28px 0px;">
+      <td height="48" style="padding: 20px 0px 28px 0px;">
         <table cellspacing="0" cellpadding="0" border="0"
           style="border-spacing:0; font-family: Helvetica, Arial, sans-serif; font-size: 16px;">
           <tr>
@@ -48,7 +48,7 @@
       </td>
     </tr>
     <tr>
-      <td style="padding: 0px 0px 41px 0px; color: #000000;">Thank you,<br>Timo’s Team</td>
+      <td style="padding: 0px 0px 41px 0px; color: #000000; font-size: 15px;">Thank you,<br>Timo’s Team</td>
     </tr>
     <tr>
       <td style="border-top: 1px solid #C4C4C4; padding: 19px 0px 30px 0px;">
