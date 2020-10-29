@@ -25,6 +25,7 @@
           {{on "click" @openAccountOptions}}
         >
         <EmberPopover
+          @event="click"
           @popoverHideDelay={{0}}
           @isShown={{@showAccountOptions}}
           @side="left-start"
