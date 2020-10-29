@@ -23,6 +23,10 @@
 </div>
 {{#if this.isShowingCalendarPopover}}
   <EmberWormhole @to="tooltip-background">
-    <div class="showing-tooltip"></div>
+    <div
+      class="showing-tooltip"
+      role="button"
+      {{on "click" (fn this.toggleCalendarPopoverBackground false)}}
+    />
   </EmberWormhole>
 {{/if}}

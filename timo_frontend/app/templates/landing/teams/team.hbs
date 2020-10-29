@@ -64,7 +64,11 @@
 {{/if}}
 {{#if this.isShowingCalendarPopover}}
   <EmberWormhole @to="tooltip-background">
-    <div class="showing-tooltip"></div>
+    <div
+      class="showing-tooltip"
+      role="button"
+      {{on "click" (fn this.toggleCalendarPopoverBackground false)}}
+    />
   </EmberWormhole>
 {{/if}}
 {{#if this.showSideNavBar}}
@@ -73,7 +77,7 @@
       class="showing-mobile-sidenav-bar"
       role="button"
       {{on "click" this.closeSideNavBar}}
-    ></div>
+    />
   </EmberWormhole>
 {{/if}}
 {{#if this.showNewTeamModal}}
