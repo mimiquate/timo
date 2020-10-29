@@ -85,9 +85,18 @@ button {
     display: flex;
     flex-direction: column;
 
+    @media (max-width: 1120px) {
+      padding: 60px 25px 0;
+      width: 100%;
+    }
+
+    @media (min-width: 1720px) {
+      padding-top: 160px;
+    }
+
     @include mobile {
       width: 100%;
-      padding: 110px 25px;
+      padding: 60px 25px 0;
     }
   }
 
@@ -96,6 +105,10 @@ button {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+
+    @media (max-width: 1120px) {
+      display: none;
+    }
   }
 
   &__title {
