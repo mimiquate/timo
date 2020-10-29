@@ -279,3 +279,9 @@ button {
     font-size: 12px;
   }
 }
+
+.wrap-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -66,6 +66,9 @@
     align-items: center;
 
     &__name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       font-weight: 800;
       font-size: 16px;
     }
@@ -75,9 +78,18 @@
     }
 
     &__information {
-      margin-right: 50px;
+      width: 100%;
       display: flex;
       flex-direction: column;
+    }
+
+    &__main-details {
+      justify-content: space-between;
+      display: flex;
+    }
+
+    &__icons-container {
+      min-width: 60px;
     }
   }
 
@@ -119,6 +131,10 @@
     >:last-child {
       margin-left: 8px;
     }
+  }
+
+  &__delete-confirmation-actions {
+    display: flex;
   }
 
   &__delete-label {
