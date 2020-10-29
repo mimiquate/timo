@@ -96,7 +96,9 @@
     margin-right: auto;
 
     @include mobile {
+      font-size: 13px;
       margin-bottom: 16px;
+      margin-left: auto;
     }
   }
 
