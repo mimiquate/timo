@@ -214,8 +214,8 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   async goToTeam(team) {
-    this.closeSideNavBar();
     await this.transitionToRoute('landing.teams.team', team.id);
+    this.closeSideNavBar();
   }
 
   @action
