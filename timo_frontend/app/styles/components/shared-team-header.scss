@@ -1,4 +1,5 @@
 @import '../variables.scss';
+@import "../media-query.scss";
 
 .shared-team-header {
   background-color: $dark-blue;
@@ -8,13 +9,17 @@
   padding: 26px 36px 30px 44px;
   align-items: center;
 
+  @include mobile {
+    padding: 26px 36px 26px 36px;
+  }
+
   &__container {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  &__actions {
+  &__user-actions {
     >:first-child {
       margin-right: 18px;
       padding-left: 40px;
@@ -27,6 +32,10 @@
     color: #ADBAE4;
     font-size: 25px;
     font-weight: bold;
+
+    @include mobile {
+      font-size: 18px;
+    }
   }
 
   &__details {
@@ -38,5 +47,15 @@
   &__image {
     cursor: pointer;
     height: 44px;
+
+    @include mobile {
+      height: 32px;
+    }
+  }
+
+  &__actions {
+    width: 21px;
+    height: 21px;
+    cursor: pointer;
   }
 }

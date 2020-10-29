@@ -1,16 +1,25 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { compareMemberTimeZones, createNewRows } from 'timo-frontend/utils/timezone-functions';
+import {
+  compareMemberTimeZones,
+  compareTeamsByCreationTime,
+  createNewRows
+} from 'timo-frontend/utils/timezone-functions';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
 import { isPresent } from '@ember/utils';
+import { inject as service } from '@ember/service';
+import { toLeft, toRight } from 'ember-animated/transitions/move-over';
 
 export default class LandingTeamsTeamController extends Controller {
+  @service media;
+  @service session;
+
+  @tracked isMobile = this.media.isMobile;
   @tracked memberToEdit = null;
   @tracked newMemberModal = false;
-  @tracked editMemberModal = false;
   @tracked showShareModal = false;
   @tracked showMemberListModal = false;
   @tracked showAboutTeamModal = false;
@@ -18,10 +27,29 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked selectedTime = moment();
   @tracked isGrouped = false;
   @tracked isShowingCalendarPopover = false;
+  @tracked sideNavBarIsOpen = false;
+  @tracked showNewTeamModal = false;
+  @tracked showToggleablePopover = false;
+  @tracked showTeamOptions = false;
 
-  @computed('model.members.{[],@each.id}')
+  rules({ oldItems }) {
+    if (oldItems[0]) {
+      return toLeft;
+    } else {
+      return toRight;
+    }
+  }
+
+  @computed('model.team.members.{[],@each.id}')
   get savedMembers() {
-    return this.model.members.filterBy('id');
+    return this.model.team.members.filterBy('id');
+  }
+
+  @computed('model.teams.[]')
+  get sortedTeams() {
+    const teamsToArray = this.model.teams.toArray();
+
+    return teamsToArray.sort(compareTeamsByCreationTime);
   }
 
   @computed('savedMembers.{[],@each.name,@each.timezone}')
@@ -40,14 +68,42 @@ export default class LandingTeamsTeamController extends Controller {
     return membersToArray;
   }
 
-  @computed('sortedMembers.[]', 'isGrouped')
+  @computed('sortedMembers.[]', 'isGrouped', 'media')
   get timezones() {
-    return createNewRows(this.sortedMembers, this.isGrouped);
+    return createNewRows(this.sortedMembers, this.isGrouped, this.media.isMobile);
   }
 
   @computed('timezones')
   get currentIndex() {
     return this.timezones[0].times.findIndex((t) => t.isCurrentTime);
+  }
+
+  get showSideNavBar() {
+    return this.media.isMobile && this.sideNavBarIsOpen;
+  }
+
+  @action
+  openSideNavBar() {
+    this.sideNavBarIsOpen = true;
+  }
+
+  @action
+  closeSideNavBar() {
+    if (this.media.isMobile) {
+      this.isShowingCalendarPopover = false;
+      this.sideNavBarIsOpen = false;
+    }
+  }
+
+  @action
+  openTeamModal() {
+    this.closeSideNavBar();
+    this.showNewTeamModal = true;
+  }
+
+  @action
+  closeNewTeamModal() {
+    this.showNewTeamModal = false;
   }
 
   @action
@@ -69,6 +125,7 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   openAboutTeamModal() {
+    this.showTeamOptions = false;
     this.showAboutTeamModal  = true;
   }
 
@@ -88,13 +145,14 @@ export default class LandingTeamsTeamController extends Controller {
   }
 
   @action
-  openShareModal() {
-    this.showShareModal = true;
+  openTeamOptions() {
+    this.showTeamOptions = true;
   }
 
   @action
-  closeEditMemberModal() {
-    this.editMemberModal = false;
+  openShareModal() {
+    this.showTeamOptions = false;
+    this.showShareModal = true;
   }
 
   @action
@@ -104,6 +162,7 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   newMember() {
+    this.showTeamOptions = false;
     this.newMemberModal = true;
   }
 
@@ -112,7 +171,7 @@ export default class LandingTeamsTeamController extends Controller {
     await this.store.createRecord('member', {
       name: memberName,
       timezone: memberTimeZone,
-      team: this.model
+      team: this.model.team
     }).save().then(() => this.newMemberModal = false);
   }
 
@@ -127,7 +186,7 @@ export default class LandingTeamsTeamController extends Controller {
     const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
 
     const url = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
-    openGoogleCalendarEvent(url, this.model.name);
+    openGoogleCalendarEvent(url, this.model.team.name);
   }
 
   @action
@@ -151,5 +210,41 @@ export default class LandingTeamsTeamController extends Controller {
   @action
   toggleCalendarPopoverBackground(value) {
     this.isShowingCalendarPopover = value;
+  }
+
+  @action
+  async goToTeam(team) {
+    await this.transitionToRoute('landing.teams.team', team.id);
+    this.closeSideNavBar();
+  }
+
+  @action
+  togglePopover() {
+    this.showToggleablePopover = !this.showToggleablePopover;
+  }
+
+  @action
+  async logOut() {
+    this.session.invalidate();
+    await this.currentUser.logOut();
+    this.store.unloadAll();
+    this.togglePopover();
+    this.transitionToRoute('/login');
+  }
+
+  @action
+  async saveTeam(newTeamName) {
+    let team = this.store.createRecord('team', {
+      name: newTeamName.trim(),
+      user: this.currentUser.user
+    });
+
+    await team.save();
+    await this.transitionToRoute('landing.teams.team', team.id);
+
+    if (!this.media.isMobile) {
+      const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
+      teamList.scrollTop = teamList.scrollHeight;
+    }
   }
 }

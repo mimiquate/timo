@@ -1,0 +1,29 @@
+<EmberPopover
+  @event="click"
+  @popoverHideDelay={{0}}
+  @isShown={{@showTeamOptions}}
+  @side="left-start"
+  @tooltipClass="header-tooltip"
+>
+  <div
+    class="header-tooltip__item"
+    role="button"
+    {{on "click" @openAboutTeamModal}}
+  >
+    Edit team
+  </div>
+  <div
+    class="header-tooltip__item"
+    role="button"
+    {{on "click" @addMember}}
+  >
+    Add members
+  </div>
+  <div
+    class="header-tooltip__item"
+    role="button"
+    {{on "click" @openShareModal}}
+  >
+    Share
+  </div>
+</EmberPopover>

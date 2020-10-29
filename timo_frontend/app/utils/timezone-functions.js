@@ -40,12 +40,21 @@ export function addMoreHours(amount, index, timezones, currentIndex) {
   }
 }
 
-export function createNewRows(sortedMembers, isGrouped) {
+export function createNewRows(sortedMembers, isGrouped, rowsFromMobile) {
+  let amountOfLeftBoxes = 0;
+
+  if (rowsFromMobile) {
+    const timezonesWidth = document.getElementsByClassName('timezone-list')[0].clientWidth;
+    amountOfLeftBoxes = Math.floor((timezonesWidth/50)/2);
+  } else {
+    amountOfLeftBoxes = 12;
+  }
+
   const timezoneRows = [];
   const timeNow = moment.utc();
 
   sortedMembers.forEach(m => {
-    const isSameTimezone =  isSameTimezoneCallback(m, timeNow, isGrouped);
+    const isSameTimezone = isSameTimezoneCallback(m, timeNow, isGrouped);
     const sameTimezoneIndex = timezoneRows.findIndex(isSameTimezone);
 
     if (sameTimezoneIndex > -1) {
@@ -59,7 +68,7 @@ export function createNewRows(sortedMembers, isGrouped) {
 
     } else {
       const currentMemberTime = moment.tz(m.timezone).startOf('hour');
-      const startTime = currentMemberTime.clone().add(-12, 'hours');
+      const startTime = currentMemberTime.clone().add(-amountOfLeftBoxes, 'hours');
       const times = [];
 
       for (let i = 0; i < 36; i++) {
@@ -112,4 +121,18 @@ function isSameTimezoneCallback(member, timeNow, isGrouped) {
   const isSameTimezoneName = (row) => row.timezoneNameList.includes(member.timezone);
 
   return  (isGrouped ? isSameOffset : isSameTimezoneName);
+}
+
+export function compareTeamsByCreationTime(teamA, teamB) {
+  const aCreationTime = teamA.inserted_at;
+  const bCreationTime = teamB.inserted_at;
+
+  let ret = 0
+  if (aCreationTime < bCreationTime) {
+    ret = -1;
+  } else if (aCreationTime > bCreationTime) {
+    ret = 1;
+  }
+
+  return ret;
 }

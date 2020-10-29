@@ -17,8 +17,8 @@ export function smoothScrollLeft(target, startPosition, distance, duration) {
 }
 
 function easeOutQuadratic (time, startValue, changeValue, duration) {
-	time /= duration;
-	return -changeValue * time*(time-2) + startValue;
+  time /= duration;
+  return -changeValue * time*(time-2) + startValue;
 }
 
 export function getEndPosition(targetDiv, itemsWidth, index) {

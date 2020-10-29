@@ -1,10 +1,17 @@
 @import '../variables.scss';
+@import "../media-query.scss";
 
 .sidenavbar {
   display: flex;
   flex-direction: column;
   background-color: $dark-blue;
   width: 215px;
+
+  @include mobile {
+    position: absolute;
+    height: 100%;
+    z-index: 100;
+  }
 
   &__header {
     margin-left: 30px;
@@ -60,6 +67,10 @@
     line-height: 21px;
     color: $white-grey;
     font-family: 'Poppins', sans-serif;
+
+    @include mobile {
+      font-size: 16px;
+    }
   }
 
   &__button {
@@ -75,6 +86,10 @@
     background: inherit;
     color: white;
     outline: none;
+
+    @include mobile {
+      padding: 16px 30px;
+    }
   }
 
   &.active {
@@ -146,9 +161,6 @@
 
 .logout-name {
   max-width: 132px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   align-self: center;
   text-align: left;
 }

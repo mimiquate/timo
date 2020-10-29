@@ -2,31 +2,22 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-
-function compareTeamsByCreationTime(teamA, teamB) {
-  const aCreationTime = teamA.inserted_at;
-  const bCreationTime = teamB.inserted_at;
-
-  let ret = 0
-  if (aCreationTime < bCreationTime) {
-    ret = -1;
-  } else if (aCreationTime > bCreationTime) {
-    ret = 1;
-  }
-
-  return ret;
-}
+import { isPresent } from '@ember/utils';
+import { compareTeamsByCreationTime } from 'timo-frontend/utils/timezone-functions';
 
 export default class LandingController extends Controller {
   @service session;
   @service router;
+  @service media;
 
   @tracked showToggleablePopover = false;
   @tracked showNewTeamModal = false;
 
   @computed('router.currentURL')
   get currentTeamId() {
-    return this.router.currentRoute.attributes.id;
+    const team = this.router.currentRoute.attributes.team;
+
+    return isPresent(team) ? team.id : null;
   }
 
   @computed('model.[]')
@@ -73,7 +64,7 @@ export default class LandingController extends Controller {
     });
 
     await team.save();
-    await this.transitionToRoute('landing.teams.team', team);
+    await this.transitionToRoute('landing.teams.team', team.id);
 
     const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
     teamList.scrollTop = teamList.scrollHeight;

@@ -1,4 +1,5 @@
 @import '../variables.scss';
+@import "../media-query.scss";
 
 .team-header {
   padding: 28px 60px 20px 60px;
@@ -8,9 +9,21 @@
   justify-content: space-between;
   align-items: center;
 
+  &__popover {
+    left: -125px !important;
+  }
+
+  @include mobile {
+    padding: 20px;
+  }
+
   &__container {
     display: flex;
     flex-direction: column;
+
+    @include mobile {
+      align-items: center;
+    }
   }
 
   &__title {
@@ -25,6 +38,10 @@
     cursor: pointer;
     color: $blue;
     font-weight: bold;
+
+    @include mobile {
+      font-size: 16px;
+    }
   }
 
   &__actions {
@@ -39,5 +56,11 @@
     >:last-child {
       margin-left: 11px;
     }
+  }
+
+  &__mobile-tooltip-actions, &__mobile-sidenavbar {
+    width: 21px;
+    height: 21px;
+    cursor: pointer;
   }
 }

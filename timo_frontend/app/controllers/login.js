@@ -8,6 +8,8 @@ import lookupValidator from 'ember-changeset-validations';
 
 export default class LoginController extends Controller {
   @service session;
+  @service media;
+
   @tracked username = '';
   @tracked password = '';
   @tracked passwordError = '';

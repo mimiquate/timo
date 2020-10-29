@@ -1,10 +1,27 @@
+{{#animated-if this.showSideNavBar rules=this.rules duration=300}}
+  <SideNavBar
+    @openTeamModal={{this.openTeamModal}}
+    @sortedTeams={{this.sortedTeams}}
+    @goToTeam={{this.goToTeam}}
+    @currentTeamId={{this.model.team.id}}
+    @currentUser={{this.currentUser}}
+    @logOut={{this.logOut}}
+    @showToggleablePopover={{this.showToggleablePopover}}
+    @togglePopover={{this.togglePopover}}
+  />
+{{else}}
+  <div></div>
+{{/animated-if}}
 <TeamHeader
-  @teamName={{@model.name}}
+  @teamName={{@model.team.name}}
   @members={{this.sortedMembers}}
   @addMember={{this.newMember}}
   @openShareModal={{this.openShareModal}}
   @openMemberListModal={{this.openMemberListModal}}
   @openAboutTeamModal={{this.openAboutTeamModal}}
+  @openSideNavBar={{this.openSideNavBar}}
+  @showTeamOptions={{this.showTeamOptions}}
+  @openTeamOptions={{this.openTeamOptions}}
 />
 <TimezoneList
   @timezones={{this.timezones}}
@@ -28,7 +45,7 @@
 {{#if this.showShareModal}}
   <Modals::Team::Share
     @closeModal={{this.closeShareModal}}
-    @team={{this.model}}
+    @team={{this.model.team}}
     @isGrouped={{this.isGrouped}}
   />
 {{/if}}
@@ -41,12 +58,31 @@
 {{#if this.showAboutTeamModal}}
   <Modals::Team::About
     @closeModal={{this.closeAboutTeamModal}}
-    @team={{this.model}}
+    @team={{this.model.team}}
     @deleteTeam={{this.deleteTeam}}
   />
 {{/if}}
 {{#if this.isShowingCalendarPopover}}
   <EmberWormhole @to="tooltip-background">
-    <div class="showing-tooltip"></div>
+    <div
+      class="showing-tooltip"
+      role="button"
+      {{on "click" (fn this.toggleCalendarPopoverBackground false)}}
+    />
   </EmberWormhole>
+{{/if}}
+{{#if this.showSideNavBar}}
+  <EmberWormhole @to="tooltip-background">
+    <div
+      class="showing-mobile-sidenav-bar"
+      role="button"
+      {{on "click" this.closeSideNavBar}}
+    />
+  </EmberWormhole>
+{{/if}}
+{{#if this.showNewTeamModal}}
+  <Modals::Team::Add
+    @closeModal={{this.closeNewTeamModal}}
+    @saveTeam={{this.saveTeam}}
+  />
 {{/if}}

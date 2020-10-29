@@ -1,4 +1,5 @@
 @import '../variables.scss';
+@import "../media-query.scss";
 
 .timezone-list {
   overflow: scroll;
@@ -14,6 +15,11 @@
 
   @media (min-width: 2135px) {
     align-self: center;
+  }
+
+  @include mobile {
+    margin: 16px 16px 0;
+    padding: 16px;
   }
 
   &__group-timezones {
@@ -53,9 +59,6 @@
     line-height: 20px;
     height: 19px;
     color: $black;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   &__date {
@@ -66,9 +69,6 @@
   &__members {
     font-size: 13px;
     color: $black;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   &__hour {
@@ -84,6 +84,10 @@
     box-shadow:
       1px 0px 0px 0px white inset,
       -1px 0px 0px 0px white inset;
+
+    @include mobile {
+      font-size: 13px
+    }
 
     &.red {
       border-top: 5px solid $soft-red;
@@ -125,10 +129,9 @@
     max-width: 64px;
     min-width: 64px;
     position: absolute;
-    z-index: 11;
+    z-index: 10;
     top: -8px;
     left: -16px;
-
     border-radius: 7px;
     border-top: none !important;
     box-shadow: 0px 3px 13px #00000029;
@@ -153,6 +156,10 @@
 
     > div:first-child > .timezone-list__hour {
       box-shadow: -1px 0px 0px 0px white inset;
+
+      &.timezone-list__selected {
+        box-shadow: none;
+      }
     }
 
     > div:last-child > .timezone-list__hour {
@@ -193,7 +200,7 @@
   padding: 10px;
   text-align: center;
   top: -5px !important;
-  z-index: 100;
+  z-index: 10;
 
   .ember-tooltip-arrow {
     transform: scale(4);
@@ -201,9 +208,19 @@
 }
 
 .google-calendar-popover-arrow {
-  border-top-color: white !important;
-  border-bottom-color: white !important;
   transform: scale(6);
+}
+
+.ember-popover[x-placement^="top"] .ember-popover-arrow {
+  border-top-color: white !important;
+}
+
+.ember-popover[x-placement^="bottom"] .ember-popover-arrow {
+  border-bottom-color: white !important;
+}
+
+.ember-popover[x-placement^="right"] .ember-popover-arrow {
+  border-right-color: white !important;
 }
 
 .google-calendar-popover {
@@ -215,9 +232,18 @@
   top: -10px !important;
   border-radius: 15px !important;
 
+  @include mobile {
+    width: inherit;
+    height: inherit;
+  }
+
   &__inner {
     padding: 40px 50px;
     display: flex;
+
+    @include mobile {
+      padding: 30px;
+    }
 
     >:first-child {
       display: flex;
@@ -243,12 +269,21 @@
     width: 14px;
     height: 14px;
     cursor: pointer;
+
+    @include mobile {
+      top: 13px;
+      left: 13px;
+    }
   }
 
   &__icon {
     margin-right: 14px;
     height: 42px;
     width: 43px;
+
+    @include mobile {
+      margin-right: 0;
+    }
   }
 
   &__action {

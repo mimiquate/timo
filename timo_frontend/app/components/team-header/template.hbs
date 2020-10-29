@@ -1,4 +1,13 @@
 <div class="team-header">
+  {{#if this.media.isMobile}}
+    <img
+      role="button"
+      alt="delete button"
+      class="team-header__mobile-sidenavbar"
+      src="/images/menu.svg"
+      {{on "click" @openSideNavBar}}
+    >
+  {{/if}}
   <div class="team-header__container">
     <span class="team-header__title" data-test="team-title">
       {{@teamName}}
@@ -7,23 +16,41 @@
       {{this.membersLabel}}
     </span>
   </div>
-  <div class="team-header__actions">
-    <TButton
-      @testSelector="edit-team-button"
-      @label="Edit team"
-      @inverted={{true}}
-      @action={{@openAboutTeamModal}}
-    />
-    <TButton
-      @testSelector="add-member-button"
-      @label="Add members"
-      @action={{@addMember}}
-    />
-    <TButton
-      @color="red"
-      @testSelector="share-button"
-      @label="Share"
-      @action={{@openShareModal}}
-    />
-  </div>
+  {{#if this.media.isMobile}}
+    <div>
+      <img
+        role="button"
+        alt="open team options"
+        class="team-header__mobile-tooltip-actions"
+        src="/images/edit-pen.svg"
+        {{on "click" @openTeamOptions}}
+      >
+      <HeaderTooltip
+        @showTeamOptions={{@showTeamOptions}}
+        @addMember={{@addMember}}
+        @openShareModal={{@openShareModal}}
+        @openAboutTeamModal={{@openAboutTeamModal}}
+      />
+    </div>
+  {{else}}
+    <div class="team-header__actions">
+      <TButton
+        @testSelector="edit-team-button"
+        @label="Edit team"
+        @inverted={{true}}
+        @action={{@openAboutTeamModal}}
+      />
+      <TButton
+        @testSelector="add-member-button"
+        @label="Add members"
+        @action={{@addMember}}
+      />
+      <TButton
+        @color="red"
+        @testSelector="share-button"
+        @label="Share"
+        @action={{@openShareModal}}
+      />
+    </div>
+  {{/if}}
 </div>

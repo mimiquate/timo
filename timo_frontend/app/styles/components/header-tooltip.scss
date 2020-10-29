@@ -1,0 +1,20 @@
+@import '../variables.scss';
+@import "../media-query.scss";
+
+.header-tooltip {
+  padding: 0;
+  z-index: 100;
+
+  &__item {
+    font-size: 15px;
+    padding: 20px;
+    margin-left: 16px;
+    margin-right: 16px;
+    border-bottom: 1px $white-grey solid;
+    cursor: pointer;
+  }
+
+  >:last-child {
+    border-bottom: none;
+  }
+}

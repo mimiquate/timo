@@ -1,4 +1,5 @@
 @import '../variables.scss';
+@import "../media-query.scss";
 
 .share-team {
   &__checkbox-container {
@@ -9,6 +10,11 @@
 
   &__modal {
     padding: 38px 84px 58px 84px;
+
+    @include mobile {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
   }
 
   &__link-input {
