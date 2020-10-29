@@ -66,9 +66,6 @@
     align-items: center;
 
     &__name {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       font-weight: 800;
       font-size: 16px;
     }

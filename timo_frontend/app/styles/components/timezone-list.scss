@@ -59,9 +59,6 @@
     line-height: 20px;
     height: 19px;
     color: $black;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   &__date {
@@ -72,9 +69,6 @@
   &__members {
     font-size: 13px;
     color: $black;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   &__hour {
