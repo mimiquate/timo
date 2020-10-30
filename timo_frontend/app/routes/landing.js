@@ -13,6 +13,8 @@ export default class LandingRoute extends Route.extend(AuthenticatedRouteMixin) 
   }
 
   model() {
+    this.store.unloadAll('team');
+
     return this.store.findAll('team');
   }
 }
