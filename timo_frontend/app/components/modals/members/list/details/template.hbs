@@ -19,30 +19,28 @@
     </div>
   {{else}}
     <div class="member-list__member">
-      <div class="member-list__member__information">
-        <div class="member-list__member__main-details">
-          <span class="member-list__member__name wrap-ellipsis">{{@member.name}}</span>
-          <div class="member-list__member__icons-container">
-            {{#unless @member.isCurrentUser}}
-              <img
-                role="button"
-                alt="delete button"
-                class="member-list__trash-icon"
-                src="/images/red-trash.svg"
-                {{on "click" this.openDeleteConfirmation}}
-              >
-              <img
-                data-test="modal-edit-member"
-                role="button"
-                alt="delete button"
-                class="member-list__edit-icon"
-                src="/images/edit-pen.svg"
-                {{on "click" (fn @showEdit @member)}}
-              >
-            {{/unless}}
-          </div>
-        </div>
+      <div class="member-list__member__main-details wrap-ellipsis">
+        <span class="member-list__member__name wrap-ellipsis">{{@member.name}}</span>
         <span class="member-list__member__timezone">{{@member.timezone}}</span>
+      </div>
+      <div class="member-list__member__icons-container">
+        {{#unless @member.isCurrentUser}}
+          <img
+            role="button"
+            alt="delete button"
+            class="member-list__trash-icon"
+            src="/images/red-trash.svg"
+            {{on "click" this.openDeleteConfirmation}}
+          >
+          <img
+            data-test="modal-edit-member"
+            role="button"
+            alt="delete button"
+            class="member-list__edit-icon"
+            src="/images/edit-pen.svg"
+            {{on "click" (fn @showEdit @member)}}
+          >
+        {{/unless}}
       </div>
     </div>
   {{/animated-if}}
