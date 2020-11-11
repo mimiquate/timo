@@ -27,8 +27,8 @@ module('Acceptance | Public Team', function (hooks) {
     await visit('/p/team/yjHktCOyBDTb');
 
     assert.dom('.not-found').exists('Visits team page error');
-    assert.dom('[data-test-not-found=title]').hasText('Timo App', 'Title loads correctly');
-    assert.dom('.not-found__error').hasText('Team not found', 'Team page error shows error');
+    assert.dom('.not-found__image').exists();
+    assert.dom('.not-found__content__error').hasText('Team not found', 'Team page error shows error');
   });
 
   test('Visiting /p/team/:share_id with private team', async function (assert) {
@@ -44,8 +44,8 @@ module('Acceptance | Public Team', function (hooks) {
     await visit(`/p/team/${newTeam.share_id}`);
 
     assert.dom('.not-found').exists('Visits team page error');
-    assert.dom('[data-test-not-found=title]').hasText('Timo App', 'Title loads correctly');
-    assert.dom('.not-found__error').hasText('Team not found', 'Team page error shows error');
+    assert.dom('.not-found__image').exists();
+    assert.dom('.not-found__content__error').hasText('Team not found', 'Team page error shows error');
   });
 
   test('Visiting /p/team/:share_id with public team and no members', async function (assert) {

@@ -36,8 +36,8 @@ module('Acceptance | Email Token', function (hooks) {
 
     assert.equal(currentURL(), `/verify/${token}`, 'Shows token error page');
     assert.dom('.not-found').exists('Visits token page error');
-    assert.dom('[data-test-not-found=title]').hasText('Timo App', 'Title loads correctly');
-    assert.dom('.not-found__error')
+    assert.dom('.not-found__image').exists();
+    assert.dom('.not-found__content__error')
       .hasText('Sorry that page doesn\'t exists', 'Message loads correctly');
   });
 });
