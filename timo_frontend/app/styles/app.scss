@@ -13,6 +13,7 @@
 @import './components/about-team-modal.scss';
 @import './components/member-list.scss';
 @import './components/shared-team-header.scss';
+@import './components/not-found.scss';
 @import './components/header-tooltip.scss';
 @import "ember-modal-dialog/ember-modal-structure";
 @import "ember-modal-dialog/ember-modal-appearance";
@@ -20,7 +21,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 @import "./media-query.scss";
 
-html, .ember-application, .not-found {
+html, .ember-application {
   height: 100%;
 }
 
@@ -278,18 +279,6 @@ button {
     height: 100%;
     flex-direction: column;
     display: flex
-  }
-}
-
-.not-found {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  &__error {
-    color: $timo-warning;
-    font-size: 12px;
   }
 }
 
