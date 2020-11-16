@@ -158,4 +158,17 @@ defmodule Timo.API do
   def delete_member(%Member{} = member) do
     Repo.delete(member)
   end
+
+  def get_member_team(team_id, member_id) do
+    query =
+      Member
+      |> where([m], m.team_id == ^team_id and m.id == ^member_id)
+      |> select([m], m)
+
+    with %Member{} = member <- Repo.one(query) do
+      {:ok, member}
+    else
+      nil -> nil
+    end
+  end
 end
