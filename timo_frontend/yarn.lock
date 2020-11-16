@@ -5170,7 +5170,7 @@ ember-cli-htmlbars@^3.0.0, ember-cli-htmlbars@^3.0.1:
     json-stable-stringify "^1.0.1"
     strip-bom "^3.0.0"
 
-ember-cli-htmlbars@^4.0.5, ember-cli-htmlbars@^4.3.1:
+ember-cli-htmlbars@^4.0.5, ember-cli-htmlbars@^4.2.3, ember-cli-htmlbars@^4.3.1:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-4.4.0.tgz#7ca17d5ca8f7550984346d9e6e93da0c3323f8d9"
   integrity sha512-ohgctqk7dXIZR4TgN0xRoUYltWhghFJgqmtuswQTpZ7p74RxI9PKx+E8WV/95mGcPzraesvMNBg5utQNvcqgNg==
@@ -5793,6 +5793,14 @@ ember-page-title@^5.2.3:
     ember-cli-head "^0.4.0"
     ember-cli-htmlbars "^3.0.1"
     ember-copy "^1.0.0"
+
+ember-phoenix-channel@^0.5.8:
+  version "0.5.8"
+  resolved "https://registry.yarnpkg.com/ember-phoenix-channel/-/ember-phoenix-channel-0.5.8.tgz#944df6276e01e9b8d33d047780049095df9a32d5"
+  integrity sha512-l6tTgyXF8DkxXyhN7DBvRQcWl8tOimem9BigjxvRnEiguWyuRDtSsS2cz3D+rfV39wO1qK5CtGPLKIBvJTuYnw==
+  dependencies:
+    ember-cli-babel "^7.18.0"
+    ember-cli-htmlbars "^4.2.3"
 
 ember-power-select@^4.0.3:
   version "4.0.3"
