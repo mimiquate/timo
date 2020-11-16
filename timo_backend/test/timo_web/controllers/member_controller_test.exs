@@ -1,7 +1,11 @@
 defmodule TimoWeb.MemberControllerTest do
   use TimoWeb.ConnCase
+  use Phoenix.ChannelTest
+
   import Plug.Test
 
+  alias TimoWeb.UserSocket
+  alias TimoWeb.TeamChannel
   alias Timo.API
   alias Timo.API.Member
 
@@ -41,7 +45,13 @@ defmodule TimoWeb.MemberControllerTest do
       |> put_req_header("accept", "application/vnd.api+json")
       |> put_req_header("content-type", "application/vnd.api+json")
 
-    {:ok, conn: conn, team: team, user: user}
+
+    {:ok, _, socket} =
+      UserSocket
+      |> socket(nil, %{})
+      |> subscribe_and_join(TeamChannel, "team")
+
+    {:ok, conn: conn, team: team, user: user, socket: socket}
   end
 
   test "creates member and renders member when data is valid", %{
@@ -61,6 +71,9 @@ defmodule TimoWeb.MemberControllerTest do
     assert Integer.to_string(member.id) == data["id"]
     assert member.team_id == team.id
     assert member.name == data["attributes"]["name"]
+
+    response = %{member: member.id, team: member.team_id}
+    assert_broadcast "new_member", ^response
   end
 
   test "does not create member and renders errors when data is invalid", %{conn: conn, team: team} do
@@ -86,6 +99,9 @@ defmodule TimoWeb.MemberControllerTest do
     assert data["type"] == "member"
     assert data["attributes"]["name"] == @update_attrs.name
     assert data["attributes"]["timezone"] == @update_attrs.timezone
+
+    response = %{member: member.id, team: member.team_id}
+    assert_broadcast "update_member", ^response
   end
 
   test "does not update member and renders errors when data is invalid", %{conn: conn, team: team} do
@@ -110,5 +126,8 @@ defmodule TimoWeb.MemberControllerTest do
     assert conn.resp_body == ""
 
     assert Timo.Repo.get(Member, member.id) == nil
+
+    response = %{member: member.id, team: member.team_id}
+    assert_broadcast "remove_member", ^response
   end
 end
