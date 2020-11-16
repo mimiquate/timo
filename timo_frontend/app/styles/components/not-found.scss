@@ -1,0 +1,48 @@
+.not-found {
+  background-color: $dark-blue;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 26px 36px 30px 44px;
+  align-items: center;
+
+  &__desktop-actions {
+    >:first-child {
+      margin-right: 18px;
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  &__mobile-actions {
+    width: 21px;
+    height: 21px;
+    cursor: pointer;
+  }
+
+  &__image {
+    cursor: pointer;
+    height: 44px;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+
+    &__details {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 25px;
+    }
+
+    &__error {
+      color: $timo-warning;
+      font-size: 18px;
+    }
+  }
+}

@@ -1,4 +1,7 @@
 <NotFound
-  @title="Timo App"
   @message="Team not found"
+  @transitionToLogin={{this.transitionToLogin}}
+  @transitionToSignUp={{this.transitionToSignUp}}
+  @isAuthenticated={{this.session.isAuthenticated}}
+  @isMobile={{this.media.isMobile}}
 />

@@ -1,7 +1,7 @@
 @import '../variables.scss';
 @import "../media-query.scss";
 
-.shared-team-header {
+.shared-team-header, .not-found {
   background-color: $dark-blue;
   display: flex;
   flex-direction: row;
@@ -19,7 +19,7 @@
     align-items: center;
   }
 
-  &__user-actions {
+  &__desktop-actions {
     >:first-child {
       margin-right: 18px;
       padding-left: 40px;
@@ -53,7 +53,7 @@
     }
   }
 
-  &__actions {
+  &__mobile-actions {
     width: 21px;
     height: 21px;
     cursor: pointer;

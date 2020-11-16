@@ -20,7 +20,7 @@
         <img
           role="button"
           alt="account options"
-          class="shared-team-header__actions"
+          class="shared-team-header__mobile-actions"
           src="/images/grey-menu.svg"
           {{on "click" @openAccountOptions}}
         >
@@ -48,7 +48,7 @@
         </EmberPopover>
       </div>
     {{else}}
-      <div class="shared-team-header__user-actions">
+      <div class="shared-team-header__desktop-actions">
         <TButton
           @testSelector="log-in"
           @label="Log in"
