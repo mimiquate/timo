@@ -24,7 +24,7 @@ defmodule TimoWeb.MemberController do
     {:ok, team} = API.get_team_by_id(member["team_id"])
 
     with {:ok, %Member{} = member} <- API.create_member(team, member_params) do
-      TimoWeb.Endpoint.broadcast("team", "new_member", %{
+      TimoWeb.Endpoint.broadcast("team:#{team.id}", "new_member", %{
         team: team.id,
         member: member.id
       })
@@ -41,7 +41,7 @@ defmodule TimoWeb.MemberController do
     with {:ok, member} <- API.get_user_member(current_user, id),
          {:ok, %Member{} = member} <- API.update_member(member, member_params) do
 
-      TimoWeb.Endpoint.broadcast("team", "update_member", %{
+      TimoWeb.Endpoint.broadcast("team:#{member.team_id}", "update_member", %{
         team: member.team_id,
         member: member.id
       })
@@ -56,7 +56,7 @@ defmodule TimoWeb.MemberController do
     with {:ok, member} <- API.get_user_member(current_user, id),
          {:ok, %Member{}} <- API.delete_member(member) do
 
-      TimoWeb.Endpoint.broadcast("team", "remove_member", %{
+      TimoWeb.Endpoint.broadcast("team:#{member.team_id}", "remove_member", %{
         team: member.team_id,
         member: member.id
       })

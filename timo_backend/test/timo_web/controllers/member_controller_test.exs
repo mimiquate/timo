@@ -49,7 +49,7 @@ defmodule TimoWeb.MemberControllerTest do
     {:ok, _, socket} =
       UserSocket
       |> socket(nil, %{})
-      |> subscribe_and_join(TeamChannel, "team")
+      |> subscribe_and_join(TeamChannel, "team:#{team.id}")
 
     {:ok, conn: conn, team: team, user: user, socket: socket}
   end
