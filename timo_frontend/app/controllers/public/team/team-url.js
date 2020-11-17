@@ -9,48 +9,12 @@ import { inject as service } from '@ember/service';
 
 export default class PublicTeamTeamUrlController extends Controller {
   @service media;
-  @service channelService;
 
   @tracked selectedBoxIndex = this.currentIndex;
   @tracked selectedTime = moment();
   @tracked isGrouped = false;
   @tracked isShowingCalendarPopover = false;
   @tracked showAccountOptions = false;
-
-  constructor(owner, args) {
-    super(owner, args);
-
-    this.channelService.connect().then(()=> {
-      return this.channelService.joinChannel('team');
-    }).then((channel) => {
-
-      channel.on("new_member", (payload) => {
-        this.store.queryRecord('member', {
-          filter: {
-            team: payload.team,
-            member: payload.member
-          },
-        })
-        .then(member => {
-          this.model.members.pushObject(member);
-        });
-      });
-
-      channel.on("update_member", (payload) => {
-        this.store.queryRecord('member', {
-          filter: {
-            team: payload.team,
-            member: payload.member
-          },
-        })
-      });
-
-      channel.on("remove_member", (payload) => {
-        const m = this.model.members.findBy('id', payload.member.toString());
-        this.model.members.removeObject(m);
-      });
-    });
-  }
 
   @computed('model.members.{[],@each.id}')
   get savedMembers() {
