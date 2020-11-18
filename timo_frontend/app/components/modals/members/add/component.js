@@ -7,7 +7,7 @@ import lookupValidator from 'ember-changeset-validations';
 import { tracked } from '@glimmer/tracking';
 import { isPresent } from '@ember/utils';
 
-export default class MemberModalComponent extends Component {
+export default class AddMemberModalComponent extends Component {
   @tracked name = '';
   @tracked timezone = '';
   @tracked nameError = '';

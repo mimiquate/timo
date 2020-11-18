@@ -8,7 +8,7 @@ import { fadeOut, fadeIn } from 'ember-animated/motions/opacity';
 import { isPresent } from '@ember/utils';
 import moment from 'moment';
 
-export default class MemberModalComponent extends Component {
+export default class ListMembersModalComponent extends Component {
   @tracked showList = true;
   @tracked showDeleteConfirmation = false;
   @tracked memberToEdit = null;
