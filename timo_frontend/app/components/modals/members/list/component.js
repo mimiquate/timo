@@ -2,17 +2,16 @@ import Component from "@glimmer/component";
 import { action, set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { Changeset } from 'ember-changeset';
-import memberValidator from 'timo-frontend/validators/member';
-import lookupValidator from 'ember-changeset-validations';
 import { fadeOut, fadeIn } from 'ember-animated/motions/opacity';
 import { isPresent } from '@ember/utils';
+import memberValidator from 'timo-frontend/validators/member';
+import lookupValidator from 'ember-changeset-validations';
 import moment from 'moment';
 
 export default class ListMembersModalComponent extends Component {
   @tracked showList = true;
   @tracked showDeleteConfirmation = false;
   @tracked memberToEdit = null;
-
   @tracked name = '';
   @tracked timezone = '';
   @tracked nameError = '';
@@ -77,8 +76,8 @@ export default class ListMembersModalComponent extends Component {
   }
 
   @action
-  async updateMember(e) {
-    e.preventDefault();
+  async updateMember(event) {
+    event.preventDefault();
     this.cleanErrors();
     const changeset = this.memberChangeset;
 

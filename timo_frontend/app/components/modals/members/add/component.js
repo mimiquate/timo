@@ -1,11 +1,11 @@
 import Component from "@glimmer/component";
-import moment from 'moment';
 import { action, set } from '@ember/object';
 import { Changeset } from 'ember-changeset';
-import memberValidator from 'timo-frontend/validators/member';
-import lookupValidator from 'ember-changeset-validations';
 import { tracked } from '@glimmer/tracking';
 import { isPresent } from '@ember/utils';
+import memberValidator from 'timo-frontend/validators/member';
+import lookupValidator from 'ember-changeset-validations';
+import moment from 'moment';
 
 export default class AddMemberModalComponent extends Component {
   @tracked name = '';
@@ -41,8 +41,8 @@ export default class AddMemberModalComponent extends Component {
   }
 
   @action
-  async add(e) {
-    e.preventDefault();
+  async add(event) {
+    event.preventDefault();
     this.cleanErrors();
 
     const name = this.name.trim();

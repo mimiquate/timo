@@ -2,10 +2,9 @@ import Component from "@glimmer/component";
 import { action } from '@ember/object';
 
 export default class TInputComponent extends Component {
-
   @action
-  onChange(e) {
+  onChange(event) {
     this.args.cleanError();
-    this.args.onChange(e.target.value);
+    this.args.onChange(event.target.value);
   }
 }
