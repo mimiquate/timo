@@ -6,7 +6,7 @@
     {{this.memberNames}}
   </div>
   <div class="timezone-list__date">
-    {{this.memberDate}}
+    {{moment-format this.memberDate "dddd, DD MMMM YYYY, HH:mm"}}
   </div>
   <div class="timezone-list__time-zone">
     {{#each @timezone.times as |time index|}}
