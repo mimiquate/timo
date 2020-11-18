@@ -4,14 +4,14 @@
   <TButton
     @color="blue"
     @testSelector="create-team"
-    @action={{this.openTeamModal}}
+    @onClick={{this.openTeamModal}}
     @label="Create a team now!"
   />
   {{#if this.media.isMobile}}
     <TButton
       @color="blue"
       @testSelector="log-out"
-      @action={{this.logOut}}
+      @onClick={{this.logOut}}
       @label="Log out"
     />
   {{/if}}

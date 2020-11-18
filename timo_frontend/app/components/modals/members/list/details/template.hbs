@@ -8,12 +8,12 @@
         <TButton
           @inverted={{true}}
           @label="Cancel"
-          @action={{this.closeDeleteConfirmation}}
+          @onClick={{this.closeDeleteConfirmation}}
         />
         <TButton
           @color="warning"
           @label="Confirm"
-          @action={{fn @deleteMember @member}}
+          @onClick={{fn @deleteMember @member}}
         />
       </div>
     </div>

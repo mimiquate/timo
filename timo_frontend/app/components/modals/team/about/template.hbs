@@ -2,7 +2,7 @@
   @title="About"
   @closeModal={{@closeModal}}
   @modalClass="about-team-modal"
-  @action={{this.updateTeam}}
+  @onSubmit={{this.updateTeam}}
   @actionLabel="Save"
 >
   <div class="about-team-modal__container">
@@ -25,12 +25,12 @@
             <TButton
               @inverted={{true}}
               @color="green"
-              @action={{this.toggleDeleteConfirmation}}
+              @onClick={{this.toggleDeleteConfirmation}}
               @label="Cancel"
             />
             <TButton
               @color="warning"
-              @action={{fn @deleteTeam @team}}
+              @onClick={{fn @deleteTeam @team}}
               @label="Confirm"
             />
           </div>
@@ -39,7 +39,7 @@
         <div class="about-team-modal__delete-container">
           <TButton
             @color="warning"
-            @action={{this.toggleDeleteConfirmation}}
+            @onClick={{this.toggleDeleteConfirmation}}
           >
             <div class="about-team-modal__delete-button">
               <img
