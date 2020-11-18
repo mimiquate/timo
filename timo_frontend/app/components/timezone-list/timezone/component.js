@@ -26,10 +26,8 @@ export default class TimezoneComponent extends Component {
   get memberDate() {
     const timezone = this.args.timezone.timezoneNameList[0];
     const selectedTime = this.args.selectedTime.format('YYYY-MM-DDTHH:mm:ssZ');
-    const formatedDate = moment.tz(selectedTime, timezone).startOf('hour');
-    const format = "dddd, DD MMMM YYYY, HH:mm";
 
-    return formatedDate.format(format);
+    return moment.tz(selectedTime, timezone).startOf('hour');
   }
 
   @computed('args.timezone.members.[]')
