@@ -7,8 +7,8 @@
   {{/unless}}
   <div class="sign-up-page__form-container">
     <img src="/images/appicon-signup.png" alt="timo landing appicon">
-    <span class="sign-up-page__login-title">Create an account</span>
-    <span class="sign-up-page__login-description">Start scheduling meetings with worldwide teams.</span>
+    <span class="sign-up-page__form-title">Create an account</span>
+    <span class="sign-up-page__form-description">Start scheduling meetings with worldwide teams.</span>
     <form class="t-form" {{on 'submit' this.signUp}}>
       <TInput
         class="sign-up-page__input"
@@ -44,13 +44,13 @@
         @onChange={{fn (mut this.passwordConfirmation)}}
         @cleanError={{fn this.cleanError 'passwordConfirmationError'}}
       />
-      <div class="sign-up-page__log-in-actions">
+      <div class="sign-up-page__form-actions">
         {{#if this.errorMessage}}
           <span class="response-error">{{this.errorMessage}}</span>
         {{/if}}
         <TButton
           @type="submit"
-          @class="sign-up-page__log-in-button"
+          @class="sign-up-page__form-button"
           @action={{this.signUp}}
           @label="Sign up"
           @color="green"
@@ -58,7 +58,7 @@
         <LinkTo
           @route="login"
           data-test="login-link"
-          @class="sign-up-page__sign-up-label"
+          @class="sign-up-page__login-label"
         >
           Already have an account? Log in
         </LinkTo>
