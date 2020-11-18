@@ -19,7 +19,7 @@ module('Desktop | Complete Test', function (hooks) {
     await fillIn(inputs[2], 'mysecretpassword');
     await fillIn(inputs[3], 'mysecretpassword');
 
-    await click('.sign-up-page__log-in-button');
+    await click('.sign-up-page__form-button');
 
     assert.dom('.verify-email-modal').exists();
     assert.equal(
@@ -40,7 +40,7 @@ module('Desktop | Complete Test', function (hooks) {
 
     await fillIn(inputs[0], 'Jhon');
     await fillIn(inputs[1], 'mysecretpassword');
-    await click('.login-page__log-in-button');
+    await click('.login-page__form-button');
 
     assert.equal(currentURL(), '/');
 

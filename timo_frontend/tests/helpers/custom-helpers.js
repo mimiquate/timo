@@ -7,7 +7,7 @@ export async function loginAs(username, password) {
 
   await fillIn(inputs[0], username);
   await fillIn(inputs[1], password);
-  return click('.login-page__log-in-button');
+  return click('.login-page__form-button');
 }
 
 export function setSession(user) {
@@ -40,7 +40,7 @@ export async function signUp(username, password, passwordConfirmation, email) {
   await fillIn(inputs[2], password);
   await fillIn(inputs[3], passwordConfirmation);
 
-  return click('.sign-up-page__log-in-button');
+  return click('.sign-up-page__form-button');
 }
 
 export function invalidUserServerPost() {
