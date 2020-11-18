@@ -17,8 +17,6 @@ export default class LandingTeamsTeamController extends Controller {
   @service media;
   @service session;
 
-  @tracked isMobile = this.media.isMobile;
-  @tracked memberToEdit = null;
   @tracked newMemberModal = false;
   @tracked showShareModal = false;
   @tracked showMemberListModal = false;
@@ -47,25 +45,25 @@ export default class LandingTeamsTeamController extends Controller {
 
   @computed('model.teams.[]')
   get sortedTeams() {
-    const teamsToArray = this.model.teams.toArray();
+    const teams = this.model.teams.toArray();
 
-    return teamsToArray.sort(compareTeamsByCreationTime);
+    return teams.sort(compareTeamsByCreationTime);
   }
 
   @computed('savedMembers.{[],@each.name,@each.timezone}')
   get sortedMembers() {
-    const membersToArray = this.savedMembers.toArray();
-    membersToArray.sort(compareMemberTimeZones);
+    const members = this.savedMembers.toArray();
+    members.sort(compareMemberTimeZones);
 
     const timezoneNow = guessTimezoneNow();
-    membersToArray.unshiftObject({
+    members.unshiftObject({
       name: 'You',
       isCurrentUser: true,
       timezone: timezoneNow,
       id: 'current'
     });
 
-    return membersToArray;
+    return members;
   }
 
   @computed('sortedMembers.[]', 'isGrouped', 'media')
