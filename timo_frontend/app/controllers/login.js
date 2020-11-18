@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 import { Changeset } from 'ember-changeset';
 import { loginValidator } from 'timo-frontend/validators/user';
 import lookupValidator from 'ember-changeset-validations';
+import { showErrors, cleanErrors } from 'timo-frontend/utils/errors-handler'
 
 export default class LoginController extends Controller {
   @service session;
@@ -16,18 +17,6 @@ export default class LoginController extends Controller {
   @tracked usernameError = '';
   @tracked errorMessage = '';
 
-  showErrors(errors) {
-    errors.forEach(field => {
-      set(this, `${field.key}Error`, field.validation[0]);
-    });
-  }
-
-  cleanErrors() {
-    this.errorMessage = '';
-    this.usernameError = '';
-    this.passwordError = '';
-  }
-
   @action
   cleanError(error) {
     set(this, error, '');
@@ -36,7 +25,9 @@ export default class LoginController extends Controller {
   @action
   async logIn(e) {
     e.preventDefault();
-    this.cleanErrors();
+
+    const errors = ['errorMessage', 'usernameError', 'passwordError'];
+    cleanErrors.call(this, errors);
 
     const username = this.username.trim();
     const password = this.password.trim();
@@ -63,7 +54,7 @@ export default class LoginController extends Controller {
           }
         });
     } else {
-      this.showErrors(changeset.errors);
+      showErrors.call(this, changeset.errors);
     }
   }
 }
