@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import {
   compareMemberTimeZones,
   compareTeamsByCreationTime,
-  createNewRows
+  createRows
 } from 'timo-frontend/utils/timezone-functions';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
@@ -70,7 +70,7 @@ export default class LandingTeamsTeamController extends Controller {
 
   @computed('sortedMembers.[]', 'isGrouped', 'media')
   get timezones() {
-    return createNewRows(this.sortedMembers, this.isGrouped, this.media.isMobile);
+    return createRows(this.sortedMembers, this.isGrouped, this.media.isMobile);
   }
 
   @computed('timezones')
