@@ -8,7 +8,7 @@ import { tracked } from '@glimmer/tracking';
 import { isPresent } from '@ember/utils';
 import { showErrors, cleanErrors } from 'timo-frontend/utils/errors-handler'
 
-export default class MemberModalComponent extends Component {
+export default class AddMemberModalComponent extends Component {
   @tracked name = '';
   @tracked timezone = '';
   @tracked nameError = '';

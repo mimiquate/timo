@@ -3,7 +3,7 @@ import copyTextToClipboard from 'timo-frontend/utils/copy-text-to-clipboard';
 import { computed, action } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 
-export default class ShareModalComponent extends Component {
+export default class ShareTeamModalComponent extends Component {
   get title() {
     return `Share "${this.args.team.name}"`;
   }

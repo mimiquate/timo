@@ -9,7 +9,7 @@ import { isPresent } from '@ember/utils';
 import moment from 'moment';
 import { showErrors, cleanErrors } from 'timo-frontend/utils/errors-handler'
 
-export default class MemberModalComponent extends Component {
+export default class ListMembersModalComponent extends Component {
   @tracked showList = true;
   @tracked showDeleteConfirmation = false;
   @tracked memberToEdit = null;
