@@ -16,24 +16,19 @@ export default class PublicTeamTeamUrlController extends Controller {
   @tracked isShowingCalendarPopover = false;
   @tracked showAccountOptions = false;
 
-  @computed('model.members.{[],@each.id}')
-  get savedMembers() {
-    return this.model.members.filterBy('id');
-  }
-
-  @computed('savedMembers.{[],@each.name,@each.timezone}')
+  @computed('model.members.{[],@each.id,@each.name,@each.timezone}')
   get sortedMembers() {
-    const membersToArray = this.savedMembers.toArray();
-    membersToArray.sort(compareMemberTimeZones);
+    const members = this.model.members.filterBy('id').toArray();
+    members.sort(compareMemberTimeZones);
 
     const timezoneNow = guessTimezoneNow();
-    membersToArray.unshiftObject({
+    members.unshiftObject({
       name: 'You',
       timezone: timezoneNow,
       id: 'current'
     });
 
-    return membersToArray;
+    return members;
   }
 
   @computed('sortedMembers.[]', 'isGrouped', 'media')
