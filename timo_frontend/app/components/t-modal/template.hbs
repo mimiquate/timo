@@ -3,8 +3,8 @@
   @translucentOverlay={{true}}
   @containerClass="t-modal"
 >
-  {{#if (and @action @actionLabel)}}
-    <form class="t-form" {{on 'submit' @action}}>
+  {{#if (and @onSubmit @actionLabel)}}
+    <form class="t-form" {{on 'submit' @onSubmit}}>
       <div class="t-modal__content {{@modalClass}}">
         <span class="t-modal__title">
           {{@title}}
@@ -31,7 +31,7 @@
           type="submit"
           class="t-modal__button green"
           data-test="save-button"
-          {{on "click" @action}}
+          {{on "click" @onSubmit}}
         >
           {{@actionLabel}}
         </button>
