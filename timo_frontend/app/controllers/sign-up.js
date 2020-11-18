@@ -26,11 +26,6 @@ export default class SignUpController extends Controller {
     });
   }
 
-  @action
-  cleanError(error) {
-    set(this, error, '');
-  }
-
   cleanInputs() {
     this.password = '';
     this.username = '';
@@ -43,6 +38,11 @@ export default class SignUpController extends Controller {
     this.usernameError = '';
     this.passwordConfirmationError = '';
     this.emailError = '';
+  }
+
+  @action
+  cleanError(error) {
+    set(this, error, '');
   }
 
   @action
