@@ -5,6 +5,7 @@ import { Changeset } from 'ember-changeset';
 import { signUpValidator } from 'timo-frontend/validators/user';
 import lookupValidator from 'ember-changeset-validations';
 import { inject as service } from '@ember/service';
+import { showErrors, cleanErrors } from 'timo-frontend/utils/errors-handler'
 
 export default class SignUpController extends Controller {
   @service media;
@@ -20,17 +21,6 @@ export default class SignUpController extends Controller {
   @tracked errorMessage = '';
   @tracked showEmailVerificationModal = false;
 
-  showErrors(errors) {
-    errors.forEach(field => {
-      set(this, `${field.key}Error`, field.validation[0]);
-    });
-  }
-
-  @action
-  cleanError(error) {
-    set(this, error, '');
-  }
-
   cleanInputs() {
     this.password = '';
     this.username = '';
@@ -38,11 +28,9 @@ export default class SignUpController extends Controller {
     this.email = '';
   }
 
-  cleanErrors() {
-    this.passwordError = '';
-    this.usernameError = '';
-    this.passwordConfirmationError = '';
-    this.emailError = '';
+  @action
+  cleanError(error) {
+    set(this, error, '');
   }
 
   @action
@@ -53,7 +41,9 @@ export default class SignUpController extends Controller {
   @action
   async signUp(e) {
     e.preventDefault();
-    this.cleanErrors();
+
+    const errors = ['passwordError', 'usernameError', 'passwordConfirmationError', 'emailError'];
+    cleanErrors.call(this, errors);
 
     const username = this.username.trim();
     const email = this.email.trim();
@@ -81,12 +71,12 @@ export default class SignUpController extends Controller {
       await user.save()
         .then(() => {
           this.showEmailVerificationModal = true;
-          this.cleanErrors();
+          cleanErrors.call(this, errors);
           this.cleanInputs();
         })
         .catch(() => this.errorMessage = 'That username is already taken');
     } else {
-      this.showErrors(changeset.errors);
+      showErrors.call(this, changeset.errors);
     }
   }
 }

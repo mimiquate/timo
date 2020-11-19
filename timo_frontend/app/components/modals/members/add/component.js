@@ -6,6 +6,7 @@ import memberValidator from 'timo-frontend/validators/member';
 import lookupValidator from 'ember-changeset-validations';
 import { tracked } from '@glimmer/tracking';
 import { isPresent } from '@ember/utils';
+import { showErrors, cleanErrors } from 'timo-frontend/utils/errors-handler'
 
 export default class MemberModalComponent extends Component {
   @tracked name = '';
@@ -14,17 +15,6 @@ export default class MemberModalComponent extends Component {
   @tracked timezoneError = '';
 
   timezoneList = moment.tz.names();
-
-  showErrors(errors) {
-    errors.forEach(field => {
-      set(this, `${field.key}Error`, field.validation[0]);
-    });
-  }
-
-  cleanErrors() {
-    this.nameError = '';
-    this.timezoneError = '';
-  }
 
   @action
   cleanError(error) {
@@ -43,7 +33,8 @@ export default class MemberModalComponent extends Component {
   @action
   async add(e) {
     e.preventDefault();
-    this.cleanErrors();
+    const errors = ['nameError', 'timezoneError'];
+    cleanErrors.call(this, errors);
 
     const name = this.name.trim();
     const timezone = this.timezone;
@@ -58,7 +49,7 @@ export default class MemberModalComponent extends Component {
     if (changeset.isValid) {
       this.args.addOrUpdateMember(name, timezone);
     } else {
-      this.showErrors(changeset.errors);
+      showErrors.call(this, changeset.errors);
     }
   }
 }

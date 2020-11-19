@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import {
   compareMemberTimeZones,
   compareTeamsByCreationTime,
-  createNewRows
+  createRows
 } from 'timo-frontend/utils/timezone-functions';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
@@ -17,8 +17,6 @@ export default class LandingTeamsTeamController extends Controller {
   @service media;
   @service session;
 
-  @tracked isMobile = this.media.isMobile;
-  @tracked memberToEdit = null;
   @tracked newMemberModal = false;
   @tracked showShareModal = false;
   @tracked showMemberListModal = false;
@@ -47,30 +45,30 @@ export default class LandingTeamsTeamController extends Controller {
 
   @computed('model.teams.[]')
   get sortedTeams() {
-    const teamsToArray = this.model.teams.toArray();
+    const teams = this.model.teams.toArray();
 
-    return teamsToArray.sort(compareTeamsByCreationTime);
+    return teams.sort(compareTeamsByCreationTime);
   }
 
   @computed('savedMembers.{[],@each.name,@each.timezone}')
   get sortedMembers() {
-    const membersToArray = this.savedMembers.toArray();
-    membersToArray.sort(compareMemberTimeZones);
+    const members = this.savedMembers.toArray();
+    members.sort(compareMemberTimeZones);
 
     const timezoneNow = guessTimezoneNow();
-    membersToArray.unshiftObject({
+    members.unshiftObject({
       name: 'You',
       isCurrentUser: true,
       timezone: timezoneNow,
       id: 'current'
     });
 
-    return membersToArray;
+    return members;
   }
 
   @computed('sortedMembers.[]', 'isGrouped', 'media')
   get timezones() {
-    return createNewRows(this.sortedMembers, this.isGrouped, this.media.isMobile);
+    return createRows(this.sortedMembers, this.isGrouped, this.media.isMobile);
   }
 
   @computed('timezones')

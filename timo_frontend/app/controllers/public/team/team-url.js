@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
-import { compareMemberTimeZones, createNewRows } from 'timo-frontend/utils/timezone-functions';
+import { compareMemberTimeZones, createRows } from 'timo-frontend/utils/timezone-functions';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
@@ -16,29 +16,24 @@ export default class PublicTeamTeamUrlController extends Controller {
   @tracked isShowingCalendarPopover = false;
   @tracked showAccountOptions = false;
 
-  @computed('model.members.{[],@each.id}')
-  get savedMembers() {
-    return this.model.members.filterBy('id');
-  }
-
-  @computed('savedMembers.{[],@each.name,@each.timezone}')
+  @computed('model.members.{[],@each.id,@each.name,@each.timezone}')
   get sortedMembers() {
-    const membersToArray = this.savedMembers.toArray();
-    membersToArray.sort(compareMemberTimeZones);
+    const members = this.model.members.filterBy('id').toArray();
+    members.sort(compareMemberTimeZones);
 
     const timezoneNow = guessTimezoneNow();
-    membersToArray.unshiftObject({
+    members.unshiftObject({
       name: 'You',
       timezone: timezoneNow,
       id: 'current'
     });
 
-    return membersToArray;
+    return members;
   }
 
   @computed('sortedMembers.[]', 'isGrouped', 'media')
   get timezones() {
-    return createNewRows(this.sortedMembers, this.isGrouped, this.media.isMobile);
+    return createRows(this.sortedMembers, this.isGrouped, this.media.isMobile);
   }
 
   @computed('timezones')

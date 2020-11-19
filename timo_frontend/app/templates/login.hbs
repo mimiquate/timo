@@ -7,8 +7,8 @@
   {{/unless}}
   <div class="login-page__form-container">
     <img src="/images/appicon-signup.png" alt="timo landing appicon">
-    <span class="login-page__login-title">Log in</span>
-    <span class="login-page__login-description">Start scheduling meetings with worldwide teams.</span>
+    <span class="login-page__form-title">Log in</span>
+    <span class="login-page__form-description">Start scheduling meetings with worldwide teams.</span>
     <form class="t-form" {{on 'submit' this.logIn}}>
       <TInput
         class="login-page__input"
@@ -27,14 +27,14 @@
         @onChange={{fn (mut this.password)}}
         @cleanError={{fn this.cleanError 'passwordError'}}
       />
-      <div class="login-page__log-in-actions">
+      <div class="login-page__form-actions">
         {{#if this.errorMessage}}
           <span class="response-error">{{this.errorMessage}}</span>
         {{/if}}
         <TButton
           @type="submit"
           @action={{this.logIn}}
-          @class="login-page__log-in-button"
+          @class="login-page__form-button"
           @label="Log in"
           @color="green"
         />

@@ -131,7 +131,7 @@ button {
     }
   }
 
-  &__login-title {
+  &__form-title {
     text-align: center;
     font-weight: bold;
     font-size: 25px;
@@ -139,7 +139,7 @@ button {
     margin-top: 26px;
   }
 
-  &__login-description {
+  &__form-description {
     width: max-content;
     text-align: center;
     font-weight: bold;
@@ -155,7 +155,7 @@ button {
     }
   }
 
-  &__log-in-button {
+  &__form-button {
     margin-left: auto;
     margin-right: auto;
     padding: 9px 75px;
@@ -166,7 +166,7 @@ button {
     margin-bottom: 45px;
   }
 
-  &__sign-up-label {
+  &__sign-up-label, &__login-label {
     font-size: 14px;
     color: $green;
     margin-top: 13px;
@@ -187,7 +187,7 @@ button {
     }
   }
 
-  &__log-in-actions {
+  &__form-actions {
     width: 100%;
     align-items: center;
     position: relative;

@@ -7,6 +7,7 @@ import lookupValidator from 'ember-changeset-validations';
 import { fadeOut, fadeIn } from 'ember-animated/motions/opacity';
 import { isPresent } from '@ember/utils';
 import moment from 'moment';
+import { showErrors, cleanErrors } from 'timo-frontend/utils/errors-handler'
 
 export default class MemberModalComponent extends Component {
   @tracked showList = true;
@@ -26,24 +27,14 @@ export default class MemberModalComponent extends Component {
     yield removedSprites.forEach(fadeOut);
   }
 
-  showErrors(errors) {
-    errors.forEach(field => {
-      set(this, `${field.key}Error`, field.validation[0]);
-    });
-  }
-
-  cleanErrors() {
-    this.nameError = '';
-    this.timezoneError = '';
-  }
-
   @action
   showEdit(member) {
     const changeset = Changeset(member, lookupValidator(memberValidator), memberValidator);
+    const errors = ['nameError', 'timezoneError'];
 
     this.memberChangeset = changeset;
     this.showList = false;
-    this.cleanErrors();
+    cleanErrors.call(this, errors);
   }
 
   @action
@@ -79,7 +70,10 @@ export default class MemberModalComponent extends Component {
   @action
   async updateMember(e) {
     e.preventDefault();
-    this.cleanErrors();
+
+    const errors = ['nameError', 'timezoneError'];
+    cleanErrors.call(this, errors);
+
     const changeset = this.memberChangeset;
 
     await changeset.validate();
@@ -88,7 +82,7 @@ export default class MemberModalComponent extends Component {
       changeset.save();
       this.closeEdit();
     } else {
-      this.showErrors(changeset.errors);
+      showErrors.call(this, changeset.errors);
     }
   }
 

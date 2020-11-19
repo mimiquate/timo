@@ -40,7 +40,7 @@ export function addMoreHours(amount, index, timezones, currentIndex) {
   }
 }
 
-export function createNewRows(sortedMembers, isGrouped, rowsFromMobile) {
+export function createRows(sortedMembers, isGrouped, rowsFromMobile) {
   let amountOfLeftBoxes = 0;
 
   if (rowsFromMobile) {
