@@ -15,8 +15,9 @@ module('Unit | Route | index', function (hooks) {
   });
 
   test('Redirects to landing with existing username', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+
+    setSession.call(this, user);
 
     await visit('/');
 
@@ -26,12 +27,13 @@ module('Unit | Route | index', function (hooks) {
   });
 
   test('Redirects to first team', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    setSession.call(this, user);
 
     await visit('/');
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}`);
+    assert.equal(currentURL(), `/teams/${team.id}`);
   });
 });
