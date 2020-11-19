@@ -15,8 +15,11 @@ module('Acceptance | Public Team', function (hooks) {
 
   function setGETTeamsHandler(server) {
     server.get('/teams', function (schema, request) {
-      let share_id = request.queryParams['filter[share_id]'];
-      let team = schema.teams.findBy({ share_id: share_id, public: true });
+      const share_id = request.queryParams['filter[share_id]'];
+      const team = schema.teams.findBy({
+        share_id,
+        public: true
+      });
 
       return team;
     }, 200);
@@ -33,15 +36,15 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Visiting /p/team/:share_id with private team', async function (assert) {
     this.server.get('/teams', { errors: [{ detail: 'Not Found' }] }, 404);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: false,
       share_id: 'yjHktCOyBDTb'
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     assert.dom('.not-found').exists('Visits team page error');
     assert.dom('.not-found__image').exists();
@@ -50,15 +53,15 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Visiting /p/team/:share_id with public team and no members', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     assert.dom('[data-test=team-title]').exists('New team title page loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
@@ -91,38 +94,39 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Visiting /p/team/:share_id with existing team and members', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
-      team: newTeam
+      team
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
 
-    const timezoneDivs = findAll('.timezone-list__row');
-    assert.equal(timezoneDivs.length, 2, 'Has two timezones');
+    const timezoneRows = findAll('.timezone-list__row');
 
+    assert.equal(timezoneRows.length, 2, 'Has two timezones');
     assert.equal(
       find('.shared-team-header__details').textContent.trim(),
       '3 Members'
     );
 
     const timezoneLocations = findAll('.timezone-list__location');
+
     assert.equal(
       timezoneLocations[0].textContent.trim(),
       'America, Montevideo',
@@ -176,25 +180,25 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Visiting /p/team/:share_id with members sorted', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'Europe/Rome',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
-      team: newTeam
+      team
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(
@@ -216,20 +220,20 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Visit public and group timezones', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
-      team: newTeam
+      team
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     let timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
@@ -247,25 +251,25 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Group 2 timezones into another', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Argentina/Buenos_Aires',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
-      team: newTeam
+      team
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 3, 'Correct amount of timezones');
@@ -287,10 +291,10 @@ module('Acceptance | Public Team', function (hooks) {
 
     await click('.timezone-list__group-timezones .t-checkbox');
 
-    const newTimezoneLocations = findAll('.timezone-list__location');
-    assert.equal(newTimezoneLocations.length, 1, 'Correct amount of timezones');
+    const groupedTimezones = findAll('.timezone-list__location');
+    assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
-      newTimezoneLocations[0].textContent.trim(),
+      groupedTimezones[0].textContent.trim(),
       'America, Montevideo + America, Argentina, Buenos Aires + 1 other timezone',
       'Correct grouped location'
     );
@@ -298,30 +302,30 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Group 3 timezones into another', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Argentina/Buenos_Aires',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 3',
       timezone: 'America/Cordoba',
-      team: newTeam
+      team
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 4, 'Correct amount of timezones');
@@ -348,10 +352,10 @@ module('Acceptance | Public Team', function (hooks) {
 
     await click('.timezone-list__group-timezones .t-checkbox');
 
-    const newTimezoneLocations = findAll('.timezone-list__location');
-    assert.equal(newTimezoneLocations.length, 1, 'Correct amount of timezones');
+    const groupedTimezones = findAll('.timezone-list__location');
+    assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
-      newTimezoneLocations[0].textContent.trim(),
+      groupedTimezones[0].textContent.trim(),
       'America, Montevideo + America, Argentina, Buenos Aires + 2 other timezones',
       'Correct grouped location'
     );
@@ -359,25 +363,25 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Cant see group timezones if there is no timezone to group', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'Asia/Ho_Chi_Minh',
-      team: newTeam
+      team
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
@@ -397,15 +401,15 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Opens google calendar when clicking time box and closes it', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
     await click('.timezone-list__selected');
 
     const calendarPopverLabel = find('.google-calendar-popover__label');
@@ -422,10 +426,10 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Schedule event in google calendar', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
@@ -440,7 +444,7 @@ module('Acceptance | Public Team', function (hooks) {
     const calendarDate = `dates=${timeFormat}T${startHour}0000/${timeFormat}T${endHour}0000`;
     const calendarUrl = `${calendarBase}${calendarDate}`;
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     window.open = (urlToOpen) => {
       assert.equal(
@@ -456,15 +460,15 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Select box changes selected time', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     let time = moment.tz('America/Montevideo').startOf('hour');
 
@@ -502,15 +506,15 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('User can login if is not logged', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     assert.dom('[data-test=log-in]').exists();
     assert.dom('[data-test=log-in]').hasText('Log in');
@@ -522,15 +526,15 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('User can sign up if is not logged', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     assert.dom('[data-test=create-account]').exists();
     assert.dom('[data-test=create-account]').hasText('Create Account');
@@ -542,16 +546,17 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Login and SignUp button doesnt appear if user is logged', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
-    setSession.call(this, newUser);
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    setSession.call(this, user);
+
+    await visit(`/p/team/${team.share_id}`);
 
     assert.dom('[data-test=log-in]').doesNotExist();
     assert.dom('[data-test=create-account]').doesNotExist();
@@ -567,15 +572,15 @@ module('Acceptance | Public Team', function (hooks) {
 
   test('Select box to the right of selected adds more boxes', async function (assert) {
     setGETTeamsHandler(this.server);
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
       name: 'Team',
-      user: newUser,
+      user,
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
 
-    await visit(`/p/team/${newTeam.share_id}`);
+    await visit(`/p/team/${team.share_id}`);
 
     let timezoneHours = findAll('.timezone-list__hour');
     let selectedIndex = timezoneHours.findIndex(h => {
