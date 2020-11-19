@@ -16,6 +16,7 @@ module('Acceptance | Login', function (hooks) {
 
   test('Visiting /login with existing username', async function (assert) {
     const user = this.server.create('user', { username: 'juan' });
+
     setSession.call(this, user);
 
     await visit('/login');

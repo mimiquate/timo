@@ -18,6 +18,7 @@ module('Acceptance | New team', function (hooks) {
 
   hooks.beforeEach(function() {
     const user = this.server.create('user', { username: 'juan' });
+
     setSession.call(this, user);
   });
 

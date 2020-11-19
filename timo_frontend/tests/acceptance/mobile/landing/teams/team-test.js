@@ -148,6 +148,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
     const team = this.server.create('team', { name: 'Team', user });
 
     setSession.call(this, user);
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
@@ -198,6 +199,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
     const team = this.server.create('team', { name: 'Team', user, public: false });
 
     setSession.call(this, user);
+
     this.server.patch('/teams/:id', function ({ teams }, request) {
       let { data } = JSON.parse(request.requestBody);
       let team = teams.findBy({ id: data.id });
@@ -269,6 +271,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
       timezone: 'America/Buenos_Aires',
       team
     });
+
     setSession.call(this, user);
 
     await visit(`/teams/${team.id}`);

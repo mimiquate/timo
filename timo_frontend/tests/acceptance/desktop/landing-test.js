@@ -17,6 +17,7 @@ module('Acceptance | Landing', function (hooks) {
 
   test('Visiting / (landing) with existing username', async function (assert) {
     const user = this.server.create('user', { username: 'juan' });
+
     setSession.call(this, user);
 
     await visit('/');
@@ -50,6 +51,7 @@ module('Acceptance | Landing', function (hooks) {
   test('Clicks username and then logouts', async function (assert) {
     const store = this.owner.lookup('service:store');
     const user = this.server.create('user', { username: 'juan', store });
+
     setSession.call(this, user);
 
     await visit('/');

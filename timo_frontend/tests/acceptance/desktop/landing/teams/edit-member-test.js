@@ -87,7 +87,6 @@ module('Acceptance | Update member', function (hooks) {
   test('Updates member with time zone but with only whitespace name error', async function (assert) {
     await visit(`/teams/${this.team.id}`);
     await click('.team-header__details');
-    await click('.team-header__details');
 
     assert.dom(find('.member-list__modal'));
 

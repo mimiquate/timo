@@ -190,16 +190,18 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Team with member in users current timezone', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    setSession.call(this, user);
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${team.id}`);
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 1, 'Only one timezone');
@@ -280,6 +282,7 @@ module('Acceptance | Team', function (hooks) {
       timezone: 'America/Buenos_Aires',
       team
     });
+
     setSession.call(this, user);
 
     await visit(`/teams/${team.id}`);
@@ -308,6 +311,7 @@ module('Acceptance | Team', function (hooks) {
       timezone: 'America/Buenos_Aires',
       team
     });
+
     setSession.call(this, user);
 
     await visit(`/teams/${team.id}`);
@@ -413,6 +417,7 @@ module('Acceptance | Team', function (hooks) {
       timezone: 'Asia/Ho_Chi_Minh',
       team
     });
+
     setSession.call(this, user);
 
     await visit(`/teams/${team.id}`);
@@ -655,6 +660,7 @@ module('Acceptance | Team', function (hooks) {
   test('Opens delete team modal', async function (assert) {
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', { name: 'Team', user });
+
     setSession.call(this, user);
 
     await visit('/');
