@@ -23,8 +23,8 @@ module('Acceptance | Sign-up', function (hooks) {
   });
 
   test('Visiting /sign-up with existing username', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    setSession.call(this, user);
 
     await visit('/sign-up');
 
@@ -122,7 +122,7 @@ module('Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', '', 'password', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -135,7 +135,7 @@ module('Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', 'password', '', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -148,7 +148,7 @@ module('Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('123', 'password', 'password', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page after all attempts');
     assert.ok(
@@ -161,7 +161,7 @@ module('Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', '1234567', '1234567', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -174,7 +174,7 @@ module('Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', 'password', 'password2', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -187,7 +187,7 @@ module('Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('    ', 'password', 'password', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -200,7 +200,7 @@ module('Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', '        ', '        ', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
 
@@ -212,7 +212,7 @@ module('Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', 'password', 'password', '');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -225,7 +225,7 @@ module('Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', 'password', 'password', '     ');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
