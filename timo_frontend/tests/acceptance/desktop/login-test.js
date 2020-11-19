@@ -15,8 +15,9 @@ module('Acceptance | Login', function (hooks) {
   });
 
   test('Visiting /login with existing username', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+
+    setSession.call(this, user);
 
     await visit('/login');
 
@@ -59,7 +60,7 @@ module('Acceptance | Login', function (hooks) {
     await visit('/login');
     await loginAs('', 'password');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/login', 'Stays in login page');
     assert.ok(
@@ -72,7 +73,7 @@ module('Acceptance | Login', function (hooks) {
     await visit('/login');
     await loginAs('     ', 'password');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/login', 'Stays in login page after unsuccessful login');
     assert.ok(
@@ -85,7 +86,7 @@ module('Acceptance | Login', function (hooks) {
     await visit('/login');
     await loginAs('juan', '');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/login', 'Stays in login page');
     assert.ok(

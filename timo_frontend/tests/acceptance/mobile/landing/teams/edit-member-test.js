@@ -9,21 +9,26 @@ module('Mobile | Acceptance | Update member', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  hooks.beforeEach(() => {
+  hooks.beforeEach(function() {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    this.user = user;
+    this.team = team;
+
+    setSession.call(this, this.user);
+
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'America/Montevideo',
+      team
+    });
+
     setBreakpoint('mobile');
   });
 
   test('Updates member', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${this.team.id}`);
     await click('.team-header__details');
     await click('[data-test=modal-edit-member]');
 
@@ -43,16 +48,7 @@ module('Mobile | Acceptance | Update member', function (hooks) {
   });
 
   test('Updates member with time zone but with only whitespace name error', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${this.team.id}`);
     await click('.team-header__details');
 
     assert.dom(find('.member-list__modal'));
@@ -74,20 +70,11 @@ module('Mobile | Acceptance | Update member', function (hooks) {
   });
 
   test('Remove member from team', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${this.team.id}`);
     await click('.team-header__details');
 
     let members = findAll('.member-list__member__name');
-    let timezones = findAll('.member-list__member__timezone');
+    const timezones = findAll('.member-list__member__timezone');
 
     assert.equal(members.length, 2);
     assert.equal(members[0].textContent.trim(), 'You');

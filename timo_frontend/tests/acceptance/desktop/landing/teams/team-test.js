@@ -20,18 +20,19 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Visiting /teams/team with existing username and no members', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
 
-    await visit(`/teams/${newTeam.id}`);
+    setSession.call(this, user);
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Correctly visits team page');
+    await visit(`/teams/${team.id}`);
+
+    assert.equal(currentURL(), `/teams/${team.id}`, 'Correctly visits team page');
     assert.dom('[data-test=team-title]').exists('New team title page loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
 
-    const timezoneDivs = findAll('.timezone-list__row');
-    assert.equal(timezoneDivs.length, 1, 'Has only one timezone, the one from the user');
+    const timezoneRows = findAll('.timezone-list__row');
+    assert.equal(timezoneRows.length, 1, 'Has only one timezone, the one from the user');
 
     const timezoneLocation = find('.timezone-list__location');
     assert.equal(
@@ -41,10 +42,10 @@ module('Acceptance | Team', function (hooks) {
     );
 
     const timeNow = moment.tz('America/Montevideo').startOf('hour');
-    const timezoneRowDate = find('.timezone-list__date');
+    const timezoneDate = find('.timezone-list__date');
     const expectedDate = timeNow.format('dddd, DD MMMM YYYY, HH:mm');
 
-    assert.ok(timezoneRowDate.textContent.includes(expectedDate), 'Correct row date');
+    assert.ok(timezoneDate.textContent.includes(expectedDate), 'Correct row date');
     assert.ok(find('.timezone-list__members').textContent.includes('You'), 'Correct row members');
 
     const timezoneHours = findAll('.timezone-list__hour');
@@ -56,28 +57,30 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Visiting /teams/team with existing username and members', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    setSession.call(this, user);
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
-      team: newTeam
+      team
     });
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${team.id}`);
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Correctly visits team page');
+    assert.equal(currentURL(), `/teams/${team.id}`, 'Correctly visits team page');
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
 
-    const timezoneDivs = findAll('.timezone-list__row');
-    assert.equal(timezoneDivs.length, 2, 'Has two timezones');
+    const timezoneRows = findAll('.timezone-list__row');
+    assert.equal(timezoneRows.length, 2, 'Has two timezones');
     assert.equal(
       find('.team-header__details').textContent.trim(),
       '3 Members'
@@ -136,21 +139,23 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Visiting /teams/team with members sorted', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    setSession.call(this, user);
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'Europe/Rome',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
-      team: newTeam
+      team
     });
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${team.id}`);
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(
@@ -171,11 +176,12 @@ module('Acceptance | Team', function (hooks) {
   })
 
   test('Clicks button to add member', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
 
-    await visit(`/teams/${newTeam.id}`);
+    setSession.call(this, user);
+
+    await visit(`/teams/${team.id}`);
     await click('[data-test=add-member-button]');
 
     assert.dom('.t-modal').exists('Correctly opens new member modal');
@@ -184,16 +190,18 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Team with member in users current timezone', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    setSession.call(this, user);
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${team.id}`);
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 1, 'Only one timezone');
@@ -211,11 +219,12 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Clicks share button', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser, public: false });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user, public: false });
 
-    await visit(`/teams/${newTeam.id}`);
+    setSession.call(this, user);
+
+    await visit(`/teams/${team.id}`);
     await click('[data-test=share-button]');
 
     assert.equal(find('.t-modal__title').textContent.trim(), `Share "Team"`, 'Modal has content');
@@ -229,50 +238,54 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Clicks share button and change public', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser, public: false });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user, public: false });
+
+    setSession.call(this, user);
+
     this.server.patch('/teams/:id', function ({ teams }, request) {
-      let { data } = JSON.parse(request.requestBody);
-      let team = teams.findBy({ id: data.id });
-      let public_flag = data.attributes.public;
-      let share_id = public_flag ? 'yjHktCOyBDTb' : null;
+      const { data } = JSON.parse(request.requestBody);
+      const team = teams.findBy({ id: data.id });
+      const public_flag = data.attributes.public;
+      const share_id = public_flag ? 'yjHktCOyBDTb' : null;
 
       return team.update({
-        share_id: share_id,
+        share_id,
         public: public_flag
       })
     }, 200);
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${team.id}`);
     await click('[data-test=share-button]');
     await click('.share-team__public-container .t-checkbox');
 
     const copyLinkButton = find('.share-team__copy-link-button');
     const shareLink = find('.share-team__link-input input');
 
-    assert.equal(newTeam.public, true, 'Changes view to public');
+    assert.equal(team.public, true, 'Changes view to public');
     assert.notOk(copyLinkButton.disabled, 'Button is enabled');
     assert.ok(shareLink.value.includes('/p/team/yjHktCOyBDTb'), 'Correct link');
 
     await click('.share-team__public-container .t-checkbox');
 
-    assert.equal(newTeam.public, false, 'Changes view to not public');
+    assert.equal(team.public, false, 'Changes view to not public');
     assert.ok(copyLinkButton.attributes.disabled, 'Button is disabled');
     assert.equal(shareLink.value, '', 'Empty link');
   });
 
   test('Visit team with and group timezones', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
-      team: newTeam
+      team
     });
-    setSession.call(this, newUser);
 
-    await visit(`/teams/${newTeam.id}`);
+    setSession.call(this, user);
+
+    await visit(`/teams/${team.id}`);
     await click('.timezone-list__group-timezones .t-checkbox');
 
     const timezoneLocations = findAll('.timezone-list__location');
@@ -285,21 +298,23 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Group 2 timezones into another', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Argentina/Buenos_Aires',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
-      team: newTeam
+      team
     });
-    setSession.call(this, newUser);
 
-    await visit(`/teams/${newTeam.id}`);
+    setSession.call(this, user);
+
+    await visit(`/teams/${team.id}`);
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 3, 'Correct amount of timezones');
@@ -321,36 +336,38 @@ module('Acceptance | Team', function (hooks) {
 
     await click('.timezone-list__group-timezones .t-checkbox');
 
-    const newTimezoneLocations = findAll('.timezone-list__location');
-    assert.equal(newTimezoneLocations.length, 1, 'Correct amount of timezones');
+    const groupedTimezones = findAll('.timezone-list__location');
+    assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
-      newTimezoneLocations[0].textContent.trim(),
+      groupedTimezones[0].textContent.trim(),
       'America, Montevideo + America, Argentina, Buenos Aires + 1 other timezone',
       'Correct grouped location'
     );
   });
 
   test('Group 3 timezones into another', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Argentina/Buenos_Aires',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Buenos_Aires',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 3',
       timezone: 'America/Cordoba',
-      team: newTeam
+      team
     });
-    setSession.call(this, newUser);
 
-    await visit(`/teams/${newTeam.id}`);
+    setSession.call(this, user);
+
+    await visit(`/teams/${team.id}`);
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 4, 'Correct amount of timezones');
@@ -377,31 +394,33 @@ module('Acceptance | Team', function (hooks) {
 
     await click('.timezone-list__group-timezones .t-checkbox');
 
-    const newTimezoneLocations = findAll('.timezone-list__location');
-    assert.equal(newTimezoneLocations.length, 1, 'Correct amount of timezones');
+    const groupedTimezones = findAll('.timezone-list__location');
+    assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
-      newTimezoneLocations[0].textContent.trim(),
+      groupedTimezones[0].textContent.trim(),
       'America, Montevideo + America, Argentina, Buenos Aires + 2 other timezones',
       'Correct grouped location'
     );
   });
 
   test('Cant see group timezones if there is no timezone to group', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'Asia/Ho_Chi_Minh',
-      team: newTeam
+      team
     });
-    setSession.call(this, newUser);
 
-    await visit(`/teams/${newTeam.id}`);
+    setSession.call(this, user);
+
+    await visit(`/teams/${team.id}`);
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
@@ -420,16 +439,18 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Opens google calendar when clicking time box and closes it', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
-    setSession.call(this, newUser);
 
-    await visit(`/teams/${newTeam.id}`);
+    setSession.call(this, user);
+
+    await visit(`/teams/${team.id}`);
     await click('.timezone-list__selected');
 
     const calendarPopverLabel = find('.google-calendar-popover__label');
@@ -445,14 +466,16 @@ module('Acceptance | Team', function (hooks) {
   })
 
   test('Schedule event in google calendar', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
-    setSession.call(this, newUser);
+
+    setSession.call(this, user);
 
     const calendarBase = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Team Team scheduled event&';
     const timeNow = moment();
@@ -464,7 +487,7 @@ module('Acceptance | Team', function (hooks) {
     const calendarDate = `dates=${timeFormat}T${startHour}0000/${timeFormat}T${endHour}0000`;
     const calendarUrl = `${calendarBase}${calendarDate}`;
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${team.id}`);
 
     window.open = (urlToOpen) => {
       assert.equal(
@@ -479,15 +502,16 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Select box changes selected time', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
 
-    await visit(`/teams/${newTeam.id}`);
+    setSession.call(this, user);
 
-    let time = moment.tz('America/Montevideo').startOf('hour');
+    await visit(`/teams/${team.id}`);
 
     const timezoneRowDate = find('.timezone-list__date');
+
+    let time = moment.tz('America/Montevideo').startOf('hour');
     let expectedDate = time.format('dddd, DD MMMM YYYY, HH:mm');
 
     assert.ok(timezoneRowDate.textContent.includes(expectedDate), 'Correct row date');
@@ -497,6 +521,7 @@ module('Acceptance | Team', function (hooks) {
     const selectedIndex = timezoneHours.findIndex(h => {
       return h.classList.contains('timezone-list__selected')
     });
+
     let selectedTimeBox = find('.timezone-list__selected');
     let currentTime = time.format('HH.mm');
 
@@ -512,6 +537,7 @@ module('Acceptance | Team', function (hooks) {
     const newSelectedIndex = timezoneHours.findIndex(h => {
       return h.classList.contains('timezone-list__selected')
     });
+
     selectedTimeBox = find('.timezone-list__selected');
     currentTime = time.format('HH.mm');
 
@@ -520,12 +546,13 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Selected index resets on team change', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let team_1 = this.server.create('team', { name: 'Team 1', user: newUser });
-    let team_2 = this.server.create('team', { name: 'Team 2', user: newUser });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    const teamOne = this.server.create('team', { name: 'Team 1', user });
+    const teamTwo = this.server.create('team', { name: 'Team 2', user });
 
-    await visit(`/teams/${team_1.id}`);
+    setSession.call(this, user);
+
+    await visit(`/teams/${teamOne.id}`);
 
     const timezoneHours = findAll('.timezone-list__hour');
     const selectedIndex = 2 + timezoneHours.findIndex(h => {
@@ -535,12 +562,11 @@ module('Acceptance | Team', function (hooks) {
     await click(timezoneHours[selectedIndex]);
     await click(findAll('.team-list__button')[1]);
 
-    assert.equal(currentURL(), `/teams/${team_2.id}`, 'Verifies team change');
+    assert.equal(currentURL(), `/teams/${teamTwo.id}`, 'Verifies team change');
 
     const selectedTimeBox = find('.timezone-list__selected');
     const newTimezoneHours = findAll('.timezone-list__hour');
     const timezoneRowDate = find('.timezone-list__date');
-
     const time = moment.tz('America/Montevideo').startOf('hour');
     const expectedDate = time.format('dddd, DD MMMM YYYY, HH:mm');
     const currentTime = time.format('HH.mm');
@@ -554,42 +580,43 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Can see the number of members left in each timezone', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    setSession.call(this, user);
 
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 2',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 3',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 4',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 5',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
     this.server.create('member', {
       name: 'Member 6',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
 
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${team.id}`);
 
     const timezoneMembers = find('.timezone-list__members');
 
@@ -600,9 +627,10 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Edit team name', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    setSession.call(this, user);
 
     await visit('/');
     await click('.team-list__button');
@@ -611,9 +639,9 @@ module('Acceptance | Team', function (hooks) {
     assert.dom('.about-team-modal').exists('Opens delete team modal');
     assert.dom('.t-modal__title').hasText('About', 'Correct title');
 
-    const team = find('.t-input input');
+    const teamNameInput = find('.t-input input');
 
-    assert.equal(team.value, newTeam.name);
+    assert.equal(teamNameInput.value, team.name);
 
     await fillIn('.t-input input', '');
     await click('[data-test=save-button]');
@@ -630,9 +658,10 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Opens delete team modal', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    setSession.call(this, user);
 
     await visit('/');
     await click('.team-list__button');
@@ -641,9 +670,9 @@ module('Acceptance | Team', function (hooks) {
     assert.dom('.about-team-modal').exists('Opens delete team modal');
     assert.dom('.t-modal__title').hasText('About', 'Correct title');
 
-    const team = find('.t-input input');
+    const teamNameInput = find('.t-input input');
 
-    assert.equal(team.value, newTeam.name);
+    assert.equal(teamNameInput.value, team.name);
     assert.dom('.about-team-modal__delete-label').hasText('Delete team', 'Cancel button');
 
     await click('.about-team-modal__delete-label');
@@ -662,14 +691,15 @@ module('Acceptance | Team', function (hooks) {
     assert.dom('.about-team-modal').doesNotExist();
     assert.dom('.no-team__label').hasText(`Hi, there, You don’t have any teams yet!`);
 
-    assert.notOk(this.server.db.teams.find(newTeam.id), 'Succesfully deletes team');
+    assert.notOk(this.server.db.teams.find(team.id), 'Succesfully deletes team');
     assert.equal(currentURL(), '/', 'Redirects to landing page');
   })
 
   test('Cancels team deletion', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    setSession.call(this, user);
 
     await visit('/');
     await click('.team-list__button');
@@ -677,13 +707,14 @@ module('Acceptance | Team', function (hooks) {
     await click('.t-modal__close');
 
     assert.dom('.about-team-modal').doesNotExist('Closes delete team modal');
-    assert.ok(this.server.db.teams.find(newTeam.id), 'Team still exists');
+    assert.ok(this.server.db.teams.find(team.id), 'Team still exists');
     assert.equal(currentURL(), '/teams/1', 'Stays in landing page');
   });
 
   test('Clicks button to Add one team and opens new team modal', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+
+    setSession.call(this, user);
 
     await visit('/');
     await click('[data-test=new-team]');
@@ -698,11 +729,12 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Select box to the right of selected adds more boxes', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
 
-    await visit(`/teams/${newTeam.id}`);
+    setSession.call(this, user);
+
+    await visit(`/teams/${team.id}`);
 
     let timezoneHours = findAll('.timezone-list__hour');
     let selectedIndex = timezoneHours.findIndex(h => {

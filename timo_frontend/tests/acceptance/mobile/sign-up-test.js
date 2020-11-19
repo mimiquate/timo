@@ -51,7 +51,7 @@ module('Mobile | Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('', 'password', 'password', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -64,7 +64,7 @@ module('Mobile | Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', '', 'password', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -77,7 +77,7 @@ module('Mobile | Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', 'password', '', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -90,7 +90,7 @@ module('Mobile | Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('123', 'password', 'password', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page after all attempts');
     assert.ok(
@@ -103,7 +103,7 @@ module('Mobile | Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', '1234567', '1234567', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -116,7 +116,7 @@ module('Mobile | Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', 'password', 'password2', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -129,7 +129,7 @@ module('Mobile | Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('    ', 'password', 'password', 'email@timo.com');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(
@@ -142,7 +142,7 @@ module('Mobile | Acceptance | Sign-up', function (hooks) {
     await visit('/sign-up');
     await signUp('username', 'password', 'password', '');
 
-    let errorMessage = this.element.querySelectorAll('.t-input__error');
+    const errorMessage = this.element.querySelectorAll('.t-input__error');
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
     assert.ok(

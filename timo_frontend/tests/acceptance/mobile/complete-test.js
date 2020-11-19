@@ -19,8 +19,8 @@ module('Mobile | Complete Test', function (hooks) {
 
     let inputs = findAll('.sign-up-page__input input');
 
-    await fillIn(inputs[0], 'Jhon');
-    await fillIn(inputs[1], 'jhon@cena.com');
+    await fillIn(inputs[0], 'John');
+    await fillIn(inputs[1], 'john@cena.com');
     await fillIn(inputs[2], 'mysecretpassword');
     await fillIn(inputs[3], 'mysecretpassword');
 
@@ -43,7 +43,7 @@ module('Mobile | Complete Test', function (hooks) {
 
     inputs = findAll('.login-page__input input');
 
-    await fillIn(inputs[0], 'Jhon');
+    await fillIn(inputs[0], 'John');
     await fillIn(inputs[1], 'mysecretpassword');
     await click('.login-page__form-button');
 

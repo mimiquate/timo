@@ -8,17 +8,24 @@ module('Acceptance | Update member', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('Show all members in list', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
+  hooks.beforeEach(function() {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    this.user = user;
+    this.team = team;
+
+    setSession.call(this, this.user);
+
     this.server.create('member', {
       name: 'Member 1',
       timezone: 'America/Montevideo',
-      team: newTeam
+      team
     });
+  });
 
-    await visit(`/teams/${newTeam.id}`);
+  test('Show all members in list', async function (assert) {
+    await visit(`/teams/${this.team.id}`);
     await click('.team-header__details');
     await click('.member-list__edit-icon');
 
@@ -38,16 +45,7 @@ module('Acceptance | Update member', function (hooks) {
   });
 
   test('Updates member', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${this.team.id}`);
     await click('.team-header__details');
     await click('.member-list__edit-icon');
 
@@ -67,16 +65,7 @@ module('Acceptance | Update member', function (hooks) {
   });
 
   test('Updates member pressing enter', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${this.team.id}`);
     await click('.team-header__details');
     await click('.member-list__edit-icon');
 
@@ -96,16 +85,7 @@ module('Acceptance | Update member', function (hooks) {
   });
 
   test('Updates member with time zone but with only whitespace name error', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${this.team.id}`);
     await click('.team-header__details');
 
     assert.dom(find('.member-list__modal'));
@@ -127,16 +107,7 @@ module('Acceptance | Update member', function (hooks) {
   });
 
   test('Remove member from team', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser });
-    this.server.create('member', {
-      name: 'Member 1',
-      timezone: 'America/Montevideo',
-      team: newTeam
-    });
-
-    await visit(`/teams/${newTeam.id}`);
+    await visit(`/teams/${this.team.id}`);
     await click('.team-header__details');
 
     let members = findAll('.member-list__member__name');
