@@ -378,6 +378,7 @@ module('Mobile | Acceptance | Public Team', function (hooks) {
 
   test('User can login if is not logged', async function (assert) {
     setGETTeamsHandler(this.server);
+
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
