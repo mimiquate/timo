@@ -15,11 +15,6 @@ export default class EditTeamModalComponent extends Component {
   @tracked nameError = '';
   @tracked showDeleteConfirmation = false;
 
-  @action
-  cleanError() {
-    this.nameError = '';
-  }
-
   rules({ newItems }) {
     if (newItems[0]) {
       return toLeft;
@@ -29,13 +24,18 @@ export default class EditTeamModalComponent extends Component {
   }
 
   @action
+  cleanError() {
+    this.nameError = '';
+  }
+
+  @action
   toggleDeleteConfirmation() {
     this.showDeleteConfirmation = !this.showDeleteConfirmation;
   }
 
   @action
-  updateTeam(e) {
-    e.preventDefault();
+  updateTeam(event) {
+    event.preventDefault();
     this.cleanError();
     const team = this.teamChangeset;
 

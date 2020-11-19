@@ -38,18 +38,18 @@
         @testSelector="edit-team-button"
         @label="Edit team"
         @inverted={{true}}
-        @action={{@openAboutTeamModal}}
+        @onClick={{@openAboutTeamModal}}
       />
       <TButton
         @testSelector="add-member-button"
         @label="Add members"
-        @action={{@addMember}}
+        @onClick={{@addMember}}
       />
       <TButton
         @color="red"
         @testSelector="share-button"
         @label="Share"
-        @action={{@openShareModal}}
+        @onClick={{@openShareModal}}
       />
     </div>
   {{/if}}

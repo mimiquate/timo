@@ -20,7 +20,7 @@
       />
       <TInput
         class="login-page__input"
-        @type="password"
+        @inputType="password"
         @label="Password"
         @value={{this.password}}
         @error={{this.passwordError}}
@@ -32,8 +32,8 @@
           <span class="response-error">{{this.errorMessage}}</span>
         {{/if}}
         <TButton
-          @type="submit"
-          @action={{this.logIn}}
+          @buttonType="submit"
+          @onClick={{this.logIn}}
           @class="login-page__form-button"
           @label="Log in"
           @color="green"

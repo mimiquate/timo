@@ -53,13 +53,13 @@
           @testSelector="log-in"
           @label="Log in"
           @color="white"
-          @action={{@transitionToLogin}}
+          @onClick={{@transitionToLogin}}
         />
         <TButton
           @testSelector="create-account"
           @label="Create Account"
           @color="inverted-white"
-          @action={{@transitionToSignUp}}
+          @onClick={{@transitionToSignUp}}
         />
       </div>
     {{/if}}

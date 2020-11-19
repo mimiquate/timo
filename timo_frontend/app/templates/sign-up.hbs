@@ -28,7 +28,7 @@
       />
       <TInput
         class="sign-up-page__input"
-        @type="password"
+        @inputType="password"
         @label="Password"
         @value={{this.password}}
         @error={{this.passwordError}}
@@ -37,7 +37,7 @@
       />
       <TInput
         class="sign-up-page__input"
-        @type="password"
+        @inputType="password"
         @label="Confirm Password"
         @value={{this.passwordConfirmation}}
         @error={{this.passwordConfirmationError}}
@@ -49,9 +49,9 @@
           <span class="response-error">{{this.errorMessage}}</span>
         {{/if}}
         <TButton
-          @type="submit"
+          @buttonType="submit"
           @class="sign-up-page__form-button"
-          @action={{this.signUp}}
+          @onClick={{this.signUp}}
           @label="Sign up"
           @color="green"
         />
