@@ -16,10 +16,12 @@ module('Acceptance | New team', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('Creates new team and redirects', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
+  hooks.beforeEach(function() {
+    const user = this.server.create('user', { username: 'juan' });
+    setSession.call(this, user);
+  });
 
+  test('Creates new team and redirects', async function (assert) {
     await visit('/');
     await createTeam('Team 1')
 
@@ -31,9 +33,6 @@ module('Acceptance | New team', function (hooks) {
   });
 
   test('Creates new team pressing enter in modal', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-
     await visit('/');
     await click('[data-test=new-team]');
     await fillIn('.t-modal__team-name input', 'Team 1');
@@ -48,9 +47,6 @@ module('Acceptance | New team', function (hooks) {
   });
 
   test('Creates teams and they are listed', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-
     await visit('/');
 
     await createTeam('Team 1')
@@ -67,9 +63,6 @@ module('Acceptance | New team', function (hooks) {
   });
 
   test('Create team with no name error', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-
     await visit('/');
     await click('[data-test=new-team]');
     await click('[data-test=save-button]');
@@ -79,20 +72,14 @@ module('Acceptance | New team', function (hooks) {
   });
 
   test('Create team with only whitespace name error', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-
     await visit('/');
     await createTeam('    ')
 
-    let errorMessage = find('.t-input__error');
+    const errorMessage = find('.t-input__error');
     assert.equal(errorMessage.textContent, `Team's name can't be blank`, 'Show empty team name error');
   });
 
   test('Closes modal and resets its inputs', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-
     await visit('/');
     await click('[data-test=new-team]');
     await fillIn('.t-modal__team-name input', 'test');
