@@ -16,8 +16,8 @@ module('Acceptance | Landing', function (hooks) {
   });
 
   test('Visiting / (landing) with existing username', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    setSession.call(this, user);
 
     await visit('/');
 
@@ -33,26 +33,26 @@ module('Acceptance | Landing', function (hooks) {
   });
 
   test('Clicks team name and redirects to selected team page', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-    let newTeam = this.server.create('team', { name: 'Team', user: newUser});
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    setSession.call(this, user);
 
     await visit('/');
     const teamButtons = findAll('.team-list__button');
     await click(teamButtons[0]);
 
-    assert.equal(currentURL(), `/teams/${newTeam.id}`, 'Redirects to team page');
+    assert.equal(currentURL(), `/teams/${team.id}`, 'Redirects to team page');
     assert.dom('[data-test=team-title]').exists('Team title loads');
     assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
   });
 
   test('Clicks username and then logouts', async function (assert) {
     const store = this.owner.lookup('service:store');
-    let newUser = this.server.create('user', { username: 'juan', store: store });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan', store });
+    setSession.call(this, user);
 
     await visit('/');
-
     await click(find('#user-name'));
 
     assertTooltipRendered(assert);
