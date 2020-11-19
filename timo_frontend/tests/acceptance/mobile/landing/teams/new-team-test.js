@@ -16,14 +16,14 @@ module('Mobile | Acceptance | New team', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  hooks.beforeEach(() => {
+  hooks.beforeEach(function() {
+    const user = this.server.create('user', { username: 'juan' });
+    setSession.call(this, user);
+
     setBreakpoint('mobile');
   });
 
   test('Creates new team and redirects', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-
     await visit('/');
     await click('[data-test=create-team]');
     await fillIn('.t-modal__team-name input', 'Team 1');
@@ -36,9 +36,6 @@ module('Mobile | Acceptance | New team', function (hooks) {
   });
 
   test('Creates teams and they are listed', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-
     await visit('/');
 
     await click('[data-test=create-team]');
@@ -62,9 +59,6 @@ module('Mobile | Acceptance | New team', function (hooks) {
   });
 
   test('Show error if create team with no name', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
-
     await visit('/');
     await click('[data-test=create-team]');
     await click('[data-test=save-button]');
