@@ -40,16 +40,19 @@ export function addMoreHours(amount, index, timezones, currentIndex) {
   }
 }
 
-export function createRows(sortedMembers, isGrouped, rowsFromMobile) {
-  let amountOfLeftBoxes = 0;
-
-  if (rowsFromMobile) {
+function calculateAmountOfLeftBoxes(isForMobile) {
+  if (isForMobile) {
     const timezonesWidth = document.getElementsByClassName('timezone-list')[0].clientWidth;
-    amountOfLeftBoxes = Math.floor((timezonesWidth/50)/2);
-  } else {
-    amountOfLeftBoxes = 12;
-  }
+    const boxWidth = 50;
 
+    return Math.floor((timezonesWidth/boxWidth)/2);
+  } else {
+    return 12;
+  }
+}
+
+export function createRows(sortedMembers, isGrouped, rowsForMobile) {
+  const amountOfLeftBoxes = calculateAmountOfLeftBoxes(rowsForMobile);
   const timezoneRows = [];
   const timeNow = moment.utc();
 
