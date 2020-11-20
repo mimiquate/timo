@@ -54,10 +54,9 @@ function calculateAmountOfLeftBoxes(isForMobile) {
 export function createRows(sortedMembers, isGrouped, rowsForMobile) {
   const amountOfLeftBoxes = calculateAmountOfLeftBoxes(rowsForMobile);
   const timezoneRows = [];
-  const timeNow = moment.utc();
 
   sortedMembers.forEach(m => {
-    const isSameTimezone = isSameTimezoneCallback(m, timeNow, isGrouped);
+    const isSameTimezone = isSameTimezoneCallback(m, isGrouped);
     const sameTimezoneIndex = timezoneRows.findIndex(isSameTimezone);
 
     if (sameTimezoneIndex > -1) {
@@ -113,7 +112,8 @@ export function cellColor(time) {
   return color
 }
 
-function isSameTimezoneCallback(member, timeNow, isGrouped) {
+function isSameTimezoneCallback(member, isGrouped) {
+  const timeNow = moment.utc();
   const isSameOffset = (row) => {
     const offsetRow = moment.tz.zone(row.timezoneNameList[0]).utcOffset(timeNow);
     const offsetMember = moment.tz.zone(member.timezone).utcOffset(timeNow);
