@@ -40,56 +40,13 @@ export function addMoreHours(amount, index, timezones, currentIndex) {
   }
 }
 
-function calculateAmountOfLeftBoxes(isForMobile) {
-  if (isForMobile) {
-    const timezonesWidth = document.getElementsByClassName('timezone-list')[0].clientWidth;
-    const boxWidth = 50;
-
-    return Math.floor((timezonesWidth/boxWidth)/2);
-  } else {
-    return 12;
-  }
-}
-
-function addToSameTimezone(row, member) {
-  if (!row.timezoneNameList.includes(member.timezone)) {
-    row.timezoneNameList.pushObject(member.timezone);
-  }
-
-  row.members.pushObject(member);
-}
-
-function createNewTimezone(timezoneRows, member, boxesAmount) {
-  const currentMemberTime = moment.tz(member.timezone).startOf('hour');
-  const startTime = currentMemberTime.clone().add(-boxesAmount, 'hours');
-  const times = [];
-
-  for (let i = 0; i < 36; i++) {
-    const value = startTime.clone().add(i, 'hour');
-    const color = cellColor(value);
-    const diff = value.diff(currentMemberTime, 'hours');
-    const isCurrentTime = diff == 0;
-
-    times.pushObject({
-      value,
-      color,
-      isCurrentTime
-    });
-  }
-
-  timezoneRows.pushObject({
-    members: [member],
-    timezoneNameList: [member.timezone],
-    times
-  })
-}
-
 export function createRows(sortedMembers, isGrouped, rowsForMobile) {
   const amountOfLeftBoxes = calculateAmountOfLeftBoxes(rowsForMobile);
   const timezoneRows = [];
 
   sortedMembers.forEach(m => {
     let index = 0;
+
     if (isGrouped) {
       index = timezoneRows.findIndex(r => groupByOffset(r, m));
     } else {
@@ -121,18 +78,6 @@ export function cellColor(time) {
   }
 }
 
-function groupByOffset(row, member) {
-  const timeNow = moment.utc();
-  const offsetRow = moment.tz.zone(row.timezoneNameList[0]).utcOffset(timeNow);
-  const offsetMember = moment.tz.zone(member.timezone).utcOffset(timeNow);
-
-  return offsetRow === offsetMember;
-}
-
-function groupByTimezoneName(row, member) {
-  return row.timezoneNameList.includes(member.timezone);
-}
-
 export function compareTeamsByCreationTime(teamA, teamB) {
   const aCreationTime = teamA.inserted_at;
   const bCreationTime = teamB.inserted_at;
@@ -145,4 +90,61 @@ export function compareTeamsByCreationTime(teamA, teamB) {
   }
 
   return ret;
+}
+
+function groupByOffset(row, member) {
+  const timeNow = moment.utc();
+  const offsetRow = moment.tz.zone(row.timezoneNameList[0]).utcOffset(timeNow);
+  const offsetMember = moment.tz.zone(member.timezone).utcOffset(timeNow);
+
+  return offsetRow === offsetMember;
+}
+
+function groupByTimezoneName(row, member) {
+  return row.timezoneNameList.includes(member.timezone);
+}
+
+
+function calculateAmountOfLeftBoxes(isForMobile) {
+  if (isForMobile) {
+    const timezonesWidth = document.getElementsByClassName('timezone-list')[0].clientWidth;
+    const boxWidth = 50;
+
+    return Math.floor((timezonesWidth/boxWidth)/2);
+  } else {
+    return 12;
+  }
+}
+
+function addToSameTimezone(row, member) {
+  if (!row.timezoneNameList.includes(member.timezone)) {
+    row.timezoneNameList.pushObject(member.timezone);
+  }
+
+  row.members.pushObject(member);
+}
+
+function createNewTimezone(timezoneRows, member, boxesToTheLeft) {
+  const currentMemberTime = moment.tz(member.timezone).startOf('hour');
+  const startTime = currentMemberTime.clone().add(-boxesToTheLeft, 'hours');
+  const times = [];
+  const boxesInsideTimezone = 36;
+
+  for (let i = 0; i < boxesInsideTimezone; i++) {
+    const value = startTime.clone().add(i, 'hour');
+    const color = cellColor(value);
+    const isCurrentTime = value.diff(currentMemberTime, 'hours') == 0;
+
+    times.pushObject({
+      value,
+      color,
+      isCurrentTime
+    });
+  }
+
+  timezoneRows.pushObject({
+    members: [member],
+    timezoneNameList: [member.timezone],
+    times
+  })
 }
