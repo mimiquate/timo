@@ -51,22 +51,26 @@ function calculateAmountOfLeftBoxes(isForMobile) {
   }
 }
 
+function addToSameTimezone(row, member) {
+  if (!row.timezoneNameList.includes(member.timezone)) {
+    row.timezoneNameList.pushObject(member.timezone);
+  }
+
+  row.members.pushObject(member);
+}
+
 export function createRows(sortedMembers, isGrouped, rowsForMobile) {
   const amountOfLeftBoxes = calculateAmountOfLeftBoxes(rowsForMobile);
   const timezoneRows = [];
 
   sortedMembers.forEach(m => {
     const isSameTimezone = isSameTimezoneCallback(m, isGrouped);
-    const sameTimezoneIndex = timezoneRows.findIndex(isSameTimezone);
+    const index = timezoneRows.findIndex(isSameTimezone);
 
-    if (sameTimezoneIndex > -1) {
-      const sameRow = timezoneRows[sameTimezoneIndex];
+    if (index > -1) {
+      const sameRow = timezoneRows[index];
 
-      if (!sameRow.timezoneNameList.includes(m.timezone)) {
-        sameRow.timezoneNameList.pushObject(m.timezone);
-      }
-
-      sameRow.members.pushObject(m);
+      addToSameTimezone(sameRow, m)
 
     } else {
       const currentMemberTime = moment.tz(m.timezone).startOf('hour');
