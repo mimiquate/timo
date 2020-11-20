@@ -59,7 +59,7 @@ function addToSameTimezone(row, member) {
   row.members.pushObject(member);
 }
 
-function createNewTimezone(timezoneRow, member, boxesAmount) {
+function createNewTimezone(timezoneRows, member, boxesAmount) {
   const currentMemberTime = moment.tz(member.timezone).startOf('hour');
   const startTime = currentMemberTime.clone().add(-boxesAmount, 'hours');
   const times = [];
@@ -89,8 +89,12 @@ export function createRows(sortedMembers, isGrouped, rowsForMobile) {
   const timezoneRows = [];
 
   sortedMembers.forEach(m => {
-    const isSameTimezone = isSameTimezoneCallback(m, isGrouped);
-    const index = timezoneRows.findIndex(isSameTimezone);
+    let index = 0;
+    if (isGrouped) {
+      index = timezoneRows.findIndex(r => groupByOffset(r, m));
+    } else {
+      index = timezoneRows.findIndex(r => groupByTimezoneName(r, m));
+    }
 
     if (index > -1) {
       const sameRow = timezoneRows[index];
@@ -98,7 +102,7 @@ export function createRows(sortedMembers, isGrouped, rowsForMobile) {
       addToSameTimezone(sameRow, m)
 
     } else {
-      createNewTimezone(timezoneRow, m, amountOfLeftBoxes);
+      createNewTimezone(timezoneRows, m, amountOfLeftBoxes);
     }
   });
 
@@ -117,18 +121,16 @@ export function cellColor(time) {
   }
 }
 
-function isSameTimezoneCallback(member, isGrouped) {
+function groupByOffset(row, member) {
   const timeNow = moment.utc();
-  const isSameOffset = (row) => {
-    const offsetRow = moment.tz.zone(row.timezoneNameList[0]).utcOffset(timeNow);
-    const offsetMember = moment.tz.zone(member.timezone).utcOffset(timeNow);
+  const offsetRow = moment.tz.zone(row.timezoneNameList[0]).utcOffset(timeNow);
+  const offsetMember = moment.tz.zone(member.timezone).utcOffset(timeNow);
 
-    return offsetRow === offsetMember;
-  }
+  return offsetRow === offsetMember;
+}
 
-  const isSameTimezoneName = (row) => row.timezoneNameList.includes(member.timezone);
-
-  return  (isGrouped ? isSameOffset : isSameTimezoneName);
+function groupByTimezoneName(row, member) {
+  return row.timezoneNameList.includes(member.timezone);
 }
 
 export function compareTeamsByCreationTime(teamA, teamB) {
