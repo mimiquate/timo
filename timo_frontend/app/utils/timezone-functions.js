@@ -99,17 +99,14 @@ export function createRows(sortedMembers, isGrouped, rowsForMobile) {
 
 export function cellColor(time) {
   const hour = time.hours();
-  let color = '';
 
   if (hour > 9 && hour < 18) {
-    color = 'green';
+    return 'green';
   } else if (hour < 8 || hour > 19) {
-    color = 'red';
+    return 'red';
   } else {
-    color = 'blue';
+    return 'blue';
   }
-
-  return color
 }
 
 function isSameTimezoneCallback(member, isGrouped) {
