@@ -59,6 +59,31 @@ function addToSameTimezone(row, member) {
   row.members.pushObject(member);
 }
 
+function createNewTimezone(timezoneRow, member, boxesAmount) {
+  const currentMemberTime = moment.tz(member.timezone).startOf('hour');
+  const startTime = currentMemberTime.clone().add(-boxesAmount, 'hours');
+  const times = [];
+
+  for (let i = 0; i < 36; i++) {
+    const value = startTime.clone().add(i, 'hour');
+    const color = cellColor(value);
+    const diff = value.diff(currentMemberTime, 'hours');
+    const isCurrentTime = diff == 0;
+
+    times.pushObject({
+      value,
+      color,
+      isCurrentTime
+    });
+  }
+
+  timezoneRows.pushObject({
+    members: [member],
+    timezoneNameList: [member.timezone],
+    times
+  })
+}
+
 export function createRows(sortedMembers, isGrouped, rowsForMobile) {
   const amountOfLeftBoxes = calculateAmountOfLeftBoxes(rowsForMobile);
   const timezoneRows = [];
@@ -73,28 +98,7 @@ export function createRows(sortedMembers, isGrouped, rowsForMobile) {
       addToSameTimezone(sameRow, m)
 
     } else {
-      const currentMemberTime = moment.tz(m.timezone).startOf('hour');
-      const startTime = currentMemberTime.clone().add(-amountOfLeftBoxes, 'hours');
-      const times = [];
-
-      for (let i = 0; i < 36; i++) {
-        const value = startTime.clone().add(i, 'hour');
-        const color = cellColor(value);
-        const diff = value.diff(currentMemberTime, 'hours');
-        const isCurrentTime = diff == 0;
-
-        times.pushObject({
-          value,
-          color,
-          isCurrentTime
-        });
-      }
-
-      timezoneRows.pushObject({
-        members: [m],
-        timezoneNameList: [m.timezone],
-        times
-      })
+      createNewTimezone(timezoneRow, m, amountOfLeftBoxes);
     }
   });
 
