@@ -1,3 +1,4 @@
+import TimezoneRow from 'timo-frontend/utils/timezone-row';
 import moment from 'moment';
 
 export function compareMemberTimeZones(memberA, memberB) {
@@ -97,48 +98,6 @@ function createNewTimezone(timezoneRows, member, boxesToTheLeft) {
     times.pushObject({ value, isCurrentTime });
   }
 
-  const row = new Timezone(member, times);
+  const row = new TimezoneRow(member, times);
   timezoneRows.pushObject(row);
-}
-
-class Timezone {
-  members = [];
-  times = [];
-  timezonesList = [];
-
-  constructor(member, times) {
-    this.members.pushObject(member);
-    this.times = times;
-    this.timezonesList.pushObject(member.timezone);
-  }
-
-  get timezoneName() {
-    return this.members[0].timezone;
-  }
-
-  get offset() {
-    return moment.tz.zone(this.timezoneName).utcOffset(moment.utc());
-  }
-
-  get lastTimeValue() {
-    return this.times[this.times.length - 1].value;
-  }
-
-  memberIsInTimezone(member) {
-    return this.timezonesList.includes(member.timezone);
-  }
-
-  isSameOffset(member) {
-    const offsetMember = moment.tz.zone(member.timezone).utcOffset(moment.utc());
-
-    return this.offset === offsetMember;
-  }
-
-  addToSameTimezone(member) {
-    if (!this.timezonesList.includes(member.timezone)) {
-      this.timezonesList.pushObject(member.timezone);
-    }
-
-    this.members.pushObject(member);
-  }
 }
