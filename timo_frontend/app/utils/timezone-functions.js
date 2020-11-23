@@ -59,20 +59,6 @@ export function createRows(sortedMembers, isGrouped, isMobile) {
   return timezoneRows;
 }
 
-export function compareTeamsByCreationTime(teamA, teamB) {
-  const aCreationTime = teamA.inserted_at;
-  const bCreationTime = teamB.inserted_at;
-
-  let ret = 0
-  if (aCreationTime < bCreationTime) {
-    ret = -1;
-  } else if (aCreationTime > bCreationTime) {
-    ret = 1;
-  }
-
-  return ret;
-}
-
 function getAmountOfBoxesBeforeNow(isMobile) {
   if (isMobile) {
     const timezonesWidth = document.getElementsByClassName('timezone-list')[0].clientWidth;
