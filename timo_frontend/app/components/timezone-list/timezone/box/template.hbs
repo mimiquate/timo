@@ -7,7 +7,7 @@
   {{/if}}
   <div
     role="button"
-    class="timezone-list__hour {{@time.color}}
+    class="timezone-list__hour {{cell-color @time.value}}
     {{if @isShowingCalendarPopover "disable"}}
     {{if @selected "timezone-list__selected"}}"
     {{on "click" this.handleAction}}

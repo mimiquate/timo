@@ -27,12 +27,10 @@ export function addMoreHours(amount, index, timezones, currentIndex) {
 
       for (let i = 1; i <= amount; i++) {
         const value = lastTimeValue.clone().add(i, 'hour');
-        const color = cellColor(value);
         const isCurrentTime = false;
 
         timezone.times.pushObject({
           value,
-          color,
           isCurrentTime
         });
       }
@@ -64,18 +62,6 @@ export function createRows(sortedMembers, isGrouped, rowsForMobile) {
   });
 
   return timezoneRows;
-}
-
-export function cellColor(time) {
-  const hour = time.hours();
-
-  if (hour > 9 && hour < 18) {
-    return 'green';
-  } else if (hour < 8 || hour > 19) {
-    return 'red';
-  } else {
-    return 'blue';
-  }
 }
 
 export function compareTeamsByCreationTime(teamA, teamB) {
@@ -132,12 +118,10 @@ function createNewTimezone(timezoneRows, member, boxesToTheLeft) {
 
   for (let i = 0; i < boxesInsideTimezone; i++) {
     const value = startTime.clone().add(i, 'hour');
-    const color = cellColor(value);
     const isCurrentTime = value.diff(currentMemberTime, 'hours') == 0;
 
     times.pushObject({
       value,
-      color,
       isCurrentTime
     });
   }
