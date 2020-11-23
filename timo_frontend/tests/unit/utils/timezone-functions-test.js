@@ -9,8 +9,8 @@ module('Unit | Utils | timezone functions', function (hooks) {
     const memberSmallerTZ = { timezone: "America/Los_Angeles" };
     const memberBiggerTZ = { timezone: "America/Montevideo" };
 
-    assert.equal(compareMemberTimeZones(memberBiggerTZ, memberSmallerTZ), 1);
-    assert.equal(compareMemberTimeZones(memberSmallerTZ, memberBiggerTZ), -1);
+    assert.ok(compareMemberTimeZones(memberBiggerTZ, memberSmallerTZ) > 0);
+    assert.ok(compareMemberTimeZones(memberSmallerTZ, memberBiggerTZ) < 0);
     assert.equal(compareMemberTimeZones(memberBiggerTZ, memberBiggerTZ), 0);
   });
 
