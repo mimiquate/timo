@@ -44,9 +44,9 @@ export function createRows(sortedMembers, isGrouped, isMobile) {
     let timezone;
 
     if (isGrouped) {
-      timezone = timezoneRows.find(tz => tz.isSameOffset(member));
+      timezone = timezoneRows.find(tz => tz.memberHasSameOffset(member));
     } else {
-      timezone = timezoneRows.find(tz => tz.memberIsInTimezone(member));
+      timezone = timezoneRows.find(tz => tz.memberHasSameTimezone(member));
     }
 
     if (timezone) {

@@ -23,11 +23,11 @@ export default class TimezoneRow {
     return this.times[this.times.length - 1].value;
   }
 
-  memberIsInTimezone(member) {
+  memberHasSameTimezone(member) {
     return this.timezonesList.includes(member.timezone);
   }
 
-  isSameOffset(member) {
+  memberHasSameOffset(member) {
     const offsetMember = moment.tz.zone(member.timezone).utcOffset(moment.utc());
 
     return this.offset === offsetMember;
