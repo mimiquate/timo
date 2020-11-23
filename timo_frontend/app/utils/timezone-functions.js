@@ -23,41 +23,35 @@ export function addMoreHours(amount, index, timezones, currentIndex) {
 
   if (timesLength - index < currentIndex) {
     timezones.forEach(timezone => {
-      const lastTimeValue = timezone.times[timesLength - 1].value;
+      const lastTimeValue = timezone.lastTimeValue();
 
       for (let i = 1; i <= amount; i++) {
         const value = lastTimeValue.clone().add(i, 'hour');
         const isCurrentTime = false;
 
-        timezone.times.pushObject({
-          value,
-          isCurrentTime
-        });
+        timezone.times.pushObject({ value, isCurrentTime });
       }
     });
   }
 }
 
-export function createRows(sortedMembers, isGrouped, rowsForMobile) {
-  const amountOfLeftBoxes = calculateAmountOfLeftBoxes(rowsForMobile);
+export function createRows(sortedMembers, isGrouped, isMobile) {
+  const amountOfLeftBoxes = getAmountOfBoxesBeforeNow(isMobile);
   const timezoneRows = [];
 
-  sortedMembers.forEach(m => {
-    let index = 0;
+  sortedMembers.forEach(member => {
+    let timezone;
 
     if (isGrouped) {
-      index = timezoneRows.findIndex(r => groupByOffset(r, m));
+      timezone = timezoneRows.find(tz => tz.isSameOffset(member));
     } else {
-      index = timezoneRows.findIndex(r => groupByTimezoneName(r, m));
+      timezone = timezoneRows.find(tz => tz.memberIsInTimezone(member));
     }
 
-    if (index > -1) {
-      const sameRow = timezoneRows[index];
-
-      addToSameTimezone(sameRow, m)
-
+    if (timezone) {
+      timezone.addToSameTimezone(member)
     } else {
-      createNewTimezone(timezoneRows, m, amountOfLeftBoxes);
+      createNewTimezone(timezoneRows, member, amountOfLeftBoxes);
     }
   });
 
@@ -78,36 +72,16 @@ export function compareTeamsByCreationTime(teamA, teamB) {
   return ret;
 }
 
-function groupByOffset(row, member) {
-  const timeNow = moment.utc();
-  const offsetRow = moment.tz.zone(row.timezoneNameList[0]).utcOffset(timeNow);
-  const offsetMember = moment.tz.zone(member.timezone).utcOffset(timeNow);
-
-  return offsetRow === offsetMember;
-}
-
-function groupByTimezoneName(row, member) {
-  return row.timezoneNameList.includes(member.timezone);
-}
-
-
-function calculateAmountOfLeftBoxes(isForMobile) {
-  if (isForMobile) {
+function getAmountOfBoxesBeforeNow(isMobile) {
+  if (isMobile) {
     const timezonesWidth = document.getElementsByClassName('timezone-list')[0].clientWidth;
     const boxWidth = 50;
+    const amountOfBoxes = timezonesWidth / boxWidth;
 
-    return Math.floor((timezonesWidth/boxWidth)/2);
+    return Math.floor(amountOfBoxes / 2);
   } else {
     return 12;
   }
-}
-
-function addToSameTimezone(row, member) {
-  if (!row.timezoneNameList.includes(member.timezone)) {
-    row.timezoneNameList.pushObject(member.timezone);
-  }
-
-  row.members.pushObject(member);
 }
 
 function createNewTimezone(timezoneRows, member, boxesToTheLeft) {
@@ -120,15 +94,51 @@ function createNewTimezone(timezoneRows, member, boxesToTheLeft) {
     const value = startTime.clone().add(i, 'hour');
     const isCurrentTime = value.diff(currentMemberTime, 'hours') == 0;
 
-    times.pushObject({
-      value,
-      isCurrentTime
-    });
+    times.pushObject({ value, isCurrentTime });
   }
 
-  timezoneRows.pushObject({
-    members: [member],
-    timezoneNameList: [member.timezone],
-    times
-  })
+  const row = new Timezone(member, times);
+  timezoneRows.pushObject(row);
+}
+
+class Timezone {
+  members = [];
+  times = [];
+  timezonesList = [];
+
+  constructor(member, times) {
+    this.members.pushObject(member);
+    this.times = times;
+    this.timezonesList.pushObject(member.timezone);
+  }
+
+  get timezoneName() {
+    return this.members[0].timezone;
+  }
+
+  get offset() {
+    return moment.tz.zone(this.timezoneName).utcOffset(moment.utc());
+  }
+
+  getLastTimeValue() {
+    return this.times[this.times.length - 1].value;
+  }
+
+  memberIsInTimezone(member) {
+    return this.timezonesList.includes(member.timezone);
+  }
+
+  isSameOffset(member) {
+    const offsetMember = moment.tz.zone(member.timezone).utcOffset(moment.utc());
+
+    return this.offset === offsetMember;
+  }
+
+  addToSameTimezone(member) {
+    if (!this.timezonesList.includes(member.timezone)) {
+      this.timezonesList.pushObject(member.timezone);
+    }
+
+    this.members.pushObject(member);
+  }
 }
