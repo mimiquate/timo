@@ -36,11 +36,11 @@ export function addMoreHours(amount, index, timezones, currentIndex) {
   }
 }
 
-export function createRows(sortedMembers, isGrouped, isMobile) {
+export function createRows(members, isGrouped, isMobile) {
   const amountOfLeftBoxes = getAmountOfBoxesBeforeNow(isMobile);
   const timezoneRows = [];
 
-  sortedMembers.forEach(member => {
+  members.forEach(member => {
     let timezone;
 
     if (isGrouped) {
