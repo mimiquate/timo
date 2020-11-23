@@ -30,7 +30,7 @@ export function addMoreHours(amount, index, timezones, currentIndex) {
         const value = lastTimeValue.clone().add(i, 'hour');
         const isCurrentTime = false;
 
-        timezone.times.pushObject({ value, isCurrentTime });
+        timezone.addHour({ value, isCurrentTime });
       }
     });
   }

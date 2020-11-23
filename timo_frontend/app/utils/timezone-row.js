@@ -23,6 +23,10 @@ export default class TimezoneRow {
     return this.times[this.times.length - 1].value;
   }
 
+  addHour(hour) {
+    this.times.pushObject(hour);
+  }
+
   memberHasSameTimezone(member) {
     return this.timezonesList.includes(member.timezone);
   }
