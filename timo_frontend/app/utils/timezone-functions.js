@@ -87,17 +87,23 @@ function getAmountOfBoxesBeforeNow(isMobile) {
 
 function createNewTimezone(timezoneRows, member, boxesToTheLeft) {
   const currentMemberTime = moment.tz(member.timezone).startOf('hour');
-  const startTime = currentMemberTime.clone().add(-boxesToTheLeft, 'hours');
-  const times = [];
+  const hours = createHours(currentMemberTime, boxesToTheLeft);
+  const row = new TimezoneRow(member, hours);
+
+  timezoneRows.pushObject(row);
+}
+
+function createHours(currentMemberTime, boxesToTheLeft) {
+  const hours = [];
   const boxesInsideTimezone = 36;
+  const startTime = currentMemberTime.clone().add(-boxesToTheLeft, 'hours');
 
   for (let i = 0; i < boxesInsideTimezone; i++) {
     const value = startTime.clone().add(i, 'hour');
     const isCurrentTime = value.diff(currentMemberTime, 'hours') == 0;
 
-    times.pushObject({ value, isCurrentTime });
+    hours.pushObject({ value, isCurrentTime });
   }
 
-  const row = new TimezoneRow(member, times);
-  timezoneRows.pushObject(row);
+  return hours;
 }
