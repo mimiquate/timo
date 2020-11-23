@@ -52,7 +52,9 @@ export function createRows(members, isGrouped, isMobile) {
     if (timezone) {
       timezone.addToSameTimezone(member)
     } else {
-      createNewTimezone(timezoneRows, member, amountOfLeftBoxes);
+      const row = createNewTimezone(member, amountOfLeftBoxes);
+
+      timezoneRows.pushObject(row);
     }
   });
 
@@ -71,12 +73,11 @@ function getAmountOfBoxesBeforeNow(isMobile) {
   }
 }
 
-function createNewTimezone(timezoneRows, member, boxesToTheLeft) {
+function createNewTimezone(member, boxesToTheLeft) {
   const currentMemberTime = moment.tz(member.timezone).startOf('hour');
   const hours = createHours(currentMemberTime, boxesToTheLeft);
-  const row = new TimezoneRow(member, hours);
 
-  timezoneRows.pushObject(row);
+  return new TimezoneRow(member, hours);
 }
 
 function createHours(currentMemberTime, boxesToTheLeft) {
