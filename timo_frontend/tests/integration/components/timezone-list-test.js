@@ -107,7 +107,7 @@ module('Integration | Component | timezone-list-component', function(hooks) {
           name: 'Member 6',
         },
       ],
-      timezoneNameList: ['America/Montevideo'],
+      timezonesList: ['America/Montevideo'],
     });
     this.set('selectedTime', selectedTime);
     this.set('scheduleEvent', noAction);

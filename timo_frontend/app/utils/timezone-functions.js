@@ -23,7 +23,7 @@ export function addMoreHours(amount, index, timezones, currentIndex) {
 
   if (timesLength - index < currentIndex) {
     timezones.forEach(timezone => {
-      const lastTimeValue = timezone.lastTimeValue();
+      const lastTimeValue = timezone.lastTimeValue;
 
       for (let i = 1; i <= amount; i++) {
         const value = lastTimeValue.clone().add(i, 'hour');
@@ -120,7 +120,7 @@ class Timezone {
     return moment.tz.zone(this.timezoneName).utcOffset(moment.utc());
   }
 
-  getLastTimeValue() {
+  get lastTimeValue() {
     return this.times[this.times.length - 1].value;
   }
 
