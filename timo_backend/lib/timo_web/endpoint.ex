@@ -38,7 +38,7 @@ defmodule TimoWeb.Endpoint do
   plug Plug.Session,
     store: :cookie,
     key: "_timo_key",
-    signing_salt: "iKpGBV7H"
+    signing_salt: Application.get_env(:timo, __MODULE__)[:cookie_signing_salt]
 
   plug CORSPlug, origin: ["http://localhost:4200", "https://timo.mimiquate.xyz"]
 
