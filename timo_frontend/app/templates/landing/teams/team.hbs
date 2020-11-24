@@ -1,7 +1,7 @@
 {{#animated-if this.showSideNavBar rules=this.rules duration=300}}
   <SideNavBar
     @openTeamModal={{this.openTeamModal}}
-    @sortedTeams={{this.sortedTeams}}
+    @teams={{this.teams}}
     @goToTeam={{this.goToTeam}}
     @currentTeamId={{this.model.team.id}}
     @currentUser={{this.currentUser}}

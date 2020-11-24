@@ -1,17 +1,14 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import {
-  compareMemberTimeZones,
-  compareTeamsByCreationTime,
-  createRows
-} from 'timo-frontend/utils/timezone-functions';
+import { compareMemberTimeZones, createRows } from 'timo-frontend/utils/timezone-functions';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
 import { isPresent } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { toLeft, toRight } from 'ember-animated/transitions/move-over';
+import { alias } from '@ember/object/computed';
 
 export default class LandingTeamsTeamController extends Controller {
   @service media;
@@ -30,6 +27,8 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked showToggleablePopover = false;
   @tracked showTeamOptions = false;
 
+  @alias('model.teams') teams;
+
   rules({ oldItems }) {
     if (oldItems[0]) {
       return toLeft;
@@ -41,13 +40,6 @@ export default class LandingTeamsTeamController extends Controller {
   @computed('model.team.members.{[],@each.id}')
   get savedMembers() {
     return this.model.team.members.filterBy('id');
-  }
-
-  @computed('model.teams.[]')
-  get sortedTeams() {
-    const teams = this.model.teams.toArray();
-
-    return teams.sort(compareTeamsByCreationTime);
   }
 
   @computed('savedMembers.{[],@each.name,@each.timezone}')

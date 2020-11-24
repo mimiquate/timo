@@ -3,7 +3,7 @@ import { inject as service } from '@ember/service';
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { isPresent } from '@ember/utils';
-import { compareTeamsByCreationTime } from 'timo-frontend/utils/timezone-functions';
+import { alias } from '@ember/object/computed';
 
 export default class LandingController extends Controller {
   @service session;
@@ -13,18 +13,13 @@ export default class LandingController extends Controller {
   @tracked showToggleablePopover = false;
   @tracked showNewTeamModal = false;
 
+  @alias('model') teams;
+
   @computed('router.currentURL')
   get currentTeamId() {
     const team = this.router.currentRoute.attributes.team;
 
     return isPresent(team) ? team.id : null;
-  }
-
-  @computed('model.[]')
-  get sortedTeams() {
-    const teamsToArray = this.model.toArray();
-
-    return teamsToArray.sort(compareTeamsByCreationTime);
   }
 
   @action

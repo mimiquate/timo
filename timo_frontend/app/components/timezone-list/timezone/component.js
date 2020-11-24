@@ -6,7 +6,7 @@ import moment from 'moment';
 export default class TimezoneComponent extends Component {
   @computed('args.timezone.members.[]')
   get location() {
-    const timezoneNameList = this.args.timezone.timezoneNameList;
+    const timezoneNameList = this.args.timezone.timezonesList;
     const timezonesLength = timezoneNameList.length;
     const timezonesToShow = timezoneNameList.slice(0, 2);
 
@@ -24,7 +24,7 @@ export default class TimezoneComponent extends Component {
 
   @computed('args.{timezone.members.[],selectedTime}')
   get memberDate() {
-    const timezone = this.args.timezone.timezoneNameList[0];
+    const timezone = this.args.timezone.timezonesList[0];
     const selectedTime = this.args.selectedTime.format('YYYY-MM-DDTHH:mm:ssZ');
 
     return moment.tz(selectedTime, timezone).startOf('hour');

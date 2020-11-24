@@ -42,6 +42,7 @@ defmodule Timo.API do
   def list_user_teams(%User{} = user) do
     Team
     |> user_team_query(user, false)
+    |> order_by([team], team.id)
     |> Repo.all()
   end
 

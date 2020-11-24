@@ -15,7 +15,7 @@ module('Integration | Component | timezone-list-component', function(hooks) {
       members: [{
         name: 'Member 1'
       }],
-      timezoneNameList: ['America/Montevideo'],
+      timezonesList: ['America/Montevideo'],
     });
     this.set('selectedTime', selectedTime);
     this.set('scheduleEvent', noAction);
@@ -56,7 +56,7 @@ module('Integration | Component | timezone-list-component', function(hooks) {
           name: 'Member 3',
         }
       ],
-      timezoneNameList: ['America/Montevideo'],
+      timezonesList: ['America/Montevideo'],
     });
     this.set('selectedTime', selectedTime);
     this.set('scheduleEvent', noAction);
@@ -107,7 +107,7 @@ module('Integration | Component | timezone-list-component', function(hooks) {
           name: 'Member 6',
         },
       ],
-      timezoneNameList: ['America/Montevideo'],
+      timezonesList: ['America/Montevideo'],
     });
     this.set('selectedTime', selectedTime);
     this.set('scheduleEvent', noAction);

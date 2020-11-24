@@ -6,5 +6,4 @@ export default class TeamModel extends Model {
   @hasMany('member', { async: false }) members;
   @attr('string') share_id;
   @attr('boolean') public;
-  @attr('string') inserted_at;
 }

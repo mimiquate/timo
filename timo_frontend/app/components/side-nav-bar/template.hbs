@@ -12,7 +12,7 @@
   </div>
   <div class="sidenavbar__content">
     <div>
-      {{#each @sortedTeams as |team|}}
+      {{#each @teams as |team|}}
         <SideNavBar::Team
           @team={{team}}
           @selectedTeam={{eq @currentTeamId team.id}}
