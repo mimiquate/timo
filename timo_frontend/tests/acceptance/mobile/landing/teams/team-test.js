@@ -51,7 +51,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
     const expectedDate = timeNow.format('dddd, DD MMMM YYYY, HH:mm');
 
     assert.ok(timezoneRowDate.textContent.includes(expectedDate), 'Correct row date');
-    assert.ok(find('.timezone-list__members').textContent.includes('You'), 'Correct row members');
+    assert.ok(find('.timezone-list__members').textContent.includes('Current location'), 'Correct row members');
 
     const timezoneHours = findAll('.timezone-list__hour');
     assert.equal(timezoneHours.length, 36, 'Correct amount of hours');
@@ -88,7 +88,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
     assert.equal(timezoneRows.length, 2, 'Has two timezones');
     assert.equal(
       find('.team-header__details').textContent.trim(),
-      '3 Members'
+      '2 Members'
     );
 
     const timezoneLocations = findAll('.timezone-list__location');
@@ -116,7 +116,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
       'Correct first row date'
     );
     assert.ok(
-      timezoneMembers[0].textContent.includes('You and Member 1'),
+      timezoneMembers[0].textContent.includes('Member 1 (Current location)'),
       'Correct first row members'
     );
     assert.ok(
@@ -167,7 +167,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
 
     const timezoneMembers = find('.timezone-list__members');
     assert.ok(
-      timezoneMembers.textContent.includes('You and Member 1'),
+      timezoneMembers.textContent.includes('Member 1 (Current location)'),
       'Correct amount of members in timezone'
     );
   });
@@ -576,7 +576,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
     const timezoneMembers = find('.timezone-list__members');
 
     assert.ok(
-      timezoneMembers.textContent.includes('You, Member 1, Member 2, Member 3 and 3 more'),
+      timezoneMembers.textContent.includes('Member 1, Member 2, Member 3, Member 4 and 2 more (Current location)'),
       'Correct first row members'
     );
   });

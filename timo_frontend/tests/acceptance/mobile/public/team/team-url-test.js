@@ -85,7 +85,7 @@ module('Mobile | Acceptance | Public Team', function (hooks) {
 
     assert.equal(
       find('.shared-team-header__details').textContent.trim(),
-      '3 Members'
+      '2 Members'
     );
 
     const timezoneLocations = findAll('.timezone-list__location');
@@ -113,7 +113,7 @@ module('Mobile | Acceptance | Public Team', function (hooks) {
       'Correct first row date'
     );
     assert.ok(
-      timezoneMembers[0].textContent.includes('You and Member 1'),
+      timezoneMembers[0].textContent.includes('Member 1 (Current location)'),
       'Correct first row members'
     );
     assert.ok(

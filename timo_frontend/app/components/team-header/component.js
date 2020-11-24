@@ -5,8 +5,14 @@ export default class TeamHeaderComponent extends Component {
   @service media;
 
   get membersLabel() {
-    const members = this.args.members.length;
+    const members = this.args.members.length - 1;
 
-    return members > 1 ? `${members} Members` : `${members} Member`
+    if (members === 0) {
+      return 'No members'
+    } else if (members === 1) {
+      return `${members} Member`;
+    } else {
+      return `${members} Members`
+    }
   }
 }
