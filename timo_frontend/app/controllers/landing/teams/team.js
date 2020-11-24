@@ -57,7 +57,7 @@ export default class LandingTeamsTeamController extends Controller {
 
     const timezoneNow = guessTimezoneNow();
     members.unshiftObject({
-      name: 'You',
+      name: 'Current location',
       isCurrentUser: true,
       timezone: timezoneNow,
       id: 'current'
