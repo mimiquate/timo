@@ -37,7 +37,7 @@ module('Acceptance | Update member', function (hooks) {
     const members = findAll('.member-list__member__name');
     const timezones = findAll('.member-list__member__timezone');
 
-    assert.equal(members[0].textContent.trim(), 'You');
+    assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 1');
 
     assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
@@ -57,7 +57,7 @@ module('Acceptance | Update member', function (hooks) {
     const members = findAll('.member-list__member__name');
     const timezones = findAll('.member-list__member__timezone');
 
-    assert.equal(members[0].textContent.trim(), 'You');
+    assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 2');
 
     assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
@@ -77,7 +77,7 @@ module('Acceptance | Update member', function (hooks) {
     const members = findAll('.member-list__member__name');
     const timezones = findAll('.member-list__member__timezone');
 
-    assert.equal(members[0].textContent.trim(), 'You');
+    assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 2');
 
     assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
@@ -114,7 +114,7 @@ module('Acceptance | Update member', function (hooks) {
     let timezones = findAll('.member-list__member__timezone');
 
     assert.equal(members.length, 2);
-    assert.equal(members[0].textContent.trim(), 'You');
+    assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 1');
 
     assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
@@ -137,6 +137,6 @@ module('Acceptance | Update member', function (hooks) {
 
     members = findAll('.member-list__member__name');
     assert.equal(members.length, 1);
-    assert.equal(members[0].textContent.trim(), 'You');
+    assert.equal(members[0].textContent.trim(), 'Current location');
   });
 });
