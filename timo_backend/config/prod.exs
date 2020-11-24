@@ -93,6 +93,8 @@ config :timo, TimoWeb.Endpoint,
   secret_key_base: secret_key_base,
   cookie_signing_salt: System.get_env("COOKIE_SIGNING_SALT")
 
+config :timo, Timo.Token, account_verification_salt: System.get_env("ACCOUNT_VERIFICATION_SALT")
+
 # ## Using releases (Elixir v1.9+)
 #
 # If you are doing OTP releases, you need to instruct Phoenix

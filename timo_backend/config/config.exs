@@ -34,6 +34,8 @@ config :mime, :types, %{
 
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
+config :timo, Timo.Token, account_verification_salt: "timoapp email account verification salt"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
