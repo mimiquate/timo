@@ -38,13 +38,15 @@ export default class TimezoneComponent extends Component {
     const membersLength = members.length;
     let membersName;
 
+    if (membersLength === 0) {
+      return 'Current location';
+    }
+
     if (membersLength <= 4) {
       const lastMember = members[membersLength - 1];
 
-      if (membersLength === 0) {
-        return 'Current location'
-      } else if (membersLength === 1) {
-        return `${lastMember} ${currentLocationLabel}`
+      if (membersLength === 1) {
+        return `${lastMember} ${currentLocationLabel}`;
       } else {
         membersName = members.slice(0, membersLength - 1).join(", ");
 
