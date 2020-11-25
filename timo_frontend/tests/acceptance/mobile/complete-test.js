@@ -83,7 +83,7 @@ module('Mobile | Complete Test', function (hooks) {
     assert.equal(timezonesLocation.textContent.trim(), 'America, Montevideo');
     assert.equal(timezoneMembers.textContent.trim(), 'Current location');
 
-    assert.equal(find('.team-header__details').textContent.trim(), 'No members');
+    assert.equal(find('.team-header__details').textContent.trim(), '0 Members');
     //Edit team
     await click('.team-header__mobile-tooltip-actions');
 

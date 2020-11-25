@@ -13,7 +13,7 @@
       {{@teamName}}
     </span>
     <span class="team-header__details" {{on "click" @openMemberListModal}} role="button">
-      {{this.membersLabel}}
+      {{pluralize this.membersLength "Member"}}
     </span>
   </div>
   {{#if this.media.isMobile}}

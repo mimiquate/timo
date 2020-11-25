@@ -50,7 +50,7 @@ export default class TimezoneComponent extends Component {
       } else {
         membersName = members.slice(0, membersLength - 1).join(", ");
 
-        return membersLength === 0 ? 'Current location' : `${membersName} and ${lastMember} ${currentLocationLabel}`;
+        return `${membersName} and ${lastMember} ${currentLocationLabel}`;
       }
     } else {
       const membersLeft = membersLength - 4;
