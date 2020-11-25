@@ -11,7 +11,7 @@
       {{@teamName}}
     </span>
     <span class="shared-team-header__details">
-      {{this.membersLabel}}
+      {{pluralize this.membersLength "Member"}}
     </span>
   </div>
   {{#unless this.session.isAuthenticated}}
