@@ -75,7 +75,7 @@ module('Desktop | Complete user path', function (hooks) {
     assert.equal(timezonesLocation.textContent.trim(), 'America, Montevideo');
     assert.equal(timezoneMembers.textContent.trim(), 'Current location');
 
-    assert.equal(find('.team-header__details').textContent.trim(), 'No members');
+    assert.equal(find('.team-header__details').textContent.trim(), '0 Members');
 
     //Edit team
     await click('[data-test=edit-team-button]');

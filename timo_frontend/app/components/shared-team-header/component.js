@@ -1,6 +1,5 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { pluralize } from 'ember-inflector';
 
 export default class SharedTeamHeaderComponent extends Component {
   @service session;
