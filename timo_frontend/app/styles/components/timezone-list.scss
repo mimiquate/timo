@@ -134,7 +134,7 @@
     left: -16px;
     border-radius: 7px;
     border-top: none !important;
-    box-shadow: 0px 3px 13px #00000029;
+    box-shadow: 0px 3px 13px rgba(black, .15);
 
     &.red {
       background-color: $soft-red;
