@@ -5,9 +5,7 @@ export default class SharedTeamHeaderComponent extends Component {
   @service session;
   @service media;
 
-  get membersLabel() {
-    const members = this.args.members.length;
-
-    return members > 1 ? `${members} Members` : `${members} Member`;
+  get membersLength() {
+    return this.args.members.length - 1;
   }
 }

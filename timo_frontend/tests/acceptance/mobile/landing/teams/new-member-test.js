@@ -46,7 +46,7 @@ module('Mobile | Acceptance | New member', function (hooks) {
     const timezoneRowMembers = find('.timezone-list__members');
 
     assert.ok(
-      timezoneRowMembers.textContent.includes('You and Member'),
+      timezoneRowMembers.textContent.includes('Member (Current location)'),
       'Correct row members'
     );
   });
@@ -81,7 +81,7 @@ module('Mobile | Acceptance | New member', function (hooks) {
     const timezoneRowMembers = findAll('.timezone-list__members');
 
     assert.ok(
-      timezoneRowMembers[0].textContent.includes('You'),
+      timezoneRowMembers[0].textContent.includes('Current location'),
       'Correct first row members'
     );
     assert.ok(

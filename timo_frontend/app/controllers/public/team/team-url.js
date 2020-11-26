@@ -23,7 +23,7 @@ export default class PublicTeamTeamUrlController extends Controller {
 
     const timezoneNow = guessTimezoneNow();
     members.unshiftObject({
-      name: 'You',
+      name: 'Current location',
       timezone: timezoneNow,
       id: 'current'
     });

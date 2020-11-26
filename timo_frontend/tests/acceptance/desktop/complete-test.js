@@ -4,7 +4,7 @@ import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { clickTrigger, selectChoose } from 'ember-power-select/test-support/helpers';
 
-module('Desktop | Complete Test', function (hooks) {
+module('Desktop | Complete user path', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
@@ -73,7 +73,9 @@ module('Desktop | Complete Test', function (hooks) {
 
     assert.equal(timezones.length, 1);
     assert.equal(timezonesLocation.textContent.trim(), 'America, Montevideo');
-    assert.equal(timezoneMembers.textContent.trim(), 'You');
+    assert.equal(timezoneMembers.textContent.trim(), 'Current location');
+
+    assert.equal(find('.team-header__details').textContent.trim(), '0 Members');
 
     //Edit team
     await click('[data-test=edit-team-button]');
@@ -95,7 +97,7 @@ module('Desktop | Complete Test', function (hooks) {
 
     assert.equal(timezones.length, 2);
     assert.equal(timezonesLocation[0].textContent.trim(), 'America, Montevideo');
-    assert.equal(timezoneMembers[0].textContent.trim(), 'You');
+    assert.equal(timezoneMembers[0].textContent.trim(), 'Current location');
 
     assert.equal(timezones.length, 2);
     assert.equal(timezonesLocation[1].textContent.trim(), 'Europe, Rome');
@@ -104,7 +106,7 @@ module('Desktop | Complete Test', function (hooks) {
     //Edit member
     const membersLabel = find('.team-header__details');
 
-    assert.equal(membersLabel.textContent.trim(), '2 Members');
+    assert.equal(membersLabel.textContent.trim(), '1 Member');
 
     await click(membersLabel);
 
@@ -113,7 +115,7 @@ module('Desktop | Complete Test', function (hooks) {
     let members = findAll('.member-list__member__name');
     timezones = findAll('.member-list__member__timezone');
 
-    assert.equal(members[0].textContent.trim(), 'You');
+    assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
 
     assert.equal(members[1].textContent.trim(), 'Chris');
@@ -127,7 +129,7 @@ module('Desktop | Complete Test', function (hooks) {
     members = findAll('.member-list__member__name');
     timezones = findAll('.member-list__member__timezone');
 
-    assert.equal(members[0].textContent.trim(), 'You');
+    assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
 
     assert.equal(members[1].textContent.trim(), 'Pratt');
@@ -149,7 +151,7 @@ module('Desktop | Complete Test', function (hooks) {
 
     members = findAll('.member-list__member__name');
     assert.equal(members.length, 1);
-    assert.equal(members[0].textContent.trim(), 'You');
+    assert.equal(members[0].textContent.trim(), 'Current location');
 
     await click('.t-modal__close');
 
@@ -159,7 +161,7 @@ module('Desktop | Complete Test', function (hooks) {
 
     assert.equal(timezones.length, 1);
     assert.equal(timezonesLocation.textContent.trim(), 'America, Montevideo');
-    assert.equal(timezoneMembers.textContent.trim(), 'You');
+    assert.equal(timezoneMembers.textContent.trim(), 'Current location');
 
     //Delete team
     await click('[data-test=edit-team-button]');
