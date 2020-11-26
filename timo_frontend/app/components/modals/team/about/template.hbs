@@ -1,0 +1,57 @@
+<TModal
+  @title="About"
+  @closeModal={{@closeModal}}
+  @modalClass="about-team-modal"
+  @onSubmit={{this.updateTeam}}
+  @actionLabel="Save"
+>
+  <div class="about-team-modal__container">
+    <span class="about-team-modal__name">NAME</span>
+    <TInput
+      @value={{this.teamChangeset.name}}
+      @error={{this.nameError}}
+      @onChange={{fn (mut this.teamChangeset.name)}}
+      @cleanError={{this.cleanError}}
+    />
+  </div>
+  <div class="about-team-modal__delete-team">
+    <AnimatedContainer class="about-team-modal__animated-container">
+      {{#animated-if this.showDeleteConfirmation rules=this.rules}}
+        <div class="about-team-modal__delete-confirmation-container">
+          <span class="about-team-modal__delete-confirmation-label">
+            Are you sure you want to delete?
+          </span>
+          <div>
+            <TButton
+              @inverted={{true}}
+              @color="green"
+              @onClick={{this.toggleDeleteConfirmation}}
+              @label="Cancel"
+            />
+            <TButton
+              @color="warning"
+              @onClick={{fn @deleteTeam @team}}
+              @label="Confirm"
+            />
+          </div>
+        </div>
+      {{else}}
+        <div class="about-team-modal__delete-container">
+          <TButton
+            @color="warning"
+            @onClick={{this.toggleDeleteConfirmation}}
+          >
+            <div class="about-team-modal__delete-button">
+              <img
+                alt="delete button"
+                class="about-team-modal__trash-icon"
+                src="/images/trash.svg"
+              >
+              <span class="about-team-modal__delete-label">Delete team</span>
+            </div>
+          </TButton>
+        </div>
+      {{/animated-if}}
+    </AnimatedContainer>
+  </div>
+</TModal>

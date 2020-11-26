@@ -1,0 +1,65 @@
+<div
+  class="{{if @selected "timezone-list__selected-container"}}
+  {{if @time.isCurrentTime "timezone-list__current"}}"
+>
+  {{#if (and @time.isCurrentTime @isFirstRow)}}
+    <div class="timezone-list__down-arrow"/>
+  {{/if}}
+  <div
+    role="button"
+    class="timezone-list__hour {{cell-color @time.value}}
+    {{if @isShowingCalendarPopover "disable"}}
+    {{if @selected "timezone-list__selected"}}"
+    {{on "click" this.handleAction}}
+  >
+    {{moment-format @time.value "HH.mm"}}
+  </div>
+  {{#unless this.media.isMobile}}
+    {{#if (and @selected (not this.calendarPopover))}}
+      <EmberTooltip @tooltipClass="google-calendar-information-tooltip">
+        Click to schedule an event on Google Calendar
+      </EmberTooltip>
+    {{/if}}
+  {{/unless}}
+  <EmberPopover
+    @side={{this.tooltipPosition}}
+    @popoverHideDelay={{0}}
+    @isShown={{this.showCalendarPopover}}
+    @event="none"
+    @innerClass="google-calendar-popover__inner"
+    @tooltipClass="google-calendar-popover"
+    @arrowClass="google-calendar-popover-arrow"
+    @hideOn="focus"
+  >
+    <img
+      alt="close button"
+      role="button"
+      class="google-calendar-popover__close"
+      src="/images/close.svg"
+      {{on "click" this.closeCalendarPopover}}
+    >
+    {{#if this.media.isMobile}}
+      <img
+        role="button"
+        class="google-calendar-popover__icon"
+        alt="google calendar"
+        src="/images/googlecalendar.png"
+        {{on "click" this.tooltipAction}}
+      >
+    {{else}}
+      <div class="google-calendar-popover__details">
+        <img
+          class="google-calendar-popover__icon"
+          alt="google calendar"
+          src="/images/googlecalendar.png"
+        >
+          <span class="google-calendar-popover__label">Schedule event on Google Calendar</span>
+      </div>
+      <TButton
+        @class="google-calendar-popover__button"
+        @label="Schedule now"
+        @onClick={{this.tooltipAction}}
+      />
+    {{/if}}
+  </EmberPopover>
+</div>

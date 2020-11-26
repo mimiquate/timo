@@ -1,0 +1,25 @@
+<div class="timezone-list__row">
+  <div class="timezone-list__location wrap-ellipsis">
+    {{this.location}}
+  </div>
+  <div class="timezone-list__members wrap-ellipsis">
+    {{this.memberNames}}
+  </div>
+  <div class="timezone-list__date">
+    {{moment-format this.memberDate "dddd, DD MMMM YYYY, HH:mm"}}
+  </div>
+  <div class="timezone-list__time-zone">
+    {{#each @timezone.times as |time index|}}
+      <TimezoneList::Timezone::Box
+        @time={{time}}
+        @scheduleEvent={{@scheduleEvent}}
+        @selectBox={{@selectBox}}
+        @selected={{eq @selectedBoxIndex index}}
+        @index={{index}}
+        @isShowingCalendarPopover={{@isShowingCalendarPopover}}
+        @toggleCalendarPopoverBackground={{@toggleCalendarPopoverBackground}}
+        @isFirstRow={{@isFirstRow}}
+      />
+    {{/each}}
+  </div>
+</div>

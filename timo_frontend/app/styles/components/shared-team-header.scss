@@ -1,0 +1,61 @@
+@import '../variables.scss';
+@import "../media-query.scss";
+
+.shared-team-header, .not-found {
+  background-color: $dark-blue;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 26px 36px 30px 44px;
+  align-items: center;
+
+  @include mobile {
+    padding: 26px 36px 26px 36px;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__desktop-actions {
+    >:first-child {
+      margin-right: 18px;
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  &__title {
+    line-height: 1.3;
+    color: #ADBAE4;
+    font-size: 25px;
+    font-weight: bold;
+
+    @include mobile {
+      font-size: 18px;
+    }
+  }
+
+  &__details {
+   color: $blue;
+   font-size: 14px;
+   font-weight: bold;
+  }
+
+  &__image {
+    cursor: pointer;
+    height: 44px;
+
+    @include mobile {
+      height: 32px;
+    }
+  }
+
+  &__mobile-actions {
+    width: 21px;
+    height: 21px;
+    cursor: pointer;
+  }
+}

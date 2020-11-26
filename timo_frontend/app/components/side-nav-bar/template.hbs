@@ -1,0 +1,45 @@
+<div class="sidenavbar">
+  <img src="/images/appicon-sidebar.svg" alt="Timo sidenavbar icon" class="sidenavbar__icon">
+  <div class="sidenavbar__header">
+    <span class="sidenavbar__title">Teams</span>
+    <TButton
+      @color="blue"
+      @testSelector="new-team"
+      @onClick={{@openTeamModal}}
+      @label="Add"
+      @class="sidenavbar__add-group"
+    />
+  </div>
+  <div class="sidenavbar__content">
+    <div>
+      {{#each @teams as |team|}}
+        <SideNavBar::Team
+          @team={{team}}
+          @selectedTeam={{eq @currentTeamId team.id}}
+          @goToTeam={{fn @goToTeam team}}
+        />
+      {{/each}}
+    </div>
+  </div>
+  <div class="current-user-container">
+    <EmberPopover
+      @isShown={{@showToggleablePopover}}
+      @targetId="user-name"
+      @event="none"
+      @hideOn="focusout"
+      @tooltipClass="logout-popover"
+      @arrowClass="logout-popover-arrow"
+      @side="top-start"
+    >
+      <button type="button" class="logout-button" {{on "click" @logOut}}>Logout</button>
+    </EmberPopover>
+    <button id="user-name" type="button" class="current-user-name" {{on "click" @togglePopover}}>
+      <div class="avatar user-avatar">
+        {{avatar-initial @currentUser.user.username}}
+      </div>
+      <div class="logout-name wrap-ellipsis" data-test="current-user-span">
+        {{@currentUser.user.username}}
+      </div>
+    </button>
+  </div>
+</div>

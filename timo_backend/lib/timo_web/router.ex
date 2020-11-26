@@ -12,7 +12,7 @@ defmodule TimoWeb.Router do
     pipe_through :api
     resources "/users", UserController, only: [:create, :show, :update]
     resources "/teams", TeamController, only: [:create, :show, :index, :update, :delete]
-    resources "/members", MemberController, only: [:create, :update]
+    resources "/members", MemberController, only: [:create, :update, :delete]
     delete "/logout", SessionController, :logout
     post "/session", SessionController, :create
   end

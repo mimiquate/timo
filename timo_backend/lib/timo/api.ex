@@ -42,6 +42,7 @@ defmodule Timo.API do
   def list_user_teams(%User{} = user) do
     Team
     |> user_team_query(user, false)
+    |> order_by([team], team.id)
     |> Repo.all()
   end
 
@@ -101,8 +102,15 @@ defmodule Timo.API do
     from(m in query, where: m.team_id == ^team_id)
   end
 
-  def get_member(id) do
-    with %Member{} = member <- Repo.get(Member, id) do
+  def get_user_member(%User{} = user, id) do
+    query =
+      Member
+      |> join(:inner, [m], t in Team, on: m.team_id == t.id)
+      |> join(:inner, [_, t], u in User, on: t.user_id == u.id)
+      |> where([m, _, u], u.id == ^user.id and m.id == ^id)
+      |> select([m], m)
+
+    with %Member{} = member <- Repo.one(query) do
       {:ok, member}
     else
       nil -> nil
@@ -146,5 +154,9 @@ defmodule Timo.API do
 
   def delete_team(%Team{} = team) do
     Repo.delete(team)
+  end
+
+  def delete_member(%Member{} = member) do
+    Repo.delete(member)
   end
 end

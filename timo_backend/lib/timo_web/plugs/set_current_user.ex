@@ -1,4 +1,6 @@
 defmodule TimoWeb.Plugs.SetCurrentUser do
+  @behaviour Plug
+
   import Plug.Conn
 
   alias Timo.API

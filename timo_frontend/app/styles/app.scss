@@ -1,60 +1,60 @@
-@import 'ember-paper';
-@import './material-table.scss';
+@import "ember-power-select";
+@import './variables.scss';
+@import './components/timezone-list.scss';
+@import './components/team-header.scss';
+@import './components/sidenavbar.scss';
+@import './components/t-input.scss';
+@import './components/t-modal.scss';
+@import './components/t-checkbox.scss';
+@import './components/t-button.scss';
+@import './components/email-verification.scss';
+@import './components/add-member-modal.scss';
+@import './components/share-team.scss';
+@import './components/about-team-modal.scss';
+@import './components/member-list.scss';
+@import './components/shared-team-header.scss';
+@import './components/not-found.scss';
+@import './components/header-tooltip.scss';
+@import "ember-modal-dialog/ember-modal-structure";
+@import "ember-modal-dialog/ember-modal-appearance";
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import "./media-query.scss";
 
-.ember-application, .login-main, .public-main {
+html, .ember-application {
   height: 100%;
 }
 
-.inner-sidenav {
-  height: calc(100% - 64px);
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #F3F2F9;
+  margin: 0;
+  min-height: 100%;
 }
 
-.paper-right {
-  margin-left: auto;
+button {
+  cursor: pointer;
 }
 
-.side-title {
-  background-color: paper-color(deep-orange, '400');
+.landing {
+  height: 100%;
+  display: flex;
 }
 
-.side-container {
-  width: 238px;
+.shared-page {
+  display:flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-@media (max-width: 456px) {
-  .side-container {
-    min-width: calc(60%);
-    max-width: calc(100% - 56px);
-  }
-  .inner-sidenav {
-    height: calc(100% - 56px);
-  }
-}
-
-@media (max-width: 959px) {
-  .inner-sidenav {
-    height: calc(100% - 48px);
-  }
-}
-
-.side-container, .side-container > md-content {
-  background-color: paper-color(deep-orange, '300');
-}
-
-.no-team {
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-}
-
-.flex-content {
+.side-content {
+  width: calc(100% - 215px);
   display: flex;
   flex-direction: column;
-  background: whitesmoke;
-}
 
-.flex-center {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .landing-image {
@@ -63,188 +63,227 @@
   align-self: center;
 }
 
-.flex-title, .no-member, .side-checkbox {
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
-}
-
-.flex-title {
+.login-page, .sign-up-page {
+  min-height: calc(100% - 7px);
+  background: #F0F0F7;
   display: flex;
-  height: fit-content;
-}
+  border-bottom: 7px solid #CED4EA;
 
-.flex-title > h1, .list-team-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  @media (max-width: 1179px) {
+    border-bottom: none;
+    height: 100%;
+  }
 
-.add-button {
-  position: fixed;
-  bottom: 0px;
-  right: 0px;
-  margin-right: 1.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 20px;
-}
+  @include mobile {
+    height: max-content;
+  }
 
-#memberName-input, #memberTimeZone-select {
-  margin: 5px;
-}
+  &__form-container {
+    align-items: center;
+    background: white;
+    width: 50%;
+    padding: 80px 110px 0;
+    display: flex;
+    flex-direction: column;
 
-.member-content {
-  max-width: 95%;
-  margin-bottom: 1.5rem;
-  align-self: center;
-}
+    @media (max-width: 1120px) {
+      padding: 60px 25px 0;
+      width: 100%;
+    }
 
-.cell-text-align {
-  justify-content: center;
-}
+    @media (min-width: 1720px) {
+      padding-top: 160px;
+    }
 
-.box-shadow-z8-on-white {
-  background: #fff;
-  box-shadow:
-    0 5px 5px -3px rgba(0,0,0,.2),
-    0 8px 10px 1px rgba(0,0,0,.14),
-    0 3px 14px 2px rgba(0,0,0,.12);
-}
+    @include mobile {
+      width: 100%;
+      padding: 60px 25px 0;
+    }
+  }
 
-.box-shadow-z8 {
-  box-shadow:
-    0 5px 5px -3px rgba(0,0,0,.2),
-    0 8px 10px 1px rgba(0,0,0,.14),
-    0 3px 14px 2px rgba(0,0,0,.12);
-}
+  &__image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 
-$cell-hue: 'A100';
-
-.cell-color-green {
-  background: paper-color('green', $cell-hue);
-}
-
-.cell-color-yellow {
-  background: paper-color('yellow', $cell-hue);
-}
-
-.cell-color-red {
-  background: paper-color('red', $cell-hue);
-}
-
-$row-filter: brightness(70%);
-
-.row-past-time {
-  filter: $row-filter;
-}
-
-.row-current-time > td {
-  -webkit-box-shadow:
-    inset 0px -3px 0px 0px black,
-    inset 0px 3px 0px 0px black;
-  -moz-box-shadow:
-    inset 0px -3px 0px 0px black,
-    inset 0px 3px 0px 0px black;
-  box-shadow:
-    inset 0px -3px 0px 0px black,
-    inset 0px 3px 0px 0px black;
-}
-
-.box-shadow-top-inset {
-  -webkit-box-shadow: inset 0px 5px 5px -5px black;
-  -moz-box-shadow: inset 0px 5px 5px -5px black;
-  box-shadow: inset 0px 5px 5px -5px black;
-}
-
-.current-col-cell {
-  background: paper-color('orange', '100');
-}
-
-$input-error-font-size: 12px !default;
-$input-error-height: 24px !default;
-$input-error-line-height: $input-error-font-size + 2px !default;
-$error-padding: ($input-error-height - $input-error-line-height) / 2 !default;
-
-.paper-input-error {
-  font-size: $input-error-font-size;
-  padding-top: $error-padding;
-}
-
-.pointer-cursor {
-  cursor: pointer;
-}
-
-.no-margin {
-  margin: 0;
-}
-
-.sign-link {
-  margin-top: 10px;
-}
-
-.response-error {
-  color: RGB(var(--warn-A700));
-  padding-bottom: $error-padding;
-}
-
-.share-icon {
-  margin-left: auto;
-  margin-top: 21px;
-}
-
-.public-share-item {
-  margin: 6px 8px;
-}
-
-.team-list-item {
-  display: flex;
-  align-items: center;
-  @media (hover: hover) {
-    .delete-team-button {
+    @media (max-width: 1120px) {
       display: none;
     }
   }
-  &:hover {
-    .delete-team-button {
-      display: block;
+
+  &__title {
+    font-size: 33px;
+    text-align: center;
+    letter-spacing: 0px;
+    color: $dark-blue;
+    opacity: 0.61;
+    font-weight: bold;
+    padding: 60px 125px 0;
+    margin: 0;
+
+    @include mobile {
+      margin-top: 16px;
     }
-    background-color: rgba(paper-color($background, "500"), 0.2);
-    background-color: RGBA(var(--background-500), 0.2);
+
+    @media (min-width: 1720px) {
+      padding-top: 120px;
+    }
+  }
+
+  &__form-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    color: $dark-blue;
+    margin-top: 26px;
+  }
+
+  &__form-description {
+    width: max-content;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+    color: $dark-blue;
+    margin-bottom: 64px;
+
+    @include mobile {
+      font-size: 13px;
+      margin-top: 16px;
+      margin-bottom: 32px;
+      width: fit-content;
+    }
+  }
+
+  &__form-button {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 9px 75px;
+  }
+
+  &__input {
+    width: 100%;
+    margin-bottom: 45px;
+  }
+
+  &__sign-up-label, &__login-label {
+    font-size: 14px;
+    color: $green;
+    margin-top: 13px;
+    text-decoration: none;
+  }
+
+  &__image {
+    width: 578px;
+    height: 411px;
+    min-width: 378px;
+    min-height: 211px;
+
+    @media (min-width: 1520px) {
+      width: 778px;
+      height: 611px;
+      min-width: 578px;
+      min-height: 411px;
+    }
+  }
+
+  &__form-actions {
+    width: 100%;
+    align-items: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
   }
 }
 
-.list-team-name {
-  flex-grow: 1;
+.response-error {
+  top: -20px;
+  position: absolute;
+  color: $timo-warning;
+  font-size: 12px;
 }
 
-.team-name-span {
-  width: 206px;
+.ember-modal-overlay.translucent {
+  background-color: rgba(black, .64);
+  outline: none;
+}
+
+.avatar {
+  border-radius: 50%;
+  background-color: $green;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-team {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .t-button {
+    padding: 9px 25px;
+
+    @include mobile {
+      padding: 12px 24px;
+      font-size: 17px;
+    }
+  }
+
+  &__label {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 22px;
+    font-size: 25px;
+    font-weight: bold;
+
+    @include mobile {
+      font-size: 22px;
+    }
+  }
+
+  @include mobile {
+    >:last-child {
+      margin-top: 16px;
+    }
+  }
+}
+
+.showing-tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(black, .64);
+  z-index: 5;
+  overflow: hidden;
+}
+
+.showing-mobile-sidenav-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(black, .64);
+  z-index: 15;
+  overflow: hidden;
+}
+
+.t-form {
+  width: 100%;
+
+  @include mobile {
+    height: 100%;
+    flex-direction: column;
+    display: flex
+  }
+}
+
+.wrap-ellipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.active-list-item {
-  background-color: rgba(paper-color($background, "500"), 0.2);
-  background-color: RGBA(var(--background-500), 0.2);
-}
-
-.event-tooltip {
-  max-width: max-content;
-}
-
-$select-row-color: white;
-
-.mat-row:hover {
-  & > td {
-    -webkit-box-shadow:
-      inset 0px -6px 3px -3px $select-row-color,
-      inset 0px 6px 3px -3px $select-row-color;
-    -moz-box-shadow:
-      inset 0px -6px 3px -3px $select-row-color,
-      inset 0px 6px 3px -3px $select-row-color;
-    box-shadow:
-      inset 0px -6px 3px -3px $select-row-color,
-      inset 0px 6px 3px -3px $select-row-color;
-  }
-  filter: brightness(110%);
 }

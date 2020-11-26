@@ -1,0 +1,62 @@
+@import '../variables.scss';
+
+.t-input {
+  width: 100%;
+  position: relative;
+}
+
+.t-input label {
+  margin-left: 6px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  font-size: 14px;
+  color: $grey;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.t-input input {
+  border: 0;
+  border-bottom: 2px solid $light-grey;
+  background: transparent;
+  width: 100%;
+  padding: 8px 0px 5px 0px;
+  font-size: 16px;
+  color: $grey;
+  height: 17px;
+
+  &.error {
+    border-bottom: 2px solid $timo-warning;
+  }
+}
+
+.t-input input:focus {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid $grey;
+
+  &.error {
+    border-bottom: 2px solid $timo-warning;
+  }
+}
+
+.t-input input:focus ~ label {
+  top: -12px;
+  font-size: 12px;
+}
+
+.t-input {
+  &.not-empty {
+    top: -12px;
+    font-size: 12px;
+  }
+}
+
+.t-input__error {
+  position: absolute;
+  left: 0px;
+  top: 32px;
+  color: $timo-warning;
+  font-size: 12px;
+}

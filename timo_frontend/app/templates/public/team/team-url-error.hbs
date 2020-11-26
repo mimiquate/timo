@@ -1,8 +1,7 @@
-<div class="public-main layout-column layout-align-center-center">
-  <div class="layout layout-align-center-center">
-    <h1>Timo App</h1>
-  </div>
-  <div class="layout layout-align-center-center response-error" data-test="team-error">
-    {{paper-icon "error"}} Team not found
-  </div>
-</div>
+<NotFound
+  @message="Team not found"
+  @transitionToLogin={{this.transitionToLogin}}
+  @transitionToSignUp={{this.transitionToSignUp}}
+  @isAuthenticated={{this.session.isAuthenticated}}
+  @isMobile={{this.media.isMobile}}
+/>

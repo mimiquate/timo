@@ -1,0 +1,91 @@
+@import '../variables.scss';
+
+.add-member-modal {
+  &__member-name {
+    margin-top: 36px;
+    margin-bottom: 42px;
+
+    label {
+      font-size: 16px;
+    }
+  }
+}
+
+.ember-power-select-options {
+  overflow-x: hidden;
+}
+
+.ember-power-select-trigger {
+  cursor: pointer;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  border-color: $grey;
+  border-bottom: 2px solid $light-grey;
+  line-height: unset;
+
+  &:focus {
+    outline: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid $light-grey;
+  }
+
+  &.error {
+    border-bottom: 2px solid $timo-warning;
+  }
+
+  .ember-power-select-placeholder, .ember-power-select-selected-item {
+    margin-left: 0;
+    color: $grey;
+    padding-left: 6px;
+    padding-bottom: 4px;
+  }
+}
+
+.ember-power-select-search {
+  padding: 0;
+}
+
+.ember-power-select-search-input {
+  padding: 5px;
+  border-bottom: 1px solid $grey;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.ember-power-select-status-icon {
+  border: solid #D2D2D3;
+  border-width: 0 2px 2px 0;
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  transition: all 0.4s ease;
+}
+
+.ember-basic-dropdown-trigger[aria-expanded="true"]
+  .ember-power-select-status-icon {
+    transform: rotate(-135deg);
+}
+
+.ember-basic-dropdown-trigger[aria-expanded="false"]
+  .ember-power-select-status-icon {
+    transform: rotate(45deg);
+}
+
+.t-dropdown {
+  height: 31px;
+  position: relative;
+
+  &__error {
+    position: absolute;
+    left: 0px;
+    top: 31px;
+    color: $timo-warning;
+    font-size: 12px;
+  }
+}

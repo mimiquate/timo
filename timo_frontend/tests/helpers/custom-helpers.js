@@ -1,11 +1,13 @@
-import { click, fillIn, visit } from '@ember/test-helpers';
+import { click, fillIn, visit, findAll } from '@ember/test-helpers';
 import { clickTrigger, selectChoose } from 'ember-power-select/test-support/helpers';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 export async function loginAs(username, password) {
-  await fillIn('#username-input input', username);
-  await fillIn('#password-input input', password);
-  return click('[data-test=login-button]');
+  const inputs = findAll('.login-page__input input');
+
+  await fillIn(inputs[0], username);
+  await fillIn(inputs[1], password);
+  return click('.login-page__form-button');
 }
 
 export function setSession(user) {
@@ -15,13 +17,14 @@ export function setSession(user) {
 }
 
 export async function createTeam(teamName) {
-  await fillIn('#teamName-input input', teamName);
-  return click('[data-test=saveTeam-button]');
+  await click('[data-test=new-team]');
+  await fillIn('.t-modal__team-name input', teamName);
+  return click('[data-test=save-button]');
 }
 
 export async function chooseTimeZone(timezone) {
-  await clickTrigger('#memberTimeZone-select');
-  return selectChoose('#memberTimeZone-select', timezone);
+  await clickTrigger('.t-dropdown');
+  return selectChoose('.t-dropdown', timezone);
 }
 
 export async function openNewMemberModal(teamId) {
@@ -29,12 +32,15 @@ export async function openNewMemberModal(teamId) {
   return click('[data-test=add-member-button]');
 }
 
-export async function signUp(username, password, confirm, email) {
-  await fillIn('#username-input input', username);
-  await fillIn('#password-input input', password);
-  await fillIn('#confirmPassword-input input', confirm);
-  await fillIn('#email-input input', email);
-  return click('[data-test=sign-up-button]');
+export async function signUp(username, password, passwordConfirmation, email) {
+  const inputs = findAll('.sign-up-page__input input');
+
+  await fillIn(inputs[0], username);
+  await fillIn(inputs[1], email);
+  await fillIn(inputs[2], password);
+  await fillIn(inputs[3], passwordConfirmation);
+
+  return click('.sign-up-page__form-button');
 }
 
 export function invalidUserServerPost() {

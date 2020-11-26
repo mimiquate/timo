@@ -1,0 +1,13 @@
+<div class="t-input" ...attributes>
+  <input
+    disabled={{@disabled}}
+    class={{if @error 'error'}}
+    value={{@value}}
+    type={{@inputType}}
+    onchange={{this.onChange}}
+  />
+  <label class="{{if @value "t-input not-empty"}}">{{@label}}</label>
+  {{#if @error}}
+    <span class="t-input__error">{{@error}}</span>
+  {{/if}}
+</div>

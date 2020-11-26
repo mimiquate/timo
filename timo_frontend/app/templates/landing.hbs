@@ -1,84 +1,23 @@
-<PaperToolbar>
-  <PaperToolbarTools>
-    <PaperSidenavToggle as |toggleAction|>
-      <PaperButton
-        @onClick={{toggleAction}}
-        @iconButton={{true}}
-        @classNames="hide-gt-sm"
-      >
-        {{paper-icon "reorder"}}
-      </PaperButton>
-    </PaperSidenavToggle>
-    <div class="paper-right pointer-cursor">
-      <PaperMenu @offset="0 50" as |menu|>
-        <menu.trigger data-test="logout-trigger">
-          {{paper-icon "arrow_drop_down" class="md-menu-origin"}}
-          <span data-test="current-user-span">
-            {{this.currentUser.user.username}}
-          </span>
-        </menu.trigger>
-        <menu.content as |content|>
-          <content.menu-item data-test="logout-button" @onClick={{this.logOut}}>
-            {{paper-icon "power_settings_new" class="md-menu-align-target"}}
-            <span>Logout</span>
-          </content.menu-item>
-        </menu.content>
-      </PaperMenu>
-    </div>
-  </PaperToolbarTools>
-</PaperToolbar>
-<PaperSidenavContainer @class="inner-sidenav">
-  <PaperSidenav @class="side-container box-shadow-z8" @open={{this.sidenavOpen}} @onToggle={{fn (mut this.sidenavOpen)}}>
-    <PaperToolbar>
-      <PaperToolbarTools @class="side-title">Teams</PaperToolbarTools>
-    </PaperToolbar>
-    <PaperContent @padding={{false}}>
-      {{#if @model.length}}
-        <PaperList>
-          {{#each this.sortedTeams as |team index|}}
-            <div class="team-list-item {{if (eq this.currentTeamId team.id) "active-list-item"}}">
-              <PaperItem
-                @class="list-team-name"
-                @onClick={{fn this.goToTeam team}}
-                data-test-team={{index}}
-              >
-                <span class="team-name-span">{{team.name}}</span>
-              </PaperItem>
-              <PaperButton
-                @class="delete-team-button"
-                @iconButton={{true}}
-                @onClick={{fn this.deleteTeamModal team}}
-                data-test-delete-team={{index}}
-              >
-                {{paper-icon "delete"}}
-              </PaperButton>
-            </div>
-          {{/each}}
-        </PaperList>
-      {{else}}
-        <div class="no-team" data-test="no-team">
-          You don't have any teams yet
-        </div>
-      {{/if}}
-      <div>
-        <PaperButton
-          @onClick={{this.addOne}}
-          data-test="new-team"
-          @raised={{true}}
-        >
-          Add one
-        </PaperButton>
-      </div>
-    </PaperContent>
-  </PaperSidenav>
-  <PaperCardContent @class="flex flex-content box-shadow-top-inset">
+<div class="landing" id="tooltip-background">
+  {{#unless this.media.isMobile}}
+    <SideNavBar
+      @openTeamModal={{this.openTeamModal}}
+      @teams={{this.teams}}
+      @goToTeam={{this.goToTeam}}
+      @currentTeamId={{this.currentTeamId}}
+      @currentUser={{this.currentUser}}
+      @logOut={{this.logOut}}
+      @showToggleablePopover={{this.showToggleablePopover}}
+      @togglePopover={{this.togglePopover}}
+    />
+  {{/unless}}
+  <div class="side-content">
     {{outlet}}
-  </PaperCardContent>
-</PaperSidenavContainer>
-{{#if this.showDeleteTeamModal}}
-  <DeleteTeamModal
-    @closeDeleteTeamModal={{this.closeDeleteTeamModal}}
-    @deleteTeam={{this.deleteTeam}}
-    @teamToDeleteName={{this.teamToDelete.name}}
+  </div>
+</div>
+{{#if this.showNewTeamModal}}
+  <Modals::Team::Add
+    @closeModal={{this.closeNewTeamModal}}
+    @saveTeam={{this.saveTeam}}
   />
 {{/if}}

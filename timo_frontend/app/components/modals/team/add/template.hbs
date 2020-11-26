@@ -1,0 +1,15 @@
+<TModal
+  @title="Create a Team"
+  @closeModal={{@closeModal}}
+  @onSubmit={{this.addTeam}}
+  @actionLabel="Create"
+>
+  <TInput
+    class="t-modal__team-name"
+    @label="Team's name"
+    @value={{this.team}}
+    @error={{this.teamError}}
+    @onChange={{fn (mut this.team)}}
+    @cleanError={{fn this.cleanError 'teamError'}}
+  />
+</TModal>

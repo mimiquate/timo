@@ -15,8 +15,8 @@ module('Unit | Route | public index', function (hooks) {
   });
 
   test('Redirects to landing with existing username', async function (assert) {
-    let newUser = this.server.create('user', { username: 'juan' });
-    setSession.call(this, newUser);
+    const user = this.server.create('user', { username: 'juan' });
+    setSession.call(this, user);
 
     await visit('/p');
 

@@ -1,0 +1,121 @@
+@import '../variables.scss';
+@import "../media-query.scss";
+
+.about-team-modal {
+  width: 490px;
+  padding: 28px 75px 45px 75px;
+
+  @include mobile {
+    width: unset;
+    height: 100%;
+    padding: 28px 50px 45px 50px;
+  }
+
+  &__content {
+    padding: 32px;
+  }
+
+  &__button {
+    width:100%;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    padding: 10px;
+    margin-top: 32px;
+    outline: none;
+
+    &.blue {
+      background-color: #ADBAE4;
+    }
+
+    &.red {
+      background-color: $red;
+    }
+  }
+
+  &__delete-button {
+    display: flex;
+    justify-content: center;
+    align-content: baseline;
+  }
+
+  &__delete-team {
+    display: flex;
+    margin-top: 26px;
+    cursor: pointer;
+    overflow: hidden;
+    align-items: baseline;
+  }
+
+  &__delete-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__animated-container {
+    width: 100%;
+
+    @include mobile {
+      height: 80px;
+    }
+  }
+
+  &__delete-confirmation-container {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: $timo-warning;
+
+    >:last-child {
+      margin-left: 8px;
+
+      @include mobile {
+        width: 100%;
+        justify-content: space-evenly;
+        margin-left: 0;
+        display: flex;
+      }
+    }
+
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+
+  &__delete-label {
+    font-weight: 500;
+    margin-left: 8px;
+    font-size: 15px;
+  }
+
+  &__delete-confirmation-label {
+    margin-right: auto;
+
+    @include mobile {
+      font-size: 13px;
+      margin-bottom: 16px;
+      margin-left: auto;
+    }
+  }
+
+  &__container {
+    margin-top: 24px;
+  }
+
+  &__trash-icon {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    color: white;
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: bold;
+    color: $grey;
+  }
+}

@@ -1,66 +1,73 @@
-<div class="login-main layout-column layout-align-center-center">
-  <div class="layout layout-align-center-center">
-    <h1>Timo App</h1>
-  </div>
-  <div class="layout layout-align-center-center">
-    <PaperForm @onSubmit={{this.signUp}} as |form|>
-      <div class="layout-column layout-align-center-center">
-        <form.input
-          @value={{this.username}}
-          @placeholder="username"
-          id="username-input"
-          @onChange={{fn (mut this.username)}}
-          @class="no-margin"
-          @minlength={{4}}
-          @customValidations={{this.emptyInputValidation}}
-        />
-        <form.input
-          @value={{this.email}}
-          @placeholder="email"
-          id="email-input"
-          @onChange={{fn (mut this.email)}}
-          @class="no-margin"
-          @type="email"
-          @customValidations={{this.emptyInputValidation}}
-        />
-        <form.input
-          @value={{this.password}}
-          @placeholder="password"
-          id="password-input"
-          @onChange={{fn (mut this.password)}}
-          @class="no-margin"
-          @type="password"
-          @minlength={{8}}
-          @customValidations={{this.emptyInputValidation}}
-        />
-        <form.input
-          @value={{this.confirmPassword}}
-          @placeholder="confirmation password"
-          id="confirmPassword-input"
-          @onChange={{fn (mut this.confirmPassword)}}
-          @required={{true}}
-          @class="no-margin"
-          @type="password"
-          @customValidations={{this.confirmPasswordValidation}}
-        />
-      </div>
-      <div class="layout-column layout-align-center-center">
-        {{#if this.errorResponse}}
-          <div class="paper-input-error response-error" data-test="sign-up-error">
-            That username is already taken
-          </div>
+<div class="sign-up-page">
+  {{#unless this.media.isMobile}}
+    <div class="sign-up-page__image-container">
+      <span class="sign-up-page__title">TIMO, the place where timezones are not a problem anymore.</span>
+      <img class="sign-up-page__image" src="/images/cover.png" alt="timo landing page background">
+    </div>
+  {{/unless}}
+  <div class="sign-up-page__form-container">
+    <img src="/images/appicon-signup.png" alt="timo landing appicon">
+    <span class="sign-up-page__form-title">Create an account</span>
+    <span class="sign-up-page__form-description">Start scheduling meetings with worldwide teams.</span>
+    <form class="t-form" {{on 'submit' this.signUp}}>
+      <TInput
+        class="sign-up-page__input"
+        @label="Username"
+        @value={{this.username}}
+        @error={{this.usernameError}}
+        @onChange={{fn (mut this.username)}}
+        @cleanError={{fn this.cleanError 'usernameError'}}
+      />
+      <TInput
+        class="sign-up-page__input"
+        @label="Email"
+        @value={{this.email}}
+        @error={{this.emailError}}
+        @onChange={{fn (mut this.email)}}
+        @cleanError={{fn this.cleanError 'emailError'}}
+      />
+      <TInput
+        class="sign-up-page__input"
+        @inputType="password"
+        @label="Password"
+        @value={{this.password}}
+        @error={{this.passwordError}}
+        @onChange={{fn (mut this.password)}}
+        @cleanError={{fn this.cleanError 'passwordError'}}
+      />
+      <TInput
+        class="sign-up-page__input"
+        @inputType="password"
+        @label="Confirm Password"
+        @value={{this.passwordConfirmation}}
+        @error={{this.passwordConfirmationError}}
+        @onChange={{fn (mut this.passwordConfirmation)}}
+        @cleanError={{fn this.cleanError 'passwordConfirmationError'}}
+      />
+      <div class="sign-up-page__form-actions">
+        {{#if this.errorMessage}}
+          <span class="response-error">{{this.errorMessage}}</span>
         {{/if}}
-        <form.submit-button @raised={{true}} @primary={{true}} data-test="sign-up-button">
-          Create account
-        </form.submit-button>
+        <TButton
+          @buttonType="submit"
+          @class="sign-up-page__form-button"
+          @onClick={{this.signUp}}
+          @label="Sign up"
+          @color="green"
+        />
         <LinkTo
           @route="login"
           data-test="login-link"
-          @class="sign-link"
+          @class="sign-up-page__login-label"
         >
-          Already have an account? Sign in
+          Already have an account? Log in
         </LinkTo>
       </div>
-    </PaperForm>
+    </form>
   </div>
 </div>
+{{#if this.showEmailVerificationModal}}
+  <Modals::EmailVerification
+    @onClose={{this.closeEmailVerificationModal}}
+  />
+{{/if}}

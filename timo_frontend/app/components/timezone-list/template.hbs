@@ -1,0 +1,24 @@
+<div class="timezone-list">
+  {{#if this.showGroupTimezonesCheckbox}}
+    <div class="timezone-list__group-timezones">
+      <TCheckbox
+        @checked={{@isGrouped}}
+        @onChange={{@groupTimezones}}
+        @label="Group timezones"
+      />
+    </div>
+  {{/if}}
+  {{#each @timezones as |timezone index|}}
+    <TimezoneList::Timezone
+      @timezoneIndex={{index}}
+      @timezone={{timezone}}
+      @scheduleEvent={{@scheduleEvent}}
+      @selectBox={{this.selectBoxWithScroll}}
+      @selectedBoxIndex={{@selectedBoxIndex}}
+      @selectedTime={{@selectedTime}}
+      @isShowingCalendarPopover={{@isShowingCalendarPopover}}
+      @toggleCalendarPopoverBackground={{@toggleCalendarPopoverBackground}}
+      @isFirstRow={{eq index 0}}
+    />
+  {{/each}}
+</div>

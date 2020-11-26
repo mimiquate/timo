@@ -1,72 +1,32 @@
-{{page-title @model.name prepend=false}}
-<div class="flex-content public-main">
-  <div class="flex-title">
-    <h1 data-test="team-title">
-      {{@model.name}}
-    </h1>
-  </div>
-  <div class="side-checkbox">
-    <PaperCheckbox
-      @value={{this.showCurrent}}
-      @onChange={{fn (mut this.showCurrent)}}
-      data-test-checkbox="current"
-    >
-      List my current timezone
-    </PaperCheckbox>
-  </div>
-  <div class="side-checkbox">
-    <PaperCheckbox
-      @value={{this.isCollapsed}}
-      @onChange={{fn (mut this.isCollapsed)}}
-      @disabled={{lte this.sortedMembers.length 1}}
-      data-test-checkbox="collapsed"
-    >
-      Collapse table
-    </PaperCheckbox>
-  </div>
-  {{#if this.sortedMembers.length}}
-    <MembersTable @currentRowIndex={{this.currentRowIndex}} @id="scroll-target" @class="member-content box-shadow-z8-on-white" as |t|>
-      <t.head
-        @columns={{this.columns}}
-        @enableResize={{false}}
-        @enableReorder={{false}}
-        as |h|
-      >
-        <h.row @class="mat-header-row" as |hr|>
-          <hr.cell @class="mat-header-cell cell-text-align" as |column|>
-            {{column.member.name}} ({{column.member.timezone}})
-            {{#if this.isCollapsed}}
-              {{collapsed-amount column.collapsedMembersCount}}
-            {{/if}}
-            {{#if this.showCurrent}}
-              {{#if column.isCurrent}}<div>Current timezone</div>{{/if}}
-            {{/if}}
-          </hr.cell>
-        </h.row>
-      </t.head>
-
-      <t.body @rows={{this.rows}} @renderAll={{this.renderAll}} as |r|>
-        <r.row
-          @class="mat-row {{row-filter r.rowValue}} pointer-cursor" onclick={{fn this.scheduleEvent r}}
-          data-test-row={{row-index r.rowMeta}}
-          as |rr|
-        >
-          <rr.cell @class="mat-cell cell-text-align cell-color-{{cell-color rr.cellValue}}" as |value|>
-            {{!-- Check if value exists because of rendering issue --}}
-            {{#if value}}
-              {{moment-format value "D MMM YYYY - HH:mm"}}
-            {{/if}}
-          </rr.cell>
-          <EmberTooltip
-            @text="Schedule Event on Google Calendar"
-            @tooltipClass="event-tooltip"
-          />
-        </r.row>
-      </t.body>
-    </MembersTable>
-  {{else}}
-    <div class="no-member" data-test="no-member">
-      No members in this team
-    </div>
-  {{/if}}
+<div class="shared-page" id="tooltip-background">
+  <SharedTeamHeader
+    @teamName={{this.model.name}}
+    @members={{this.sortedMembers}}
+    @transitionToLogin={{this.transitionToLogin}}
+    @transitionToSignUp={{this.transitionToSignUp}}
+    @showAccountOptions={{this.showAccountOptions}}
+    @openAccountOptions={{this.openAccountOptions}}
+  />
+  <TimezoneList
+    @members={{this.sortedMembers}}
+    @timezones={{this.timezones}}
+    @scheduleEvent={{this.scheduleEvent}}
+    @currentIndex={{this.currentIndex}}
+    @selectedBoxIndex={{this.selectedBoxIndex}}
+    @selectedTime={{this.selectedTime}}
+    @selectBox={{this.selectBox}}
+    @isGrouped={{this.isGrouped}}
+    @groupTimezones={{this.groupTimezones}}
+    @isShowingCalendarPopover={{this.isShowingCalendarPopover}}
+    @toggleCalendarPopoverBackground={{this.toggleCalendarPopoverBackground}}
+  />
 </div>
+{{#if this.isShowingCalendarPopover}}
+  <EmberWormhole @to="tooltip-background">
+    <div
+      class="showing-tooltip"
+      role="button"
+      {{on "click" (fn this.toggleCalendarPopoverBackground false)}}
+    />
+  </EmberWormhole>
+{{/if}}

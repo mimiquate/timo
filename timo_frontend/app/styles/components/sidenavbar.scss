@@ -1,0 +1,166 @@
+@import '../variables.scss';
+@import "../media-query.scss";
+
+.sidenavbar {
+  display: flex;
+  flex-direction: column;
+  background-color: $dark-blue;
+  width: 215px;
+
+  @include mobile {
+    position: absolute;
+    height: 100%;
+    z-index: 100;
+  }
+
+  &__header {
+    margin-left: 30px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: 16px;
+    line-height: 25px;
+    font-weight: bold;
+    color: $ghost-white;
+  }
+
+  &__add-group {
+    padding: 5px 20px !important;
+    margin-right: 16px;
+    font-size: 14px;
+    line-height: 21px;
+    width: 74px;
+    height: 30px;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  &__icon {
+    margin-left: 30px;
+    margin-top: 36.69px;
+    margin-bottom: 75px;
+    margin-right: auto;
+    align-self: start;
+  }
+
+  &__content {
+    overflow: scroll;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+.team-list {
+  color: white;
+  background-color: $dark-blue;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+
+  &__name {
+    font-size: 14px;
+    line-height: 21px;
+    color: $white-grey;
+    font-family: 'Poppins', sans-serif;
+
+    @include mobile {
+      font-size: 16px;
+    }
+  }
+
+  &__button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 30px;
+    margin: 0;
+    font-weight: 400;
+    text-align: left;
+    border: none;
+    background: inherit;
+    color: white;
+    outline: none;
+
+    @include mobile {
+      padding: 16px 30px;
+    }
+  }
+
+  &.active {
+    background-color: #27488f;
+    border-left: 4px $green solid;
+
+    .team-list__button {
+      padding-left: 26px;
+    }
+
+    .team-list__name {
+      color: white;
+    }
+  }
+}
+
+.current-user-container {
+  font-size: 15px;
+  line-height: 23px;
+  color: $ghost-white;
+  margin: 20px;
+}
+
+.current-user-name {
+  border: none;
+  background: inherit;
+  color: white;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+  padding: 0px;
+  width: max-content;
+  display: flex;
+}
+
+.user-avatar {
+  width: 33px;
+  height: 33px;
+  font-size: 18px;
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+.logout-popover {
+  box-shadow: 0px 3px 6px #00000029;
+  margin: 0;
+  padding: 14px 0px;
+  padding-left: 24px;
+  padding-right: 111px;
+  border: 0;
+  border-radius: 15px;
+  left: -5px !important;
+}
+
+.logout-popover-arrow {
+  border-top-color: white !important;
+  left: 40px !important;
+  transform: scale(2);
+}
+
+.logout-button {
+  background: inherit;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  line-height: 23px;
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+}
+
+.logout-name {
+  max-width: 132px;
+  align-self: center;
+  text-align: left;
+}

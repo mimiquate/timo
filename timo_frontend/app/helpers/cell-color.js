@@ -1,23 +1,14 @@
 import { helper } from '@ember/component/helper';
-import moment from 'moment';
 
 export default helper(function (params) {
   const time = params[0];
-  let retClass = ''
+  const hour = time.hours();
 
-  // Checks if time is not undefined,
-  // rendering issues causes this problem
-  if (time) {
-    const hour = moment(time).hours();
-
-    if (hour >= 8 && hour <= 17) {
-      retClass = 'green';
-    } else if (hour >= 18 && hour <= 21) {
-      retClass = 'yellow';
-    } else {
-      retClass = 'red';
-    }
+  if (hour > 9 && hour < 18) {
+    return 'green';
+  } else if (hour < 8 || hour > 19) {
+    return 'red';
+  } else {
+    return 'blue';
   }
-
-  return retClass;
 });

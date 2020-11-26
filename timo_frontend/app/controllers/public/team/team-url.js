@@ -1,58 +1,60 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
-import { compareMemberTimeZones, createMemberArray } from 'timo-frontend/utils/table-functions';
-import { createMembersTableColumns, createMembersTableRows, createCollapsedColumns } from 'timo-frontend/utils/member-column-rows';
+import { compareMemberTimeZones, createRows } from 'timo-frontend/utils/timezone-functions';
 import guessTimezoneNow from 'timo-frontend/utils/guess-timezone-now';
 import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
-import ENV from 'timo-frontend/config/environment';
+import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 
 export default class PublicTeamTeamUrlController extends Controller {
-  queryParams = [
-    { showCurrent: 'current' },
-    { isCollapsed: 'collapsed' }
-  ];
+  @service media;
 
-  showCurrent = false;
-  isCollapsed = false;
-  renderAll = ENV.environment === 'test';
+  @tracked selectedBoxIndex = this.currentIndex;
+  @tracked selectedTime = moment();
+  @tracked isGrouped = false;
+  @tracked isShowingCalendarPopover = false;
+  @tracked showAccountOptions = false;
 
-  @computed('model.members.[]', 'showCurrent')
+  @computed('model.members.{[],@each.id,@each.name,@each.timezone}')
   get sortedMembers() {
+    const members = this.model.members.filterBy('id').toArray();
+    members.sort(compareMemberTimeZones);
+
     const timezoneNow = guessTimezoneNow();
-    const membersToArray = createMemberArray(this.model.members, this.showCurrent, timezoneNow);
+    members.unshiftObject({
+      name: 'Current location',
+      timezone: timezoneNow,
+      id: 'current'
+    });
 
-    return membersToArray.sort(compareMemberTimeZones);
+    return members;
   }
 
-  @computed('sortedMembers.[]', 'isCollapsed')
-  get columns() {
-    const timezoneNow = guessTimezoneNow();
-
-    if (this.isCollapsed) {
-      return createCollapsedColumns(this.sortedMembers, timezoneNow);
-    }
-
-    return createMembersTableColumns(this.sortedMembers, timezoneNow);
+  @computed('sortedMembers.[]', 'isGrouped', 'media')
+  get timezones() {
+    return createRows(this.sortedMembers, this.isGrouped, this.media.isMobile);
   }
 
-  @computed('sortedMembers.[]')
-  get rows() {
-    return createMembersTableRows(this.sortedMembers);
-  }
-
-  @computed('rows.[]')
-  get currentRowIndex() {
-    if (this.rows) {
-      return this.rows.findIndex((row) => row.filter === 'row-current-time');
-    }
-
-    return 0;
+  @computed('timezones')
+  get currentIndex() {
+    return this.timezones[0].times.findIndex((t) => t.isCurrentTime);
   }
 
   @action
-  scheduleEvent(row) {
-    let rowTime = moment(row.rowValue.time);
+  groupTimezones() {
+    this.toggleProperty('isGrouped');
+  }
+
+  @action
+  selectBox(index, time) {
+    this.selectedBoxIndex = index;
+    this.selectedTime = time;
+  }
+
+  @action
+  scheduleEvent(time) {
+    let rowTime = moment(time);
 
     rowTime.seconds(0)
     const googleFormatTimeStart = rowTime.format('YYYYMMDDTHHmmss');
@@ -60,7 +62,34 @@ export default class PublicTeamTeamUrlController extends Controller {
     rowTime.add(1, 'hour');
     const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
 
-    const time = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
-    openGoogleCalendarEvent(time, this.model.name);
+    const url = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
+    openGoogleCalendarEvent(url, this.model.name);
+  }
+
+  @action
+  transitionToLogin() {
+    this.showAccountOptions = false;
+    this.transitionToRoute('/login');
+  }
+
+  @action
+  transitionToSignUp() {
+    this.showAccountOptions = false;
+    this.transitionToRoute('/sign-up');
+  }
+
+  @action
+  toggleCalendarPopoverBackground(value) {
+    this.isShowingCalendarPopover = value;
+  }
+
+  @action
+  openAccountOptions() {
+    this.showAccountOptions = true;
+  }
+
+  @action
+  closeAccountOptions() {
+    this.showAccountOptions = false;
   }
 }

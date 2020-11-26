@@ -1,0 +1,66 @@
+<div class="not-found">
+  <img
+    role="button"
+    src="/images/appicon-header.svg"
+    alt="Timo sidenavbar icon"
+    class="not-found__image"
+    {{on "click" @transitionToLogin}}
+  >
+  {{#unless @isAuthenticated}}
+    {{#if @isMobile}}
+      <div>
+        <img
+          role="button"
+          alt="account options"
+          class="shared-team-header__mobile-actions"
+          src="/images/grey-menu.svg"
+        >
+        <EmberPopover
+          @event="click"
+          @popoverHideDelay={{0}}
+          @isShown={{@showAccountOptions}}
+          @side="left-start"
+          @tooltipClass="header-tooltip"
+        >
+          <div
+            class="header-tooltip__item"
+            role="button"
+            {{on "click" @transitionToLogin}}
+          >
+            Log in
+          </div>
+          <div
+            class="header-tooltip__item"
+            role="button"
+            {{on "click" @transitionToSignUp}}
+          >
+            Create Account
+          </div>
+        </EmberPopover>
+      </div>
+    {{else}}
+      <div class="not-found__desktop-actions">
+        <TButton
+          @testSelector="log-in"
+          @label="Log in"
+          @color="white"
+          @onClick={{@transitionToLogin}}
+        />
+        <TButton
+          @testSelector="create-account"
+          @label="Create Account"
+          @color="inverted-white"
+          @onClick={{@transitionToSignUp}}
+        />
+      </div>
+    {{/if}}
+  {{/unless}}
+</div>
+<div class="not-found__content">
+  <img src="/images/emptyview.svg" data-test="landing-image" alt="no team">
+  <div class="not-found__content__details">
+    <div class="not-found__content__error">
+      {{@message}}
+    </div>
+  </div>
+</div>

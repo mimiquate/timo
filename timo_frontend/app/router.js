@@ -10,7 +10,6 @@ Router.map(function () {
   this.route('landing', { path: '' }, function () {
     this.route('teams', function () {
       this.route('team', { path: ':id' }, function () {});
-      this.route('new');
     });
   });
   this.route('public', { path: 'p' }, function () {
@@ -20,7 +19,6 @@ Router.map(function () {
   })
   this.route('login');
   this.route('sign-up');
-  this.route('verification');
   this.route('verify', function () {
     this.route('token', { path: ':token' });
   });

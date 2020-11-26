@@ -1,0 +1,13 @@
+<button
+  data-test={{@testSelector}}
+  type={{this.buttonType}}
+  class="t-button {{@color}} {{@class}} {{if @inverted 'inverted'}}"
+  id={{@id}}
+  {{on "click" @onClick}}
+>
+  {{#if (has-block)}}
+    {{yield}}
+  {{else}}
+    {{@label}}
+  {{/if}}
+</button>
