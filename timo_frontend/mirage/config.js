@@ -4,7 +4,15 @@ export default function () {
 
   this.get('/users');
   this.post('/users');
-  this.get('/teams');
+  this.get('/teams', function (schema, request) {
+    const share_id = request.queryParams['filter[share_id]'];
+
+    if (share_id) {
+      return schema.teams.findBy({ share_id, public: true });
+    } else {
+      return schema.teams.all();
+    }
+  }, 200);
   this.post('/teams');
   this.get('/teams/:id');
   this.post('/members');

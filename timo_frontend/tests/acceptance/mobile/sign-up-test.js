@@ -165,16 +165,6 @@ module('Mobile | Acceptance | Sign-up', function (hooks) {
   });
 
   test('Clicks demo link', async function (assert) {
-    server.get('/teams', function (schema, request) {
-      const share_id = request.queryParams['filter[share_id]'];
-      const team = schema.teams.findBy({
-        share_id,
-        public: true
-      });
-
-      return team;
-    }, 200);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',

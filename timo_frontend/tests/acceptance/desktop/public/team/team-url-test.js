@@ -13,18 +13,6 @@ module('Acceptance | Public Team', function (hooks) {
   setupMirage(hooks);
   setupWindowMock(hooks);
 
-  function setGETTeamsHandler(server) {
-    server.get('/teams', function (schema, request) {
-      const share_id = request.queryParams['filter[share_id]'];
-      const team = schema.teams.findBy({
-        share_id,
-        public: true
-      });
-
-      return team;
-    }, 200);
-  }
-
   test('Visiting /p/team/:share_id without exisiting team', async function (assert) {
     this.server.get('/teams', { errors: [{ detail: 'Not Found' }] }, 404);
     await visit('/p/team/yjHktCOyBDTb');
@@ -52,8 +40,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Visiting /p/team/:share_id with public team and no members', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -94,8 +80,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Visiting /p/team/:share_id with existing team and members', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -181,8 +165,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Visiting /p/team/:share_id with members sorted', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -222,8 +204,6 @@ module('Acceptance | Public Team', function (hooks) {
   })
 
   test('Visit public and group timezones', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -254,8 +234,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Group 2 timezones into another', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -306,8 +284,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Group 3 timezones into another', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -368,8 +344,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Cant see group timezones if there is no timezone to group', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -407,8 +381,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Opens google calendar when clicking time box and closes it', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -433,8 +405,6 @@ module('Acceptance | Public Team', function (hooks) {
   })
 
   test('Schedule event in google calendar', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -468,8 +438,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Select box changes selected time', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -515,8 +483,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('User can login if is not logged', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -536,8 +502,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('User can sign up if is not logged', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -557,8 +521,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Login and SignUp button doesnt appear if user is logged', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
@@ -584,8 +546,6 @@ module('Acceptance | Public Team', function (hooks) {
   });
 
   test('Select box to the right of selected adds more boxes', async function (assert) {
-    setGETTeamsHandler(this.server);
-
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', {
       name: 'Team',
