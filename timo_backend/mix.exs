@@ -41,13 +41,14 @@ defmodule Timo.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
+      {:plug_cowboy, "~> 2.3"},
       {:ja_serializer, "~> 0.15.0"},
       {:poison, "~> 3.1"},
       {:tzdata, "~> 1.0.3"},
       {:pbkdf2_elixir, "~> 1.0"},
       {:cors_plug, "~> 2.0"},
-      {:bamboo, "~> 1.4"}
+      {:bamboo, "~> 1.4"},
+      {:sentry, "8.0.0"}
     ]
   end
 

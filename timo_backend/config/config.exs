@@ -18,8 +18,8 @@ config :timo, TimoWeb.Endpoint,
   pubsub: [name: Timo.PubSub, adapter: Phoenix.PubSub.PG2],
   cookie_signing_salt: "iKpGBV7H"
 
-# Configures Elixir's Logger
-config :logger, :console,
+config :logger,
+  backends: [:console, Sentry.LoggerBackend],
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
@@ -35,6 +35,11 @@ config :mime, :types, %{
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
 config :timo, Timo.Token, account_verification_salt: "timoapp email account verification salt"
+
+config :sentry,
+  dsn: System.get_env("SENTRY_DNS") || "https://public_key@app.getsentry.com/1",
+  included_environments: [:prod],
+  environment_name: Mix.env()
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
