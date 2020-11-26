@@ -37,6 +37,8 @@ module.exports = function(environment) {
       enabled: false
     };
     ENV.serverHost = 'http://localhost:4000';
+
+    ENV.demoShareId = 'ffciBKOl_jtU';
   }
 
   if (environment === 'test') {
@@ -51,11 +53,15 @@ module.exports = function(environment) {
     ENV.APP.autoboot = false;
 
     ENV.serverHost = '';
+
+    ENV.demoShareId = 'yjHktCOyBDTb'
   }
 
   if (environment === 'production') {
     // here you can enable a production-specific feature
     ENV.serverHost = 'https://timo-backend.herokuapp.com';
+
+    ENV.demoShareId = 'wUtkGcozsZ2p'
   }
 
   return ENV;
