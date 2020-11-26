@@ -1,15 +1,14 @@
 <div class="main-footer">
-  <div>
-    Built by <a href="https://www.mimiquate.com/" class="main-footer__built-by">mimiquate, inc.</a>
-  </div>
-  <div>
+  <div class="main-footer__demo">
     <LinkTo
       @route="public.team.team-url"
       @model={{this.demoShareId}}
-      @class="main-footer__demo"
       data-test-footer="demo"
     >
-      Click here to see a public demo!
+      <button type="button" class="t-button blue">Check example team</button>
     </LinkTo>
+  </div>
+  <div class="main-footer__built-by">
+    Built by <a href="https://www.mimiquate.com/">mimiquate</a>
   </div>
 </div>
