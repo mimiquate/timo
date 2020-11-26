@@ -27,6 +27,19 @@ module.exports = function(environment) {
     }
   };
 
+  ENV['@sentry/ember'] = {
+    sentry: {
+      dsn: process.env.SENTRY_DNS || 'https://public_key@app.getsentry.com/1',
+
+      // Set tracesSampleRate to 1.0 to capture 100%
+      // of transactions for performance monitoring.
+      // We recommend adjusting this value in production, or using tracesSampler
+      // for finer control
+      tracesSampleRate: 1.0,
+      disablePerformance: true,
+    }
+  };
+
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
