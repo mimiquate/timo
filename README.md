@@ -3,29 +3,37 @@
 __Web__: https://timo.mimiquate.xyz/
 
 # Introduction
-Timo is an app that let you see differents timezones at the same time. This is really useful
-to organize meetings with people from differents timezones.
+
+Timo is the solution for scheduling virtual meetings in the remote era.
 
 # Usage
-After creating account in Timo, you will be able to
-create multiple teams and add members to each one with their timezone.
 
-This will create a table, showing your current time, and showing what time is in
-each member location.
-![](create-user.gif)
+After creating an account in Timo, you will be able to
+create multiple teams and add members indicating their timezone.
 
+While on the team's page, you will be able to see each timezone and
+identify what time is on all of them. When selecting a time box, all
+timezones will scroll so you still know what time is it across all of
+them easily.
 
-Also, you can generate a link to let others see your calendar, even if they don't have account in Timo.
-![](share-link.gif)
+![](create-team.gif)
 
+Clicking on any time box will open a new browser tab on Google
+Calendar's create event screen at the selected time.
 
-Clicking in any row will redirect to your Google Calendar in order to create
-an event using the selected time.
-![](calendar.gif)
+![](schedule-event.gif)
 
+Also, you can generate a link to let others see your calendar, even if they don't have an account in Timo.
 
-# Pull requests welcome!
-Found any issue? Something doesn't make sense? Send us a <a href="https://github.com/mimiquate/Timo/pulls">pull request</a>!
+![](share-team.gif)
+
+# Pull requests and comments are welcomed
+
+Found any issue? Do you want to suggest a feature or a behavior change?
+
+Don't hesitate to create a pull request or open a issue on this
+project.
+
 Thanks!
 
 __Frontend:__ https://github.com/mimiquate/Timo/tree/master/timo_frontend
