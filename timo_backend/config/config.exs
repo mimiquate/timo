@@ -15,7 +15,8 @@ config :timo, TimoWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "RpRII5vT7qZm1Pk5hhaaZ8gx1x3twM1h4Zui2fVlapMp3be3TwPfy8LSdUZtNATU",
   render_errors: [view: TimoWeb.ErrorView, accepts: ~w(json json-api)],
-  pubsub: [name: Timo.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Timo.PubSub, adapter: Phoenix.PubSub.PG2],
+  cookie_signing_salt: "iKpGBV7H"
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -32,6 +33,8 @@ config :mime, :types, %{
 }
 
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
+
+config :timo, Timo.Token, account_verification_salt: "timoapp email account verification salt"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

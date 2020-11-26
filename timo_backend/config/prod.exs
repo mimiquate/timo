@@ -90,7 +90,10 @@ config :timo, Timo.Mailer,
 
 config :timo, TimoWeb.Endpoint,
   http: [:inet6, port: String.to_integer(System.get_env("PORT") || "4000")],
-  secret_key_base: secret_key_base
+  secret_key_base: secret_key_base,
+  cookie_signing_salt: System.get_env("COOKIE_SIGNING_SALT")
+
+config :timo, Timo.Token, account_verification_salt: System.get_env("ACCOUNT_VERIFICATION_SALT")
 
 # ## Using releases (Elixir v1.9+)
 #

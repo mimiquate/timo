@@ -1,5 +1,5 @@
 defmodule Timo.Token do
-  @account_verification_salt "timoapp email account verification salt"
+  @account_verification_salt Application.get_env(:timo, __MODULE__)[:account_verification_salt]
   @one_week 604_800
 
   def generate_new_account_token(%Timo.API.User{id: user_id}) do
