@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, click, currentURL, fillIn, triggerEvent, findAll } from '@ember/test-helpers';
+import { visit, click, currentURL, fillIn, triggerEvent, findAll, find } from '@ember/test-helpers';
 import { loginAs, setSession, invalidUserServerPost } from 'timo-frontend/tests/helpers/custom-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
@@ -146,5 +146,42 @@ module('Acceptance | Login', function (hooks) {
     assert.equal(currentURL(), '/login', 'Show verification message');
     assert.dom('.response-error')
       .hasText('Please check your email and verify your account', 'Wrong password');
+  });
+
+  test('Clicks demo link', async function (assert) {
+    server.get('/teams', function (schema, request) {
+      const share_id = request.queryParams['filter[share_id]'];
+      const team = schema.teams.findBy({
+        share_id,
+        public: true
+      });
+
+      return team;
+    }, 200);
+
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
+      name: 'Team',
+      user,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
+
+    await visit('/login');
+    await click('[data-test-footer=demo]');
+
+    assert.equal(currentURL(), `/p/team/${team.share_id}`, 'Correct demo link');
+    assert.dom('[data-test=team-title]').exists('New team title page loads');
+    assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
+
+    const timezoneDivs = findAll('.timezone-list__row');
+    assert.equal(timezoneDivs.length, 1, 'Has only one timezone, the one from the user');
+
+    const timezoneLocation = find('.timezone-list__location');
+    assert.equal(
+      timezoneLocation.textContent.trim(),
+      'America, Montevideo',
+      'Correct location'
+    );
   });
 });
