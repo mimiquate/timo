@@ -49,7 +49,8 @@ defmodule Timo.MixProject do
       {:cors_plug, "~> 2.0"},
       {:bamboo, "~> 1.4"},
       {:sentry, "8.0.0"},
-      {:slack, "~> 0.23.5"}
+      {:slack, "~> 0.23.5"},
+      {:httpoison, "~> 1.6"}
     ]
   end
 
