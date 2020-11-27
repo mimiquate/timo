@@ -51,9 +51,9 @@ defmodule TimoWeb.SlackController do
     |> API.create_slack_access_token
     |> case do
       {:ok, _ } ->
-        team = Slack.Web.Team.info(%{token: slack_details["access_token"]})
+        info = Slack.Web.Team.info(%{token: slack_details["access_token"]})
 
-        redirect(conn, external: "https://#{team["domain"]}.slack.com")
+        redirect(conn, external: "https://#{info["team"]["domain"]}.slack.com")
 
       _ ->
         send_resp(conn, 200, "")
