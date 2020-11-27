@@ -287,3 +287,34 @@ button {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.main-footer {
+  height: 100%;
+  width: 100%;
+  margin-bottom: 0;
+  margin-top: auto;
+  padding-bottom: 40px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 13px;
+
+  &__demo {
+    text-align: center;
+    padding: 20px 0;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  &__built-by {
+    text-align: right;
+
+    a {
+      text-decoration: none;
+      color: $green;
+    }
+  }
+}

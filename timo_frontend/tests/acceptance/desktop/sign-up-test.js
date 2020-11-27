@@ -245,4 +245,31 @@ module('Acceptance | Sign-up', function (hooks) {
 
     assert.equal(currentURL(), '/sign-up', 'Stays in sign up page');
   });
+
+  test('Clicks demo link', async function (assert) {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
+      name: 'Team',
+      user,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
+
+    await visit('/login');
+    await click('[data-test-footer=demo]');
+
+    assert.equal(currentURL(), `/p/team/${team.share_id}`, 'Correct demo link');
+    assert.dom('[data-test=team-title]').exists('New team title page loads');
+    assert.dom('[data-test=team-title]').hasText('Team', 'Correct title');
+
+    const timezoneDivs = findAll('.timezone-list__row');
+    assert.equal(timezoneDivs.length, 1, 'Has only one timezone, the one from the user');
+
+    const timezoneLocation = find('.timezone-list__location');
+    assert.equal(
+      timezoneLocation.textContent.trim(),
+      'America, Montevideo',
+      'Correct location'
+    );
+  });
 });
