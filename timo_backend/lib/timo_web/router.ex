@@ -24,12 +24,15 @@ defmodule TimoWeb.Router do
   end
 
   scope "/", TimoWeb do
+    get "/auth", SlackController, :auth
+  end
+
+  scope "/", TimoWeb do
     if Mix.env() !== :test do
       pipe_through :slack
     end
 
     post "/slack", SlackController, :handle_request
-    get "/auth", SlackController, :auth
   end
 
   forward "/sent_emails", Bamboo.SentEmailViewerPlug
