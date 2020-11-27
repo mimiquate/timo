@@ -25,6 +25,14 @@ defmodule TimoWeb.Endpoint do
   plug Plug.RequestId
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
+  plug(
+    Plug.Parsers,
+    parsers: [:urlencoded, :json],
+    pass: ["text/*"],
+    body_reader: {TimoWeb.CacheBodyReader, :read_body, []},
+    json_decoder: Poison
+  )
+
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],

@@ -8,6 +8,7 @@ defmodule Timo.API do
   alias Timo.API.User
   alias Timo.API.Team
   alias Timo.API.Member
+  alias Timo.API.SlackAccessToken
 
   @doc """
   Gets a single user.
@@ -158,5 +159,19 @@ defmodule Timo.API do
 
   def delete_member(%Member{} = member) do
     Repo.delete(member)
+  end
+
+  def get_workspace_token(workspace) do
+    SlackAccessToken
+    |> where([u], u.workspace == ^workspace)
+    |> select([u], u.token)
+    |> last(:inserted_at)
+    |> Repo.one
+  end
+
+  def create_slack_access_token(attrs) do
+    %SlackAccessToken{}
+    |> SlackAccessToken.changeset(attrs)
+    |> Repo.insert
   end
 end
