@@ -44,7 +44,7 @@ module.exports = function(environment) {
 
   ENV['@sentry/ember'] = {
     sentry: {
-      dsn: process.env.SENTRY_DNS || 'https://public_key@app.getsentry.com/1',
+      dsn: "https://558b36cdbffb4ce59b1c6ff609f37ce4@o482985.ingest.sentry.io/5534040",
 
       // Set tracesSampleRate to 1.0 to capture 100%
       // of transactions for performance monitoring.
