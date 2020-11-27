@@ -50,7 +50,8 @@ defmodule Timo.MixProject do
       {:bamboo, "~> 1.4"},
       {:sentry, "8.0.0"},
       {:slack, "~> 0.23.5"},
-      {:httpoison, "~> 1.6"}
+      {:httpoison, "~> 1.6"},
+      {:bypass, "~> 1.0", only: :test}
     ]
   end
 
