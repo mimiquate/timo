@@ -50,8 +50,7 @@ module.exports = function(environment) {
       // of transactions for performance monitoring.
       // We recommend adjusting this value in production, or using tracesSampler
       // for finer control
-      tracesSampleRate: 1.0,
-      disablePerformance: true,
+      tracesSampleRate: 1.0
     }
   };
 
