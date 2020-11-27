@@ -48,7 +48,8 @@ defmodule Timo.MixProject do
       {:pbkdf2_elixir, "~> 1.0"},
       {:cors_plug, "~> 2.0"},
       {:bamboo, "~> 1.4"},
-      {:sentry, "8.0.0"}
+      {:sentry, "8.0.0"},
+      {:slack, "~> 0.23.5"}
     ]
   end
 
