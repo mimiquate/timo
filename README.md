@@ -35,15 +35,3 @@ Don't hesitate to create a pull request or open a issue on this
 project.
 
 Thanks!
-
-__Frontend:__ https://github.com/mimiquate/Timo/tree/master/timo_frontend
-</br>
-__Backend:__ https://github.com/mimiquate/Timo/tree/master/timo_backend
-
-<a href="https://mimiquate.com/">
-  <img
-    src="https://www.mimiquate.com/images/logo-alt.png"
-    width="520"
-    height="200"
-  >
-</a>
