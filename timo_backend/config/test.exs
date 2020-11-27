@@ -20,5 +20,6 @@ config :logger, level: :warn
 config :pbkdf2_elixir, :rounds, 1
 
 config :timo, frontend_url: "http://localhost:4200"
+config :slack, url: "http://localhost:8000"
 
 config :timo, Timo.Mailer, adapter: Bamboo.TestAdapter
