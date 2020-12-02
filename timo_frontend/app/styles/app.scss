@@ -276,7 +276,6 @@ button {
   width: 100%;
 
   @include mobile {
-    height: 100%;
     flex-direction: column;
     display: flex
   }
@@ -293,8 +292,6 @@ button {
   width: 100%;
   margin-bottom: 0;
   margin-top: auto;
-  padding-bottom: 40px;
-  padding-top: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -302,7 +299,7 @@ button {
 
   &__demo {
     text-align: center;
-    padding: 20px 0;
+    padding-top: 40px;
 
     a {
       text-decoration: none;
@@ -311,6 +308,12 @@ button {
 
   &__built-by {
     text-align: right;
+    padding-bottom: 10px;
+
+    @include mobile {
+      text-align: center;
+      margin-top: 10px;
+    }
 
     a {
       text-decoration: none;
