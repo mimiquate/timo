@@ -40,9 +40,7 @@ defmodule TimoWeb.Endpoint do
   plug Plug.Session,
     store: :cookie,
     key: "_timo_key",
-    signing_salt: Application.get_env(:timo, __MODULE__)[:cookie_signing_salt],
-    secure: true,
-    extra: "SameSite=None"
+    signing_salt: Application.get_env(:timo, __MODULE__)[:cookie_signing_salt]
 
   {:ok, frontend_url} = Application.fetch_env(:timo, :frontend_url)
   plug CORSPlug, origin: [frontend_url]

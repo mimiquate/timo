@@ -43,6 +43,7 @@ module.exports = function(environment) {
   };
 
   ENV['@sentry/ember'] = {
+    disablePerformance: true,
     sentry: {
       dsn: "https://558b36cdbffb4ce59b1c6ff609f37ce4@o482985.ingest.sentry.io/5534040",
 
@@ -50,7 +51,8 @@ module.exports = function(environment) {
       // of transactions for performance monitoring.
       // We recommend adjusting this value in production, or using tracesSampler
       // for finer control
-      tracesSampleRate: 1.0
+      tracesSampleRate: 1.0,
+      enabled: environment === 'production'
     }
   };
 
