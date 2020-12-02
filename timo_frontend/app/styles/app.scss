@@ -276,7 +276,6 @@ button {
   width: 100%;
 
   @include mobile {
-    height: 100%;
     flex-direction: column;
     display: flex
   }
@@ -310,6 +309,11 @@ button {
   &__built-by {
     text-align: right;
     padding-bottom: 10px;
+
+    @include mobile {
+      text-align: center;
+      margin-top: 10px;
+    }
 
     a {
       text-decoration: none;
