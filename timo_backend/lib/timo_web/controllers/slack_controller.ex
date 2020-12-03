@@ -2,7 +2,6 @@ defmodule TimoWeb.SlackController do
   use TimoWeb, :controller
   import Ecto.Query, warn: false
 
-  alias Timo.Repo
   alias Timo.API
 
   def handle_request(conn,  params = %{"type" => "url_verification"}) do
@@ -13,7 +12,7 @@ defmodule TimoWeb.SlackController do
     ))
   end
 
-  def handle_request(conn,  params = %{"ssl_check" => "1"}) do
+  def handle_request(conn,  %{"ssl_check" => "1"}) do
     send_resp(conn, 200, "")
   end
 
@@ -60,7 +59,7 @@ defmodule TimoWeb.SlackController do
     end
   end
 
-  def auth(conn, params) do
+  def auth(conn, _params) do
     send_resp(conn, 400, "slack app failed")
   end
 
