@@ -4,15 +4,17 @@ defmodule TimoWeb.SlackController do
 
   alias Timo.API
 
-  def handle_request(conn,  params = %{"type" => "url_verification"}) do
-    send_resp(conn, 200, Poison.encode!(
-      %{
+  def handle_request(conn, params = %{"type" => "url_verification"}) do
+    send_resp(
+      conn,
+      200,
+      Poison.encode!(%{
         "challenge" => params["challenge"]
-      }
-    ))
+      })
+    )
   end
 
-  def handle_request(conn,  %{"ssl_check" => "1"}) do
+  def handle_request(conn, %{"ssl_check" => "1"}) do
     send_resp(conn, 200, "")
   end
 
@@ -26,12 +28,14 @@ defmodule TimoWeb.SlackController do
       Slack.Web.Conversations.members(channel, %{token: token})
       |> create_timezone_list(token)
 
-    slack_team_url = "#{frontend_url}/dynamic-team?#{timezone_list}&name=#{params["channel_name"]}"
+    slack_team_url =
+      "#{frontend_url}/dynamic-team?#{timezone_list}&name=#{params["channel_name"]}"
 
-    block = Poison.encode!(%{
-      "text" => "Generated link for Timo :calendar: <#{slack_team_url}>",
-      "response_type" => "in_channel"
-    })
+    block =
+      Poison.encode!(%{
+        "text" => "Generated link for Timo :calendar: <#{slack_team_url}>",
+        "response_type" => "in_channel"
+      })
 
     HTTPoison.post(response_url, block, [{"Content-Type", "application/json"}])
     send_resp(conn, 200, "")
@@ -47,9 +51,9 @@ defmodule TimoWeb.SlackController do
       token: slack_details["access_token"],
       workspace: slack_details["team"]["id"]
     }
-    |> API.create_slack_access_token
+    |> API.create_slack_access_token()
     |> case do
-      {:ok, _ } ->
+      {:ok, _} ->
         info = Slack.Web.Team.info(%{token: slack_details["access_token"]})
 
         redirect(conn, external: "https://#{info["team"]["domain"]}.slack.com")
@@ -63,7 +67,7 @@ defmodule TimoWeb.SlackController do
     send_resp(conn, 400, "slack app failed")
   end
 
-  defp create_timezone_list(%{ "members" => members }, token) do
+  defp create_timezone_list(%{"members" => members}, token) do
     members
     |> Enum.map(fn m ->
       member = Slack.Web.Users.info(m, %{token: token}) |> get_in(["user"])
@@ -75,7 +79,7 @@ defmodule TimoWeb.SlackController do
         }
       end
     end)
-    |> Enum.filter(& !is_nil(&1))
+    |> Enum.filter(&(!is_nil(&1)))
     |> Enum.map(fn member ->
       "#{member.timezone}[]=#{member.username}"
     end)

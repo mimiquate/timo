@@ -166,12 +166,12 @@ defmodule Timo.API do
     |> where([u], u.workspace == ^workspace)
     |> select([u], u.token)
     |> last(:inserted_at)
-    |> Repo.one
+    |> Repo.one()
   end
 
   def create_slack_access_token(attrs) do
     %SlackAccessToken{}
     |> SlackAccessToken.changeset(attrs)
-    |> Repo.insert
+    |> Repo.insert()
   end
 end
