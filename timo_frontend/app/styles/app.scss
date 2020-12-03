@@ -1,4 +1,7 @@
 @import "ember-power-select";
+@import "ember-modal-dialog/ember-modal-structure";
+@import "ember-modal-dialog/ember-modal-appearance";
+
 @import './variables.scss';
 @import './components/timezone-list.scss';
 @import './components/team-header.scss';
@@ -15,10 +18,11 @@
 @import './components/shared-team-header.scss';
 @import './components/not-found.scss';
 @import './components/header-tooltip.scss';
-@import "ember-modal-dialog/ember-modal-structure";
-@import "ember-modal-dialog/ember-modal-appearance";
+@import './components/main-footer.scss';
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 @import "./media-query.scss";
 
 html, .ember-application {
@@ -285,39 +289,4 @@ button {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.main-footer {
-  height: 100%;
-  width: 100%;
-  margin-bottom: 0;
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  font-size: 13px;
-
-  &__demo {
-    text-align: center;
-    padding-top: 40px;
-
-    a {
-      text-decoration: none;
-    }
-  }
-
-  &__built-by {
-    text-align: right;
-    padding-bottom: 10px;
-
-    @include mobile {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    a {
-      text-decoration: none;
-      color: $green;
-    }
-  }
 }
