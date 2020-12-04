@@ -1,8 +1,7 @@
 defmodule TimoWeb.SlackController do
   use TimoWeb, :controller
-  import Ecto.Query, warn: false
 
-  alias Timo.API
+  alias Timo.SlackContext
 
   def handle_request(conn, params = %{"type" => "url_verification"}) do
     send_resp(
@@ -22,7 +21,7 @@ defmodule TimoWeb.SlackController do
     response_url = params["response_url"]
     frontend_url = Application.get_env(:timo, :frontend_url)
 
-    token = API.get_workspace_token(params["team_id"])
+    token = SlackContext.get_workspace_token(params["team_id"])
 
     timezone_list =
       Slack.Web.Conversations.members(channel, %{token: token})
@@ -51,7 +50,7 @@ defmodule TimoWeb.SlackController do
       token: slack_details["access_token"],
       workspace: slack_details["team"]["id"]
     }
-    |> API.create_slack_access_token()
+    |> SlackContext.create_slack_access_token()
     |> case do
       {:ok, _} ->
         info = Slack.Web.Team.info(%{token: slack_details["access_token"]})
