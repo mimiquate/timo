@@ -17,5 +17,7 @@ defmodule TimoWeb.Router do
     post "/session", SessionController, :create
   end
 
-  forward "/sent_emails", Bamboo.SentEmailViewerPlug
+  if Mix.env() == :dev do
+    forward "/sent_emails", Bamboo.SentEmailViewerPlug
+  end
 end
