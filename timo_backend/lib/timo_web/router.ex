@@ -40,4 +40,8 @@ defmodule TimoWeb.Router do
   defp set_content_type_to_json(conn, _opts) do
     put_resp_content_type(conn, "application/json")
   end
+
+  if Mix.env() == :dev do
+    forward "/sent_emails", Bamboo.SentEmailViewerPlug
+  end
 end
