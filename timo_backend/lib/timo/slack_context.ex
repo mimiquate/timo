@@ -3,7 +3,7 @@ defmodule Timo.SlackContext do
 
   alias Timo.Repo
   alias Timo.API.SlackAccessToken
-  alias Encrypt
+  alias Timo.Slack.Encrypt
 
   def get_workspace_token(workspace) do
     SlackAccessToken

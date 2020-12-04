@@ -1,7 +1,7 @@
 defmodule TimoWeb.SlackController do
   use TimoWeb, :controller
 
-  alias Timo.SlackContext
+  alias Timo.Slack, as: SlackContext
 
   def handle_request(conn, params = %{"type" => "url_verification"}) do
     send_resp(

@@ -1,6 +1,6 @@
-defmodule Encrypt do
+defmodule Timo.Slack.Encrypt do
   @aad "AES256GCM"
-  @encrypt_secret_key Application.get_env(:timo, :encrypt_secret_key)
+  @encrypt_secret_key Application.get_env(:timo, __MODULE__)[:encrypt_secret_key]
 
   def encrypt(val) do
     iv = :crypto.strong_rand_bytes(16)
