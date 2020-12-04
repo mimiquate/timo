@@ -3,6 +3,7 @@ defmodule Timo.SlackContext do
 
   alias Timo.Repo
   alias Timo.API.SlackAccessToken
+  alias Encrypt
 
   def get_workspace_token(workspace) do
     SlackAccessToken
@@ -10,9 +11,13 @@ defmodule Timo.SlackContext do
     |> select([u], u.token)
     |> last(:inserted_at)
     |> Repo.one()
+    |> Encrypt.decrypt()
   end
 
   def create_slack_access_token(attrs) do
+    encrypted_token = attrs.token |> Encrypt.encrypt()
+    attrs = attrs |> Map.put(:token, encrypted_token)
+
     %SlackAccessToken{}
     |> SlackAccessToken.changeset(attrs)
     |> Repo.insert()
