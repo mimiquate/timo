@@ -8,6 +8,7 @@ defmodule Timo.API do
   alias Timo.API.User
   alias Timo.API.Team
   alias Timo.API.Member
+  alias Timo.API.City
 
   @doc """
   Gets a single user.
@@ -158,5 +159,15 @@ defmodule Timo.API do
 
   def delete_member(%Member{} = member) do
     Repo.delete(member)
+  end
+
+  def get_cities(%{"search" => text}) do
+    diacritics = Regex.compile!("[\u0300-\u036f]")
+    unaccent_text = text |> String.normalize(:nfd) |> String.replace(diacritics, "")
+    search = "#{unaccent_text}%"
+
+    City
+    |> where([c], ilike(c.name_ascii, ^search))
+    |> Repo.all()
   end
 end
