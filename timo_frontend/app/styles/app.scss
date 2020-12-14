@@ -281,7 +281,8 @@ button {
 
   @include mobile {
     flex-direction: column;
-    display: flex
+    display: flex;
+    height: 100%;
   }
 }
 
