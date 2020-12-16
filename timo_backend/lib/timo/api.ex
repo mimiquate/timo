@@ -108,6 +108,7 @@ defmodule Timo.API do
       |> join(:inner, [m], t in Team, on: m.team_id == t.id)
       |> join(:inner, [_, t], u in User, on: t.user_id == u.id)
       |> where([m, _, u], u.id == ^user.id and m.id == ^id)
+      |> preload(:city)
       |> select([m], m)
 
     with %Member{} = member <- Repo.one(query) do
@@ -117,9 +118,10 @@ defmodule Timo.API do
     end
   end
 
-  def update_member(%Member{} = member, attrs) do
+  def update_member(%Member{} = member, attrs, city \\ nil) do
     member
     |> Member.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:city, city)
     |> Repo.update()
   end
 
