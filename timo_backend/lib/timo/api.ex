@@ -73,7 +73,7 @@ defmodule Timo.API do
   end
 
   defp user_team_query(query, %User{id: user_id}, true) do
-    from(t in query, where: t.user_id == ^user_id, preload: :members)
+    from(t in query, where: t.user_id == ^user_id, preload: [members: :city])
   end
 
   def list_team_members(%Team{} = team) do
@@ -82,17 +82,16 @@ defmodule Timo.API do
     |> Repo.all()
   end
 
-  def create_member(%Team{} = team, attrs \\ %{}) do
+  def create_member(%Team{} = team, attrs \\ %{}, city \\ nil) do
     %Member{}
     |> Member.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:team, team)
+    |> Ecto.Changeset.put_assoc(:city, city)
     |> Repo.insert()
   end
 
   def get_team_by_id(id) do
-    query = from(t in Team, where: t.id == ^id)
-
-    with %Team{} = team <- Repo.get(query, id) do
+    with %Team{} = team <- Repo.get(Team, id) do
       {:ok, team}
     else
       nil -> nil
@@ -100,7 +99,7 @@ defmodule Timo.API do
   end
 
   defp team_member_query(query, %Team{id: team_id}) do
-    from(m in query, where: m.team_id == ^team_id)
+    from(m in query, where: m.team_id == ^team_id, preload: :city)
   end
 
   def get_user_member(%User{} = user, id) do
@@ -137,7 +136,7 @@ defmodule Timo.API do
       from(
         t in Team,
         where: t.share_id == ^share_id and t.public == true,
-        preload: :members
+        preload: [members: :city]
       )
 
     with %Team{} = team <- Repo.one(query) do
@@ -169,5 +168,11 @@ defmodule Timo.API do
     City
     |> where([c], ilike(c.name_ascii, ^search))
     |> Repo.all()
+  end
+
+  def get_city_by_id(nil), do: nil
+
+  def get_city_by_id(id) do
+    Repo.get(City, id)
   end
 end

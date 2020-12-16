@@ -7,6 +7,7 @@ defmodule Timo.API.Member do
     field :timezone, :string
 
     belongs_to :team, Timo.API.Team
+    belongs_to :city, Timo.API.City
 
     timestamps()
   end
