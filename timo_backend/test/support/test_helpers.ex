@@ -4,7 +4,8 @@ defmodule Timo.TestHelpers do
   alias Timo.API.{
     User,
     Team,
-    Member
+    Member,
+    City
   }
 
   def user_factory(attrs \\ %{}) do
@@ -40,6 +41,21 @@ defmodule Timo.TestHelpers do
     attrs = Enum.into(attrs, default_value)
 
     Member
+    |> struct!(attrs)
+    |> Repo.insert!()
+  end
+
+  def city_factory(attrs \\ %{}) do
+    default_value = %{
+      name: "Tokyo",
+      country: "Japon",
+      timezone: "Asia/Tokyo",
+      name_ascii: "Tokyo"
+    }
+
+    attrs = Enum.into(attrs, default_value)
+
+    City
     |> struct!(attrs)
     |> Repo.insert!()
   end

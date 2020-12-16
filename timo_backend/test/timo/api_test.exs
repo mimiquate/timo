@@ -306,4 +306,53 @@ defmodule Timo.APITest do
       assert Repo.get(Member, member.id) == nil
     end
   end
+
+  describe "cities" do
+    test "get_cities/1 get all cities given search param" do
+      city_factory()
+
+      assert [fetched_city] = API.get_cities(%{"search" => "Tok"})
+      assert fetched_city.name == "Tokyo"
+    end
+
+    test "get_cities/1 get all cities given undercase search param" do
+      city_factory()
+
+      assert [fetched_city] = API.get_cities(%{"search" => "tok"})
+      assert fetched_city.name == "Tokyo"
+    end
+
+    test "get_cities/1 get all cities given upercase search param" do
+      city_factory()
+
+      assert [fetched_city] = API.get_cities(%{"search" => "TOK"})
+      assert fetched_city.name == "Tokyo"
+    end
+
+    test "get_cities/1 get all cities given accent search param" do
+      city_factory(%{name: "Kyōto", name_ascii: "Kyoto"})
+
+      assert [fetched_city] = API.get_cities(%{"search" => "Kyoto"})
+      assert fetched_city.name == "Kyōto"
+    end
+
+    test "get_cities/1 get all cities given non ascii search param" do
+      city_factory(%{name: "Eşfahān", name_ascii: "Esfahan"})
+
+      assert [fetched_city] = API.get_cities(%{"search" => "Esfahan"})
+      assert fetched_city.name == "Eşfahān"
+    end
+
+    test "get_cities/1 get multiple cities" do
+      city_1 = city_factory(%{name: "Āgra", name_ascii: "Agra"})
+      city_2 = city_factory(%{name: "Ağrı", name_ascii: "Agri"})
+      city_3 = city_factory(%{name: "Agriá", name_ascii: "Agria"})
+
+      cities = API.get_cities(%{"search" => "Agr"})
+
+      assert Enum.member?(cities, city_1)
+      assert Enum.member?(cities, city_2)
+      assert Enum.member?(cities, city_3)
+    end
+  end
 end
