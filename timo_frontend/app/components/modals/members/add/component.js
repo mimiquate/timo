@@ -51,7 +51,7 @@ export default class AddMemberModalComponent extends Component {
     await changeset.validate();
 
     if (changeset.isValid) {
-      this.args.addOrUpdateMember(name, timezone, city);
+      this.args.addNewMember(name, timezone, city);
     } else {
       showErrors.call(this, changeset.errors);
     }
