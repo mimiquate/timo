@@ -31,11 +31,21 @@ defmodule Timo.TestHelpers do
     member_factory(team)
   end
 
-  def member_factory(%Team{} = team, attrs \\ %{}) do
+  def member_factory(%Team{} = team) do
+    city = city_factory()
+    member_factory(team, city)
+  end
+
+  def member_factory(%Team{} = team, %City{} = city) do
+    member_factory(team, %{}, city)
+  end
+
+  def member_factory(%Team{} = team, attrs \\ %{}, %City{} = city) do
     default_value = %{
       name: "some name",
       timezone: "America/Montevideo",
-      team_id: team.id
+      team_id: team.id,
+      city_id: city.id
     }
 
     attrs = Enum.into(attrs, default_value)
