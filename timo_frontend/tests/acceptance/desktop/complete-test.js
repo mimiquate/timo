@@ -2,11 +2,19 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click, findAll, find, fillIn } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { clickTrigger, selectChoose } from 'ember-power-select/test-support/helpers';
+import { clickTrigger, selectChoose, selectSearch } from 'ember-power-select/test-support/helpers';
 
 module('Desktop | Complete user path', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
+
+  hooks.beforeEach(function() {
+    this.server.create('city', {
+      name: 'Rome',
+      country: 'Italy',
+      timezone: 'Europe/Rome'
+    });
+  });
 
   test('Full user path', async function (assert) {
     // Create Account
@@ -123,6 +131,8 @@ module('Desktop | Complete user path', function (hooks) {
 
     await click('[data-test=modal-edit-member]');
     await fillIn('.add-member-modal__member-name input', 'Pratt');
+    await selectSearch('.t-autocomplete', 'Rome');
+    await selectChoose('.t-autocomplete', 'Rome');
 
     await click('[data-test=update-button]');
 
@@ -133,7 +143,7 @@ module('Desktop | Complete user path', function (hooks) {
     assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
 
     assert.equal(members[1].textContent.trim(), 'Pratt');
-    assert.equal(timezones[1].textContent.trim(), 'Europe/Rome');
+    assert.equal(timezones[1].textContent.trim(), 'Rome, Italy');
 
     //Delete member
     await click('.member-list__trash-icon');
