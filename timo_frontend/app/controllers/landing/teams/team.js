@@ -9,6 +9,9 @@ import { isPresent } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { toLeft, toRight } from 'ember-animated/transitions/move-over';
 import { alias } from '@ember/object/computed';
+import { debounce } from '@ember/runloop';
+import RSVP from 'rsvp';
+import ENV from 'timo-frontend/config/environment';
 
 export default class LandingTeamsTeamController extends Controller {
   @service media;
@@ -242,6 +245,14 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   searchCity(text) {
-    return this.store.query('city', { search: text });
+    const delay = ENV.environment === 'test' ? 0 : 500;
+
+    return new RSVP.Promise((resolve, reject) => {
+      debounce(_performSearch, text, this.store, resolve, reject, delay);
+    });
   }
+}
+
+function _performSearch(text, store, resolve, reject) {
+  store.query('city', { search: text }).then((resp) => resolve(resp), reject);
 }
