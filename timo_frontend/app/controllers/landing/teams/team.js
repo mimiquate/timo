@@ -52,6 +52,7 @@ export default class LandingTeamsTeamController extends Controller {
       name: 'Current location',
       isCurrentUser: true,
       timezone: timezoneNow,
+      location: timezoneNow,
       id: 'current'
     });
 

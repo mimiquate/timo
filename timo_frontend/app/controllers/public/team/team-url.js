@@ -25,6 +25,7 @@ export default class PublicTeamTeamUrlController extends Controller {
     members.unshiftObject({
       name: 'Current location',
       timezone: timezoneNow,
+      location: timezoneNow,
       id: 'current'
     });
 
