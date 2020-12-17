@@ -43,7 +43,7 @@ module('Mobile | Acceptance | Update member', function (hooks) {
     await click('[data-test=update-button]');
 
     const members = findAll('.member-list__member__name');
-    const timezones = findAll('.member-list__member__timezone');
+    const timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 2');
@@ -63,7 +63,7 @@ module('Mobile | Acceptance | Update member', function (hooks) {
     await click('[data-test=update-button]');
 
     const members = findAll('.member-list__member__name');
-    const timezones = findAll('.member-list__member__timezone');
+    const timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member City');
@@ -79,7 +79,7 @@ module('Mobile | Acceptance | Update member', function (hooks) {
     assert.dom(find('.member-list__modal'));
 
     const members = findAll('.member-list__member__name');
-    const timezones = findAll('.member-list__member__timezone');
+    const timezones = findAll('.member-list__member__location');
 
     assert.equal(members[1].textContent.trim(), 'Member 1');
     assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
@@ -99,7 +99,7 @@ module('Mobile | Acceptance | Update member', function (hooks) {
     await click('.team-header__details');
 
     let members = findAll('.member-list__member__name');
-    const timezones = findAll('.member-list__member__timezone');
+    const timezones = findAll('.member-list__member__location');
 
     assert.equal(members.length, 2);
     assert.equal(members[0].textContent.trim(), 'Current location');

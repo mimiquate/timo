@@ -121,7 +121,7 @@ module('Desktop | Complete user path', function (hooks) {
     assert.dom(find('.member-list__modal'));
 
     let members = findAll('.member-list__member__name');
-    timezones = findAll('.member-list__member__timezone');
+    timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
@@ -137,7 +137,7 @@ module('Desktop | Complete user path', function (hooks) {
     await click('[data-test=update-button]');
 
     members = findAll('.member-list__member__name');
-    timezones = findAll('.member-list__member__timezone');
+    timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
