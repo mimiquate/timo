@@ -1,6 +1,13 @@
 @import '../variables.scss';
 
 .add-member-modal {
+  padding: 28px 105px 45px 105px;
+
+  @include mobile {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
   &__member-name {
     margin-top: 36px;
     margin-bottom: 42px;
@@ -87,5 +94,13 @@
     top: 31px;
     color: $timo-warning;
     font-size: 12px;
+  }
+}
+
+.t-autocomplete {
+  margin-top: 30px;
+
+  .ember-power-select-trigger {
+    padding: 0;
   }
 }
