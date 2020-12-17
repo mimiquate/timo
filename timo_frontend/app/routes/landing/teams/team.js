@@ -8,7 +8,7 @@ export default class LandingTeamsTeamRoute extends Route {
     const team = this.store.findRecord(
       'team',
       params.id,
-      { include: 'members', reload: true }
+      { include: 'members.city', reload: true }
     );
 
     return hash({
