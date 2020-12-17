@@ -36,4 +36,5 @@ export default function () {
   this.patch('/teams/:id');
   this.delete('/teams/:id');
   this.delete('/members/:id');
+  this.get('/cities');
 }
