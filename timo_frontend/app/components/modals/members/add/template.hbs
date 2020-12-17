@@ -3,6 +3,7 @@
   @closeModal={{@closeModal}}
   @onSubmit={{this.add}}
   @actionLabel="Add"
+  @modalClass="add-member-modal"
 >
   <TInput
     class="add-member-modal__member-name"
@@ -27,5 +28,18 @@
     {{#if this.timezoneError}}
       <span class="t-dropdown__error">{{this.timezoneError}}</span>
     {{/if}}
+  </div>
+  <div class="t-autocomplete">
+    <PowerSelectTypeahead
+      @search={{@searchCity}}
+      @selected={{this.selectedCity.fullName}}
+      @placeholder="Search for city"
+      @onInput={{this.onInputCity}}
+      @loadingMessage="Searching for cities..."
+      @noMatchesMessage="No city found"
+      @onChange={{this.changeCity}} as |city|
+    >
+      {{city.name}}, {{city.country}}
+    </PowerSelectTypeahead>
   </div>
 </TModal>

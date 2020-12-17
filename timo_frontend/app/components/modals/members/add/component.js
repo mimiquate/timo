@@ -13,6 +13,7 @@ export default class AddMemberModalComponent extends Component {
   @tracked timezone = '';
   @tracked nameError = '';
   @tracked timezoneError = '';
+  @tracked selectedCity = null;
 
   timezoneList = moment.tz.names();
 
@@ -24,6 +25,7 @@ export default class AddMemberModalComponent extends Component {
   @action
   changeTimezone(value) {
     this.timezone = value;
+    this.selectedCity = null;
 
     if (isPresent(value)) {
       this.cleanError('timezoneError');
@@ -39,6 +41,7 @@ export default class AddMemberModalComponent extends Component {
 
     const name = this.name.trim();
     const timezone = this.timezone;
+    const city = this.selectedCity;
 
     let changeset = Changeset({
       name,
@@ -48,9 +51,24 @@ export default class AddMemberModalComponent extends Component {
     await changeset.validate();
 
     if (changeset.isValid) {
-      this.args.addOrUpdateMember(name, timezone);
+      this.args.addOrUpdateMember(name, timezone, city);
     } else {
       showErrors.call(this, changeset.errors);
     }
+  }
+
+  @action
+  changeCity(city) {
+    this.selectedCity = city;
+    this.timezone = city.timezone;
+
+    if (isPresent(city)) {
+      this.cleanError('timezoneError');
+    }
+  }
+
+  @action
+  onInputCity(text) {
+    return text.length > 2;
   }
 }

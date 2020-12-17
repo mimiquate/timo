@@ -157,11 +157,12 @@ export default class LandingTeamsTeamController extends Controller {
   }
 
   @action
-  async saveMember(memberName, memberTimeZone) {
+  async saveMember(memberName, memberTimeZone, memberCity) {
     await this.store.createRecord('member', {
       name: memberName,
       timezone: memberTimeZone,
-      team: this.model.team
+      team: this.model.team,
+      city: memberCity
     }).save().then(() => this.newMemberModal = false);
   }
 
@@ -236,5 +237,10 @@ export default class LandingTeamsTeamController extends Controller {
       const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
       teamList.scrollTop = teamList.scrollHeight;
     }
+  }
+
+  @action
+  searchCity(text) {
+    return this.store.query('city', { search: text });
   }
 }
