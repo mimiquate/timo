@@ -43,6 +43,7 @@ defmodule Timo.TestHelpers do
     Member
     |> struct!(attrs)
     |> Repo.insert!()
+    |> Repo.preload(:city)
   end
 
   def city_factory(attrs \\ %{}) do

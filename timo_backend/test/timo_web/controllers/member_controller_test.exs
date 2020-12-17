@@ -20,12 +20,18 @@ defmodule TimoWeb.MemberControllerTest do
     }
   end
 
-  defp relationships(team_id) do
+  defp relationships(team_id, city_id \\ nil) do
     %{
       "team" => %{
         "data" => %{
           "type" => "teams",
           "id" => team_id
+        }
+      },
+      "city" => %{
+        "data" => %{
+          "type" => "cities",
+          "id" => city_id
         }
       }
     }

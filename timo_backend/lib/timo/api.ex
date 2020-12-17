@@ -76,12 +76,6 @@ defmodule Timo.API do
     from(t in query, where: t.user_id == ^user_id, preload: [members: :city])
   end
 
-  def list_team_members(%Team{} = team) do
-    Member
-    |> team_member_query(team)
-    |> Repo.all()
-  end
-
   def create_member(%Team{} = team, attrs \\ %{}, city \\ nil) do
     %Member{}
     |> Member.changeset(attrs)
@@ -96,10 +90,6 @@ defmodule Timo.API do
     else
       nil -> nil
     end
-  end
-
-  defp team_member_query(query, %Team{id: team_id}) do
-    from(m in query, where: m.team_id == ^team_id, preload: :city)
   end
 
   def get_user_member(%User{} = user, id) do

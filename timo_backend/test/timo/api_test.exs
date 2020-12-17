@@ -214,20 +214,6 @@ defmodule Timo.APITest do
     @invalid_member_nil_tz %{name: "some name", timezone: nil}
     @update_member_attrs %{name: "new name", timezone: "America/Buenos_Aires"}
 
-    test "list_team_members/1 returns all members" do
-      team = team_factory(user_factory())
-      member = member_factory(team)
-      members = API.list_team_members(team)
-
-      assert members == [member]
-    end
-
-    test "list_team_members/1 returns empty list" do
-      team = team_factory(user_factory())
-
-      assert API.list_team_members(team) == []
-    end
-
     test "create_member/1 with valid data creates a member" do
       team = team_factory(user_factory())
 
@@ -282,7 +268,7 @@ defmodule Timo.APITest do
       member = member_factory()
 
       assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_attrs)
-      fetched_member = Repo.get(Member, member.id)
+      fetched_member = Repo.get(Member, member.id) |> Repo.preload(:city)
 
       assert fetched_member == member
     end
