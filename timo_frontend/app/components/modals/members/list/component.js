@@ -12,9 +12,6 @@ import moment from 'moment';
 export default class ListMembersModalComponent extends Component {
   @tracked showList = true;
   @tracked showDeleteConfirmation = false;
-  @tracked memberToEdit = null;
-  @tracked name = '';
-  @tracked timezone = '';
   @tracked nameError = '';
   @tracked timezoneError = '';
   @tracked memberChangeset = null;
