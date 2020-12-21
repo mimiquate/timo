@@ -5,7 +5,7 @@ defmodule TimoWeb.SlackController do
 
   plug TimoWeb.Plugs.SlackVerify when action in [:handle_request]
 
-  def handle_request(conn, params = %{"challenge" => challenge_code}) do
+  def handle_request(conn, %{"challenge" => challenge_code}) do
     send_resp(
       conn,
       200,
@@ -21,25 +21,11 @@ defmodule TimoWeb.SlackController do
     "team_id" => team,
     "response_url" => response_url
   }) do
-    frontend_url = Application.get_env(:timo, :frontend_url)
+    with response <- SlackContext.create_response(team, channel_id, channel_name) do
+      HTTPoison.post(response_url, response, [{"Content-Type", "application/json"}])
 
-    token = SlackContext.get_workspace_token(team)
-
-    timezone_list =
-      Slack.Web.Conversations.members(channel_id, %{token: token})
-      |> create_timezone_list(token)
-
-    slack_team_url =
-      "#{frontend_url}/dynamic-team?#{timezone_list}&name=#{channel_name}"
-
-    block =
-      Poison.encode!(%{
-        "text" => "Generated link for Timo :calendar: <#{slack_team_url}>",
-        "response_type" => "in_channel"
-      })
-
-    HTTPoison.post(response_url, block, [{"Content-Type", "application/json"}])
-    send_resp(conn, 200, "")
+      send_resp(conn, 200, "")
+    end
   end
 
   def handle_request(conn, _params) do
@@ -47,21 +33,11 @@ defmodule TimoWeb.SlackController do
   end
 
   def auth(conn, %{"code" => code}) do
-    client_id = Application.get_env(:timo, __MODULE__)[:client_id]
-    client_secret = Application.get_env(:timo, __MODULE__)[:client_secret]
+    case SlackContext.authorize_workspace(code) do
+      {:ok, workspace} ->
+        url = workspace |> SlackContext.get_workspace_url()
 
-    slack_details = Slack.Web.Oauth.V2.access(client_id, client_secret, code)
-
-    %{
-      token: slack_details["access_token"],
-      workspace: slack_details["team"]["id"]
-    }
-    |> SlackContext.create_slack_access_token()
-    |> case do
-      {:ok, _} ->
-        info = Slack.Web.Team.info(%{token: slack_details["access_token"]})
-
-        redirect(conn, external: "https://#{info["team"]["domain"]}.slack.com")
+        redirect(conn, external: url)
 
       _ ->
         send_resp(conn, 200, "")
@@ -70,24 +46,5 @@ defmodule TimoWeb.SlackController do
 
   def auth(conn, _params) do
     send_resp(conn, 400, "slack app failed")
-  end
-
-  defp create_timezone_list(%{"members" => members}, token) do
-    members
-    |> Enum.map(fn m ->
-      member = Slack.Web.Users.info(m, %{token: token}) |> get_in(["user"])
-
-      if !member["is_bot"] do
-        %{
-          username: member["real_name"],
-          timezone: member["tz"]
-        }
-      end
-    end)
-    |> Enum.filter(&(!is_nil(&1)))
-    |> Enum.map(fn member ->
-      "#{member.timezone}[]=#{member.username}"
-    end)
-    |> Enum.join("&")
   end
 end
