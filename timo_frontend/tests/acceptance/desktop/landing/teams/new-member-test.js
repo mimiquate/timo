@@ -45,7 +45,7 @@ module('Acceptance | New member', function (hooks) {
     const autocomplete = find('.t-autocomplete input');
 
     assert.equal(autocomplete.value, '', 'Member city is empty');
-    assert.equal(autocomplete.placeholder, 'Search for city', 'Correct city placeholder');
+    assert.equal(autocomplete.placeholder, 'Search for city (optional)', 'Correct city placeholder');
   });
 
   test('Creates member in current timezone and closes modal', async function (assert) {
