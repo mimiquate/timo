@@ -3,18 +3,16 @@ defmodule TimoWeb.SlackController do
 
   alias Timo.Slack, as: SlackContext
 
-  def handle_request(conn, params = %{"type" => "url_verification"}) do
+  plug TimoWeb.Plug.SlackVerify when action in [:handle_request]
+
+  def handle_request(conn, params = %{"challenge" => challenge_code}) do
     send_resp(
       conn,
       200,
       Poison.encode!(%{
-        "challenge" => params["challenge"]
+        "challenge" => challenge_code
       })
     )
-  end
-
-  def handle_request(conn, %{"ssl_check" => "1"}) do
-    send_resp(conn, 200, "")
   end
 
   def handle_request(conn, params = %{"channel_id" => channel}) do
@@ -37,6 +35,10 @@ defmodule TimoWeb.SlackController do
       })
 
     HTTPoison.post(response_url, block, [{"Content-Type", "application/json"}])
+    send_resp(conn, 200, "")
+  end
+
+  def handle_request(conn, _params) do
     send_resp(conn, 200, "")
   end
 
