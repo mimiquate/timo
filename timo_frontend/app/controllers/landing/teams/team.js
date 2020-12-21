@@ -12,6 +12,7 @@ import { alias } from '@ember/object/computed';
 import { debounce } from '@ember/runloop';
 import RSVP from 'rsvp';
 import ENV from 'timo-frontend/config/environment';
+import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 
 export default class LandingTeamsTeamController extends Controller {
   @service media;
@@ -55,7 +56,7 @@ export default class LandingTeamsTeamController extends Controller {
       name: 'Current location',
       isCurrentUser: true,
       timezone: timezoneNow,
-      location: timezoneNow,
+      location: splitTimezone(timezoneNow),
       id: 'current'
     });
 

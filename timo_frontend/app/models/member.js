@@ -1,4 +1,5 @@
 import Model, { attr, belongsTo } from '@ember-data/model';
+import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 
 export default class MemberModel extends Model {
   @attr('string') name;
@@ -10,7 +11,7 @@ export default class MemberModel extends Model {
     if (this.city) {
       return this.city.fullName;
     } else {
-      return this.timezone;
+      return splitTimezone(this.timezone);
     }
   }
 }
