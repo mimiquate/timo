@@ -58,10 +58,10 @@ defmodule Timo.TestHelpers do
 
   def city_factory(attrs \\ %{}) do
     default_value = %{
-      name: "Tokyo",
-      country: "Japon",
-      timezone: "Asia/Tokyo",
-      name_ascii: "Tokyo"
+      name: "Montevideo",
+      country: "Uruguay",
+      timezone: "America/Montevideo",
+      name_ascii: "Montevideo"
     }
 
     attrs = Enum.into(attrs, default_value)

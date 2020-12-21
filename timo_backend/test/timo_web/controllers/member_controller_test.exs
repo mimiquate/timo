@@ -125,9 +125,16 @@ defmodule TimoWeb.MemberControllerTest do
     assert member.city == nil
   end
 
-  test "updates member and renders it when data is valid", %{conn: conn, team: team, city: city} do
+  test "updates member and renders it when data is valid", %{conn: conn, team: team} do
     member = member_factory(team)
     member_id = Integer.to_string(member.id)
+
+    city =
+      city_factory(%{
+        name: "Buenos Aires",
+        timezone: "America/Buenos_Aires",
+        country: "Argentina"
+      })
 
     conn =
       put(

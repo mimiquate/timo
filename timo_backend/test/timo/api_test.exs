@@ -251,6 +251,15 @@ defmodule Timo.APITest do
       assert member.city == city
     end
 
+    test "create_member/1 when city and timezone do not match returns error changeset" do
+      team = team_factory(user_factory())
+      city = city_factory(%{timezone: "America/Montevideo"})
+      attrs = %{name: "some name", timezone: "Asia/Tokyo"}
+
+      assert {:error, %Ecto.Changeset{} = error} = API.create_member(team, attrs, city)
+      assert error.errors == [timezone: {"City does not match timezone", []}]
+    end
+
     test "get_user_member/2 with valid id" do
       user = user_factory()
       team = team_factory(user)
@@ -301,7 +310,7 @@ defmodule Timo.APITest do
       assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_tz)
     end
 
-    test "update_member/2 with valid name but invalid timezone (nil) returns error changest" do
+    test "update_member/2 with valid name but invalid timezone (nil) returns error changeset" do
       member = member_factory()
 
       assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_nil_tz)
@@ -322,6 +331,14 @@ defmodule Timo.APITest do
       assert member.city == nil
     end
 
+    test "update_member/2 with new city that does not match returns error changeset" do
+      member = member_factory()
+      city = city_factory(%{name: "Kyōto", name_ascii: "Kyoto", timezone: "Asia/Tokyo"})
+
+      assert {:error, %Ecto.Changeset{} = error} = API.update_member(member, %{}, city)
+      assert error.errors == [timezone: {"City does not match timezone", []}]
+    end
+
     test "delete_member/1 deletes a member" do
       member = member_factory()
 
@@ -331,22 +348,29 @@ defmodule Timo.APITest do
   end
 
   describe "cities" do
+    @default_values %{
+      name: "Tokyo",
+      country: "Japon",
+      timezone: "Asia/Tokyo",
+      name_ascii: "Tokyo"
+    }
+
     test "get_cities/1 get all cities given search param" do
-      city_factory()
+      city_factory(@default_values)
 
       assert [fetched_city] = API.get_cities(%{"search" => "Tok"})
       assert fetched_city.name == "Tokyo"
     end
 
     test "get_cities/1 get all cities given undercase search param" do
-      city_factory()
+      city_factory(@default_values)
 
       assert [fetched_city] = API.get_cities(%{"search" => "tok"})
       assert fetched_city.name == "Tokyo"
     end
 
     test "get_cities/1 get all cities given upercase search param" do
-      city_factory()
+      city_factory(@default_values)
 
       assert [fetched_city] = API.get_cities(%{"search" => "TOK"})
       assert fetched_city.name == "Tokyo"

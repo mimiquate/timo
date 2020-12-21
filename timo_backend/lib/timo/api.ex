@@ -78,7 +78,7 @@ defmodule Timo.API do
 
   def create_member(%Team{} = team, attrs \\ %{}, city \\ nil) do
     %Member{}
-    |> Member.changeset(attrs)
+    |> Member.changeset(attrs, city)
     |> Ecto.Changeset.put_assoc(:team, team)
     |> Ecto.Changeset.put_assoc(:city, city)
     |> Repo.insert()
@@ -110,7 +110,7 @@ defmodule Timo.API do
 
   def update_member(%Member{} = member, attrs, city \\ nil) do
     member
-    |> Member.changeset(attrs)
+    |> Member.changeset(attrs, city)
     |> Ecto.Changeset.put_assoc(:city, city)
     |> Repo.update()
   end

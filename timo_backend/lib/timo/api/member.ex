@@ -13,11 +13,23 @@ defmodule Timo.API.Member do
   end
 
   @doc false
-  def changeset(member, attrs) do
+  def changeset(member, attrs, city) do
     member
     |> cast(attrs, [:name, :timezone])
     |> validate_required([:name, :timezone])
     |> validate_timezone(:timezone)
+    |> validate_city(city)
+  end
+
+  defp validate_city(changeset, nil), do: changeset
+
+  defp validate_city(changeset, city) do
+    timezone = fetch_field!(changeset, :timezone)
+
+    case timezone == city.timezone do
+      true -> changeset
+      false -> add_error(changeset, :timezone, "City does not match timezone")
+    end
   end
 
   defp validate_timezone(changeset, :timezone) do
