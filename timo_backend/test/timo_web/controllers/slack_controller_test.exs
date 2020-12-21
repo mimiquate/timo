@@ -1,7 +1,7 @@
 defmodule TimoWeb.SlackControllerTest do
   use TimoWeb.ConnCase
 
-  alias Timo.SlackContext
+  alias Timo.Slack
 
   setup do
     bypass = Bypass.open(port: 8000)
@@ -36,7 +36,7 @@ defmodule TimoWeb.SlackControllerTest do
 
     token = :crypto.strong_rand_bytes(16) |> :base64.encode()
 
-    SlackContext.create_slack_access_token(%{workspace: "TEAM_ID_1", token: token})
+    Slack.create_slack_access_token(%{workspace: "TEAM_ID_1", token: token})
 
     slack_command_request = %{
       "user_id" => "USER_ID",

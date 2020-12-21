@@ -1,4 +1,4 @@
-defmodule Timo.SlackContext do
+defmodule Timo.Slack do
   import Ecto.Query, warn: false
 
   alias Timo.Repo
