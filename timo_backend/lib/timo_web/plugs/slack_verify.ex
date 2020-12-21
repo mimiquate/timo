@@ -1,4 +1,4 @@
-defmodule TimoWeb.Plug.SlackVerify do
+defmodule TimoWeb.Plugs.SlackVerify do
   import Plug.Conn
 
   @slack_signing_secret Application.get_env(:timo, __MODULE__)[:slack_signing_secret]

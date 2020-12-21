@@ -3,7 +3,7 @@ defmodule TimoWeb.SlackController do
 
   alias Timo.Slack, as: SlackContext
 
-  plug TimoWeb.Plug.SlackVerify when action in [:handle_request]
+  plug TimoWeb.Plugs.SlackVerify when action in [:handle_request]
 
   def handle_request(conn, params = %{"challenge" => challenge_code}) do
     send_resp(

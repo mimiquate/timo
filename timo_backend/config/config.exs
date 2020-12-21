@@ -44,7 +44,7 @@ config :sentry,
 config :timo, client_id: System.get_env("CLIENT_ID")
 config :timo, client_secret: System.get_env("CLIENT_SECRET")
 
-config :timo, TimoWeb.Plug.SlackVerify,
+config :timo, TimoWeb.Plugs.SlackVerify,
   slack_signing_secret: System.get_env("SLACK_SIGNING_SECRET")
 
 config :timo, Timo.Slack.Encrypt,
