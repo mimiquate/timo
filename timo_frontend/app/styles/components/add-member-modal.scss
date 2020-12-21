@@ -10,7 +10,6 @@
 
   &__member-name {
     margin-top: 36px;
-    margin-bottom: 42px;
 
     label {
       font-size: 16px;
@@ -85,6 +84,7 @@
 }
 
 .t-dropdown {
+  margin-top: 40px;
   height: 31px;
   position: relative;
 
@@ -98,7 +98,7 @@
 }
 
 .t-autocomplete {
-  margin-top: 30px;
+  margin-top: 40px;
 
   .ember-power-select-typeahead-input {
     border: none;
@@ -106,6 +106,14 @@
     color: $grey;
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
+
+    &::-webkit-input-placeholder {
+      color: $grey;
+    }
+
+    &::-moz-placeholder {
+      color: $grey;
+    }
   }
 
   .ember-power-select-trigger {

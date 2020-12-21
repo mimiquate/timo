@@ -46,6 +46,19 @@
             @onChange={{fn (mut this.memberChangeset.name)}}
             @cleanError={{fn this.cleanError 'nameError'}}
           />
+          <div class="t-autocomplete">
+            <PowerSelectTypeahead
+              @search={{@searchCity}}
+              @selected={{this.memberChangeset.city.fullName}}
+              @placeholder="Search for city"
+              @onInput={{this.onInputCity}}
+              @loadingMessage="Searching for cities..."
+              @noMatchesMessage="No city found"
+              @onChange={{this.changeCity}} as |city|
+            >
+              {{city.name}}, {{city.country}}
+            </PowerSelectTypeahead>
+          </div>
           <div class="t-dropdown">
             <PowerSelect
               @triggerClass="{{if this.timezoneError 'error'}}"
@@ -61,19 +74,6 @@
             {{#if this.timezoneError}}
               <span class="t-dropdown__error">{{this.timezoneError}}</span>
             {{/if}}
-          </div>
-          <div class="t-autocomplete">
-            <PowerSelectTypeahead
-              @search={{@searchCity}}
-              @selected={{this.memberChangeset.city.fullName}}
-              @placeholder="Search for city"
-              @onInput={{this.onInputCity}}
-              @loadingMessage="Searching for cities..."
-              @noMatchesMessage="No city found"
-              @onChange={{this.changeCity}} as |city|
-            >
-              {{city.name}}, {{city.country}}
-            </PowerSelectTypeahead>
           </div>
         </div>
         <div class="t-modal__actions-container">
