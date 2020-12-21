@@ -45,8 +45,8 @@ module('Acceptance | Update member', function (hooks) {
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 1');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Montevideo');
   });
 
   test('Show all members in list with one city', async function (assert) {
@@ -78,8 +78,8 @@ module('Acceptance | Update member', function (hooks) {
     assert.equal(members[1].textContent.trim(), 'Member 1');
     assert.equal(members[2].textContent.trim(), 'Member City');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Montevideo');
     assert.equal(timezones[2].textContent.trim(), 'Rome, Italy');
   });
 
@@ -99,8 +99,8 @@ module('Acceptance | Update member', function (hooks) {
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 2');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Buenos_Aires');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Buenos Aires');
   });
 
   test('Updates member pressing enter', async function (assert) {
@@ -119,8 +119,8 @@ module('Acceptance | Update member', function (hooks) {
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 2');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Buenos_Aires');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Buenos Aires');
   });
 
   test('Updates member with city', async function (assert) {
@@ -139,7 +139,7 @@ module('Acceptance | Update member', function (hooks) {
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member City');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
     assert.equal(timezones[1].textContent.trim(), 'Buenos Aires, Argentina');
   });
 
@@ -160,7 +160,7 @@ module('Acceptance | Update member', function (hooks) {
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 2');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
     assert.equal(timezones[1].textContent.trim(), 'Buenos Aires, Argentina');
   });
 
@@ -187,8 +187,8 @@ module('Acceptance | Update member', function (hooks) {
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 2');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Buenos_Aires');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Buenos Aires');
   });
 
   test('Updates member with time zone but with only whitespace name error', async function (assert) {
@@ -201,7 +201,7 @@ module('Acceptance | Update member', function (hooks) {
     const timezones = findAll('.member-list__member__location');
 
     assert.equal(members[1].textContent.trim(), 'Member 1');
-    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Montevideo');
 
     await click('.member-list__edit-icon');
     await fillIn('.add-member-modal__member-name input', '     ');
@@ -224,8 +224,8 @@ module('Acceptance | Update member', function (hooks) {
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 1');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Montevideo');
     assert.dom('.member-list__trash-icon').exists();
 
     await click('.member-list__trash-icon');

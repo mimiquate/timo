@@ -124,10 +124,10 @@ module('Desktop | Complete user path', function (hooks) {
     timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
 
     assert.equal(members[1].textContent.trim(), 'Chris');
-    assert.equal(timezones[1].textContent.trim(), 'Europe/Rome');
+    assert.equal(timezones[1].textContent.trim(), 'Europe, Rome');
 
     await click('[data-test=modal-edit-member]');
     await fillIn('.add-member-modal__member-name input', 'Pratt');
@@ -140,7 +140,7 @@ module('Desktop | Complete user path', function (hooks) {
     timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
 
     assert.equal(members[1].textContent.trim(), 'Pratt');
     assert.equal(timezones[1].textContent.trim(), 'Rome, Italy');

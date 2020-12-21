@@ -48,8 +48,8 @@ module('Mobile | Acceptance | Update member', function (hooks) {
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 2');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Buenos_Aires');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Buenos Aires');
   });
 
   test('Updates member with city', async function (assert) {
@@ -68,7 +68,7 @@ module('Mobile | Acceptance | Update member', function (hooks) {
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member City');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
     assert.equal(timezones[1].textContent.trim(), 'Buenos Aires, Argentina');
   });
 
@@ -82,7 +82,7 @@ module('Mobile | Acceptance | Update member', function (hooks) {
     const timezones = findAll('.member-list__member__location');
 
     assert.equal(members[1].textContent.trim(), 'Member 1');
-    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Montevideo');
 
     await click('[data-test=modal-edit-member]');
     await fillIn('.add-member-modal__member-name input', '     ');
@@ -105,8 +105,8 @@ module('Mobile | Acceptance | Update member', function (hooks) {
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 1');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Montevideo');
     assert.dom('.member-list__trash-icon').exists();
 
     await click('.member-list__trash-icon');
