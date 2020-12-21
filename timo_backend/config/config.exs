@@ -41,8 +41,9 @@ config :sentry,
   included_environments: [:prod],
   environment_name: Mix.env()
 
-config :timo, client_id: System.get_env("CLIENT_ID")
-config :timo, client_secret: System.get_env("CLIENT_SECRET")
+config :timo, TimoWeb.SlackController,
+  client_id: System.get_env("CLIENT_ID"),
+  client_secret: System.get_env("CLIENT_SECRET")
 
 config :timo, TimoWeb.Plugs.SlackVerify,
   slack_signing_secret: System.get_env("SLACK_SIGNING_SECRET")

@@ -43,8 +43,8 @@ defmodule TimoWeb.SlackController do
   end
 
   def auth(conn, %{"code" => code}) do
-    client_id = Application.get_env(:timo, :client_id)
-    client_secret = Application.get_env(:timo, :client_secret)
+    client_id = Application.get_env(:timo, __MODULE__)[:client_id]
+    client_secret = Application.get_env(:timo, __MODULE__)[:client_secret]
 
     slack_details = Slack.Web.Oauth.V2.access(client_id, client_secret, code)
 
