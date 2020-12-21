@@ -15,18 +15,22 @@ defmodule TimoWeb.SlackController do
     )
   end
 
-  def handle_request(conn, params = %{"channel_id" => channel}) do
-    response_url = params["response_url"]
+  def handle_request(conn, %{
+    "channel_id" => channel_id,
+    "channel_name" => channel_name,
+    "team_id" => team,
+    "response_url" => response_url
+  }) do
     frontend_url = Application.get_env(:timo, :frontend_url)
 
-    token = SlackContext.get_workspace_token(params["team_id"])
+    token = SlackContext.get_workspace_token(team)
 
     timezone_list =
-      Slack.Web.Conversations.members(channel, %{token: token})
+      Slack.Web.Conversations.members(channel_id, %{token: token})
       |> create_timezone_list(token)
 
     slack_team_url =
-      "#{frontend_url}/dynamic-team?#{timezone_list}&name=#{params["channel_name"]}"
+      "#{frontend_url}/dynamic-team?#{timezone_list}&name=#{channel_name}"
 
     block =
       Poison.encode!(%{
