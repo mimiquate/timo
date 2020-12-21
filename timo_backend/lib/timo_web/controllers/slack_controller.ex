@@ -16,11 +16,11 @@ defmodule TimoWeb.SlackController do
   end
 
   def handle_request(conn, %{
-    "channel_id" => channel_id,
-    "channel_name" => channel_name,
-    "team_id" => team,
-    "response_url" => response_url
-  }) do
+        "channel_id" => channel_id,
+        "channel_name" => channel_name,
+        "team_id" => team,
+        "response_url" => response_url
+      }) do
     with response <- SlackContext.create_response(team, channel_id, channel_name) do
       HTTPoison.post(response_url, response, [{"Content-Type", "application/json"}])
 
