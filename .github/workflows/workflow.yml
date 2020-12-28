@@ -38,6 +38,11 @@ jobs:
         working-directory: ./timo_backend
         run: mix format --check-formatted
 
+      - name: Add unaccent to postgres
+        working-directory: ./timo_backend
+        run: |
+          PGPASSWORD=postgres psql -U postgres -tc "CREATE EXTENSION 'unaccent';"
+
       - name: Run phoenix tests
         working-directory: ./timo_backend
         run: mix test
