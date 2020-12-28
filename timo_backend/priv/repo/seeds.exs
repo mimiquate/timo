@@ -14,19 +14,18 @@ alias Timo.API.City
 alias Timo.Repo
 
 City
-|> struct!(%{name: "Tokyo", country: "Japon", timezone: "Asia/Tokyo", name_ascii: "Tokyo"})
+|> struct!(%{name: "Tokyo", country: "Japon", timezone: "Asia/Tokyo"})
 |> Repo.insert!()
 
 City
-|> struct!(%{name: "Kyōto", country: "Japon", timezone: "Asia/Tokyo", name_ascii: "Kyoto"})
+|> struct!(%{name: "Kyōto", country: "Japon", timezone: "Asia/Tokyo"})
 |> Repo.insert!()
 
 City
 |> struct!(%{
   name: "Montevideo",
   country: "Uruguay",
-  timezone: "America/Montevideo",
-  name_ascii: "Montevideo"
+  timezone: "America/Montevideo"
 })
 |> Repo.insert!()
 
@@ -34,8 +33,7 @@ City
 |> struct!(%{
   name: "São Paulo",
   country: "Brazil",
-  timezone: "America/Sao_Paulo",
-  name_ascii: "Sao Paulo"
+  timezone: "America/Sao_Paulo"
 })
 |> Repo.insert!()
 
@@ -43,8 +41,7 @@ City
 |> struct!(%{
   name: "Buenos Aires",
   country: "Argentina",
-  timezone: "America/Argentina/Buenos_Aires",
-  name_ascii: "Buenos Aires"
+  timezone: "America/Argentina/Buenos_Aires"
 })
 |> Repo.insert!()
 
@@ -52,8 +49,7 @@ City
 |> struct!(%{
   name: "Los Angeles",
   country: "United States",
-  timezone: "America/Los_Angeles",
-  name_ascii: "Los Angeles"
+  timezone: "America/Los_Angeles"
 })
 |> Repo.insert!()
 
@@ -61,28 +57,26 @@ City
 |> struct!(%{
   name: "New York",
   country: "United States",
-  timezone: "America/New_York",
-  name_ascii: "New York"
+  timezone: "America/New_York"
 })
 |> Repo.insert!()
 
 City
-|> struct!(%{name: "Berlin", country: "Germany", timezone: "Europe/Berlin", name_ascii: "Berlin"})
+|> struct!(%{name: "Berlin", country: "Germany", timezone: "Europe/Berlin"})
 |> Repo.insert!()
 
 City
-|> struct!(%{name: "Munich", country: "Germany", timezone: "Europe/Berlin", name_ascii: "Munich"})
+|> struct!(%{name: "Munich", country: "Germany", timezone: "Europe/Berlin"})
 |> Repo.insert!()
 
 City
 |> struct!(%{
   name: "Stockholm",
   country: "Sweden",
-  timezone: "Europe/Stockholm",
-  name_ascii: "Stockholm"
+  timezone: "Europe/Stockholm"
 })
 |> Repo.insert!()
 
 City
-|> struct!(%{name: "Malmö", country: "Sweden", timezone: "Europe/Stockholm", name_ascii: "Malmo"})
+|> struct!(%{name: "Malmö", country: "Sweden", timezone: "Europe/Stockholm"})
 |> Repo.insert!()

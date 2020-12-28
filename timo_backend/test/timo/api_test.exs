@@ -318,7 +318,7 @@ defmodule Timo.APITest do
 
     test "update_member/2 with new city" do
       member = member_factory()
-      city = city_factory(%{name: "Kyōto", name_ascii: "Kyoto"})
+      city = city_factory(%{name: "Kyōto"})
 
       assert {:ok, %Member{} = member} = API.update_member(member, %{}, city)
       assert member.city == city
@@ -333,7 +333,7 @@ defmodule Timo.APITest do
 
     test "update_member/2 with new city that does not match returns error changeset" do
       member = member_factory()
-      city = city_factory(%{name: "Kyōto", name_ascii: "Kyoto", timezone: "Asia/Tokyo"})
+      city = city_factory(%{name: "Kyōto", timezone: "Asia/Tokyo"})
 
       assert {:error, %Ecto.Changeset{} = error} = API.update_member(member, %{}, city)
       assert error.errors == [timezone: {"City does not match timezone", []}]
@@ -351,8 +351,7 @@ defmodule Timo.APITest do
     @default_values %{
       name: "Tokyo",
       country: "Japon",
-      timezone: "Asia/Tokyo",
-      name_ascii: "Tokyo"
+      timezone: "Asia/Tokyo"
     }
 
     test "get_cities/1 get all cities given search param" do
@@ -377,23 +376,23 @@ defmodule Timo.APITest do
     end
 
     test "get_cities/1 get all cities given accent search param" do
-      city_factory(%{name: "Kyōto", name_ascii: "Kyoto"})
+      city_factory(%{name: "Kyōto"})
 
       assert [fetched_city] = API.get_cities(%{"search" => "Kyoto"})
       assert fetched_city.name == "Kyōto"
     end
 
     test "get_cities/1 get all cities given non ascii search param" do
-      city_factory(%{name: "Eşfahān", name_ascii: "Esfahan"})
+      city_factory(%{name: "Eşfahān"})
 
       assert [fetched_city] = API.get_cities(%{"search" => "Esfahan"})
       assert fetched_city.name == "Eşfahān"
     end
 
     test "get_cities/1 get multiple cities" do
-      city_1 = city_factory(%{name: "Āgra", name_ascii: "Agra"})
-      city_2 = city_factory(%{name: "Ağrı", name_ascii: "Agri"})
-      city_3 = city_factory(%{name: "Agriá", name_ascii: "Agria"})
+      city_1 = city_factory(%{name: "Āgra"})
+      city_2 = city_factory(%{name: "Ağrı"})
+      city_3 = city_factory(%{name: "Agriá"})
 
       cities = API.get_cities(%{"search" => "Agr"})
 

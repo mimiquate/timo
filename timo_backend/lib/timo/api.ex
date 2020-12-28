@@ -153,12 +153,10 @@ defmodule Timo.API do
   end
 
   def get_cities(%{"search" => text}) do
-    diacritics = Regex.compile!("[\u0300-\u036f]")
-    unaccent_text = text |> String.normalize(:nfd) |> String.replace(diacritics, "")
-    search = "#{unaccent_text}%"
+    search = "#{text}%"
 
     City
-    |> where([c], ilike(c.name_ascii, ^search))
+    |> where([c], ilike(fragment("unaccent(?)", c.name), fragment("unaccent(?)", ^search)))
     |> Repo.all()
   end
 

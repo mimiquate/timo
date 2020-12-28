@@ -6,7 +6,6 @@ defmodule Timo.API.City do
     field :name, :string
     field :country, :string
     field :timezone, :string
-    field :name_ascii, :string
 
     timestamps()
   end
@@ -14,8 +13,8 @@ defmodule Timo.API.City do
   @doc false
   def changeset(city, attrs) do
     city
-    |> cast(attrs, [:name, :country, :timezone, :name_ascii])
-    |> validate_required([:name, :country, :timezone, :name_ascii])
+    |> cast(attrs, [:name, :country, :timezone])
+    |> validate_required([:name, :country, :timezone])
     |> validate_timezone(:timezone)
   end
 

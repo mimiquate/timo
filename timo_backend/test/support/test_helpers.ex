@@ -60,8 +60,7 @@ defmodule Timo.TestHelpers do
     default_value = %{
       name: "Montevideo",
       country: "Uruguay",
-      timezone: "America/Montevideo",
-      name_ascii: "Montevideo"
+      timezone: "America/Montevideo"
     }
 
     attrs = Enum.into(attrs, default_value)

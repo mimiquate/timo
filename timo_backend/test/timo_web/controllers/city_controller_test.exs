@@ -11,8 +11,8 @@ defmodule TimoWeb.CityControllerTest do
   end
 
   test "lists all entries on index", %{conn: conn} do
-    city_factory(%{name: "Āgra", name_ascii: "Agra"})
-    city_factory(%{name: "Ağrı", name_ascii: "Agri"})
+    city_factory(%{name: "Āgra"})
+    city_factory(%{name: "Ağrı"})
     cities = ["Āgra", "Ağrı"]
 
     conn = get(conn, Routes.city_path(conn, :index), %{"search" => "Agr"})
