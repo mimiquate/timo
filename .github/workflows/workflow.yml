@@ -41,7 +41,8 @@ jobs:
       - name: Add unaccent to postgres
         working-directory: ./timo_backend
         run: |
-          PGPASSWORD=postgres psql -U postgres -tc "CREATE EXTENSION 'unaccent';"
+          MIX_ENV=test mix ecto.create
+          psql postgres://postgres:postgres@localhost:5432/timo_test -tc "CREATE EXTENSION unaccent;"
 
       - name: Run phoenix tests
         working-directory: ./timo_backend
