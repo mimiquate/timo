@@ -300,7 +300,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
     assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
       groupedTimezones[0].textContent.trim(),
-      'America, Montevideo + America, Argentina, Buenos Aires + 1 other timezone',
+      'America, Montevideo + America, Argentina, Buenos Aires + 1 other location',
       'Correct grouped location'
     );
   });
@@ -358,7 +358,7 @@ module('Mobile | Acceptance | Team', function (hooks) {
     assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
       groupedTimezones[0].textContent.trim(),
-      'America, Montevideo + America, Argentina, Buenos Aires + 2 other timezones',
+      'America, Montevideo + America, Argentina, Buenos Aires + 2 other locations',
       'Correct grouped location'
     );
   });

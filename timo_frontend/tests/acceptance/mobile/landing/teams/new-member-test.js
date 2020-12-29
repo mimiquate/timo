@@ -123,7 +123,7 @@ module('Mobile | Acceptance | New member', function (hooks) {
     );
     assert.equal(
       timezoneRowLocations[1].textContent.trim(),
-      'Europe, Rome',
+      'Rome, Italy',
       'Correct second location'
     );
 
