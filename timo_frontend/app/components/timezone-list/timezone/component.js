@@ -4,22 +4,27 @@ import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 import moment from 'moment';
 
 export default class TimezoneComponent extends Component {
-  @computed('args.timezone.members.[]')
+  @computed('args.timezone.members.{[],@each.city}')
   get location() {
-    const timezoneNameList = this.args.timezone.timezonesList;
-    const timezonesLength = timezoneNameList.length;
-    const timezonesToShow = timezoneNameList.slice(0, 2);
+    const members = this.args.timezone.members;
+    const hasCitylessMember = members.some(m => m.city === null);
+    let locations;
+    if (hasCitylessMember) {
+      locations = this.args.timezone.timezonesList.map(t => splitTimezone(t));
+    } else {
+      locations = [...new Set(members.map(m => m.location))];
+    }
+    const locationsLength = locations.length;
+    const locationsToShow = locations.slice(0, 2);
 
-    const splitedTimezones = timezonesToShow.map(t => splitTimezone(t));
-
-    const timezonesLeft = timezonesLength - 2;
-    if (timezonesLeft > 0) {
-      let message = `${timezonesLeft} other `;
-      message += timezonesLeft === 1 ? 'timezone' : 'timezones';
-      splitedTimezones.pushObject(message);
+    const locationsLeft = locationsLength - 2;
+    if (locationsLeft > 0) {
+      let message = `${locationsLeft} other `;
+      message += locationsLeft === 1 ? 'location' : 'locations';
+      locationsToShow.pushObject(message);
     }
 
-    return splitedTimezones.join(' + ');
+    return locationsToShow.join(' + ');
   }
 
   @computed('args.{timezone.members.[],selectedTime}')
