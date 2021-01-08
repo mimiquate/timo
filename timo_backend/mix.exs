@@ -44,7 +44,7 @@ defmodule Timo.MixProject do
       {:plug_cowboy, "~> 2.3"},
       {:ja_serializer, "~> 0.15.0"},
       {:poison, "~> 3.1"},
-      {:tzdata, "~> 1.0.3"},
+      {:tzdata, "~> 1.1"},
       {:pbkdf2_elixir, "~> 1.0"},
       {:cors_plug, "~> 2.0"},
       {:bamboo, "~> 1.4"},
