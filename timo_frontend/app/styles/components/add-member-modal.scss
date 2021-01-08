@@ -119,3 +119,14 @@
     padding: 0;
   }
 }
+
+.ember-power-select-typeahead-dropdown {
+  border-left: 1px solid $light-grey;
+  border-right: 1px solid $light-grey;
+  border-bottom: 1px solid $light-grey;
+}
+
+.ember-power-select-option {
+  padding: 8px;
+  color: #747494;
+}
