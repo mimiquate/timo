@@ -1,9 +1,15 @@
 @import '../variables.scss';
 
 .add-member-modal {
+  padding: 28px 105px 45px 105px;
+
+  @include mobile {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
   &__member-name {
     margin-top: 36px;
-    margin-bottom: 42px;
 
     label {
       font-size: 16px;
@@ -78,6 +84,7 @@
 }
 
 .t-dropdown {
+  margin-top: 40px;
   height: 31px;
   position: relative;
 
@@ -88,4 +95,38 @@
     color: $timo-warning;
     font-size: 12px;
   }
+}
+
+.t-autocomplete {
+  margin-top: 40px;
+
+  .ember-power-select-typeahead-input {
+    border: none;
+    padding-left: 6px;
+    color: $grey;
+    font-size: 16px;
+
+    &::-webkit-input-placeholder {
+      color: $grey;
+    }
+
+    &::-moz-placeholder {
+      color: $grey;
+    }
+  }
+
+  .ember-power-select-trigger {
+    padding: 0;
+  }
+}
+
+.ember-power-select-typeahead-dropdown {
+  border-left: 1px solid $light-grey;
+  border-right: 1px solid $light-grey;
+  border-bottom: 1px solid $light-grey;
+}
+
+.ember-power-select-option {
+  padding: 8px;
+  color: #747494;
 }

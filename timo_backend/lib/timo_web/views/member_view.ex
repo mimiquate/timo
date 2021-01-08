@@ -3,4 +3,8 @@ defmodule TimoWeb.MemberView do
   use JaSerializer.PhoenixView
 
   attributes([:name, :timezone])
+
+  has_one :city,
+    serializer: TimoWeb.CityView,
+    include: true
 end

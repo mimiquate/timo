@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { click, fillIn, visit, find, findAll, triggerEvent } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession, chooseTimeZone } from 'timo-frontend/tests/helpers/custom-helpers';
+import { setSession, chooseTimeZone, chooseCity } from 'timo-frontend/tests/helpers/custom-helpers';
 
 module('Acceptance | Update member', function (hooks) {
   setupApplicationTest(hooks);
@@ -11,6 +11,11 @@ module('Acceptance | Update member', function (hooks) {
   hooks.beforeEach(function() {
     const user = this.server.create('user', { username: 'juan' });
     const team = this.server.create('team', { name: 'Team', user });
+    this.server.create('city', {
+      name: 'Buenos Aires',
+      country: 'Argentina',
+      timezone: 'America/Buenos_Aires'
+    });
 
     this.user = user;
     this.team = team;
@@ -35,13 +40,47 @@ module('Acceptance | Update member', function (hooks) {
     await click('[data-test=cancel-button]');
 
     const members = findAll('.member-list__member__name');
-    const timezones = findAll('.member-list__member__timezone');
+    const timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 1');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Montevideo');
+  });
+
+  test('Show all members in list with one city', async function (assert) {
+    const city = this.server.create('city', {
+      name: 'Rome',
+      country: 'Italy',
+      timezone: 'Europe/Rome'
+    });
+    this.server.create('member', {
+      name: 'Member City',
+      timezone: 'Europe/Rome',
+      team: this.team,
+      city
+    });
+
+    await visit(`/teams/${this.team.id}`);
+    await click('.team-header__details');
+    await click('.member-list__edit-icon');
+
+    await fillIn('.add-member-modal__member-name input', 'Member 2');
+    await chooseTimeZone('America/Buenos_Aires');
+
+    await click('[data-test=cancel-button]');
+
+    const members = findAll('.member-list__member__name');
+    const timezones = findAll('.member-list__member__location');
+
+    assert.equal(members[0].textContent.trim(), 'Current location');
+    assert.equal(members[1].textContent.trim(), 'Member 1');
+    assert.equal(members[2].textContent.trim(), 'Member City');
+
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[2].textContent.trim(), 'Rome, Italy');
   });
 
   test('Updates member', async function (assert) {
@@ -55,13 +94,13 @@ module('Acceptance | Update member', function (hooks) {
     await click('[data-test=update-button]');
 
     const members = findAll('.member-list__member__name');
-    const timezones = findAll('.member-list__member__timezone');
+    const timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 2');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Buenos_Aires');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Buenos Aires');
   });
 
   test('Updates member pressing enter', async function (assert) {
@@ -75,13 +114,81 @@ module('Acceptance | Update member', function (hooks) {
     await triggerEvent('.t-form', 'submit');
 
     const members = findAll('.member-list__member__name');
-    const timezones = findAll('.member-list__member__timezone');
+    const timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 2');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Buenos_Aires');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Buenos Aires');
+  });
+
+  test('Updates member with city', async function (assert) {
+    await visit(`/teams/${this.team.id}`);
+    await click('.team-header__details');
+    await click('.member-list__edit-icon');
+
+    await fillIn('.add-member-modal__member-name input', 'Member City');
+    await chooseCity('Buenos Aires');
+
+    await click('[data-test=update-button]');
+
+    const members = findAll('.member-list__member__name');
+    const timezones = findAll('.member-list__member__location');
+
+    assert.equal(members[0].textContent.trim(), 'Current location');
+    assert.equal(members[1].textContent.trim(), 'Member City');
+
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'Buenos Aires, Argentina');
+  });
+
+  test('Updates member with city over timezone', async function (assert) {
+    await visit(`/teams/${this.team.id}`);
+    await click('.team-header__details');
+    await click('.member-list__edit-icon');
+
+    await fillIn('.add-member-modal__member-name input', 'Member 2');
+    await chooseTimeZone('Europe/Rome');
+    await chooseCity('Buenos Aires');
+
+    await click('[data-test=update-button]');
+
+    const members = findAll('.member-list__member__name');
+    const timezones = findAll('.member-list__member__location');
+
+    assert.equal(members[0].textContent.trim(), 'Current location');
+    assert.equal(members[1].textContent.trim(), 'Member 2');
+
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'Buenos Aires, Argentina');
+  });
+
+  test('Updates member with timezone over city', async function (assert) {
+    this.server.create('city', {
+      name: 'Rome',
+      country: 'Italy',
+      timezone: 'Europe/Rome'
+    });
+
+    await visit(`/teams/${this.team.id}`);
+    await click('.team-header__details');
+    await click('.member-list__edit-icon');
+
+    await fillIn('.add-member-modal__member-name input', 'Member 2');
+    await chooseCity('Rome');
+    await chooseTimeZone('America/Buenos_Aires');
+
+    await click('[data-test=update-button]');
+
+    const members = findAll('.member-list__member__name');
+    const timezones = findAll('.member-list__member__location');
+
+    assert.equal(members[0].textContent.trim(), 'Current location');
+    assert.equal(members[1].textContent.trim(), 'Member 2');
+
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Buenos Aires');
   });
 
   test('Updates member with time zone but with only whitespace name error', async function (assert) {
@@ -91,10 +198,10 @@ module('Acceptance | Update member', function (hooks) {
     assert.dom(find('.member-list__modal'));
 
     const members = findAll('.member-list__member__name');
-    const timezones = findAll('.member-list__member__timezone');
+    const timezones = findAll('.member-list__member__location');
 
     assert.equal(members[1].textContent.trim(), 'Member 1');
-    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Montevideo');
 
     await click('.member-list__edit-icon');
     await fillIn('.add-member-modal__member-name input', '     ');
@@ -111,14 +218,14 @@ module('Acceptance | Update member', function (hooks) {
     await click('.team-header__details');
 
     let members = findAll('.member-list__member__name');
-    let timezones = findAll('.member-list__member__timezone');
+    let timezones = findAll('.member-list__member__location');
 
     assert.equal(members.length, 2);
     assert.equal(members[0].textContent.trim(), 'Current location');
     assert.equal(members[1].textContent.trim(), 'Member 1');
 
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
-    assert.equal(timezones[1].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
+    assert.equal(timezones[1].textContent.trim(), 'America, Montevideo');
     assert.dom('.member-list__trash-icon').exists();
 
     await click('.member-list__trash-icon');
@@ -138,5 +245,28 @@ module('Acceptance | Update member', function (hooks) {
     members = findAll('.member-list__member__name');
     assert.equal(members.length, 1);
     assert.equal(members[0].textContent.trim(), 'Current location');
+  });
+
+  test('Timezone and city inputs depend on each other', async function (assert) {
+    await visit(`/teams/${this.team.id}`);
+    await click('.team-header__details');
+    await click('.member-list__edit-icon');
+
+    const autocomplete = find('.t-autocomplete input');
+
+    await chooseTimeZone('America/Montevideo');
+
+    assert.dom('.t-dropdown').hasText('America/Montevideo', 'Correct timezone');
+    assert.equal(autocomplete.value, '', 'City is empty');
+
+    await chooseCity('Buenos Aires');
+
+    assert.dom('.t-dropdown').hasText('America/Buenos_Aires', 'Timezone changes to city one');
+    assert.equal(autocomplete.value, 'Buenos Aires, Argentina', 'Correct city');
+
+    await chooseTimeZone('America/Montevideo');
+
+    assert.dom('.t-dropdown').hasText('America/Montevideo', 'Timezone changes back again');
+    assert.equal(autocomplete.value, '', 'City is empty again');
   });
 });

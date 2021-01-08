@@ -13,6 +13,8 @@ defmodule TimoWeb.Router do
     resources "/users", UserController, only: [:create, :show, :update]
     resources "/teams", TeamController, only: [:create, :show, :index, :update, :delete]
     resources "/members", MemberController, only: [:create, :update, :delete]
+    resources "/cities", CityController, only: [:index]
+
     delete "/logout", SessionController, :logout
     post "/session", SessionController, :create
   end

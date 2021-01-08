@@ -214,26 +214,13 @@ defmodule Timo.APITest do
     @invalid_member_nil_tz %{name: "some name", timezone: nil}
     @update_member_attrs %{name: "new name", timezone: "America/Buenos_Aires"}
 
-    test "list_team_members/1 returns all members" do
-      team = team_factory(user_factory())
-      member = member_factory(team)
-      members = API.list_team_members(team)
-
-      assert members == [member]
-    end
-
-    test "list_team_members/1 returns empty list" do
-      team = team_factory(user_factory())
-
-      assert API.list_team_members(team) == []
-    end
-
     test "create_member/1 with valid data creates a member" do
       team = team_factory(user_factory())
 
       assert {:ok, %Member{} = member} = API.create_member(team, @valid_member_attrs)
       assert member.name == @valid_member_attrs.name
       assert member.timezone == @valid_member_attrs.timezone
+      assert member.city == nil
     end
 
     test "create_member/1 with invalid data returns error changeset" do
@@ -254,10 +241,40 @@ defmodule Timo.APITest do
       assert {:error, %Ecto.Changeset{}} = API.create_member(team, @invalid_member_nil_tz)
     end
 
+    test "create_member/1 with valid data and city creates a member" do
+      team = team_factory(user_factory())
+      city = city_factory()
+
+      assert {:ok, %Member{} = member} = API.create_member(team, @valid_member_attrs, city)
+      assert member.name == @valid_member_attrs.name
+      assert member.timezone == @valid_member_attrs.timezone
+      assert member.city == city
+    end
+
+    test "create_member/1 when city and timezone do not match returns error changeset" do
+      team = team_factory(user_factory())
+      city = city_factory(%{timezone: "America/Montevideo"})
+      attrs = %{name: "some name", timezone: "Asia/Tokyo"}
+
+      assert {:error, %Ecto.Changeset{} = error} = API.create_member(team, attrs, city)
+      assert error.errors == [timezone: {"City does not match timezone", []}]
+    end
+
     test "get_user_member/2 with valid id" do
       user = user_factory()
       team = team_factory(user)
       member = member_factory(team)
+
+      {:ok, %Member{} = fetched_member} = API.get_user_member(user, member.id)
+
+      assert fetched_member == member
+    end
+
+    test "get_user_member/2 with valid id and city" do
+      user = user_factory()
+      team = team_factory(user)
+      city = city_factory()
+      member = member_factory(team, city)
 
       {:ok, %Member{} = fetched_member} = API.get_user_member(user, member.id)
 
@@ -282,7 +299,7 @@ defmodule Timo.APITest do
       member = member_factory()
 
       assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_attrs)
-      fetched_member = Repo.get(Member, member.id)
+      fetched_member = Repo.get(Member, member.id) |> Repo.preload(:city)
 
       assert fetched_member == member
     end
@@ -293,10 +310,33 @@ defmodule Timo.APITest do
       assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_tz)
     end
 
-    test "update_member/2 with valid name but invalid timezone (nil) returns error changest" do
+    test "update_member/2 with valid name but invalid timezone (nil) returns error changeset" do
       member = member_factory()
 
       assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_nil_tz)
+    end
+
+    test "update_member/2 with new city" do
+      member = member_factory()
+      city = city_factory(%{name: "Kyōto"})
+
+      assert {:ok, %Member{} = member} = API.update_member(member, %{}, city)
+      assert member.city == city
+    end
+
+    test "update_member/2 with nil city" do
+      member = member_factory()
+
+      assert {:ok, %Member{} = member} = API.update_member(member, %{}, nil)
+      assert member.city == nil
+    end
+
+    test "update_member/2 with new city that does not match returns error changeset" do
+      member = member_factory()
+      city = city_factory(%{name: "Kyōto", timezone: "Asia/Tokyo"})
+
+      assert {:error, %Ecto.Changeset{} = error} = API.update_member(member, %{}, city)
+      assert error.errors == [timezone: {"City does not match timezone", []}]
     end
 
     test "delete_member/1 deletes a member" do
@@ -304,6 +344,77 @@ defmodule Timo.APITest do
 
       assert {:ok, _member} = API.delete_member(member)
       assert Repo.get(Member, member.id) == nil
+    end
+  end
+
+  describe "cities" do
+    @default_values %{
+      name: "Tokyo",
+      country: "Japon",
+      timezone: "Asia/Tokyo"
+    }
+
+    test "get_cities/1 get all cities given search param" do
+      city_factory(@default_values)
+
+      assert [fetched_city] = API.get_cities(%{"search" => "Tok"})
+      assert fetched_city.name == "Tokyo"
+    end
+
+    test "get_cities/1 get all cities given undercase search param" do
+      city_factory(@default_values)
+
+      assert [fetched_city] = API.get_cities(%{"search" => "tok"})
+      assert fetched_city.name == "Tokyo"
+    end
+
+    test "get_cities/1 get all cities given upercase search param" do
+      city_factory(@default_values)
+
+      assert [fetched_city] = API.get_cities(%{"search" => "TOK"})
+      assert fetched_city.name == "Tokyo"
+    end
+
+    test "get_cities/1 get all cities given accent search param" do
+      city_factory(%{name: "Kyōto"})
+
+      assert [fetched_city] = API.get_cities(%{"search" => "Kyoto"})
+      assert fetched_city.name == "Kyōto"
+    end
+
+    test "get_cities/1 get all cities given non ascii search param" do
+      city_factory(%{name: "Eşfahān"})
+
+      assert [fetched_city] = API.get_cities(%{"search" => "Esfahan"})
+      assert fetched_city.name == "Eşfahān"
+    end
+
+    test "get_cities/1 get multiple cities" do
+      city_1 = city_factory(%{name: "Āgra"})
+      city_2 = city_factory(%{name: "Ağrı"})
+      city_3 = city_factory(%{name: "Agriá"})
+
+      cities = API.get_cities(%{"search" => "Agr"})
+
+      assert Enum.member?(cities, city_1)
+      assert Enum.member?(cities, city_2)
+      assert Enum.member?(cities, city_3)
+    end
+
+    test "get_city_by_id/1 get city" do
+      city = city_factory()
+
+      fetched_city = API.get_city_by_id(city.id)
+
+      assert fetched_city == city
+    end
+
+    test "get_city_by_id/1 get nil" do
+      assert nil == API.get_city_by_id(1)
+    end
+
+    test "get_city_by_id/1 get nil with nil param" do
+      assert nil == API.get_city_by_id(nil)
     end
   end
 end

@@ -1,5 +1,5 @@
 import { click, fillIn, visit, findAll } from '@ember/test-helpers';
-import { clickTrigger, selectChoose } from 'ember-power-select/test-support/helpers';
+import { clickTrigger, selectChoose, selectSearch } from 'ember-power-select/test-support/helpers';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 export async function loginAs(username, password) {
@@ -54,4 +54,9 @@ export function invalidUserServerPost() {
     },
     400
   );
+}
+
+export async function chooseCity(cityName) {
+  await selectSearch('.t-autocomplete', cityName);
+  return selectChoose('.t-autocomplete', cityName);
 }

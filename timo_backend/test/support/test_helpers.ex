@@ -4,7 +4,8 @@ defmodule Timo.TestHelpers do
   alias Timo.API.{
     User,
     Team,
-    Member
+    Member,
+    City
   }
 
   def user_factory(attrs \\ %{}) do
@@ -30,16 +31,41 @@ defmodule Timo.TestHelpers do
     member_factory(team)
   end
 
-  def member_factory(%Team{} = team, attrs \\ %{}) do
+  def member_factory(%Team{} = team) do
+    city = city_factory()
+    member_factory(team, city)
+  end
+
+  def member_factory(%Team{} = team, %City{} = city) do
+    member_factory(team, %{}, city)
+  end
+
+  def member_factory(%Team{} = team, attrs \\ %{}, %City{} = city) do
     default_value = %{
       name: "some name",
       timezone: "America/Montevideo",
-      team_id: team.id
+      team_id: team.id,
+      city_id: city.id
     }
 
     attrs = Enum.into(attrs, default_value)
 
     Member
+    |> struct!(attrs)
+    |> Repo.insert!()
+    |> Repo.preload(:city)
+  end
+
+  def city_factory(attrs \\ %{}) do
+    default_value = %{
+      name: "Montevideo",
+      country: "Uruguay",
+      timezone: "America/Montevideo"
+    }
+
+    attrs = Enum.into(attrs, default_value)
+
+    City
     |> struct!(attrs)
     |> Repo.insert!()
   end

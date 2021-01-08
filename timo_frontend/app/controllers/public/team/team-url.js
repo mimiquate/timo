@@ -6,6 +6,7 @@ import openGoogleCalendarEvent from 'timo-frontend/utils/google-calendar';
 import moment from 'moment';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 
 export default class PublicTeamTeamUrlController extends Controller {
   @service media;
@@ -25,6 +26,7 @@ export default class PublicTeamTeamUrlController extends Controller {
     members.unshiftObject({
       name: 'Current location',
       timezone: timezoneNow,
+      location: splitTimezone(timezoneNow),
       id: 'current'
     });
 

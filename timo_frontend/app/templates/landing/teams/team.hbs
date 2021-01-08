@@ -38,8 +38,9 @@
 />
 {{#if this.newMemberModal}}
   <Modals::Members::Add
-    @addOrUpdateMember={{this.saveMember}}
+    @addNewMember={{this.saveMember}}
     @closeModal={{this.closeNewMemberModal}}
+    @searchCity={{this.searchCity}}
   />
 {{/if}}
 {{#if this.showShareModal}}
@@ -53,6 +54,7 @@
   <Modals::Members::List
     @members={{this.sortedMembers}}
     @closeModal={{this.closeMemberListModal}}
+    @searchCity={{this.searchCity}}
   />
 {{/if}}
 {{#if this.showAboutTeamModal}}

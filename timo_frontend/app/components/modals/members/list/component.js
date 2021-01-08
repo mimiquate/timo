@@ -12,9 +12,6 @@ import moment from 'moment';
 export default class ListMembersModalComponent extends Component {
   @tracked showList = true;
   @tracked showDeleteConfirmation = false;
-  @tracked memberToEdit = null;
-  @tracked name = '';
-  @tracked timezone = '';
   @tracked nameError = '';
   @tracked timezoneError = '';
   @tracked memberChangeset = null;
@@ -60,6 +57,7 @@ export default class ListMembersModalComponent extends Component {
   @action
   changeTimezone(value) {
     this.memberChangeset.timezone = value;
+    this.memberChangeset.city = null;
 
     if (isPresent(value)) {
       this.cleanError('timezoneError');
@@ -88,5 +86,15 @@ export default class ListMembersModalComponent extends Component {
   @action
   deleteMember(member) {
     member.destroyRecord();
+  }
+
+  @action
+  changeCity(city) {
+    this.memberChangeset.city = city;
+    this.memberChangeset.timezone = city.timezone;
+
+    if (isPresent(city)) {
+      this.cleanError('timezoneError');
+    }
   }
 }

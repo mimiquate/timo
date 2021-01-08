@@ -14,7 +14,7 @@
 
   &__modal {
     width:514px;
-    height: 331px;
+    height: 370px;
     display: flex;
     flex-direction: column;
 
@@ -40,11 +40,11 @@
   &__form {
     display: flex;
     flex-direction:column;
-    padding: 0px 105px 75px 105px;
+    padding: 0px 105px 45px 105px;
     margin-bottom: auto;
 
     @include mobile {
-      padding: 0px 50px 75px 50px;
+      padding: 0px 50px 45px 50px;
     }
   }
 
@@ -71,7 +71,7 @@
       font-size: 16px;
     }
 
-    &__timezone {
+    &__location {
       font-size: 14px;
     }
 

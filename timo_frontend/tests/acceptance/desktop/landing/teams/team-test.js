@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click, find, findAll, fillIn } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { setSession } from 'timo-frontend/tests/helpers/custom-helpers';
+import { setSession, chooseCity } from 'timo-frontend/tests/helpers/custom-helpers';
 import moment from 'moment';
 import { setupWindowMock } from 'ember-window-mock/test-support';
 import window from 'ember-window-mock';
@@ -340,7 +340,7 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
       groupedTimezones[0].textContent.trim(),
-      'America, Montevideo + America, Argentina, Buenos Aires + 1 other timezone',
+      'America, Montevideo + America, Argentina, Buenos Aires + 1 other location',
       'Correct grouped location'
     );
   });
@@ -398,7 +398,7 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
       groupedTimezones[0].textContent.trim(),
-      'America, Montevideo + America, Argentina, Buenos Aires + 2 other timezones',
+      'America, Montevideo + America, Argentina, Buenos Aires + 2 other locations',
       'Correct grouped location'
     );
   });
@@ -771,5 +771,77 @@ module('Acceptance | Team', function (hooks) {
     selectedIndex += 3;
 
     assert.equal(timezoneHours.length, 40, 'Does not add already added time boxes');
+  });
+
+  test('Timezone location depends on members cities', async function (assert) {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', { name: 'Team', user });
+
+    this.server.create('city', {
+      name: 'Berlin',
+      country: 'Germany',
+      timezone: 'Europe/Berlin'
+    });
+    this.server.create('city', {
+      name: 'Munich',
+      country: 'Germany',
+      timezone: 'Europe/Berlin'
+    });
+
+    this.server.create('member', {
+      name: 'Member 1',
+      timezone: 'Europe/Berlin',
+      team
+    });
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'Europe/Berlin',
+      team
+    });
+
+    setSession.call(this, user);
+
+    await visit(`/teams/${team.id}`);
+
+    const timezoneLocations = findAll('.timezone-list__location');
+    assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
+    assert.equal(
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo',
+      'Correct current location'
+    );
+    assert.equal(
+      timezoneLocations[1].textContent.trim(),
+      'Europe, Berlin',
+      'Location shows single timezone'
+    );
+
+    await click('.team-header__details');
+    let memberEditButtons = findAll('.member-list__edit-icon');
+
+    await click(memberEditButtons[0]);
+    await chooseCity('Berlin');
+    await click('[data-test=update-button]');
+    await click('.t-modal__close');
+
+    assert.equal(
+      timezoneLocations[1].textContent.trim(),
+      'Europe, Berlin',
+      'Location still shows single timezone'
+    );
+
+    await click('.team-header__details');
+    memberEditButtons = findAll('.member-list__edit-icon');
+
+    await click(memberEditButtons[1]);
+    await chooseCity('Munich');
+    await click('[data-test=update-button]');
+    await click('.t-modal__close');
+
+    assert.equal(
+      timezoneLocations[1].textContent.trim(),
+      'Berlin, Germany + Munich, Germany',
+      'Correct locations'
+    );
   });
 });

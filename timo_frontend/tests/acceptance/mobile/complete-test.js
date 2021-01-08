@@ -3,13 +3,19 @@ import { visit, currentURL, click, findAll, find, fillIn } from '@ember/test-hel
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setBreakpoint } from 'ember-responsive/test-support';
-import { clickTrigger, selectChoose } from 'ember-power-select/test-support/helpers';
+import { clickTrigger, selectChoose, selectSearch } from 'ember-power-select/test-support/helpers';
 
 module('Mobile | Complete Test', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  hooks.beforeEach(() => {
+  hooks.beforeEach(function() {
+    this.server.create('city', {
+      name: 'Rome',
+      country: 'Italy',
+      timezone: 'Europe/Rome'
+    });
+
     setBreakpoint('mobile');
   });
 
@@ -130,27 +136,29 @@ module('Mobile | Complete Test', function (hooks) {
     assert.dom(find('.member-list__modal'));
 
     let members = findAll('.member-list__member__name');
-    timezones = findAll('.member-list__member__timezone');
+    timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
 
     assert.equal(members[1].textContent.trim(), 'Chris');
-    assert.equal(timezones[1].textContent.trim(), 'Europe/Rome');
+    assert.equal(timezones[1].textContent.trim(), 'Europe, Rome');
 
     await click('[data-test=modal-edit-member]');
     await fillIn('.add-member-modal__member-name input', 'Pratt');
+    await selectSearch('.t-autocomplete', 'Rome');
+    await selectChoose('.t-autocomplete', 'Rome');
 
     await click('[data-test=update-button]');
 
     members = findAll('.member-list__member__name');
-    timezones = findAll('.member-list__member__timezone');
+    timezones = findAll('.member-list__member__location');
 
     assert.equal(members[0].textContent.trim(), 'Current location');
-    assert.equal(timezones[0].textContent.trim(), 'America/Montevideo');
+    assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
 
     assert.equal(members[1].textContent.trim(), 'Pratt');
-    assert.equal(timezones[1].textContent.trim(), 'Europe/Rome');
+    assert.equal(timezones[1].textContent.trim(), 'Rome, Italy');
 
     //Delete member
     await click('.member-list__trash-icon');
