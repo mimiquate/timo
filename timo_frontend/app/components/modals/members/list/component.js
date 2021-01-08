@@ -97,9 +97,4 @@ export default class ListMembersModalComponent extends Component {
       this.cleanError('timezoneError');
     }
   }
-
-  @action
-  onInputCity(text) {
-    return text.length > 2;
-  }
 }

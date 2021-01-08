@@ -8,12 +8,14 @@ export default class TimezoneComponent extends Component {
   get location() {
     const members = this.args.timezone.members;
     const hasCitylessMember = members.some(m => m.city === null);
+
     let locations;
     if (hasCitylessMember) {
       locations = this.args.timezone.timezonesList.map(t => splitTimezone(t));
     } else {
       locations = [...new Set(members.map(m => m.location))];
     }
+
     const locationsLength = locations.length;
     const locationsToShow = locations.slice(0, 2);
 

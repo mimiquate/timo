@@ -66,9 +66,4 @@ export default class AddMemberModalComponent extends Component {
       this.cleanError('timezoneError');
     }
   }
-
-  @action
-  onInputCity(text) {
-    return text.length > 2;
-  }
 }
