@@ -76,9 +76,9 @@ defmodule Timo.API do
     from(t in query, where: t.user_id == ^user_id, preload: [members: :city])
   end
 
-  def create_member(%Team{} = team, attrs \\ %{}, city \\ nil) do
+  def create_member(%Team{} = team, attrs \\ %{}, city) do
     %Member{}
-    |> Member.changeset(attrs, city)
+    |> Member.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:team, team)
     |> Ecto.Changeset.put_assoc(:city, city)
     |> Repo.insert()
@@ -108,9 +108,9 @@ defmodule Timo.API do
     end
   end
 
-  def update_member(%Member{} = member, attrs, city \\ nil) do
+  def update_member(%Member{} = member, attrs, city) do
     member
-    |> Member.changeset(attrs, city)
+    |> Member.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:city, city)
     |> Repo.update()
   end
