@@ -43,7 +43,6 @@ defmodule Timo.TestHelpers do
   def member_factory(%Team{} = team, attrs \\ %{}, %City{} = city) do
     default_value = %{
       name: "some name",
-      timezone: "America/Montevideo",
       team_id: team.id,
       city_id: city.id
     }

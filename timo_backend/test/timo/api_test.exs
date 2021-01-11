@@ -208,18 +208,15 @@ defmodule Timo.APITest do
   end
 
   describe "members" do
-    @valid_member_attrs %{name: "some name", timezone: "America/Montevideo"}
-    @invalid_member_attrs %{name: nil, timezone: nil}
-    @invalid_member_tz %{name: "some name", timezone: "Montevideo"}
-    @invalid_member_nil_tz %{name: "some name", timezone: nil}
-    @update_member_attrs %{name: "new name", timezone: "America/Buenos_Aires"}
+    @valid_member_attrs %{name: "some name"}
+    @invalid_member_attrs %{name: nil}
+    @update_member_attrs %{name: "new name"}
 
     test "create_member/1 with valid data creates a member" do
       team = team_factory(user_factory())
 
       assert {:ok, %Member{} = member} = API.create_member(team, @valid_member_attrs)
       assert member.name == @valid_member_attrs.name
-      assert member.timezone == @valid_member_attrs.timezone
       assert member.city == nil
     end
 
@@ -229,35 +226,13 @@ defmodule Timo.APITest do
       assert {:error, %Ecto.Changeset{}} = API.create_member(team, @invalid_member_attrs)
     end
 
-    test "create_member/1 with valid name but invalid timezone returns error changest" do
-      team = team_factory(user_factory())
-
-      assert {:error, %Ecto.Changeset{}} = API.create_member(team, @invalid_member_tz)
-    end
-
-    test "create_member/1 with valid name but invalid timezone (nil) returns error changest" do
-      team = team_factory(user_factory())
-
-      assert {:error, %Ecto.Changeset{}} = API.create_member(team, @invalid_member_nil_tz)
-    end
-
     test "create_member/1 with valid data and city creates a member" do
       team = team_factory(user_factory())
       city = city_factory()
 
       assert {:ok, %Member{} = member} = API.create_member(team, @valid_member_attrs, city)
       assert member.name == @valid_member_attrs.name
-      assert member.timezone == @valid_member_attrs.timezone
       assert member.city == city
-    end
-
-    test "create_member/1 when city and timezone do not match returns error changeset" do
-      team = team_factory(user_factory())
-      city = city_factory(%{timezone: "America/Montevideo"})
-      attrs = %{name: "some name", timezone: "Asia/Tokyo"}
-
-      assert {:error, %Ecto.Changeset{} = error} = API.create_member(team, attrs, city)
-      assert error.errors == [timezone: {"City does not match timezone", []}]
     end
 
     test "get_user_member/2 with valid id" do
@@ -292,7 +267,6 @@ defmodule Timo.APITest do
 
       assert {:ok, %Member{} = member} = API.update_member(member, @update_member_attrs)
       assert member.name == @update_member_attrs.name
-      assert member.timezone == @update_member_attrs.timezone
     end
 
     test "update_member/2 with invalid data returns error changeset" do
@@ -302,18 +276,6 @@ defmodule Timo.APITest do
       fetched_member = Repo.get(Member, member.id) |> Repo.preload(:city)
 
       assert fetched_member == member
-    end
-
-    test "update_member/2 with valid name but invalid timezone returns error changest" do
-      member = member_factory()
-
-      assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_tz)
-    end
-
-    test "update_member/2 with valid name but invalid timezone (nil) returns error changeset" do
-      member = member_factory()
-
-      assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_nil_tz)
     end
 
     test "update_member/2 with new city" do
@@ -329,14 +291,6 @@ defmodule Timo.APITest do
 
       assert {:ok, %Member{} = member} = API.update_member(member, %{}, nil)
       assert member.city == nil
-    end
-
-    test "update_member/2 with new city that does not match returns error changeset" do
-      member = member_factory()
-      city = city_factory(%{name: "Kyōto", timezone: "Asia/Tokyo"})
-
-      assert {:error, %Ecto.Changeset{} = error} = API.update_member(member, %{}, city)
-      assert error.errors == [timezone: {"City does not match timezone", []}]
     end
 
     test "delete_member/1 deletes a member" do

@@ -6,9 +6,9 @@ defmodule TimoWeb.MemberControllerTest do
   alias Timo.API.Member
   alias Timo.Repo
 
-  @create_attrs %{name: "some name", timezone: "America/Montevideo"}
-  @invalid_attrs %{name: nil, timezone: nil}
-  @update_attrs %{name: "some new name", timezone: "America/Buenos_Aires"}
+  @create_attrs %{name: "some name"}
+  @invalid_attrs %{name: nil}
+  @update_attrs %{name: "some new name"}
 
   def data_fixture(attribute, team_id, city_id \\ nil) do
     %{
@@ -62,7 +62,6 @@ defmodule TimoWeb.MemberControllerTest do
     assert data = json_response(conn, 201)["data"]
     assert data["type"] == "member"
     assert data["attributes"]["name"] == @create_attrs.name
-    assert data["attributes"]["timezone"] == @create_attrs.timezone
 
     {:ok, %Member{} = member} = API.get_user_member(user, data["id"])
 
@@ -84,7 +83,6 @@ defmodule TimoWeb.MemberControllerTest do
     assert data = json_response(conn, 201)["data"]
     assert data["type"] == "member"
     assert data["attributes"]["name"] == @create_attrs.name
-    assert data["attributes"]["timezone"] == @create_attrs.timezone
 
     {:ok, %Member{} = member} = API.get_user_member(user, data["id"])
 
@@ -116,12 +114,10 @@ defmodule TimoWeb.MemberControllerTest do
     assert data["id"] == member_id
     assert data["type"] == "member"
     assert data["attributes"]["name"] == @update_attrs.name
-    assert data["attributes"]["timezone"] == @update_attrs.timezone
 
     member = Repo.get(Member, member_id) |> Repo.preload(:city)
 
     assert member.name == @update_attrs.name
-    assert member.timezone == @update_attrs.timezone
     assert member.city == nil
   end
 
@@ -148,12 +144,10 @@ defmodule TimoWeb.MemberControllerTest do
     assert data["id"] == member_id
     assert data["type"] == "member"
     assert data["attributes"]["name"] == @update_attrs.name
-    assert data["attributes"]["timezone"] == @update_attrs.timezone
 
     member = Repo.get(Member, member_id) |> Repo.preload(:city)
 
     assert member.name == @update_attrs.name
-    assert member.timezone == @update_attrs.timezone
     assert member.city == city
   end
 
