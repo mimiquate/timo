@@ -165,4 +165,33 @@ defmodule Timo.API do
   def get_city_by_id(id) do
     Repo.get(City, id)
   end
+
+  def add_cities_to_members do
+    Member
+    |> preload(:city)
+    |> Repo.all()
+    |> Enum.map(fn m ->
+      if !m.city do
+        alternative_location =
+          m.timezone
+          |> String.split("/")
+          |> List.last()
+          |> String.replace("_", " ")
+
+        new_location =
+          City
+          |> where([c], c.timezone == ^m.timezone or c.name == ^alternative_location)
+          |> select([c], c)
+          |> first
+          |> Repo.one()
+
+        if new_location do
+          m
+          |> Ecto.Changeset.change()
+          |> Ecto.Changeset.put_assoc(:city, new_location)
+          |> Repo.update()
+        end
+      end
+    end)
+  end
 end
