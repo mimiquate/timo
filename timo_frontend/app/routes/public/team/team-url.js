@@ -6,7 +6,7 @@ export default class PublicTeamTeamUrlRoute extends Route {
       filter: {
         share_id: params.share_id
       },
-      include: 'members'
+      include: 'members.city'
     });
   }
 }
