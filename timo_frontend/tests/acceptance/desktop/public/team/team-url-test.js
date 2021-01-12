@@ -201,7 +201,43 @@ module('Acceptance | Public Team', function (hooks) {
       'Europe, Rome',
       'Correct third location'
     );
-  })
+  });
+
+  test('Visiting /p/team/:share_id shows memeber city full name', async function (assert) {
+    const user = this.server.create('user', { username: 'juan' });
+    const team = this.server.create('team', {
+      name: 'Team',
+      user,
+      public: true,
+      share_id: 'yjHktCOyBDTb'
+    });
+    const city = this.server.create('city', {
+      name: 'Buenos Aires',
+      country: 'Argentina',
+      timezone: 'America/Buenos_Aires'
+    });
+
+    this.server.create('member', {
+      name: 'Member 2',
+      timezone: 'America/Buenos_Aires',
+      team,
+      city
+    });
+
+    await visit(`/p/team/${team.share_id}`);
+
+    const timezoneLocations = findAll('.timezone-list__location');
+    assert.equal(
+      timezoneLocations[0].textContent.trim(),
+      'America, Montevideo',
+      'Correct first location'
+    );
+    assert.equal(
+      timezoneLocations[1].textContent.trim(),
+      'Buenos Aires, Argentina',
+      'Correct second location'
+    );
+  });
 
   test('Visit public and group timezones', async function (assert) {
     const user = this.server.create('user', { username: 'juan' });
