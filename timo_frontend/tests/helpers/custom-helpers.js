@@ -1,5 +1,5 @@
 import { click, fillIn, visit, findAll } from '@ember/test-helpers';
-import { clickTrigger, selectChoose, selectSearch } from 'ember-power-select/test-support/helpers';
+import { selectChoose, selectSearch } from 'ember-power-select/test-support/helpers';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 export async function loginAs(username, password) {
@@ -20,11 +20,6 @@ export async function createTeam(teamName) {
   await click('[data-test=new-team]');
   await fillIn('.t-modal__team-name input', teamName);
   return click('[data-test=save-button]');
-}
-
-export async function chooseTimeZone(timezone) {
-  await clickTrigger('.t-dropdown');
-  return selectChoose('.t-dropdown', timezone);
 }
 
 export async function openNewMemberModal(teamId) {

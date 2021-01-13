@@ -6,8 +6,16 @@ module('Unit | Utils | timezone functions', function (hooks) {
   setupTest(hooks);
 
   test('Compare timezones', function (assert) {
-    const memberSmallerTZ = { timezone: "America/Los_Angeles" };
-    const memberBiggerTZ = { timezone: "America/Montevideo" };
+    const memberSmallerTZ = {
+      city: {
+        timezone: "America/Los_Angeles"
+      }
+    };
+    const memberBiggerTZ =  {
+      city: {
+        timezone: "America/Montevideo"
+      }
+    };
 
     assert.ok(compareMemberTimeZones(memberBiggerTZ, memberSmallerTZ) > 0);
     assert.ok(compareMemberTimeZones(memberSmallerTZ, memberBiggerTZ) < 0);

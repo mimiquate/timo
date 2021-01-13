@@ -3,7 +3,7 @@ import { visit, currentURL, click, findAll, find, fillIn } from '@ember/test-hel
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { setBreakpoint } from 'ember-responsive/test-support';
-import { clickTrigger, selectChoose, selectSearch } from 'ember-power-select/test-support/helpers';
+import { selectChoose, selectSearch } from 'ember-power-select/test-support/helpers';
 
 module('Mobile | Complete Test', function (hooks) {
   setupApplicationTest(hooks);
@@ -110,8 +110,8 @@ module('Mobile | Complete Test', function (hooks) {
 
     await click(actions[1]);
     await fillIn('.t-input input', 'Chris');
-    await clickTrigger('.t-dropdown');
-    await selectChoose('.t-dropdown', 'Europe/Rome');
+    await selectSearch('.t-autocomplete', 'Rome');
+    await selectChoose('.t-autocomplete', 'Rome');
     await click('[data-test=save-button]');
 
     timezones = findAll('.timezone-list__row');
@@ -123,7 +123,7 @@ module('Mobile | Complete Test', function (hooks) {
     assert.equal(timezoneMembers[0].textContent.trim(), 'Current location');
 
     assert.equal(timezones.length, 2);
-    assert.equal(timezonesLocation[1].textContent.trim(), 'Europe, Rome');
+    assert.equal(timezonesLocation[1].textContent.trim(), 'Rome, Italy');
     assert.equal(timezoneMembers[1].textContent.trim(), 'Chris');
 
     //Edit member
@@ -142,7 +142,7 @@ module('Mobile | Complete Test', function (hooks) {
     assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
 
     assert.equal(members[1].textContent.trim(), 'Chris');
-    assert.equal(timezones[1].textContent.trim(), 'Europe, Rome');
+    assert.equal(timezones[1].textContent.trim(), 'Rome, Italy');
 
     await click('[data-test=modal-edit-member]');
     await fillIn('.add-member-modal__member-name input', 'Pratt');

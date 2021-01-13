@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { visit, currentURL, click, findAll, find, fillIn } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import { clickTrigger, selectChoose, selectSearch } from 'ember-power-select/test-support/helpers';
+import { selectChoose, selectSearch } from 'ember-power-select/test-support/helpers';
 
 module('Desktop | Complete user path', function (hooks) {
   setupApplicationTest(hooks);
@@ -95,8 +95,8 @@ module('Desktop | Complete user path', function (hooks) {
     //Add Member
     await click('[data-test=add-member-button]');
     await fillIn('.t-input input', 'Chris');
-    await clickTrigger('.t-dropdown');
-    await selectChoose('.t-dropdown', 'Europe/Rome');
+    await selectSearch('.t-autocomplete', 'Rome');
+    await selectChoose('.t-autocomplete', 'Rome');
     await click('[data-test=save-button]');
 
     timezones = findAll('.timezone-list__row');
@@ -108,7 +108,7 @@ module('Desktop | Complete user path', function (hooks) {
     assert.equal(timezoneMembers[0].textContent.trim(), 'Current location');
 
     assert.equal(timezones.length, 2);
-    assert.equal(timezonesLocation[1].textContent.trim(), 'Europe, Rome');
+    assert.equal(timezonesLocation[1].textContent.trim(), 'Rome, Italy');
     assert.equal(timezoneMembers[1].textContent.trim(), 'Chris');
 
     //Edit member
@@ -127,7 +127,7 @@ module('Desktop | Complete user path', function (hooks) {
     assert.equal(timezones[0].textContent.trim(), 'America, Montevideo');
 
     assert.equal(members[1].textContent.trim(), 'Chris');
-    assert.equal(timezones[1].textContent.trim(), 'Europe, Rome');
+    assert.equal(timezones[1].textContent.trim(), 'Rome, Italy');
 
     await click('[data-test=modal-edit-member]');
     await fillIn('.add-member-modal__member-name input', 'Pratt');

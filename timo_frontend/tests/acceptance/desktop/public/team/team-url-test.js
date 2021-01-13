@@ -13,6 +13,44 @@ module('Acceptance | Public Team', function (hooks) {
   setupMirage(hooks);
   setupWindowMock(hooks);
 
+  hooks.beforeEach(function() {
+    this.mvdCity = this.server.create('city', {
+      name: 'Montevideo',
+      country: 'Uruguay',
+      timezone: 'America/Montevideo'
+    });
+
+    this.bsasCity = this.server.create('city', {
+      name: 'Buenos Aires',
+      country: 'Argentina',
+      timezone: 'America/Buenos_Aires'
+    });
+
+    this.cordobaCity = this.server.create('city', {
+      name: 'Córdoba',
+      country: 'Argentina',
+      timezone: 'America/Argentina/Cordoba'
+    });
+
+    this.romeCity = this.server.create('city', {
+      name: 'Rome',
+      country: 'Italy',
+      timezone: 'Europe/Rome'
+    });
+
+    this.saoPauloCity = this.server.create('city', {
+      name: 'São Paulo',
+      country: 'Brazil',
+      timezone: 'America/Sao_Paulo'
+    });
+
+    this.hoChiMinhCity = this.server.create('city', {
+      name: 'Ho Chi Minh City',
+      country: 'Vietnam',
+      timezone: 'Asia/Ho_Chi_Minh'
+    });
+  });
+
   test('Visiting /p/team/:share_id without exisiting team', async function (assert) {
     this.server.get('/teams', { errors: [{ detail: 'Not Found' }] }, 404);
     await visit('/p/team/yjHktCOyBDTb');
@@ -87,14 +125,15 @@ module('Acceptance | Public Team', function (hooks) {
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
+
     this.server.create('member', {
       name: 'Member 1',
-      timezone: 'America/Montevideo',
+      city: this.mvdCity,
       team
     });
     this.server.create('member', {
       name: 'Member 2',
-      timezone: 'America/Buenos_Aires',
+      city: this.bsasCity,
       team
     });
 
@@ -115,12 +154,12 @@ module('Acceptance | Public Team', function (hooks) {
 
     assert.equal(
       timezoneLocations[0].textContent.trim(),
-      'America, Montevideo',
+      'America, Montevideo + Montevideo, Uruguay',
       'Correct first location'
     );
     assert.equal(
       timezoneLocations[1].textContent.trim(),
-      'America, Buenos Aires',
+      'Buenos Aires, Argentina',
       'Correct second location'
     );
 
@@ -172,14 +211,15 @@ module('Acceptance | Public Team', function (hooks) {
       public: true,
       share_id: 'yjHktCOyBDTb'
     });
+
     this.server.create('member', {
       name: 'Member 1',
-      timezone: 'Europe/Rome',
+      city: this.romeCity,
       team
     });
     this.server.create('member', {
       name: 'Member 2',
-      timezone: 'America/Buenos_Aires',
+      city: this.bsasCity,
       team
     });
 
@@ -193,12 +233,12 @@ module('Acceptance | Public Team', function (hooks) {
     );
     assert.equal(
       timezoneLocations[1].textContent.trim(),
-      'America, Buenos Aires',
+      'Buenos Aires, Argentina',
       'Correct second location'
     );
     assert.equal(
       timezoneLocations[2].textContent.trim(),
-      'Europe, Rome',
+      'Rome, Italy',
       'Correct third location'
     );
   });
@@ -249,7 +289,7 @@ module('Acceptance | Public Team', function (hooks) {
     });
     this.server.create('member', {
       name: 'Member 2',
-      timezone: 'America/Buenos_Aires',
+      city: this.bsasCity,
       team
     });
 
@@ -264,7 +304,7 @@ module('Acceptance | Public Team', function (hooks) {
     assert.equal(timezoneLocations.length, 1, 'Correct amount of timezones');
     assert.equal(
       timezoneLocations[0].textContent.trim(),
-      'America, Montevideo + America, Buenos Aires',
+      'America, Montevideo + Buenos Aires, Argentina',
       'Correct grouped location'
     );
   });
@@ -279,12 +319,12 @@ module('Acceptance | Public Team', function (hooks) {
     });
     this.server.create('member', {
       name: 'Member 1',
-      timezone: 'America/Argentina/Buenos_Aires',
+      city: this.cordobaCity,
       team
     });
     this.server.create('member', {
       name: 'Member 2',
-      timezone: 'America/Buenos_Aires',
+      city: this.bsasCity,
       team
     });
 
@@ -299,12 +339,12 @@ module('Acceptance | Public Team', function (hooks) {
     );
     assert.equal(
       timezoneLocations[1].textContent.trim(),
-      'America, Argentina, Buenos Aires',
+      'Córdoba, Argentina',
       'Correct second location'
     );
     assert.equal(
       timezoneLocations[2].textContent.trim(),
-      'America, Buenos Aires',
+      'Buenos Aires, Argentina',
       'Correct third location'
     );
 
@@ -314,7 +354,7 @@ module('Acceptance | Public Team', function (hooks) {
     assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
       groupedTimezones[0].textContent.trim(),
-      'America, Montevideo + America, Argentina, Buenos Aires + 1 other location',
+      'America, Montevideo + Córdoba, Argentina + 1 other location',
       'Correct grouped location'
     );
   });
@@ -329,17 +369,17 @@ module('Acceptance | Public Team', function (hooks) {
     });
     this.server.create('member', {
       name: 'Member 1',
-      timezone: 'America/Argentina/Buenos_Aires',
+      city: this.cordobaCity,
       team
     });
     this.server.create('member', {
       name: 'Member 2',
-      timezone: 'America/Buenos_Aires',
+      city: this.bsasCity,
       team
     });
     this.server.create('member', {
       name: 'Member 3',
-      timezone: 'America/Cordoba',
+      city: this.saoPauloCity,
       team
     });
 
@@ -354,17 +394,17 @@ module('Acceptance | Public Team', function (hooks) {
     );
     assert.equal(
       timezoneLocations[1].textContent.trim(),
-      'America, Argentina, Buenos Aires',
+      'Córdoba, Argentina',
       'Correct second location'
     );
     assert.equal(
       timezoneLocations[2].textContent.trim(),
-      'America, Buenos Aires',
+      'Buenos Aires, Argentina',
       'Correct third location'
     );
     assert.equal(
       timezoneLocations[3].textContent.trim(),
-      'America, Cordoba',
+      'São Paulo, Brazil',
       'Correct fourth location'
     );
 
@@ -374,7 +414,7 @@ module('Acceptance | Public Team', function (hooks) {
     assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
       groupedTimezones[0].textContent.trim(),
-      'America, Montevideo + America, Argentina, Buenos Aires + 2 other locations',
+      'America, Montevideo + Córdoba, Argentina + 2 other locations',
       'Correct grouped location'
     );
   });
@@ -389,12 +429,12 @@ module('Acceptance | Public Team', function (hooks) {
     });
     this.server.create('member', {
       name: 'Member 1',
-      timezone: 'America/Montevideo',
+      city: this.mvdCity,
       team
     });
     this.server.create('member', {
       name: 'Member 2',
-      timezone: 'Asia/Ho_Chi_Minh',
+      city: this.hoChiMinhCity,
       team
     });
 
@@ -404,12 +444,12 @@ module('Acceptance | Public Team', function (hooks) {
     assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
     assert.equal(
       timezoneLocations[0].textContent.trim(),
-      'America, Montevideo',
+      'America, Montevideo + Montevideo, Uruguay',
       'Correct first location'
     );
     assert.equal(
       timezoneLocations[1].textContent.trim(),
-      'Asia, Ho Chi Minh',
+      'Ho Chi Minh City, Vietnam',
       'Correct second location'
     );
 
