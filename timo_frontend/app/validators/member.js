@@ -4,7 +4,7 @@ export default {
   name: [
     validatePresence({ presence: true, ignoreBlank: true }),
   ],
-  timezone: [
+  city: [
     validatePresence({ presence: true, ignoreBlank: true }),
   ],
 }
