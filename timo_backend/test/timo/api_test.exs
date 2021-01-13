@@ -214,10 +214,12 @@ defmodule Timo.APITest do
 
     test "create_member/1 with valid data creates a member" do
       team = team_factory(user_factory())
+      city = city_factory()
 
-      assert {:ok, %Member{} = member} = API.create_member(team, @valid_member_attrs)
+      assert {:ok, %Member{} = member} = API.create_member(team, @valid_member_attrs, city)
       assert member.name == @valid_member_attrs.name
-      assert member.city == nil
+      assert member.team == team
+      assert member.city == city
     end
 
     test "create_member/1 with invalid data returns error changeset" do
@@ -242,7 +244,7 @@ defmodule Timo.APITest do
 
       {:ok, %Member{} = fetched_member} = API.get_user_member(user, member.id)
 
-      assert fetched_member == member
+      assert fetched_member.id == member.id
     end
 
     test "get_user_member/2 with valid id and city" do
@@ -253,7 +255,7 @@ defmodule Timo.APITest do
 
       {:ok, %Member{} = fetched_member} = API.get_user_member(user, member.id)
 
-      assert fetched_member == member
+      assert fetched_member.id == member.id
     end
 
     test "get_user_member/2 returns nil if the member does not exist" do
@@ -265,17 +267,17 @@ defmodule Timo.APITest do
     test "update_member/2 with valid data updates the member" do
       member = member_factory()
 
-      assert {:ok, %Member{} = member} = API.update_member(member, @update_member_attrs)
+      assert {:ok, %Member{} = member} = API.update_member(member, @update_member_attrs, member.city)
       assert member.name == @update_member_attrs.name
     end
 
     test "update_member/2 with invalid data returns error changeset" do
       member = member_factory()
 
-      assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_attrs)
+      assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_attrs, member.city)
       fetched_member = Repo.get(Member, member.id) |> Repo.preload(:city)
 
-      assert fetched_member == member
+      assert fetched_member.id == member.id
     end
 
     test "update_member/2 with new city" do
@@ -284,13 +286,6 @@ defmodule Timo.APITest do
 
       assert {:ok, %Member{} = member} = API.update_member(member, %{}, city)
       assert member.city == city
-    end
-
-    test "update_member/2 with nil city" do
-      member = member_factory()
-
-      assert {:ok, %Member{} = member} = API.update_member(member, %{}, nil)
-      assert member.city == nil
     end
 
     test "delete_member/1 deletes a member" do

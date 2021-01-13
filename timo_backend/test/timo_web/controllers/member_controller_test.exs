@@ -10,7 +10,7 @@ defmodule TimoWeb.MemberControllerTest do
   @invalid_attrs %{name: nil}
   @update_attrs %{name: "some new name"}
 
-  def data_fixture(attribute, team_id, city_id \\ nil) do
+  def data_fixture(attribute, team_id, city_id) do
     %{
       "meta" => %{},
       "data" => %{
@@ -52,25 +52,6 @@ defmodule TimoWeb.MemberControllerTest do
     {:ok, conn: conn, team: team, user: user, city: city}
   end
 
-  test "creates member and renders it when data is valid with no city", %{
-    conn: conn,
-    team: team,
-    user: user
-  } do
-    conn = post(conn, Routes.member_path(conn, :create), data_fixture(@create_attrs, team.id))
-
-    assert data = json_response(conn, 201)["data"]
-    assert data["type"] == "member"
-    assert data["attributes"]["name"] == @create_attrs.name
-
-    {:ok, %Member{} = member} = API.get_user_member(user, data["id"])
-
-    assert Integer.to_string(member.id) == data["id"]
-    assert member.team_id == team.id
-    assert member.name == data["attributes"]["name"]
-    assert member.city == nil
-  end
-
   test "creates member and renders it when data is valid with city", %{
     conn: conn,
     team: team,
@@ -92,33 +73,10 @@ defmodule TimoWeb.MemberControllerTest do
     assert member.city_id == city.id
   end
 
-  test "does not create member and renders errors when data is invalid", %{conn: conn, team: team} do
-    conn = post(conn, Routes.member_path(conn, :create), data_fixture(@invalid_attrs, team.id))
+  test "does not create member and renders errors when data is invalid", %{conn: conn, team: team, city: city} do
+    conn = post(conn, Routes.member_path(conn, :create), data_fixture(@invalid_attrs, team.id, city.id))
 
     assert json_response(conn, 422)["errors"] != %{}
-  end
-
-  test "updates member and renders it when data is valid and no city", %{conn: conn, team: team} do
-    member = member_factory(team)
-    member_id = Integer.to_string(member.id)
-
-    conn =
-      put(
-        conn,
-        Routes.member_path(conn, :update, member_id),
-        data_fixture(@update_attrs, team.id)
-      )
-
-    data = json_response(conn, 200)["data"]
-
-    assert data["id"] == member_id
-    assert data["type"] == "member"
-    assert data["attributes"]["name"] == @update_attrs.name
-
-    member = Repo.get(Member, member_id) |> Repo.preload(:city)
-
-    assert member.name == @update_attrs.name
-    assert member.city == nil
   end
 
   test "updates member and renders it when data is valid", %{conn: conn, team: team} do
@@ -151,7 +109,7 @@ defmodule TimoWeb.MemberControllerTest do
     assert member.city == city
   end
 
-  test "does not update member and renders errors when data is invalid", %{conn: conn, team: team} do
+  test "does not update member and renders errors when data is invalid", %{conn: conn, team: team, city: city} do
     member = member_factory(team)
     member_id = Integer.to_string(member.id)
 
@@ -159,7 +117,7 @@ defmodule TimoWeb.MemberControllerTest do
       put(
         conn,
         Routes.member_path(conn, :update, member_id),
-        data_fixture(@invalid_attrs, team.id)
+        data_fixture(@invalid_attrs, team.id, city.id)
       )
 
     assert json_response(conn, 422)["errors"] != %{}
