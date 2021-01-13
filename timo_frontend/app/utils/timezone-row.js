@@ -8,11 +8,11 @@ export default class TimezoneRow {
   constructor(member, times) {
     this.members.pushObject(member);
     this.times = times;
-    this.timezonesList.pushObject(member.timezone);
+    this.timezonesList.pushObject(member.city.timezone);
   }
 
   get timezoneName() {
-    return this.members[0].timezone;
+    return this.members[0].city.timezone;
   }
 
   get offset() {
@@ -28,18 +28,18 @@ export default class TimezoneRow {
   }
 
   memberHasSameTimezone(member) {
-    return this.timezonesList.includes(member.timezone);
+    return this.timezonesList.includes(member.city.timezone);
   }
 
   memberHasSameOffset(member) {
-    const offsetMember = moment.tz.zone(member.timezone).utcOffset(moment.utc());
+    const offsetMember = moment.tz.zone(member.city.timezone).utcOffset(moment.utc());
 
     return this.offset === offsetMember;
   }
 
   addToSameTimezone(member) {
-    if (!this.timezonesList.includes(member.timezone)) {
-      this.timezonesList.pushObject(member.timezone);
+    if (!this.timezonesList.includes(member.city.timezone)) {
+      this.timezonesList.pushObject(member.city.timezone);
     }
 
     this.members.pushObject(member);

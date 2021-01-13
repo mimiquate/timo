@@ -2,8 +2,8 @@ import TimezoneRow from 'timo-frontend/utils/timezone-row';
 import moment from 'moment';
 
 export function compareMemberTimeZones(memberA, memberB) {
-  const aTime = moment.tz(memberA.timezone).format();
-  const bTime = moment.tz(memberB.timezone).format();
+  const aTime = moment.tz(memberA.city.timezone).format();
+  const bTime = moment.tz(memberB.city.timezone).format();
 
   return aTime.localeCompare(bTime, 'en');
 }
@@ -67,7 +67,7 @@ function getAmountOfBoxesBeforeNow(isMobile) {
 }
 
 function createNewTimezone(member, boxesToTheLeft) {
-  const currentTimeForMember = moment.tz(member.timezone).startOf('hour');
+  const currentTimeForMember = moment.tz(member.city.timezone).startOf('hour');
   const hours = createHours(currentTimeForMember, boxesToTheLeft);
 
   return new TimezoneRow(member, hours);
