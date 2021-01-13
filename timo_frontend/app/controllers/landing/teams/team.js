@@ -46,7 +46,7 @@ export default class LandingTeamsTeamController extends Controller {
     return this.model.team.members.filterBy('id');
   }
 
-  @computed('savedMembers.{[],@each.name,@each.timezone}')
+  @computed('savedMembers.{[],@each.name,@each.city}')
   get sortedMembers() {
     const members = this.savedMembers.toArray();
     members.sort(compareMemberTimeZones);
@@ -55,9 +55,11 @@ export default class LandingTeamsTeamController extends Controller {
     members.unshiftObject({
       name: 'Current location',
       isCurrentUser: true,
-      timezone: timezoneNow,
       location: splitTimezone(timezoneNow),
-      id: 'current'
+      id: 'current',
+      city: {
+        timezone: timezoneNow
+      }
     });
 
     return members;
@@ -162,12 +164,11 @@ export default class LandingTeamsTeamController extends Controller {
   }
 
   @action
-  async saveMember(memberName, memberTimeZone, memberCity) {
+  async saveMember(name, city) {
     await this.store.createRecord('member', {
-      name: memberName,
-      timezone: memberTimeZone,
-      team: this.model.team,
-      city: memberCity
+      name,
+      city,
+      team: this.model.team
     }).save().then(() => this.newMemberModal = false);
   }
 

@@ -23,9 +23,9 @@ export default class TimezoneListComponent extends Component {
   get showGroupTimezonesCheckbox() {
     const timeNow = moment.utc();
 
-    const timezonesName = this.args.members.map(m => m.timezone);
+    const timezonesName = this.args.members.map(m => m.city.timezone);
     const offsets = this.args.members.map(m => {
-      return moment.tz.zone(m.timezone).utcOffset(timeNow);
+      return moment.tz.zone(m.city.timezone).utcOffset(timeNow);
     });
 
     return new Set(offsets).size !== new Set(timezonesName).size;

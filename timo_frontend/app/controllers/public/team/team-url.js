@@ -17,7 +17,7 @@ export default class PublicTeamTeamUrlController extends Controller {
   @tracked isShowingCalendarPopover = false;
   @tracked showAccountOptions = false;
 
-  @computed('model.members.{[],@each.id,@each.name,@each.timezone}')
+  @computed('model.members.{[],@each.id,@each.name,@each.city}')
   get sortedMembers() {
     const members = this.model.members.filterBy('id').toArray();
     members.sort(compareMemberTimeZones);
@@ -25,9 +25,11 @@ export default class PublicTeamTeamUrlController extends Controller {
     const timezoneNow = guessTimezoneNow();
     members.unshiftObject({
       name: 'Current location',
-      timezone: timezoneNow,
       location: splitTimezone(timezoneNow),
-      id: 'current'
+      id: 'current',
+      city: {
+        timezone: timezoneNow
+      }
     });
 
     return members;

@@ -13,32 +13,19 @@
     @onChange={{fn (mut this.name)}}
     @cleanError={{fn this.cleanError 'nameError'}}
   />
-  <div class="t-autocomplete">
+  <div class='t-autocomplete {{if this.cityError 'error'}}'>
     <PowerSelectTypeahead
       @search={{@searchCity}}
       @selected={{this.selectedCity.fullName}}
-      @placeholder="Search for city (optional)"
+      @placeholder="Search for city"
       @loadingMessage="Searching for cities..."
       @noMatchesMessage="No city found"
       @onChange={{this.changeCity}} as |city|
     >
       {{city.name}}, {{city.country}}
     </PowerSelectTypeahead>
-  </div>
-  <div class="t-dropdown">
-    <PowerSelect
-      @triggerClass="{{if this.timezoneError 'error'}}"
-      @placeholder="Select timezone"
-      @searchPlaceholder="Search for a timezone..."
-      @searchEnabled={{true}}
-      @options={{this.timezoneList}}
-      @selected={{this.timezone}}
-      @onChange={{this.changeTimezone}} as |t|
-    >
-      {{t}}
-    </PowerSelect>
-    {{#if this.timezoneError}}
-      <span class="t-dropdown__error">{{this.timezoneError}}</span>
+    {{#if this.cityError}}
+      <span class="t-autocomplete__error">{{this.cityError}}</span>
     {{/if}}
   </div>
 </TModal>
