@@ -6,29 +6,36 @@ import moment from 'moment';
 export default class TimezoneComponent extends Component {
   @computed('args.timezone.members.{[],@each.city}')
   get location() {
-    const members = this.args.timezone.members.filter(m => !m.isCurrentUser);
-
-    const isCurrentLocation = this.args.timezone.members.find(m => m.isCurrentUser);
-    let currentLocationLabel = isCurrentLocation ? 'Current location' : '';
-
-    if (members.length !== 0 && isCurrentLocation) {
-      currentLocationLabel = `(${currentLocationLabel})`;
-    }
-
+    const members = this.timezoneMembers;
     const locations = [...new Set(members.map(m => m.city.fullName))];
-
-    const locationsLength = locations.length;
     const locationsToShow = locations.map(l => splitTimezone(l)).slice(0, 2);
+    const locationsLeft = locations.length - 2;
 
-    const locationsLeft = locationsLength - 2;
     if (locationsLeft > 0) {
       let message = `${locationsLeft} other `;
       message += locationsLeft === 1 ? 'location' : 'locations';
       locationsToShow.pushObject(message);
     }
 
-    const concatenatedLocations = locationsToShow.join(' + ');
-    return `${concatenatedLocations} ${currentLocationLabel}`;
+    return locationsToShow.join(' + ');
+  }
+
+  @computed('args.timezone.members.[]}')
+  get timezoneMembers() {
+    return this.args.timezone.members.filter(m => !m.isCurrentUser);
+  }
+
+  @computed('args.timezone.members.[]}')
+  get isCurrentTimezone() {
+    return this.args.timezone.members.find(m => m.isCurrentUser);
+  }
+
+  get currentTimezoneLabel() {
+    if (this.isCurrentTimezone) {
+      return this.timezoneMembers.length === 0 ? 'Current location' : '(Current location)'
+    } else {
+      return '';
+    }
   }
 
   @computed('args.{timezone.members.[],selectedTime}')
