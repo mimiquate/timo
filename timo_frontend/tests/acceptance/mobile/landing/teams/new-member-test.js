@@ -49,14 +49,14 @@ module('Mobile | Acceptance | New member', function (hooks) {
     assert.equal(timezoneRowLocations.length, 1, 'List has one row');
     assert.equal(
       timezoneRowLocations[0].textContent.trim(),
-      'America, Montevideo + Montevideo, Uruguay',
+      'Montevideo, Uruguay (Current location)',
       'Correct location'
     );
 
     const timezoneRowMembers = find('.timezone-list__members');
 
     assert.ok(
-      timezoneRowMembers.textContent.includes('Member (Current location)'),
+      timezoneRowMembers.textContent.includes('Member'),
       'Correct row members'
     );
   });
@@ -79,7 +79,7 @@ module('Mobile | Acceptance | New member', function (hooks) {
     assert.equal(timezoneRowLocations.length, 2, 'List has two rows');
     assert.equal(
       timezoneRowLocations[0].textContent.trim(),
-      'America, Montevideo',
+      'Current location',
       'Correct first location'
     );
     assert.equal(
@@ -91,7 +91,7 @@ module('Mobile | Acceptance | New member', function (hooks) {
     const timezoneRowMembers = findAll('.timezone-list__members');
 
     assert.ok(
-      timezoneRowMembers[0].textContent.includes('Current location'),
+      timezoneRowMembers[0].textContent.includes('You'),
       'Correct first row members'
     );
     assert.ok(
@@ -118,7 +118,7 @@ module('Mobile | Acceptance | New member', function (hooks) {
     assert.equal(timezoneRowLocations.length, 2, 'List has two rows');
     assert.equal(
       timezoneRowLocations[0].textContent.trim(),
-      'America, Montevideo',
+      'Current location',
       'Correct first location'
     );
     assert.equal(
@@ -130,7 +130,7 @@ module('Mobile | Acceptance | New member', function (hooks) {
     const timezoneRowMembers = findAll('.timezone-list__members');
 
     assert.ok(
-      timezoneRowMembers[0].textContent.includes('Current location'),
+      timezoneRowMembers[0].textContent.includes('You'),
       'Correct first row members'
     );
     assert.ok(

@@ -80,8 +80,8 @@ module('Desktop | Complete user path', function (hooks) {
     let timezoneMembers = find('.timezone-list__members');
 
     assert.equal(timezones.length, 1);
-    assert.equal(timezonesLocation.textContent.trim(), 'America, Montevideo');
-    assert.equal(timezoneMembers.textContent.trim(), 'Current location');
+    assert.equal(timezonesLocation.textContent.trim(), 'Current location');
+    assert.equal(timezoneMembers.textContent.trim(), 'You');
 
     assert.equal(find('.team-header__details').textContent.trim(), '0 Members');
 
@@ -104,8 +104,8 @@ module('Desktop | Complete user path', function (hooks) {
     timezoneMembers = findAll('.timezone-list__members');
 
     assert.equal(timezones.length, 2);
-    assert.equal(timezonesLocation[0].textContent.trim(), 'America, Montevideo');
-    assert.equal(timezoneMembers[0].textContent.trim(), 'Current location');
+    assert.equal(timezonesLocation[0].textContent.trim(), 'Current location');
+    assert.equal(timezoneMembers[0].textContent.trim(), 'You');
 
     assert.equal(timezones.length, 2);
     assert.equal(timezonesLocation[1].textContent.trim(), 'Rome, Italy');
@@ -170,8 +170,8 @@ module('Desktop | Complete user path', function (hooks) {
     timezoneMembers = find('.timezone-list__members');
 
     assert.equal(timezones.length, 1);
-    assert.equal(timezonesLocation.textContent.trim(), 'America, Montevideo');
-    assert.equal(timezoneMembers.textContent.trim(), 'Current location');
+    assert.equal(timezonesLocation.textContent.trim(), 'Current location');
+    assert.equal(timezoneMembers.textContent.trim(), 'You');
 
     //Delete team
     await click('[data-test=edit-team-button]');

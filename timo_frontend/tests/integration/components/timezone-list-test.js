@@ -13,7 +13,10 @@ module('Integration | Component | timezone-list-component', function(hooks) {
   test('Show correct text for one member', async function(assert) {
     this.set('timezone', {
       members: [{
-        name: 'Member 1'
+        name: 'Member 1',
+        city: {
+          fullName: ''
+        }
       }],
       timezonesList: ['America/Montevideo'],
     });
@@ -44,16 +47,23 @@ module('Integration | Component | timezone-list-component', function(hooks) {
   });
 
   test('Show correct text for three members', async function(assert) {
+    const city = {
+      fullName: ''
+    }
+
     this.set('timezone', {
       members: [
         {
           name: 'Member 1',
+          city
         },
         {
           name: 'Member 2',
+          city
         },
         {
           name: 'Member 3',
+          city
         }
       ],
       timezonesList: ['America/Montevideo'],
@@ -86,25 +96,35 @@ module('Integration | Component | timezone-list-component', function(hooks) {
   });
 
   test('Show correct text for more than 4 members', async function(assert) {
+    const city = {
+      fullName: ''
+    }
+
     this.set('timezone', {
       members: [
         {
           name: 'Member 1',
+          city
         },
         {
           name: 'Member 2',
+          city
         },
         {
           name: 'Member 3',
+          city
         },
         {
           name: 'Member 4',
+          city
         },
         {
           name: 'Member 5',
+          city
         },
         {
           name: 'Member 6',
+          city
         },
       ],
       timezonesList: ['America/Montevideo'],

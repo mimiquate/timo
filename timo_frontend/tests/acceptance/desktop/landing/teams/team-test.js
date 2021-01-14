@@ -87,7 +87,7 @@ module('Acceptance | Team', function (hooks) {
     const timezoneLocation = find('.timezone-list__location');
     assert.equal(
       timezoneLocation.textContent.trim(),
-      'America, Montevideo',
+      'Current location',
       'Correct location'
     );
 
@@ -96,7 +96,7 @@ module('Acceptance | Team', function (hooks) {
     const expectedDate = timeNow.format('dddd, DD MMMM YYYY, HH:mm');
 
     assert.ok(timezoneDate.textContent.includes(expectedDate), 'Correct row date');
-    assert.ok(find('.timezone-list__members').textContent.includes('Current location'), 'Correct row members');
+    assert.ok(find('.timezone-list__members').textContent.includes('You'), 'Correct row members');
 
     const timezoneHours = findAll('.timezone-list__hour');
     assert.equal(timezoneHours.length, 36, 'Correct amount of hours');
@@ -139,7 +139,7 @@ module('Acceptance | Team', function (hooks) {
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(
       timezoneLocations[0].textContent.trim(),
-      'America, Montevideo + Montevideo, Uruguay',
+      'Montevideo, Uruguay (Current location)',
       'Correct first location'
     );
     assert.equal(
@@ -162,7 +162,7 @@ module('Acceptance | Team', function (hooks) {
       'Correct first row date'
     );
     assert.ok(
-      timezoneMembers[0].textContent.includes('Member 1 (Current location)'),
+      timezoneMembers[0].textContent.includes('Member 1'),
       'Correct first row members'
     );
     assert.ok(
@@ -213,7 +213,7 @@ module('Acceptance | Team', function (hooks) {
 
     assert.equal(
       timezoneLocations[0].textContent.trim(),
-      'America, Montevideo',
+      'Current location',
       'Correct first location'
     );
     assert.equal(
@@ -261,14 +261,14 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(timezoneLocations.length, 1, 'Only one timezone');
     assert.equal(
       timezoneLocations[0].textContent.trim(),
-      'America, Montevideo + Montevideo, Uruguay',
+      'Montevideo, Uruguay (Current location)',
       'Correct location'
     );
 
     const timezoneRowMembers = find('.timezone-list__members');
 
     assert.ok(
-      timezoneRowMembers.textContent.includes('Member 1 (Current location)'),
+      timezoneRowMembers.textContent.includes('Member 1'),
       'Correct amount of members in timezone'
     );
   });
@@ -348,7 +348,7 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(timezoneLocations.length, 1, 'Correct amount of timezones');
     assert.equal(
       timezoneLocations[0].textContent.trim(),
-      'America, Montevideo + Buenos Aires, Argentina',
+      'Buenos Aires, Argentina (Current location)',
       'Correct grouped location'
     );
   });
@@ -381,7 +381,7 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(timezoneLocations.length, 4, 'Correct amount of timezones');
     assert.equal(
       timezoneLocations[0].textContent.trim(),
-      'America, Montevideo',
+      'Current location',
       'Correct first location'
     );
     assert.equal(
@@ -405,7 +405,7 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
     assert.equal(
       groupedTimezones[0].textContent.trim(),
-      'America, Montevideo + Buenos Aires, Argentina + 2 other locations',
+      'Buenos Aires, Argentina + São Paulo, Brazil + 1 other location (Current location)',
       'Correct grouped location'
     );
   });
@@ -433,7 +433,7 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
     assert.equal(
       timezoneLocations[0].textContent.trim(),
-      'America, Montevideo + Montevideo, Uruguay',
+      'Montevideo, Uruguay (Current location)',
       'Correct first location'
     );
     assert.equal(
@@ -628,7 +628,7 @@ module('Acceptance | Team', function (hooks) {
     const timezoneMembers = find('.timezone-list__members');
 
     assert.ok(
-      timezoneMembers.textContent.includes('Member 1, Member 2, Member 3, Member 4 and 2 more (Current location)'),
+      timezoneMembers.textContent.includes('Member 1, Member 2, Member 3, Member 4 and 2 more'),
       'Correct first row members'
     );
   });
@@ -803,7 +803,7 @@ module('Acceptance | Team', function (hooks) {
     assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
     assert.equal(
       timezoneLocations[0].textContent.trim(),
-      'America, Montevideo',
+      'Current location',
       'Correct current location'
     );
     assert.equal(
