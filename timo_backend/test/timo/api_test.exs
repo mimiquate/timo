@@ -267,14 +267,18 @@ defmodule Timo.APITest do
     test "update_member/2 with valid data updates the member" do
       member = member_factory()
 
-      assert {:ok, %Member{} = member} = API.update_member(member, @update_member_attrs, member.city)
+      assert {:ok, %Member{} = member} =
+               API.update_member(member, @update_member_attrs, member.city)
+
       assert member.name == @update_member_attrs.name
     end
 
     test "update_member/2 with invalid data returns error changeset" do
       member = member_factory()
 
-      assert {:error, %Ecto.Changeset{}} = API.update_member(member, @invalid_member_attrs, member.city)
+      assert {:error, %Ecto.Changeset{}} =
+               API.update_member(member, @invalid_member_attrs, member.city)
+
       fetched_member = Repo.get(Member, member.id) |> Repo.preload(:city)
 
       assert fetched_member.id == member.id

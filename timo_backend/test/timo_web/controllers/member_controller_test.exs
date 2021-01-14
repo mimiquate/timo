@@ -73,8 +73,17 @@ defmodule TimoWeb.MemberControllerTest do
     assert member.city_id == city.id
   end
 
-  test "does not create member and renders errors when data is invalid", %{conn: conn, team: team, city: city} do
-    conn = post(conn, Routes.member_path(conn, :create), data_fixture(@invalid_attrs, team.id, city.id))
+  test "does not create member and renders errors when data is invalid", %{
+    conn: conn,
+    team: team,
+    city: city
+  } do
+    conn =
+      post(
+        conn,
+        Routes.member_path(conn, :create),
+        data_fixture(@invalid_attrs, team.id, city.id)
+      )
 
     assert json_response(conn, 422)["errors"] != %{}
   end
@@ -109,7 +118,11 @@ defmodule TimoWeb.MemberControllerTest do
     assert member.city == city
   end
 
-  test "does not update member and renders errors when data is invalid", %{conn: conn, team: team, city: city} do
+  test "does not update member and renders errors when data is invalid", %{
+    conn: conn,
+    team: team,
+    city: city
+  } do
     member = member_factory(team)
     member_id = Integer.to_string(member.id)
 
