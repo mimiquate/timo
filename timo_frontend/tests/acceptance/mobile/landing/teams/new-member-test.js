@@ -47,11 +47,8 @@ module('Mobile | Acceptance | New member', function (hooks) {
     const timezoneRowLocations = findAll('.timezone-list__location');
 
     assert.equal(timezoneRowLocations.length, 1, 'List has one row');
-    assert.equal(
-      timezoneRowLocations[0].textContent.trim(),
-      'Montevideo, Uruguay (Current location)',
-      'Correct location'
-    );
+    assert.ok(timezoneRowLocations[0].textContent.includes('Montevideo, Uruguay'));
+    assert.ok(timezoneRowLocations[0].textContent.includes('(Current location)'));
 
     const timezoneRowMembers = find('.timezone-list__members');
 

@@ -137,11 +137,9 @@ module('Acceptance | Team', function (hooks) {
     );
 
     const timezoneLocations = findAll('.timezone-list__location');
-    assert.equal(
-      timezoneLocations[0].textContent.trim(),
-      'Montevideo, Uruguay (Current location)',
-      'Correct first location'
-    );
+    assert.ok(timezoneLocations[0].textContent.includes('Montevideo, Uruguay'));
+    assert.ok(timezoneLocations[0].textContent.includes('(Current location)'));
+
     assert.equal(
       timezoneLocations[1].textContent.trim(),
       'Buenos Aires, Argentina',
@@ -259,11 +257,8 @@ module('Acceptance | Team', function (hooks) {
     const timezoneLocations = findAll('.timezone-list__location');
 
     assert.equal(timezoneLocations.length, 1, 'Only one timezone');
-    assert.equal(
-      timezoneLocations[0].textContent.trim(),
-      'Montevideo, Uruguay (Current location)',
-      'Correct location'
-    );
+    assert.ok(timezoneLocations[0].textContent.includes('Montevideo, Uruguay'));
+    assert.ok(timezoneLocations[0].textContent.includes('(Current location)'));
 
     const timezoneRowMembers = find('.timezone-list__members');
 
@@ -346,11 +341,8 @@ module('Acceptance | Team', function (hooks) {
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 1, 'Correct amount of timezones');
-    assert.equal(
-      timezoneLocations[0].textContent.trim(),
-      'Buenos Aires, Argentina (Current location)',
-      'Correct grouped location'
-    );
+    assert.ok(timezoneLocations[0].textContent.includes('Buenos Aires, Argentina'));
+    assert.ok(timezoneLocations[0].textContent.includes('(Current location)'));
   });
 
   test('Group 4 timezones into another', async function (assert) {
@@ -403,11 +395,12 @@ module('Acceptance | Team', function (hooks) {
 
     const groupedTimezones = findAll('.timezone-list__location');
     assert.equal(groupedTimezones.length, 1, 'Correct amount of timezones');
-    assert.equal(
-      groupedTimezones[0].textContent.trim(),
-      'Buenos Aires, Argentina + São Paulo, Brazil + 1 other location (Current location)',
-      'Correct grouped location'
+    assert.ok(
+      groupedTimezones[0].textContent.includes(
+        'Buenos Aires, Argentina + São Paulo, Brazil + 1 other location'
+      )
     );
+    assert.ok(groupedTimezones[0].textContent.includes('(Current location)'));
   });
 
   test('Cant see group timezones if there is no timezone to group', async function (assert) {
@@ -431,11 +424,9 @@ module('Acceptance | Team', function (hooks) {
 
     const timezoneLocations = findAll('.timezone-list__location');
     assert.equal(timezoneLocations.length, 2, 'Correct amount of timezones');
-    assert.equal(
-      timezoneLocations[0].textContent.trim(),
-      'Montevideo, Uruguay (Current location)',
-      'Correct first location'
-    );
+    assert.ok(timezoneLocations[0].textContent.includes('Montevideo, Uruguay'));
+    assert.ok(timezoneLocations[0].textContent.includes('(Current location)'));
+
     assert.equal(
       timezoneLocations[1].textContent.trim(),
       'Ho Chi Minh City, Vietnam',
