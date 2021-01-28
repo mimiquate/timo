@@ -13,10 +13,8 @@ defmodule TimoWeb.MemberController do
 
   def create(conn, %{"data" => data = %{"type" => "members", "attributes" => params}}) do
     member = Params.to_attributes(data)
-    {:ok, team} = API.get_team_by_id(member["team_id"])
-    city = API.get_city_by_id(member["city_id"])
 
-    with {:ok, %Member{} = member} <- API.create_member(team, params, city) do
+    with {:ok, %Member{} = member} <- API.create_member(member) do
       conn
       |> put_status(:created)
       |> render("show.json-api", data: member)

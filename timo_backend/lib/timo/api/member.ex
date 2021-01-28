@@ -14,7 +14,9 @@ defmodule Timo.API.Member do
   @doc false
   def changeset(member, attrs) do
     member
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :city_id, :team_id])
+    |> validate_required([:name, :city_id, :team_id])
+    |> assoc_constraint(:city)
+    |> assoc_constraint(:team)
   end
 end

@@ -76,12 +76,14 @@ defmodule Timo.API do
     from(t in query, where: t.user_id == ^user_id, preload: [members: :city])
   end
 
-  def create_member(%Team{} = team, attrs \\ %{}, city) do
+  def create_member(attrs) do
     %Member{}
     |> Member.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:team, team)
-    |> Ecto.Changeset.put_assoc(:city, city)
     |> Repo.insert()
+    |> case do
+      {:ok, member} -> {:ok, Repo.preload(member, [:city, :team])}
+      error -> error
+    end
   end
 
   def get_team_by_id(id) do

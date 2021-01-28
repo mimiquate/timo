@@ -41,15 +41,14 @@ defmodule Timo.TestHelpers do
   end
 
   def member_factory(%Team{} = team, attrs \\ %{}, %City{} = city) do
-    default_value = %{name: "some name"}
+    default_value = %{name: "some name", team_id: team.id, city_id: city.id}
 
     attrs = Enum.into(attrs, default_value)
 
     %Member{}
     |> Member.changeset(attrs)
-    |> Ecto.Changeset.put_assoc(:team, team)
-    |> Ecto.Changeset.put_assoc(:city, city)
     |> Repo.insert!()
+    |> Repo.preload([:city, :team])
   end
 
   def city_factory(attrs \\ %{}) do
