@@ -215,9 +215,8 @@ defmodule Timo.APITest do
     test "create_member/1 with valid data creates a member" do
       team = team_factory(user_factory())
       city = city_factory()
-      member_attrs = Map.merge(@valid_member_attrs, %{team_id: team.id, city_id: city.id})
 
-      assert {:ok, %Member{} = member} = API.create_member(member_attrs)
+      assert {:ok, %Member{} = member} = API.create_member(team, @valid_member_attrs, city)
       assert member.name == @valid_member_attrs.name
       assert member.team == team
       assert member.city == city
@@ -225,18 +224,15 @@ defmodule Timo.APITest do
 
     test "create_member/1 with invalid data returns error changeset" do
       team = team_factory(user_factory())
-      city = city_factory()
-      member_attrs = Map.merge(@invalid_member_attrs, %{team_id: team.id, city_id: city.id})
 
-      assert {:error, %Ecto.Changeset{}} = API.create_member(member_attrs)
+      assert {:error, %Ecto.Changeset{}} = API.create_member(team, @invalid_member_attrs)
     end
 
     test "create_member/1 with valid data and city creates a member" do
       team = team_factory(user_factory())
       city = city_factory()
-      member_attrs = Map.merge(@valid_member_attrs, %{team_id: team.id, city_id: city.id})
 
-      assert {:ok, %Member{} = member} = API.create_member(member_attrs)
+      assert {:ok, %Member{} = member} = API.create_member(team, @valid_member_attrs, city)
       assert member.name == @valid_member_attrs.name
       assert member.city == city
     end
@@ -377,9 +373,8 @@ defmodule Timo.APITest do
     test "cant create member with empty city" do
       owner = user_factory()
       team = team_factory(owner)
-      member_attrs = %{name: "Jose", team_id: team.id}
 
-      {:error, %Ecto.Changeset{}} = API.create_member(member_attrs)
+      {:error, %Ecto.Changeset{}} = API.create_member(team, @valid_member_attrs, nil)
     end
   end
 end

@@ -145,4 +145,12 @@ defmodule TimoWeb.MemberControllerTest do
 
     assert Timo.Repo.get(Member, member.id) == nil
   end
+
+  test "cant create member wih empty city", %{conn: conn, team: team} do
+    conn =
+      conn
+      |> post(Routes.member_path(conn, :create), data_fixture(@create_attrs, team.id, nil))
+
+    assert json_response(conn, 422)["errors"] != %{}
+  end
 end
