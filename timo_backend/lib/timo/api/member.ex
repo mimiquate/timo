@@ -14,19 +14,16 @@ defmodule Timo.API.Member do
   def changeset(member, attrs, nil, city) do
     member
     |> cast(attrs, [:name])
-    |> validate_required([:name])
     |> put_assoc(:city, city)
-    |> validate_required(:city)
+    |> validate_required([:name, :city])
   end
 
   @doc false
   def changeset(member, attrs, team, city) do
     member
     |> cast(attrs, [:name])
-    |> validate_required([:name])
     |> put_assoc(:team, team)
     |> put_assoc(:city, city)
-    |> validate_required(:city)
-    |> validate_required(:team)
+    |> validate_required([:name, :team, :city])
   end
 end
