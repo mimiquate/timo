@@ -374,7 +374,7 @@ defmodule Timo.APITest do
       owner = user_factory()
       team = team_factory(owner)
 
-      {:error, %Ecto.Changeset{}} = API.create_member(team, @valid_member_attrs, nil)
+      assert {:error, %Ecto.Changeset{}} = API.create_member(team, @valid_member_attrs, nil)
     end
   end
 end
