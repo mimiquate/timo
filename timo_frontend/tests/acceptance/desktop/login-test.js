@@ -170,7 +170,7 @@ module('Acceptance | Login', function (hooks) {
     const timezoneLocation = find('.timezone-list__location');
     assert.equal(
       timezoneLocation.textContent.trim(),
-      'America, Montevideo',
+      'Current location',
       'Correct location'
     );
   });

@@ -6,16 +6,12 @@ import { isPresent } from '@ember/utils';
 import { showErrors, cleanErrors } from 'timo-frontend/utils/errors-handler'
 import memberValidator from 'timo-frontend/validators/member';
 import lookupValidator from 'ember-changeset-validations';
-import moment from 'moment';
 
 export default class AddMemberModalComponent extends Component {
   @tracked name = '';
-  @tracked timezone = '';
   @tracked nameError = '';
-  @tracked timezoneError = '';
+  @tracked cityError = '';
   @tracked selectedCity = null;
-
-  timezoneList = moment.tz.names();
 
   @action
   cleanError(error) {
@@ -23,35 +19,24 @@ export default class AddMemberModalComponent extends Component {
   }
 
   @action
-  changeTimezone(value) {
-    this.timezone = value;
-    this.selectedCity = null;
-
-    if (isPresent(value)) {
-      this.cleanError('timezoneError');
-    }
-  }
-
-  @action
   async add(event) {
     event.preventDefault();
 
-    const errors = ['nameError', 'timezoneError'];
+    const errors = ['nameError', 'cityError'];
     cleanErrors.call(this, errors);
 
     const name = this.name.trim();
-    const timezone = this.timezone;
     const city = this.selectedCity;
 
     let changeset = Changeset({
       name,
-      timezone
+      city
     }, lookupValidator(memberValidator), memberValidator);
 
     await changeset.validate();
 
     if (changeset.isValid) {
-      this.args.addNewMember(name, timezone, city);
+      this.args.addNewMember(name, city);
     } else {
       showErrors.call(this, changeset.errors);
     }
@@ -60,10 +45,9 @@ export default class AddMemberModalComponent extends Component {
   @action
   changeCity(city) {
     this.selectedCity = city;
-    this.timezone = city.timezone;
 
     if (isPresent(city)) {
-      this.cleanError('timezoneError');
+      this.cleanError('cityError');
     }
   }
 }

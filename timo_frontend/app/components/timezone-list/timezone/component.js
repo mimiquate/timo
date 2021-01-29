@@ -6,20 +6,11 @@ import moment from 'moment';
 export default class TimezoneComponent extends Component {
   @computed('args.timezone.members.{[],@each.city}')
   get location() {
-    const members = this.args.timezone.members;
-    const hasCitylessMember = members.some(m => m.city === null);
+    const members = this.timezoneMembers;
+    const locations = [...new Set(members.map(m => m.city.fullName))];
+    const locationsToShow = locations.map(l => splitTimezone(l)).slice(0, 2);
+    const locationsLeft = locations.length - 2;
 
-    let locations;
-    if (hasCitylessMember) {
-      locations = this.args.timezone.timezonesList.map(t => splitTimezone(t));
-    } else {
-      locations = [...new Set(members.map(m => m.location))];
-    }
-
-    const locationsLength = locations.length;
-    const locationsToShow = locations.slice(0, 2);
-
-    const locationsLeft = locationsLength - 2;
     if (locationsLeft > 0) {
       let message = `${locationsLeft} other `;
       message += locationsLeft === 1 ? 'location' : 'locations';
@@ -27,6 +18,24 @@ export default class TimezoneComponent extends Component {
     }
 
     return locationsToShow.join(' + ');
+  }
+
+  @computed('args.timezone.members.[]}')
+  get timezoneMembers() {
+    return this.args.timezone.members.filter(m => !m.isCurrentUser);
+  }
+
+  @computed('args.timezone.members.[]}')
+  get isCurrentTimezone() {
+    return this.args.timezone.members.find(m => m.isCurrentUser);
+  }
+
+  get currentTimezoneLabel() {
+    if (this.isCurrentTimezone) {
+      return this.timezoneMembers.length === 0 ? 'Current location' : '(Current location)'
+    } else {
+      return '';
+    }
   }
 
   @computed('args.{timezone.members.[],selectedTime}')
@@ -40,31 +49,29 @@ export default class TimezoneComponent extends Component {
   @computed('args.timezone.members.[]')
   get memberNames() {
     const members = this.args.timezone.members.filter(m => m.name !== 'Current location').map(m => m.name);
-    const isCurrentLocation = this.args.timezone.members.find(m => m.name === 'Current location');
-    const currentLocationLabel = isCurrentLocation ? '(Current location)' : '';
     const membersLength = members.length;
     let membersName;
 
     if (membersLength === 0) {
-      return 'Current location';
+      return 'You';
     }
 
     if (membersLength <= 4) {
       const lastMember = members[membersLength - 1];
 
       if (membersLength === 1) {
-        return `${lastMember} ${currentLocationLabel}`;
+        return `${lastMember}`;
       } else {
         membersName = members.slice(0, membersLength - 1).join(", ");
 
-        return `${membersName} and ${lastMember} ${currentLocationLabel}`;
+        return `${membersName} and ${lastMember}`;
       }
     } else {
       const membersLeft = membersLength - 4;
 
       membersName = members.slice(0, 4).join(", ");
 
-      return `${membersName} and ${membersLeft} more ${currentLocationLabel}`;
+      return `${membersName} and ${membersLeft} more`;
     }
   }
 }

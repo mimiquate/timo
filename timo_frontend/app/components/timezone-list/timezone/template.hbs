@@ -1,6 +1,9 @@
 <div class="timezone-list__row">
   <div class="timezone-list__location wrap-ellipsis">
     {{this.location}}
+    {{#if this.isCurrentTimezone}}
+      {{this.currentTimezoneLabel}}
+    {{/if}}
   </div>
   <div class="timezone-list__members wrap-ellipsis">
     {{this.memberNames}}

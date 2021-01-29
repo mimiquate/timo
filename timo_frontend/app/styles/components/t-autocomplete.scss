@@ -1,0 +1,44 @@
+@import '../variables.scss';
+
+.t-autocomplete {
+  margin-top: 40px;
+  position: relative;
+
+  .ember-power-select-typeahead-input {
+    border: none;
+    padding-left: 6px;
+    color: $grey;
+    font-size: 16px;
+
+    &::-webkit-input-placeholder {
+      color: $grey;
+    }
+
+    &::-moz-placeholder {
+      color: $grey;
+    }
+  }
+
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+  .ember-power-select-trigger {
+    padding: 0;
+  }
+
+  &__error {
+    position: absolute;
+    left: 0px;
+    top: 32px;
+    color: $timo-warning;
+    font-size: 12px;
+  }
+
+  &.error {
+    .ember-power-select-trigger {
+      border-bottom: 2px solid $timo-warning;
+    }
+  }
+}
