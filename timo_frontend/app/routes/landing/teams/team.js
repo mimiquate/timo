@@ -1,5 +1,4 @@
 import Route from '@ember/routing/route';
-import moment from 'moment';
 import { hash } from 'rsvp';
 
 export default class LandingTeamsTeamRoute extends Route {
@@ -15,24 +14,5 @@ export default class LandingTeamsTeamRoute extends Route {
       teams,
       team
     })
-  }
-
-  resetController(controller) {
-    const indexReset = controller.currentIndex;
-    const timeNow = moment();
-
-    controller.setProperties({
-      isGrouped: false,
-      selectedBoxIndex: indexReset,
-      selectedTime: timeNow,
-      isShowingCalendarPopover: false,
-      newMemberModal: false,
-      showShareModal: false,
-      showMemberListModal: false,
-      showAboutTeamModal: false,
-      sideNavBarIsOpen: false,
-      showNewTeamModal: false,
-      showToggleablePopover: false
-    });
   }
 }

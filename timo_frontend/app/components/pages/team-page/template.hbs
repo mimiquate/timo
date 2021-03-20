@@ -1,0 +1,91 @@
+{{#animated-if this.showSideNavBar rules=this.rules duration=300}}
+  <SideNavBar
+    @openTeamModal={{this.openTeamModal}}
+    @teams={{@teams}}
+    @goToTeam={{this.goToTeam}}
+    @currentTeamId={{@team.id}}
+    @logOut={{this.logOut}}
+    @showToggleablePopover={{this.showToggleablePopover}}
+    @togglePopover={{this.togglePopover}}
+  />
+{{else}}
+  <div></div>
+{{/animated-if}}
+<div {{did-update this.resetCurrentTime this @team.id this}}>
+  <TeamHeader
+    @teamName={{@team.name}}
+    @members={{this.sortedMembers}}
+    @addMember={{this.newMember}}
+    @openShareModal={{this.openShareModal}}
+    @openMemberListModal={{this.openMemberListModal}}
+    @openAboutTeamModal={{this.openAboutTeamModal}}
+    @openSideNavBar={{this.openSideNavBar}}
+    @showTeamOptions={{this.showTeamOptions}}
+    @openTeamOptions={{this.openTeamOptions}}
+  />
+  <TimezoneList
+    @timezones={{this.timezones}}
+    @scheduleEvent={{this.scheduleEvent}}
+    @currentIndex={{this.currentIndex}}
+    @selectedBoxIndex={{this.selectedBoxIndex}}
+    @selectedTime={{this.selectedTime}}
+    @selectBox={{this.selectBox}}
+    @isGrouped={{this.isGrouped}}
+    @groupTimezones={{this.groupTimezones}}
+    @isShowingCalendarPopover={{this.isShowingCalendarPopover}}
+    @toggleCalendarPopoverBackground={{this.toggleCalendarPopoverBackground}}
+    @members={{this.sortedMembers}}
+  />
+  {{#if this.newMemberModal}}
+    <Modals::Members::Add
+      @addNewMember={{this.saveMember}}
+      @closeModal={{this.closeNewMemberModal}}
+      @searchCity={{this.searchCity}}
+    />
+  {{/if}}
+  {{#if this.showShareModal}}
+    <Modals::Team::Share
+      @closeModal={{this.closeShareModal}}
+      @team={{@team}}
+      @isGrouped={{this.isGrouped}}
+    />
+  {{/if}}
+  {{#if this.showMemberListModal}}
+    <Modals::Members::List
+      @members={{this.sortedMembers}}
+      @closeModal={{this.closeMemberListModal}}
+      @searchCity={{this.searchCity}}
+    />
+  {{/if}}
+  {{#if this.showAboutTeamModal}}
+    <Modals::Team::About
+      @closeModal={{this.closeAboutTeamModal}}
+      @team={{@team}}
+      @deleteTeam={{this.deleteTeam}}
+    />
+  {{/if}}
+  {{#if this.isShowingCalendarPopover}}
+    <EmberWormhole @to="tooltip-background">
+      <div
+        class="showing-tooltip"
+        role="button"
+        {{on "click" (fn this.toggleCalendarPopoverBackground false)}}
+      />
+    </EmberWormhole>
+  {{/if}}
+  {{#if this.showSideNavBar}}
+    <EmberWormhole @to="tooltip-background">
+      <div
+        class="showing-mobile-sidenav-bar"
+        role="button"
+        {{on "click" this.closeSideNavBar}}
+      />
+    </EmberWormhole>
+  {{/if}}
+  {{#if this.showNewTeamModal}}
+    <Modals::Team::Add
+      @closeModal={{this.closeNewTeamModal}}
+      @saveTeam={{this.saveTeam}}
+    />
+  {{/if}}
+</div>

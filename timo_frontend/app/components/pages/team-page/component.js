@@ -1,4 +1,4 @@
-import Controller from '@ember/controller';
+import Component from "@glimmer/component";
 import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { compareMemberTimeZones, createRows } from 'timo-frontend/utils/timezone-functions';
@@ -8,15 +8,17 @@ import moment from 'moment';
 import { isPresent } from '@ember/utils';
 import { inject as service } from '@ember/service';
 import { toLeft, toRight } from 'ember-animated/transitions/move-over';
-import { alias } from '@ember/object/computed';
 import { debounce } from '@ember/runloop';
 import RSVP from 'rsvp';
 import ENV from 'timo-frontend/config/environment';
 import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 
-export default class LandingTeamsTeamController extends Controller {
+export default class MemberPage extends Component {
   @service media;
   @service session;
+  @service store;
+  @service router;
+  @service currentUser;
 
   @tracked newMemberModal = false;
   @tracked showShareModal = false;
@@ -31,8 +33,6 @@ export default class LandingTeamsTeamController extends Controller {
   @tracked showToggleablePopover = false;
   @tracked showTeamOptions = false;
 
-  @alias('model.teams') teams;
-
   rules({ oldItems }) {
     if (oldItems[0]) {
       return toLeft;
@@ -41,9 +41,11 @@ export default class LandingTeamsTeamController extends Controller {
     }
   }
 
-  @computed('model.team.members.{[],@each.id}')
+  @computed('args.team.members.{[],@each.id}')
   get savedMembers() {
-    return this.model.team.members.filterBy('id');
+    const members = this.args.team.members;
+
+    return members.filterBy('id');
   }
 
   @computed('savedMembers.{[],@each.name,@each.city}')
@@ -105,7 +107,7 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   groupTimezones() {
-    this.toggleProperty('isGrouped');
+    this.isGrouped = !this.isGrouped;
     this.selectBox(this.currentIndex, moment());
   }
 
@@ -165,10 +167,12 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   async saveMember(name, city) {
+    const team = this.args.team;
+
     await this.store.createRecord('member', {
       name,
       city,
-      team: this.model.team
+      team
     }).save().then(() => this.newMemberModal = false);
   }
 
@@ -183,7 +187,7 @@ export default class LandingTeamsTeamController extends Controller {
     const googleFormatTimeEnd = rowTime.format('YYYYMMDDTHHmmss');
 
     const url = `${googleFormatTimeStart}/${googleFormatTimeEnd}`;
-    openGoogleCalendarEvent(url, this.model.team.name);
+    openGoogleCalendarEvent(url, this.args.team.name);
   }
 
   @action
@@ -197,9 +201,9 @@ export default class LandingTeamsTeamController extends Controller {
       if (isPresent(teamsArray)) {
         const teamToTransition = teamsArray.map(t => parseInt(t.id));
         const id = Math.min(...teamToTransition);
-        this.transitionToRoute('landing.teams.team', id);
+        this.router.transitionTo('landing.teams.team', id);
       } else {
-        this.transitionToRoute('landing');
+        this.router.transitionTo('landing');
       }
     });
   }
@@ -211,7 +215,7 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   async goToTeam(team) {
-    await this.transitionToRoute('landing.teams.team', team.id);
+    await this.router.transitionTo('landing.teams.team', team.id);
     this.closeSideNavBar();
   }
 
@@ -226,7 +230,7 @@ export default class LandingTeamsTeamController extends Controller {
     await this.currentUser.logOut();
     this.store.unloadAll();
     this.togglePopover();
-    this.transitionToRoute('/login');
+    this.router.transitionTo('/login');
   }
 
   @action
@@ -237,7 +241,7 @@ export default class LandingTeamsTeamController extends Controller {
     });
 
     await team.save();
-    await this.transitionToRoute('landing.teams.team', team.id);
+    await this.router.transitionTo('landing.teams.team', team.id);
 
     if (!this.media.isMobile) {
       const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
@@ -252,6 +256,11 @@ export default class LandingTeamsTeamController extends Controller {
     return new RSVP.Promise((resolve, reject) => {
       debounce(_performSearch, text, this.store, resolve, reject, delay);
     });
+  }
+
+  resetCurrentTime(element, [component]) {
+    component.selectedBoxIndex = component.currentIndex;
+    component.selectedTime = moment();
   }
 }
 
