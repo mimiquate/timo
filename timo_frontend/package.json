@@ -56,7 +56,7 @@
     "ember-modal-dialog": "^3.0.1",
     "ember-moment": "^8.0.0",
     "ember-page-title": "^6.2.2",
-    "ember-power-select": "^4.0.3",
+    "ember-power-select": "^4.1.6",
     "ember-power-select-typeahead": "^0.8.1",
     "ember-qunit": "^5.1.4",
     "ember-resolver": "^8.0.2",
@@ -86,5 +86,6 @@
   },
   "ember": {
     "edition": "octane"
-  }
+  },
+  "dependencies": {}
 }
