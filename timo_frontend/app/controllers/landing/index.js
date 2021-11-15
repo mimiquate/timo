@@ -1,11 +1,12 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+import { action, set } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class LandingIndexController extends Controller {
   @service session;
   @service media;
+  @service router;
 
   @tracked showNewTeamModal = false;
 
@@ -28,7 +29,8 @@ export default class LandingIndexController extends Controller {
 
     await team.save();
     this.closeNewTeamModal();
-    await this.transitionToRoute('landing.teams.team', team.id);
+
+    this.router.transitionTo('landing.teams.team', team.id);
 
     if (!this.media.isMobile) {
       const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
