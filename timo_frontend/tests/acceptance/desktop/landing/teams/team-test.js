@@ -64,7 +64,7 @@ module('Acceptance | Team', function (hooks) {
   });
 
   test('Visiting /teams/team without exisiting username', async function (assert) {
-    await visit('/teams/team');
+    await visit('/teams/team').catch(() => {});
 
     assert.equal(currentURL(), '/login', 'Correctly redirects to login page');
   });

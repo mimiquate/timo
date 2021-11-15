@@ -9,7 +9,7 @@ module('Unit | Route | landing index', function (hooks) {
   setupMirage(hooks);
 
   test('Redirects to landing then login', async function (assert) {
-    await visit('/teams');
+    await visit('/teams').catch(() => {});
 
     assert.equal(currentURL(), '/login');
   });
