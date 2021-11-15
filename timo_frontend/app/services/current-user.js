@@ -20,7 +20,7 @@ export default class CurrentUserService extends Service {
   }
 
   async load() {
-    if (this.session.isAuthenticated) {
+    if ((this.session.isAuthenticated) && !(this.user)) {
       const user = await this.store.queryRecord('user', { me: true })
         .catch(() => {
           this.session.invalidate();

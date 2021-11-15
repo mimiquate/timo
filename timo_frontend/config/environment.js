@@ -93,5 +93,9 @@ module.exports = function (environment) {
     ENV.demoShareId = 'wUtkGcozsZ2p'
   }
 
+  ENV['ember-simple-auth'] = {
+    routeAfterAuthentication: 'landing',
+  };
+
   return ENV;
 };

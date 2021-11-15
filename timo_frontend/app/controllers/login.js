@@ -41,8 +41,6 @@ export default class LoginController extends Controller {
 
     if (changeset.isValid) {
       await this.session.authenticate('authenticator:credentials', username, password)
-        .then(() => this.currentUser.load())
-        .then(() => this.transitionToRoute('landing'))
         .catch((error) => {
           // Defensive code to ignore TransitionAborted error
           if (error.errors) {
