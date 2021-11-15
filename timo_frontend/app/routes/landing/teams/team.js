@@ -18,13 +18,13 @@ export default class LandingTeamsTeamRoute extends Route {
   }
 
   resetController(controller) {
-    const indexReset = controller.currentIndex;
-    const timeNow = moment();
+    const selectedBoxIndex = controller.currentIndex;
+    const selectedTime = moment();
 
     controller.setProperties({
       isGrouped: false,
-      selectedBoxIndex: indexReset,
-      selectedTime: timeNow,
+      selectedBoxIndex,
+      selectedTime,
       isShowingCalendarPopover: false,
       newMemberModal: false,
       showShareModal: false,
