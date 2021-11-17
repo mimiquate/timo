@@ -17,6 +17,7 @@ import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 export default class LandingTeamsTeamController extends Controller {
   @service media;
   @service session;
+  @service currentUser;
 
   @tracked newMemberModal = false;
   @tracked showShareModal = false;
