@@ -44,6 +44,6 @@ export default class LandingIndexController extends Controller {
     this.session.invalidate();
     await this.currentUser.logOut();
     this.store.unloadAll();
-    this.transitionToRoute('/login');
+    this.router.transitionTo('/login');
   }
 }

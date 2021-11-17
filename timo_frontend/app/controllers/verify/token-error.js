@@ -5,14 +5,15 @@ import { action } from '@ember/object';
 export default class TokenErrorController extends Controller {
   @service session;
   @service media;
+  @service router;
 
   @action
   transitionToLogin() {
-    this.transitionToRoute('/login');
+    this.router.transitionTo('/login');
   }
 
   @action
   transitionToSignUp() {
-    this.transitionToRoute('/sign-up');
+    this.router.transitionTo('/sign-up');
   }
 }

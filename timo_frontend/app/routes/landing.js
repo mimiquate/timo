@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 export default class LandingRoute extends Route.extend(AuthenticatedRouteMixin) {
   @service session;
   @service currentUser;
+  @service router;
 
   async beforeModel(transition) {
     this.session.requireAuthentication(transition, 'login');
@@ -20,7 +21,7 @@ export default class LandingRoute extends Route.extend(AuthenticatedRouteMixin) 
       const teamToTransition = model.toArray().map(t => parseInt(t.id));
       const id = Math.min(...teamToTransition);
 
-      this.transitionTo(`/teams/${id}`);
+      this.router.transitionTo(`/teams/${id}`);
     }
   }
 

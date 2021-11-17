@@ -10,6 +10,7 @@ export default class LandingController extends Controller {
   @service router;
   @service media;
   @service currentUser;
+  @service router;
 
   @tracked showToggleablePopover = false;
   @tracked showNewTeamModal = false;
@@ -39,12 +40,12 @@ export default class LandingController extends Controller {
     await this.currentUser.logOut();
     this.store.unloadAll();
     this.togglePopover();
-    this.transitionToRoute('/login');
+    this.router.transitionTo('/login');
   }
 
   @action
   async goToTeam(team) {
-    await this.transitionToRoute('landing.teams.team', team.id);
+    await this.router.transitionTo('landing.teams.team', team.id);
   }
 
   @action
@@ -60,7 +61,7 @@ export default class LandingController extends Controller {
     });
 
     await team.save();
-    await this.transitionToRoute('landing.teams.team', team.id);
+    await this.router.transitionTo('landing.teams.team', team.id);
 
     const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
     teamList.scrollTop = teamList.scrollHeight;
