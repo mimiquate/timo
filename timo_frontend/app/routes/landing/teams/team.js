@@ -1,8 +1,11 @@
 import Route from '@ember/routing/route';
 import moment from 'moment';
 import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
 
 export default class LandingTeamsTeamRoute extends Route {
+  @service store;
+
   model(params) {
     const teams = this.modelFor('landing');
     const team = this.store.findRecord(

@@ -6,6 +6,7 @@ export default class LandingRoute extends Route.extend(AuthenticatedRouteMixin) 
   @service session;
   @service currentUser;
   @service router;
+  @service store;
 
   async beforeModel(transition) {
     this.session.requireAuthentication(transition, 'login');

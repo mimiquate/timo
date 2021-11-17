@@ -8,6 +8,7 @@ export default class LandingIndexController extends Controller {
   @service media;
   @service router;
   @service currentUser;
+  @service store;
 
   @tracked showNewTeamModal = false;
 

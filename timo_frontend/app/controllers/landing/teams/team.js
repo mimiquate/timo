@@ -19,6 +19,7 @@ export default class LandingTeamsTeamController extends Controller {
   @service session;
   @service currentUser;
   @service router;
+  @service store;
 
   @tracked newMemberModal = false;
   @tracked showShareModal = false;

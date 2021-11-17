@@ -11,6 +11,7 @@ export default class LandingController extends Controller {
   @service media;
   @service currentUser;
   @service router;
+  @service store;
 
   @tracked showToggleablePopover = false;
   @tracked showNewTeamModal = false;
