@@ -57,7 +57,7 @@
     "ember-moment": "^8.0.0",
     "ember-page-title": "^6.2.2",
     "ember-power-select": "^4.1.6",
-    "ember-power-select-typeahead": "https://github.com/kexposito/ember-power-select-typeahead",
+    "ember-power-select-typeahead": "kexposito/ember-power-select-typeahead#master",
     "ember-qunit": "^5.1.4",
     "ember-resolver": "^8.0.2",
     "ember-responsive": "^4.0.1",
