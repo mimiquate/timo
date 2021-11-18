@@ -89,7 +89,7 @@
   },
   "dependencies": {},
   "resolutions": {
-    "ember-basic-dropdown": "3.0.19",
+    "ember-basic-dropdown": "3.0.21",
     "ember-source": "3.28.1",
     "@glimmer/tracking": "1.0.4"
   }
