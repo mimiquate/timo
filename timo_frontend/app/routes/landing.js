@@ -1,8 +1,7 @@
 import Route from '@ember/routing/route';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import { inject as service } from '@ember/service';
 
-export default class LandingRoute extends Route.extend(AuthenticatedRouteMixin) {
+export default class LandingRoute extends Route {
   @service session;
   @service currentUser;
   @service router;
