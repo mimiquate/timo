@@ -23,6 +23,7 @@ jobs:
         with:
           otp-version: '22.2.1'
           elixir-version: '1.9.4'
+          experimental-otp: true
 
       - name: Get phoenix dependencies
         working-directory: ./timo_backend
@@ -49,13 +50,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Node.js 10.x
+      - name: Setup Node.js 12.x
         uses: actions/setup-node@v1
         with:
-          node-version: '10.x'
+          node-version: '12.x'
 
       - name: Install ember
-        run: npm install -g ember-cli@3.16.0
+        run: npm install -g ember-cli@3.28.3
 
       - name: Yarn dependencies
         working-directory: ./timo_frontend
@@ -92,13 +93,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Node.js 10.x
+      - name: Setup Node.js 12.x
         uses: actions/setup-node@v1
         with:
-          node-version: '10.x'
+          node-version: '12.x'
 
       - name: Install ember
-        run: npm install -g ember-cli@3.16.0
+        run: npm install -g ember-cli@3.28.3
 
       - name: Yarn dependencies
         working-directory: ./timo_frontend

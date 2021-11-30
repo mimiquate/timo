@@ -5,6 +5,7 @@ import { isEmpty } from '@ember/utils';
 export default class ApplicationRoute extends Route {
   @service metrics
   @service router
+  @service currentUser;
 
   constructor() {
     super(...arguments);

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'timo-frontend',
     environment,
@@ -13,8 +13,8 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     moment: {
@@ -92,6 +92,10 @@ module.exports = function(environment) {
 
     ENV.demoShareId = 'wUtkGcozsZ2p'
   }
+
+  ENV['ember-simple-auth'] = {
+    routeAfterAuthentication: 'landing',
+  };
 
   return ENV;
 };

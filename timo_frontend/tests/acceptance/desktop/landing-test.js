@@ -9,8 +9,8 @@ module('Acceptance | Landing', function (hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
 
-  test('Visiting / (landing) without exisiting username', async function (assert) {
-    await visit('/');
+  test('Visiting / (landing) without an existing username', async function (assert) {
+    await visit("/").catch(() => {});
 
     assert.equal(currentURL(), '/login', 'Correctly redirects to login page');
   });
@@ -20,7 +20,7 @@ module('Acceptance | Landing', function (hooks) {
 
     setSession.call(this, user);
 
-    await visit('/');
+    await visit("/").catch(() => {});
 
     assert.equal(currentURL(), '/', 'Correctly visits landing page');
     assert.dom('[data-test=current-user-span]').hasText('juan', 'Correct current user');
@@ -39,7 +39,7 @@ module('Acceptance | Landing', function (hooks) {
 
     setSession.call(this, user);
 
-    await visit('/');
+    await visit("/").catch(() => {});
     const teamButtons = findAll('.team-list__button');
     await click(teamButtons[0]);
 
@@ -54,7 +54,7 @@ module('Acceptance | Landing', function (hooks) {
 
     setSession.call(this, user);
 
-    await visit('/');
+    await visit("/").catch(() => {});
     await click(find('#user-name'));
 
     assertTooltipRendered(assert);
@@ -64,7 +64,7 @@ module('Acceptance | Landing', function (hooks) {
 
     assert.equal(currentURL(), `/login`, 'Redirects to login page');
 
-    await visit('/');
+    await visit("/").catch(() => {});
 
     assert.equal(currentURL(), `/login`, 'Stays on login page');
   });

@@ -9,6 +9,7 @@ import { showErrors, cleanErrors } from 'timo-frontend/utils/errors-handler'
 
 export default class SignUpController extends Controller {
   @service media;
+  @service store;
 
   @tracked username = '';
   @tracked email = '';

@@ -6,6 +6,9 @@ import { tracked } from '@glimmer/tracking';
 export default class LandingIndexController extends Controller {
   @service session;
   @service media;
+  @service router;
+  @service currentUser;
+  @service store;
 
   @tracked showNewTeamModal = false;
 
@@ -28,7 +31,8 @@ export default class LandingIndexController extends Controller {
 
     await team.save();
     this.closeNewTeamModal();
-    await this.transitionToRoute('landing.teams.team', team.id);
+
+    this.router.transitionTo('landing.teams.team', team.id);
 
     if (!this.media.isMobile) {
       const teamList = document.getElementsByClassName('sidenavbar__content').item(0);
@@ -41,6 +45,6 @@ export default class LandingIndexController extends Controller {
     this.session.invalidate();
     await this.currentUser.logOut();
     this.store.unloadAll();
-    this.transitionToRoute('/login');
+    this.router.transitionTo('/login');
   }
 }

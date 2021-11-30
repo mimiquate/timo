@@ -1,8 +1,12 @@
 import Route from '@ember/routing/route';
-import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-route-mixin';
+import { inject as service } from '@ember/service';
 
-export default class SignUpRoute extends Route.extend(UnauthenticatedRouteMixin) {
-  routeIfAlreadyAuthenticated = 'landing';
+export default class SignUpRoute extends Route {
+  @service session;
+
+  beforeModel(transition) {
+    this.session.prohibitAuthentication('landing');
+  }
 
   resetController(controller) {
     controller.setProperties({

@@ -17,6 +17,9 @@ import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 export default class LandingTeamsTeamController extends Controller {
   @service media;
   @service session;
+  @service currentUser;
+  @service router;
+  @service store;
 
   @tracked newMemberModal = false;
   @tracked showShareModal = false;
@@ -197,9 +200,9 @@ export default class LandingTeamsTeamController extends Controller {
       if (isPresent(teamsArray)) {
         const teamToTransition = teamsArray.map(t => parseInt(t.id));
         const id = Math.min(...teamToTransition);
-        this.transitionToRoute('landing.teams.team', id);
+        this.router.transitionTo('landing.teams.team', id);
       } else {
-        this.transitionToRoute('landing');
+        this.router.transitionTo('landing');
       }
     });
   }
@@ -211,7 +214,7 @@ export default class LandingTeamsTeamController extends Controller {
 
   @action
   async goToTeam(team) {
-    await this.transitionToRoute('landing.teams.team', team.id);
+    await this.router.transitionTo('landing.teams.team', team.id);
     this.closeSideNavBar();
   }
 
@@ -226,7 +229,7 @@ export default class LandingTeamsTeamController extends Controller {
     await this.currentUser.logOut();
     this.store.unloadAll();
     this.togglePopover();
-    this.transitionToRoute('/login');
+    this.router.transitionTo('/login');
   }
 
   @action
@@ -237,7 +240,7 @@ export default class LandingTeamsTeamController extends Controller {
     });
 
     await team.save();
-    await this.transitionToRoute('landing.teams.team', team.id);
+    await this.router.transitionTo('landing.teams.team', team.id);
 
     if (!this.media.isMobile) {
       const teamList = document.getElementsByClassName('sidenavbar__content').item(0);

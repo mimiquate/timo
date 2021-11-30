@@ -3,7 +3,7 @@
   type={{this.buttonType}}
   class="t-button {{@color}} {{@class}} {{if @inverted 'inverted'}}"
   id={{@id}}
-  {{on "click" @onClick}}
+  {{on "click" this.onClick}}
 >
   {{#if (has-block)}}
     {{yield}}

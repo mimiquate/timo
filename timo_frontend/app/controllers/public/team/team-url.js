@@ -10,6 +10,7 @@ import { splitTimezone } from 'timo-frontend/utils/timezone-functions';
 
 export default class PublicTeamTeamUrlController extends Controller {
   @service media;
+  @service router;
 
   @tracked selectedBoxIndex = this.currentIndex;
   @tracked selectedTime = moment();
@@ -74,13 +75,13 @@ export default class PublicTeamTeamUrlController extends Controller {
   @action
   transitionToLogin() {
     this.showAccountOptions = false;
-    this.transitionToRoute('/login');
+    this.router.transitionTo('/login');
   }
 
   @action
   transitionToSignUp() {
     this.showAccountOptions = false;
-    this.transitionToRoute('/sign-up');
+    this.router.transitionTo('/sign-up');
   }
 
   @action

@@ -1,8 +1,11 @@
 import Route from '@ember/routing/route';
 import config from 'timo-frontend/config/environment';
 import fetch from 'fetch';
+import { inject as service } from '@ember/service';
 
 export default class VerifyTokenRoute extends Route {
+  @service router;
+
   async beforeModel(transition) {
     super.beforeModel(...arguments);
     let params = transition.to.params;
@@ -25,6 +28,6 @@ export default class VerifyTokenRoute extends Route {
     }
 
     transition.abort();
-    this.transitionTo('login');
+    this.router.transitionTo('login');
   }
 }

@@ -1,8 +1,11 @@
 import Route from '@ember/routing/route';
 import moment from 'moment';
 import { hash } from 'rsvp';
+import { inject as service } from '@ember/service';
 
 export default class LandingTeamsTeamRoute extends Route {
+  @service store;
+
   model(params) {
     const teams = this.modelFor('landing');
     const team = this.store.findRecord(
@@ -18,13 +21,13 @@ export default class LandingTeamsTeamRoute extends Route {
   }
 
   resetController(controller) {
-    const indexReset = controller.currentIndex;
-    const timeNow = moment();
+    const selectedBoxIndex = controller.currentIndex;
+    const selectedTime = moment();
 
     controller.setProperties({
       isGrouped: false,
-      selectedBoxIndex: indexReset,
-      selectedTime: timeNow,
+      selectedBoxIndex,
+      selectedTime,
       isShowingCalendarPopover: false,
       newMemberModal: false,
       showShareModal: false,

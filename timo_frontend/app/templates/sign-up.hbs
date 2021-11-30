@@ -51,14 +51,13 @@
         <TButton
           @buttonType="submit"
           @class="sign-up-page__form-button"
-          @onClick={{this.signUp}}
           @label="Sign up"
           @color="green"
         />
         <LinkTo
-          @route="login"
+          class="sign-up-page__login-label"
           data-test="login-link"
-          @class="sign-up-page__login-label"
+          @route="login"
         >
           Already have an account? Log in
         </LinkTo>
