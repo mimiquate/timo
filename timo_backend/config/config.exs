@@ -41,6 +41,15 @@ config :sentry,
   included_environments: [:prod],
   environment_name: Mix.env()
 
+config :timo, Timo.Slack,
+  client_id: System.get_env("CLIENT_ID"),
+  client_secret: System.get_env("CLIENT_SECRET")
+
+config :timo, TimoWeb.Plugs.SlackVerify,
+  slack_signing_secret: System.get_env("SLACK_SIGNING_SECRET")
+
+config :timo, Timo.Slack.Encrypt, encrypt_secret_key: System.get_env("ENCRYPT_SECRET_KEY")
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

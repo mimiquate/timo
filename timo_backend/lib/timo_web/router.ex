@@ -19,6 +19,11 @@ defmodule TimoWeb.Router do
     post "/session", SessionController, :create
   end
 
+  scope "/slack", TimoWeb do
+    get "/auth", SlackController, :auth
+    post "/interactions", SlackController, :handle_request
+  end
+
   if Mix.env() == :dev do
     forward "/sent_emails", Bamboo.SentEmailViewerPlug
   end

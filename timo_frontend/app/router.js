@@ -22,4 +22,5 @@ Router.map(function () {
   this.route('verify', function () {
     this.route('token', { path: ':token' });
   });
+  this.route('dynamic-team');
 });
