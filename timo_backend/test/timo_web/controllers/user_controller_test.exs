@@ -1,5 +1,4 @@
 defmodule TimoWeb.UserControllerTest do
-  import Plug.Test
   use TimoWeb.ConnCase
 
   @create_attrs %{username: "some username", password: "some_password", email: "email@timo"}

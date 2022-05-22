@@ -1,5 +1,4 @@
 defmodule TimoWeb.TeamControllerTest do
-  import Plug.Test
   use TimoWeb.ConnCase
 
   alias Timo.API

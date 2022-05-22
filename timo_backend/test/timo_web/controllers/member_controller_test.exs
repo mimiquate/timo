@@ -1,6 +1,5 @@
 defmodule TimoWeb.MemberControllerTest do
   use TimoWeb.ConnCase
-  import Plug.Test
 
   alias Timo.API
   alias Timo.API.Member
