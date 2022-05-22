@@ -5,7 +5,7 @@ defmodule Timo.MixProject do
     [
       app: :timo,
       version: "0.1.0",
-      elixir: "~> 1.7",
+      elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -33,21 +33,21 @@ defmodule Timo.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.0"},
+      {:phoenix, "~> 1.6.9"},
       {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 2.11"},
-      {:ecto_sql, "~> 3.4"},
+      {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
-      {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.3"},
+      {:gettext, "~> 0.18"},
+      {:jason, "~> 1.2"},
+      {:plug_cowboy, "~> 2.5"},
       {:ja_serializer, "~> 0.15.0"},
       {:poison, "~> 3.1"},
       {:tzdata, "~> 1.0.3"},
       {:pbkdf2_elixir, "~> 1.0"},
       {:cors_plug, "~> 2.0"},
-      {:bamboo, "~> 1.4"},
+      {:bamboo, "~> 1.7"},
       {:sentry, "8.0.0"}
     ]
   end
