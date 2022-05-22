@@ -15,8 +15,6 @@ config :timo, TimoWeb.Endpoint,
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-config :timo, frontend_url: System.get_env("FRONTEND_URL")
-
 # Do not print debug messages in production
 config :logger, level: :info
 
@@ -67,10 +65,6 @@ config :timo, Timo.Mailer,
   hackney_opts: [
     recv_timeout: :timer.minutes(1)
   ]
-
-config :timo, TimoWeb.Endpoint,
-  http: [:inet6, port: String.to_integer(System.get_env("PORT") || "4000")],
-  cookie_signing_salt: System.get_env("COOKIE_SIGNING_SALT")
 
 config :timo, Timo.Token, account_verification_salt: System.get_env("ACCOUNT_VERIFICATION_SALT")
 

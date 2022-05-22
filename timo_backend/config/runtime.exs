@@ -31,7 +31,6 @@ if config_env() == :prod do
   maybe_ipv6 = if System.get_env("ECTO_IPV6"), do: [:inet6], else: []
 
   config :timo, Timo.Repo,
-  ssl: true,
   url: database_url,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   socket_options: maybe_ipv6
@@ -41,7 +40,7 @@ if config_env() == :prod do
   # want to use a different value for prod and you most likely don't want
   # to check this value into version control, so we use an environment
   # variable instead.
-  _secret_key_base =
+  secret_key_base =
     System.get_env("SECRET_KEY_BASE") ||
       raise """
       environment variable SECRET_KEY_BASE is missing.
@@ -50,6 +49,7 @@ if config_env() == :prod do
 
   host = System.get_env("PHX_HOST") || "timo-backend.mimiquate.xyz"
   port = String.to_integer(System.get_env("PORT") || "4000")
+  cookie_signing_salt = System.get_env("COOKIE_SIGNING_SALT") || "abc"
 
    config :timo, TimoWeb.Endpoint,
    url: [host: host, port: 443, scheme: "https"],
@@ -61,7 +61,10 @@ if config_env() == :prod do
      ip: {0, 0, 0, 0, 0, 0, 0, 0},
      port: port
    ],
-   secret_key_base: secret_key_base
+   secret_key_base: secret_key_base,
+   cookie_signing_salt: cookie_signing_salt
+
+  config :timo, frontend_url: System.get_env("FRONTEND_URL")
 
   # ## Configuring the mailer
   #

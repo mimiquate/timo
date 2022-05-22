@@ -33,6 +33,7 @@ config :mime, :types, %{
 
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
+config :timo, frontend_url: "http://localhost:4200"
 config :timo, Timo.Token, account_verification_salt: "timoapp email account verification salt"
 
 # Configures the mailer
