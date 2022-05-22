@@ -17,12 +17,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Setup elixir
         uses: actions/setup-elixir@v1
         with:
-          otp-version: '22.2.1'
-          elixir-version: '1.9.4'
+          otp-version: '25.0'
+          elixir-version: '1.13.4'
           experimental-otp: true
 
       - name: Get phoenix dependencies
