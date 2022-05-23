@@ -64,7 +64,17 @@ if config_env() == :prod do
     secret_key_base: secret_key_base,
     cookie_signing_salt: cookie_signing_salt
 
-  config :timo, frontend_url: System.get_env("FRONTEND_URL")
+  config :timo, Timo.Token, account_verification_salt: System.get_env("ACCOUNT_VERIFICATION_SALT")
+
+  config :timo, Timo.Mailer,
+    adapter: Bamboo.SendGridAdapter,
+    api_key: System.get_env("SENDGRID_API_KEY"),
+    hackney_opts: [
+      recv_timeout: :timer.minutes(1)
+    ]
+
+  frontend_url = System.get_env("FRONTEND_URL")
+  config :timo, frontend_url: frontend_url
 
   # ## Configuring the mailer
   #

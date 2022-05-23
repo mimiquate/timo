@@ -27,8 +27,6 @@ config :timo, TimoWeb.Endpoint,
   secret_key_base: "RpRII5vT7qZm1Pk5hhaaZ8gx1x3twM1h4Zui2fVlapMp3be3TwPfy8LSdUZtNATU",
   watchers: []
 
-config :timo, frontend_url: "http://localhost:4200"
-
 config :timo, Timo.Mailer, adapter: Bamboo.LocalAdapter
 
 # ## SSL Support

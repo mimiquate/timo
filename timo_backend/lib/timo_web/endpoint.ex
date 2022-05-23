@@ -47,8 +47,12 @@ defmodule TimoWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   plug Plug.Session, @session_options
 
-  {:ok, frontend_url} = Application.fetch_env(:timo, :frontend_url)
-  plug CORSPlug, origin: [frontend_url]
+  plug CORSPlug, origin: &TimoWeb.Endpoint.cors/0
 
   plug TimoWeb.Router
+
+  def cors() do
+    {:ok, frontend_url} = Application.fetch_env(:timo, :frontend_url)
+    frontend_url
+  end
 end

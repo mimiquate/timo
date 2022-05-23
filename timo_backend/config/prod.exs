@@ -59,15 +59,6 @@ config :logger, level: :info
 # although such is generally not recommended and you have to
 # remember to add this file to your .gitignore.
 
-config :timo, Timo.Mailer,
-  adapter: Bamboo.SendGridAdapter,
-  api_key: System.get_env("SENDGRID_API_KEY"),
-  hackney_opts: [
-    recv_timeout: :timer.minutes(1)
-  ]
-
-config :timo, Timo.Token, account_verification_salt: System.get_env("ACCOUNT_VERIFICATION_SALT")
-
 # ## Using releases (Elixir v1.9+)
 #
 # If you are doing OTP releases, you need to instruct Phoenix
