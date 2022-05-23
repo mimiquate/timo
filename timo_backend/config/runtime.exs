@@ -47,7 +47,7 @@ if config_env() == :prod do
           You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "timo-backend.mimiquate.xyz"
+  host = System.get_env("PHX_HOST") || "timo-fly.mimiquate.xyz"
   port = String.to_integer(System.get_env("PORT") || "4000")
   cookie_signing_salt = System.get_env("COOKIE_SIGNING_SALT") || "abc"
 
