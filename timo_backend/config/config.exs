@@ -5,7 +5,7 @@
 # is restricted to this project.
 
 # General application configuration
-use Mix.Config
+import Config
 
 config :timo,
   ecto_repos: [Timo.Repo]
@@ -13,9 +13,8 @@ config :timo,
 # Configures the endpoint
 config :timo, TimoWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "RpRII5vT7qZm1Pk5hhaaZ8gx1x3twM1h4Zui2fVlapMp3be3TwPfy8LSdUZtNATU",
-  render_errors: [view: TimoWeb.ErrorView, accepts: ~w(json json-api)],
-  pubsub: [name: Timo.PubSub, adapter: Phoenix.PubSub.PG2],
+  render_errors: [view: TimoWeb.ErrorView, accepts: ~w(json json-api), layout: false],
+  pubsub_server: Timo.PubSub,
   cookie_signing_salt: "iKpGBV7H"
 
 config :logger,
@@ -34,13 +33,26 @@ config :mime, :types, %{
 
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 
+config :timo, frontend_url: "http://localhost:4200"
 config :timo, Timo.Token, account_verification_salt: "timoapp email account verification salt"
+
+# Configures the mailer
+#
+# By default it uses the "Local" adapter which stores the emails
+# locally. You can see the emails in your browser, at "/dev/mailbox".
+#
+# For production it's recommended to configure a different adapter
+# at the `config/runtime.exs`.
+# config :timo, Timo.Mailer, adapter: Swoosh.Adapters.Local
+
+# Swoosh API client is needed for adapters other than SMTP.
+# config :swoosh, :api_client, false
 
 config :sentry,
   dsn: System.get_env("SENTRY_DNS") || "https://public_key@app.getsentry.com/1",
   included_environments: [:prod],
-  environment_name: Mix.env()
+  environment_name: config_env()
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env()}.exs"
+import_config "#{config_env()}.exs"

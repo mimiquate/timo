@@ -1,9 +1,17 @@
 defmodule TimoWeb.Endpoint do
   use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :timo
+  # The session will be stored in the cookie and signed,
+  # this means its contents can be read but not tampered with.
+  # Set :encryption_salt if you would also like to encrypt it.
+  @session_options [
+    store: :cookie,
+    key: "_timo_key",
+    signing_salt: Application.get_env(:timo, __MODULE__)[:cookie_signing_salt]
+  ]
 
   socket "/socket", TimoWeb.UserSocket,
-    websocket: true,
+    websocket: [connect_info: [session: @session_options]],
     longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
@@ -37,10 +45,7 @@ defmodule TimoWeb.Endpoint do
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
-  plug Plug.Session,
-    store: :cookie,
-    key: "_timo_key",
-    signing_salt: Application.get_env(:timo, __MODULE__)[:cookie_signing_salt]
+  plug Plug.Session, @session_options
 
   {:ok, frontend_url} = Application.fetch_env(:timo, :frontend_url)
   plug CORSPlug, origin: [frontend_url]

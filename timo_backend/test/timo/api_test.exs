@@ -172,7 +172,7 @@ defmodule Timo.APITest do
       assert {:error, %Ecto.Changeset{}} = API.update_team(team, @invalid_team_attrs)
       fetched_team = Repo.get(Team, team.id)
 
-      assert fetched_team == team
+      assert fetched_team.id == team.id
     end
 
     test "get_team_by_share_id/1 with public team return team" do
@@ -180,7 +180,7 @@ defmodule Timo.APITest do
       team = team_factory(owner, %{public: true})
 
       assert {:ok, %Team{} = fetched_team} = API.get_team_by_share_id(team.share_id)
-      assert fetched_team = team
+      assert fetched_team.id == team.id
     end
 
     test "get_team_by_share_id/1 with private team return nil" do

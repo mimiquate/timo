@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
@@ -11,11 +11,9 @@ use Mix.Config
 # before starting your production server.
 config :timo, TimoWeb.Endpoint,
   http: [port: {:system, "PORT"}],
-  url: [scheme: "https", host: "timo-backend.mimiquate.xyz", port: 443],
+  url: [scheme: "https", host: "timo-fly.mimiquate.xyz", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json"
-
-config :timo, frontend_url: System.get_env("FRONTEND_URL")
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -26,10 +24,9 @@ config :logger, level: :info
 # to the previous section and set your `:url` port to 443:
 #
 #     config :timo, TimoWeb.Endpoint,
-#       ...
+#       ...,
 #       url: [host: "example.com", port: 443],
 #       https: [
-#         :inet6,
 #         port: 443,
 #         cipher_suite: :strong,
 #         keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
@@ -62,36 +59,12 @@ config :logger, level: :info
 # although such is generally not recommended and you have to
 # remember to add this file to your .gitignore.
 
-database_url =
-  System.get_env("DATABASE_URL") ||
-    raise """
-    environment variable DATABASE_URL is missing.
-    For example: ecto://USER:PASS@HOST/DATABASE
-    """
-
-config :timo, Timo.Repo,
-  ssl: true,
-  url: database_url,
-  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
-
-secret_key_base =
-  System.get_env("SECRET_KEY_BASE") ||
-    raise """
-    environment variable SECRET_KEY_BASE is missing.
-    You can generate one by calling: mix phx.gen.secret
-    """
-
 config :timo, Timo.Mailer,
   adapter: Bamboo.SendGridAdapter,
   api_key: System.get_env("SENDGRID_API_KEY"),
   hackney_opts: [
     recv_timeout: :timer.minutes(1)
   ]
-
-config :timo, TimoWeb.Endpoint,
-  http: [:inet6, port: String.to_integer(System.get_env("PORT") || "4000")],
-  secret_key_base: secret_key_base,
-  cookie_signing_salt: System.get_env("COOKIE_SIGNING_SALT")
 
 config :timo, Timo.Token, account_verification_salt: System.get_env("ACCOUNT_VERIFICATION_SALT")
 

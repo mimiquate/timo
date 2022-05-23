@@ -88,7 +88,7 @@ module.exports = function (environment) {
 
   if (environment === 'production') {
     // here you can enable a production-specific feature
-    ENV.serverHost = 'https://timo-backend.mimiquate.xyz';
+    ENV.serverHost = 'https://timo-fly.mimiquate.xyz';
 
     ENV.demoShareId = 'wUtkGcozsZ2p'
   }

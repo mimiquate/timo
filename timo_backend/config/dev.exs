@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Configure your database
 config :timo, Timo.Repo,
@@ -6,6 +6,7 @@ config :timo, Timo.Repo,
   password: "postgres",
   database: "timo_dev",
   hostname: "localhost",
+  stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -14,12 +15,16 @@ config :timo, Timo.Repo,
 #
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
-# with webpack to recompile .js and .css sources.
+# withesbuild to bundle .js and .css sources.
 config :timo, TimoWeb.Endpoint,
-  http: [port: 4000],
+  # Binding to loopback ipv4 address prevents access from other machines.
+  # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
+  http: [ip: {127, 0, 0, 1}, port: 4000],
   debug_errors: false,
   code_reloader: true,
   check_origin: false,
+  debug_errors: true,
+  secret_key_base: "RpRII5vT7qZm1Pk5hhaaZ8gx1x3twM1h4Zui2fVlapMp3be3TwPfy8LSdUZtNATU",
   watchers: []
 
 config :timo, frontend_url: "http://localhost:4200"
