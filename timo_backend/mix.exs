@@ -48,7 +48,15 @@ defmodule Timo.MixProject do
       {:pbkdf2_elixir, "~> 1.0"},
       {:cors_plug, "~> 2.0"},
       {:bamboo, "~> 1.7"},
-      {:sentry, "8.0.0"}
+      {:sentry, "8.0.0"},
+      {:certifi, "~> 2.8"},
+
+      # Telemetry
+      {:opentelemetry, "~> 1.0"},
+      {:opentelemetry_api, "~> 1.0"},
+      {:opentelemetry_ecto, "~> 1.0"},
+      {:opentelemetry_phoenix, "~> 1.0"},
+      {:opentelemetry_exporter, "~> 1.0", only: :prod}
     ]
   end
 

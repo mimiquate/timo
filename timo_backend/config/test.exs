@@ -22,3 +22,14 @@ config :logger, level: :warn
 config :pbkdf2_elixir, :rounds, 1
 
 config :timo, Timo.Mailer, adapter: Bamboo.TestAdapter
+
+if System.get_env("DEBUG_OTEL") == "true" do
+  config :opentelemetry, :processors,
+    otel_batch_processor: %{
+      exporter: {:otel_exporter_stdout, []}
+    }
+else
+  config :opentelemetry,
+    :tracer,
+    :otel_tracer_noop
+end

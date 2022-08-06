@@ -6,6 +6,9 @@ defmodule Timo.Application do
   use Application
 
   def start(_type, _args) do
+    OpentelemetryPhoenix.setup()
+    OpentelemetryEcto.setup([:timo, :repo])
+
     # List all child processes to be supervised
     children = [
       Timo.Repo,

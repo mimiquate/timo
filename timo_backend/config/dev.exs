@@ -62,3 +62,17 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Turn on logging spans to the console via
+# DEBUG_OTEL=true mix phx.server
+
+if System.get_env("DEBUG_OTEL") == "true" do
+  config :opentelemetry, :processors,
+    otel_batch_processor: %{
+      exporter: {:otel_exporter_stdout, []}
+    }
+else
+  config :opentelemetry,
+    :tracer,
+    :otel_tracer_noop
+end

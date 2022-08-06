@@ -76,6 +76,18 @@ if config_env() == :prod do
   frontend_url = System.get_env("FRONTEND_URL")
   config :timo, frontend_url: frontend_url
 
+  config :opentelemetry,
+    span_processor: :batch,
+    exporter: :otlp
+
+  config :opentelemetry_exporter,
+    otlp_protocol: :http_protobuf,
+    otlp_traces_endpoint: "https://ingest.lightstep.com:443/traces/otlp/v0.9",
+    otlp_compression: :gzip,
+    otlp_headers: [
+      {"lightstep-access-token", System.get_env("LIGHTSTEP_ACCESS_TOKEN")}
+    ]
+
   # ## Configuring the mailer
   #
   # In production you need to configure the mailer to use a different adapter.
