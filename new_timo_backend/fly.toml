@@ -1,0 +1,40 @@
+# fly.toml app configuration file generated for new-timo-backend on 2025-04-03T13:57:56-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'new-timo-backend'
+primary_region = 'mia'
+kill_signal = 'SIGTERM'
+
+[build]
+
+[env]
+  DATABASE_PATH = '/mnt/name/name.db'
+  PHX_HOST = 'new-timo-backend.fly.dev'
+  PORT = '8080'
+
+[[mounts]]
+  source = 'name'
+  destination = '/mnt/name'
+  auto_extend_size_threshold = 80
+  auto_extend_size_increment = '1GB'
+  auto_extend_size_limit = '10GB'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+  [http_service.concurrency]
+    type = 'connections'
+    hard_limit = 1000
+    soft_limit = 1000
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1
