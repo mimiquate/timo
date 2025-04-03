@@ -1,1 +1,44 @@
-/.DS_Store
+.DS_Store
+
+# The directory Mix will write compiled artifacts to.
+/new_timo_backend/_build/
+
+# If you run "mix test --cover", coverage assets end up here.
+/new_timo_backend/cover/
+
+# The directory Mix downloads your dependencies sources to.
+/new_timo_backend/deps/
+
+# Where 3rd-party dependencies like ExDoc output generated docs.
+/new_timo_backend/doc/
+
+# Ignore .fetch files in case you like to edit your project deps locally.
+/new_timo_backend/.fetch
+
+# If the VM crashes, it generates a dump, let's ignore it too.
+/new_timo_backend/erl_crash.dump
+
+# Also ignore archive artifacts (built via "mix archive.build").
+/new_timo_backend/*.ez
+
+# Temporary files, for example, from tests.
+/new_timo_backend/tmp/
+
+# Ignore package tarball (built via "mix hex.build").
+/new_timo_backend/timo-*.tar
+
+# Ignore assets that are produced by build tools.
+/new_timo_backend/priv/static/assets/
+
+# Ignore digested assets cache.
+/new_timo_backend/priv/static/cache_manifest.json
+
+# In case you use Node.js/npm, you want to ignore these.
+/new_timo_backend/npm-debug.log
+/new_timo_backend//assets/node_modules/
+
+# Database files
+/new_timo_backend/*.db
+/new_timo_backend/*.db-*
+
+
