@@ -21,9 +21,11 @@ defmodule TimoWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", TimoWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", TimoWeb do
+    pipe_through :api
+
+    resources "/cities", CityController, only: [:index]
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:timo, :dev_routes) do
