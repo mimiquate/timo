@@ -50,5 +50,14 @@ defmodule TimoWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
+  plug CORSPlug, origin: &TimoWeb.Endpoint.cors/0
+
   plug TimoWeb.Router
+
+
+  def cors() do
+    {:ok, frontend_url} = Application.fetch_env(:timo, :frontend_url)
+    frontend_url
+  end
 end

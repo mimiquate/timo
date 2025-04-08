@@ -11,7 +11,9 @@ defmodule TimoWeb.Router do
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug :accepts, ["json-api"]
+    plug JaSerializer.ContentTypeNegotiation
+    plug JaSerializer.Deserializer
   end
 
   scope "/", TimoWeb do
@@ -25,6 +27,7 @@ defmodule TimoWeb.Router do
     pipe_through :api
 
     resources "/cities", CityController, only: [:index]
+    resources "/users", UserController, only: [:create, :show, :update]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

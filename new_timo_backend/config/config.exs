@@ -22,6 +22,10 @@ config :timo, TimoWeb.Endpoint,
   pubsub_server: Timo.PubSub,
   live_view: [signing_salt: "vSN3Nw0P"]
 
+config :timo, frontend_url: "http://localhost:4200"
+
+config :timo, Timo.Token, account_verification_salt: "timoapp email account verification salt"
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
@@ -59,6 +63,12 @@ config :logger, :default_formatter,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :phoenix, :format_encoders, "json-api": Jason
+
+config :mime, :types, %{
+  "application/vnd.api+json" => ["json-api"]
+}
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

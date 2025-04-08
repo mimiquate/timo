@@ -19,4 +19,22 @@ defmodule Timo.APIFixtures do
 
     city
   end
+
+  @doc """
+  Generate a user.
+  """
+  def user_fixture(attrs \\ %{}) do
+    {:ok, user} =
+      attrs
+      |> Enum.into(%{
+        email: "some email",
+        password: "some password",
+        password_hash: "some password_hash",
+        username: "some username",
+        verified: true
+      })
+      |> Timo.API.create_user()
+
+    user
+  end
 end
