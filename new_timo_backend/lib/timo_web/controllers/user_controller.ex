@@ -25,8 +25,11 @@ defmodule TimoWeb.UserController do
     if !user_id do
       {:error, :unauthorized}
     else
-      {:ok, %User{} = user} = API.get_user(user_id)
-      render(conn, "show.json-api", data: user)
+      %User{} = user = API.get_user(user_id)
+
+      conn
+      |> put_view(TimoWeb.UserJSON)
+      |> render(:show, data: user)
     end
   end
 
