@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for new-timo-backend on 2025-04-03T13:57:56-03:00
+# fly.toml app configuration file generated for timo on 2025-04-08T16:42:53-03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'new-timo-backend'
+app = 'timo'
 primary_region = 'mia'
 kill_signal = 'SIGTERM'
 
@@ -11,7 +11,7 @@ kill_signal = 'SIGTERM'
 
 [env]
   DATABASE_PATH = '/mnt/name/name.db'
-  PHX_HOST = 'new-timo-backend.fly.dev'
+  PHX_HOST = 'timo.fly.dev'
   PORT = '8080'
 
 [[mounts]]

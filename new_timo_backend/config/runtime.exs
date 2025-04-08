@@ -49,6 +49,8 @@ if config_env() == :prod do
 
   config :timo, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
+  config :timo, frontend_url: System.get_env("FRONTEND_URL")
+
   config :timo, TimoWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [
