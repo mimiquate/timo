@@ -7,6 +7,9 @@ defmodule TimoWeb.CityController do
 
   def index(conn, params) do
     cities = API.list_cities(params)
-    render(conn, :index, cities: cities)
+
+    conn
+    |> put_view(TimoWeb.CityJSON)
+    |> render(:index, data: cities)
   end
 end

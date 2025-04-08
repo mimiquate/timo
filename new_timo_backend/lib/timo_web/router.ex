@@ -13,6 +13,7 @@ defmodule TimoWeb.Router do
   pipeline :api do
     plug :accepts, ["json-api"]
     plug :fetch_session
+    plug :fetch_current_user
     plug JaSerializer.ContentTypeNegotiation
     plug JaSerializer.Deserializer
   end
@@ -29,6 +30,9 @@ defmodule TimoWeb.Router do
 
     resources "/cities", CityController, only: [:index]
     resources "/users", UserController, only: [:create, :show, :update]
+    resources "/teams", TeamController, only: [:create, :show, :index, :update, :delete]
+
+    resources "/members", MemberController, only: [:create, :update, :delete]
 
     delete "/logout", SessionController, :logout
     post "/session", SessionController, :create
@@ -48,6 +52,16 @@ defmodule TimoWeb.Router do
 
       live_dashboard "/dashboard", metrics: TimoWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
+    end
+  end
+
+  def fetch_current_user(conn, _opts) do
+    user_id = get_session(conn, "user_id") |> IO.inspect()
+
+    with %Timo.API.User{} = current_user <- Timo.API.get_user(user_id) do
+      assign(conn, :current_user, current_user)
+    else
+      nil -> assign(conn, :current_user, nil)
     end
   end
 end

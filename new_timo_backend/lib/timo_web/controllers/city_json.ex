@@ -1,26 +1,7 @@
 defmodule TimoWeb.CityJSON do
-  alias Timo.API.City
+  use JaSerializer.PhoenixView
 
-  @doc """
-  Renders a list of cities.
-  """
-  def index(%{cities: cities}) do
-    %{data: for(city <- cities, do: data(city))}
-  end
+  def type, do: "city"
 
-  @doc """
-  Renders a single city.
-  """
-  def show(%{city: city}) do
-    %{data: data(city)}
-  end
-
-  defp data(%City{} = city) do
-    %{
-      id: city.id,
-      name: city.name,
-      country: city.country,
-      timezone: city.timezone
-    }
-  end
+  attributes([:name, :country, :timezone])
 end
