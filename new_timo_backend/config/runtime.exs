@@ -51,6 +51,10 @@ if config_env() == :prod do
 
   config :timo, frontend_url: System.get_env("FRONTEND_URL")
 
+  config :timo, Timo.Mailer,
+    adapter: Swoosh.Adapters.SMTP2GO,
+    api_key: System.get_env("SMTP2GO_API_KEY")
+
   config :timo, TimoWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     http: [
