@@ -2,8 +2,6 @@ defmodule TimoWeb.PageController do
   use TimoWeb, :controller
 
   def home(conn, _params) do
-    # The home page is often custom made,
-    # so skip the default app layout.
-    render(conn, :home, layout: false)
+    send_resp(conn, 200, "")
   end
 end

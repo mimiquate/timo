@@ -38,7 +38,7 @@ defmodule TimoWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, formats: [:html, :json, :"json-api"]
+      use Phoenix.Controller, formats: [:json, :"json-api"]
 
       import Plug.Conn
 
