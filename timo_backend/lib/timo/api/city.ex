@@ -7,7 +7,7 @@ defmodule Timo.API.City do
     field :country, :string
     field :timezone, :string
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false
@@ -15,15 +15,5 @@ defmodule Timo.API.City do
     city
     |> cast(attrs, [:name, :country, :timezone])
     |> validate_required([:name, :country, :timezone])
-    |> validate_timezone(:timezone)
-  end
-
-  defp validate_timezone(changeset, :timezone) do
-    validate_change(changeset, :timezone, fn :timezone, timezone ->
-      case Tzdata.zone_exists?(timezone) do
-        true -> []
-        false -> [{:timezone, "Invalid timezone"}]
-      end
-    end)
   end
 end

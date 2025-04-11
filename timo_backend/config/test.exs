@@ -1,35 +1,34 @@
 import Config
 
 # Configure your database
+#
+# The MIX_TEST_PARTITION environment variable can be used
+# to provide built-in test partitioning in CI environment.
+# Run `mix help test` for more information.
 config :timo, Timo.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "timo_test#{System.get_env("MIX_TEST_PARTITION")}",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox,
-  pool_size: 10
+  database: Path.expand("../timo_test.db", __DIR__),
+  pool_size: 5,
+  pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :timo, TimoWeb.Endpoint,
-  http: [port: 4002],
-  secret_key_base: "RpRII5vT7qZm1Pk5hhaaZ8gx1x3twM1h4Zui2fVlapMp3be3TwPfy8LSdUZtNATU",
+  http: [ip: {127, 0, 0, 1}, port: 4002],
+  secret_key_base: "jWWCVDvlXRieGVJOWlHCvXVFaN2o0JCSM3XVL0nootJguB8+vzZePOqVCjHs1fQj",
   server: false
 
+# In test we don't send emails
+config :timo, Timo.Mailer, adapter: Swoosh.Adapters.Test
+
+# Disable swoosh api client as it is only required for production adapters
+config :swoosh, :api_client, false
+
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
-config :pbkdf2_elixir, :rounds, 1
+# Initialize plugs at runtime for faster test compilation
+config :phoenix, :plug_init_mode, :runtime
 
-config :timo, Timo.Mailer, adapter: Bamboo.TestAdapter
-
-if System.get_env("DEBUG_OTEL") == "true" do
-  config :opentelemetry, :processors,
-    otel_batch_processor: %{
-      exporter: {:otel_exporter_stdout, []}
-    }
-else
-  config :opentelemetry,
-    :tracer,
-    :otel_tracer_noop
-end
+# Enable helpful, but potentially expensive runtime checks
+config :phoenix_live_view,
+  enable_expensive_runtime_checks: true

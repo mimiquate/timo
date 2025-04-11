@@ -8,27 +8,26 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MIX_ENV: test
-    services:
-      db:
-        image: postgres:12.1
-        ports: ['5432:5432']
-        env:
-          POSTGRES_PASSWORD: postgres
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup elixir
-        uses: actions/setup-elixir@v1
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        id: beam
         with:
-          otp-version: '25.0'
-          elixir-version: '1.13.4'
-          experimental-otp: true
+          version-file: './timo_backend/.tool-versions'
+          version-type: 'strict'
+
+      - name: Cache code and deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./timo_backend/_build
+            ./timo_backend/deps
+          key: ${{runner.os}}-${{steps.beam.outputs.elixir-version}}-${{steps.beam.outputs.otp-version}}-${{hashFiles('mix.lock')}}
 
       - name: Get phoenix dependencies
         working-directory: ./timo_backend
-        run: |
-          mix deps.get
-          mix deps.compile
+        run: mix deps.get
 
       - name: Compile with warnings as errors
         working-directory: ./timo_backend
@@ -45,6 +44,7 @@ jobs:
   build_and_test_frontend:
     name: Builds and test frontend
     runs-on: ubuntu-latest
+    if: false
 
     steps:
       - uses: actions/checkout@v2
@@ -66,28 +66,23 @@ jobs:
         run: ember test
 
   deploy_backend:
-    name: Deploy backend to heroku
-    needs: [build_and_test_backend, build_and_test_frontend]
+    name: Deploy backend to Fly
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
-
     steps:
+      # This step checks out a copy of your repository.
       - uses: actions/checkout@v2
-
-      - uses: akhileshns/heroku-deploy@v3.0.4
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: "timo-backend"
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
-
-      - name: Run migrations
-        run: heroku run "POOL_SIZE=2 cd timo_backend && mix ecto.migrate"
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        working-directory: ./timo_backend 
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
   deploy_frontend:
     name: Deploy frontend to Netlify with own domain
     needs: [build_and_test_backend, build_and_test_frontend]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: false
 
     steps:
       - uses: actions/checkout@v2

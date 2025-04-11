@@ -3,16 +3,17 @@ defmodule TimoWeb.TeamController do
 
   alias Timo.API
   alias Timo.API.Team
-  alias TimoWeb.Plugs.{SetCurrentUser, AuthenticateCurrentUser}
+  alias TimoWeb.Plugs.EnsureCurrentUser
 
   action_fallback TimoWeb.FallbackController
 
-  plug SetCurrentUser when action in [:create, :show, :index, :update, :delete]
-  plug AuthenticateCurrentUser when action in [:create, :show, :update, :delete]
+  plug EnsureCurrentUser when action in [:create, :update, :delete]
 
   def index(conn, params = %{"filter" => %{"share_id" => share_id}}) do
     with {:ok, %Team{} = team} <- API.get_team_by_share_id(share_id) do
-      render(conn, "index.json-api", data: team, opts: [include: params["include"]])
+      conn
+      |> put_view(TimoWeb.TeamJSON)
+      |> render(:index, data: team, opts: [include: params["include"]])
     else
       _ -> {:error, :not_found}
     end
@@ -25,7 +26,10 @@ defmodule TimoWeb.TeamController do
       {:error, :unauthorized}
     else
       teams = API.list_user_teams(current_user)
-      render(conn, "index.json-api", data: teams)
+
+      conn
+      |> put_view(TimoWeb.TeamJSON)
+      |> render(:index, data: teams)
     end
   end
 
@@ -34,9 +38,10 @@ defmodule TimoWeb.TeamController do
 
     with {:ok, %Team{} = team} <- API.create_team(current_user, team_params) do
       conn
+      |> put_view(TimoWeb.TeamJSON)
       |> put_status(:created)
-      |> put_resp_header("location", Routes.team_path(conn, :show, team))
-      |> render("show.json-api", data: team)
+      |> put_resp_header("location", ~p"/api/teams/#{team}")
+      |> render(:show, data: team)
     end
   end
 
@@ -44,7 +49,9 @@ defmodule TimoWeb.TeamController do
     current_user = conn.assigns.current_user
 
     with {:ok, %Team{} = team} <- API.get_user_team(current_user, id, true) do
-      render(conn, "show.json-api", data: team, opts: [include: params["include"]])
+      conn
+      |> put_view(TimoWeb.TeamJSON)
+      |> render(:show, data: team, opts: [include: params["include"]])
     else
       _ -> {:error, :not_found}
     end
@@ -55,7 +62,9 @@ defmodule TimoWeb.TeamController do
 
     with {:ok, team} <- API.get_user_team(current_user, id),
          {:ok, %Team{} = team} <- API.update_team(team, team_params) do
-      render(conn, "show.json-api", data: team)
+      conn
+      |> put_view(TimoWeb.TeamJSON)
+      |> render(:show, data: team)
     end
   end
 

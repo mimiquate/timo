@@ -1,5 +1,5 @@
 # This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
+# and its dependencies with the aid of the Config module.
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
@@ -8,30 +8,19 @@
 import Config
 
 config :timo,
-  ecto_repos: [Timo.Repo]
+  ecto_repos: [Timo.Repo],
+  generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint
 config :timo, TimoWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: TimoWeb.ErrorView, accepts: ~w(json json-api), layout: false],
+  adapter: Bandit.PhoenixAdapter,
+  render_errors: [
+    formats: [html: TimoWeb.ErrorHTML, json: TimoWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: Timo.PubSub,
-  cookie_signing_salt: "iKpGBV7H"
-
-config :logger,
-  backends: [:console, Sentry.LoggerBackend],
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
-
-# Use Jason for JSON parsing in Phoenix
-config :phoenix, :json_library, Jason
-
-config :phoenix, :format_encoders, "json-api": Poison
-
-config :mime, :types, %{
-  "application/vnd.api+json" => ["json-api"]
-}
-
-config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
+  live_view: [signing_salt: "vSN3Nw0P"]
 
 config :timo, frontend_url: "http://localhost:4200"
 
@@ -44,15 +33,42 @@ config :timo, Timo.Token, account_verification_salt: "timoapp email account veri
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-# config :timo, Timo.Mailer, adapter: Swoosh.Adapters.Local
+config :timo, Timo.Mailer, adapter: Swoosh.Adapters.Local
 
-# Swoosh API client is needed for adapters other than SMTP.
-# config :swoosh, :api_client, false
+# Configure esbuild (the version is required)
+config :esbuild,
+  version: "0.17.11",
+  timo: [
+    args:
+      ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
 
-config :sentry,
-  dsn: System.get_env("SENTRY_DNS") || "https://public_key@app.getsentry.com/1",
-  included_environments: [:prod],
-  environment_name: config_env()
+# Configure tailwind (the version is required)
+config :tailwind,
+  version: "4.0.9",
+  timo: [
+    args: ~w(
+      --input=assets/css/app.css
+      --output=priv/static/assets/css/app.css
+    ),
+    cd: Path.expand("..", __DIR__)
+  ]
+
+# Configures Elixir's Logger
+config :logger, :default_formatter,
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:request_id]
+
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
+
+config :phoenix, :format_encoders, "json-api": Jason
+
+config :mime, :types, %{
+  "application/vnd.api+json" => ["json-api"]
+}
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

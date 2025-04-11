@@ -10,7 +10,7 @@ defmodule Timo.API.Team do
     belongs_to :user, Timo.API.User
     has_many :members, Timo.API.Member
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

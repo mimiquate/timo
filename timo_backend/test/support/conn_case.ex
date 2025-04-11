@@ -12,31 +12,27 @@ defmodule TimoWeb.ConnCase do
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
   by setting `use TimoWeb.ConnCase, async: true`, although
-  this option is not recommendded for other databases.
+  this option is not recommended for other databases.
   """
 
   use ExUnit.CaseTemplate
 
   using do
     quote do
+      # The default endpoint for testing
+      @endpoint TimoWeb.Endpoint
+
+      use TimoWeb, :verified_routes
+
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import Timo.TestHelpers
-      alias TimoWeb.Router.Helpers, as: Routes
-
-      # The default endpoint for testing
-      @endpoint TimoWeb.Endpoint
+      import TimoWeb.ConnCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Timo.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Timo.Repo, {:shared, self()})
-    end
-
+    Timo.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

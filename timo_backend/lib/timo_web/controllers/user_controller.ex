@@ -8,50 +8,44 @@ defmodule TimoWeb.UserController do
 
   def create(conn, %{"data" => %{"type" => "users", "attributes" => user_params}}) do
     with {:ok, %User{} = user} <- API.create_user(user_params) do
-      token = Timo.Token.generate_new_account_token(user)
-      verification_url = TimoWeb.SendEmail.user_verification_url(token)
-      TimoWeb.SendEmail.send_account_verification_email(user, verification_url)
+      Timo.UserEmail.verification(user)
+      |> Timo.Mailer.deliver()
 
       conn
+      |> put_view(TimoWeb.UserJSON)
       |> put_status(:created)
-      |> put_resp_header("location", Routes.user_path(conn, :show, user))
-      |> render("show.json-api", data: user)
+      |> put_resp_header("location", ~p"/api/users/#{user}")
+      |> render(:show, data: user)
     end
   end
 
   def show(conn, %{"id" => "me"}) do
-    user_id =
-      conn
-      |> get_session("user_id")
+    user_id = conn |> get_session("user_id")
 
     if !user_id do
       {:error, :unauthorized}
     else
-      {:ok, %User{} = user} = API.get_user(user_id)
-      render(conn, "show.json-api", data: user)
+      %User{} = user = API.get_user(user_id)
+
+      conn
+      |> put_view(TimoWeb.UserJSON)
+      |> render(:show, data: user)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    with {:ok, %User{} = user} <- API.get_user(id) do
-      render(conn, "show.json-api", data: user)
-    else
-      _ -> {:error, :not_found}
-    end
+    user = API.get_user(id)
+    render(conn, :show, user: user)
   end
 
   def update(conn, %{"id" => "me", "token" => token}) do
     with {:ok, user_id} <- Timo.Token.verify_new_account_token(token),
-         {:ok, %User{verified: false} = user} <- API.get_user(user_id) do
+         %User{verified: false} = user <- API.get_user(user_id) do
       {:ok, user} = Timo.API.mark_as_verified(user)
 
-      render(conn, "show.json-api", data: user)
-    else
-      _ ->
-        conn
-        |> put_status(:bad_request)
-        |> put_view(TimoWeb.ErrorView)
-        |> render("invalid_token.json")
+      conn
+      |> put_view(TimoWeb.UserJSON)
+      |> render(:show, data: user)
     end
   end
 end

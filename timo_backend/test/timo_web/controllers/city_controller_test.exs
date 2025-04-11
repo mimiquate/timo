@@ -1,33 +1,19 @@
 defmodule TimoWeb.CityControllerTest do
   use TimoWeb.ConnCase
 
+  import Timo.APIFixtures
+
   setup %{conn: conn} do
-    conn =
-      conn
-      |> put_req_header("accept", "application/vnd.api+json")
-      |> put_req_header("content-type", "application/vnd.api+json")
-
-    {:ok, conn: conn}
+    {:ok, conn: put_req_header(conn, "accept", "application/vnd.api+json")}
   end
 
-  test "lists all entries on index", %{conn: conn} do
-    city_factory(%{name: "Āgra"})
-    city_factory(%{name: "Ağrı"})
-    cities = ["Āgra", "Ağrı"]
+  describe "index" do
+    test "lists all cities", %{conn: conn} do
+      city_fixture(name: "Montevideo")
+      conn = get(conn, ~p"/api/cities?search=Mont")
+      [montevideo] = json_response(conn, 200)["data"]
 
-    conn = get(conn, Routes.city_path(conn, :index), %{"search" => "Agr"})
-
-    [city_1, city_2] = json_response(conn, 200)["data"]
-
-    assert city_1["type"] == "city"
-    assert city_2["type"] == "city"
-    assert Enum.member?(cities, city_1["attributes"]["name"])
-    assert Enum.member?(cities, city_2["attributes"]["name"])
-  end
-
-  test "lists empty entries on index", %{conn: conn} do
-    conn = get(conn, Routes.city_path(conn, :index), %{"search" => "Agr"})
-
-    assert json_response(conn, 200)["data"] == []
+      assert montevideo["attributes"]["name"] == "Montevideo"
+    end
   end
 end

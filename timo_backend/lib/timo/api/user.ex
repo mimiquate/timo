@@ -9,9 +9,7 @@ defmodule Timo.API.User do
     field :email, :string
     field :verified, :boolean, default: false
 
-    has_many :teams, Timo.API.Team
-
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false
