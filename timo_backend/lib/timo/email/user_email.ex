@@ -3,7 +3,7 @@ defmodule Timo.UserEmail do
 
   @timo_img_url "http://cdn.mcauto-images-production.sendgrid.net/d80c9e6af85ef59e/b125447c-29c6-457a-9806-a448e5df3ae8/109x36.png"
 
-  def verification(user, user_name) do
+  def verification(user) do
     token = Timo.Token.generate_new_account_token(user)
     {:ok, frontend_url} = Application.fetch_env(:timo, :frontend_url)
     url = frontend_url <> "/verify/" <> token

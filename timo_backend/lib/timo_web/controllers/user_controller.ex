@@ -8,7 +8,7 @@ defmodule TimoWeb.UserController do
 
   def create(conn, %{"data" => %{"type" => "users", "attributes" => user_params}}) do
     with {:ok, %User{} = user} <- API.create_user(user_params) do
-      Timo.UserEmail.verification(user, user.username)
+      Timo.UserEmail.verification(user)
       |> Timo.Mailer.deliver()
 
       conn
