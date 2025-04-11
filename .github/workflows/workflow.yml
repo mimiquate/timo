@@ -12,9 +12,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
+        id: beam
         with:
           version-file: './timo_backend/.tool-versions'
           version-type: 'strict'
+
+      - name: Cache code and deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./timo_backend/_build
+            ./timo_backend/deps
+          key: ${{runner.os}}-${{steps.beam.outputs.elixir-version}}-${{steps.beam.outputs.otp-version}}-${{hashFiles('mix.lock')}}
 
       - name: Get phoenix dependencies
         working-directory: ./timo_backend
