@@ -8,27 +8,17 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MIX_ENV: test
-    services:
-      db:
-        image: postgres:12.1
-        ports: ['5432:5432']
-        env:
-          POSTGRES_PASSWORD: postgres
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup elixir
-        uses: actions/setup-elixir@v1
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
         with:
-          otp-version: '25.0'
-          elixir-version: '1.13.4'
-          experimental-otp: true
+          version-file: '.tool-versions'
+          version-type: 'strict'
 
       - name: Get phoenix dependencies
         working-directory: ./timo_backend
-        run: |
-          mix deps.get
-          mix deps.compile
+        run: mix deps.get
 
       - name: Compile with warnings as errors
         working-directory: ./timo_backend
