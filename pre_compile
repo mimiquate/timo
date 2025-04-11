@@ -1,2 +1,0 @@
-export original_build_path=$build_path
-export build_path=$build_path/timo_backend
