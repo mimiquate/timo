@@ -56,7 +56,7 @@ defmodule TimoWeb.Router do
   end
 
   def fetch_current_user(conn, _opts) do
-    user_id = get_session(conn, "user_id") |> IO.inspect()
+    user_id = get_session(conn, "user_id")
 
     with %Timo.API.User{} = current_user <- Timo.API.get_user(user_id) do
       assign(conn, :current_user, current_user)

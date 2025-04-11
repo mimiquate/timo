@@ -4,7 +4,7 @@ defmodule TimoWeb.CityControllerTest do
   import Timo.APIFixtures
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    {:ok, conn: put_req_header(conn, "accept", "application/vnd.api+json")}
   end
 
   describe "index" do
@@ -13,7 +13,7 @@ defmodule TimoWeb.CityControllerTest do
       conn = get(conn, ~p"/api/cities?search=Mont")
       [montevideo] = json_response(conn, 200)["data"]
 
-      assert montevideo["name"] == "Montevideo"
+      assert montevideo["attributes"]["name"] == "Montevideo"
     end
   end
 end
