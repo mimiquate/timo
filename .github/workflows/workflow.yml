@@ -44,6 +44,7 @@ jobs:
   build_and_test_frontend:
     name: Builds and test frontend
     runs-on: ubuntu-latest
+    if: false
 
     steps:
       - uses: actions/checkout@v2
@@ -86,7 +87,7 @@ jobs:
     name: Deploy frontend to Netlify with own domain
     needs: [build_and_test_backend, build_and_test_frontend]
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: false
 
     steps:
       - uses: actions/checkout@v2
