@@ -55,7 +55,6 @@ defmodule TimoWeb.Endpoint do
 
   plug TimoWeb.Router
 
-
   def cors() do
     {:ok, frontend_url} = Application.fetch_env(:timo, :frontend_url)
     frontend_url

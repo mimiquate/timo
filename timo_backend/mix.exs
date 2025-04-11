@@ -60,7 +60,7 @@ defmodule Timo.MixProject do
       {:bandit, "~> 1.5"},
       {:cors_plug, "~> 3.0"},
       {:ja_serializer, "~> 0.18.0"},
-      {:pbkdf2_elixir, "~> 1.0"},
+      {:pbkdf2_elixir, "~> 1.0"}
     ]
   end
 
