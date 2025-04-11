@@ -34,7 +34,7 @@ defmodule TimoWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = API.get_user!(id)
+    user = API.get_user(id)
     render(conn, :show, user: user)
   end
 

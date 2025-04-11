@@ -1,6 +1,5 @@
 defmodule TimoWeb.TeamJSON do
   use JaSerializer.PhoenixView
-  alias Timo.API.User
 
   def type, do: "team"
 

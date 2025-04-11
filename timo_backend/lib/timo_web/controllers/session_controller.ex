@@ -14,7 +14,7 @@ defmodule TimoWeb.SessionController do
 
   def create(conn, %{"password" => password, "username" => username}) do
     with %User{} = user <- API.get_user_by_username(username),
-         {:ok, _valid_user} <- Pbkdf2.check_pass(user, password),
+         {:ok, _valid_user} <- Pbkdf2.verify_pass(user.password_hash, password),
          true <- user.verified do
       conn
       |> put_session("user_id", user.id)
